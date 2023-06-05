@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+		<PackageReference Include="JordiAragon.SharedKernel" />
+		<PackageReference Include="JordiAragon.SharedKernel.Presentation.WebApi" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+		<PackageReference Include="Quartz.Extensions.Hosting" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Serilog.AspNetCore" />
+		<PackageReference Include="Serilog.Enrichers.Environment" />
+		<PackageReference Include="Serilog.Enrichers.Thread" />
+		<PackageReference Include="Serilog.Sinks.Async" />
+		<PackageReference Include="Serilog.Sinks.AzureTableStorage" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Sinks.Graylog" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.csproj" />
+		<ProjectReference Include="..\JordiAragon.Cinema.Application.Contracts\JordiAragon.Cinema.Application.Contracts.csproj" />
+	</ItemGroup>
+</Project>

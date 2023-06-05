@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JordiAragon.Cinema.Presentation.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:JordiAragon.Cinema.Presentation.WebApi.AssemblyConfiguration.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure each API discovered for Swagger Documentation.
+            </summary>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragon.Cinema.Presentation.WebApi.AssemblyConfiguration.ConfigureSwaggerOptions.Configure(System.String,Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure Swagger Options. Inherited from the Interface.
+            </summary>
+            <param name="name">The name of the options instance being configured.</param>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragon.Cinema.Presentation.WebApi.AssemblyConfiguration.ConfigureSwaggerOptions.CreateVersionInfo(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiVersionDescription)">
+            <summary>
+            Create information about the version of the API.
+            </summary>
+            <param name="description">The description of the API version.</param>
+            <returns>Information about the API.</returns>
+        </member>
+    </members>
+</doc>

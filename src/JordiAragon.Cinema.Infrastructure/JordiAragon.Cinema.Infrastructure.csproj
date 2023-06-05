@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+		<PackageReference Include="EasyCaching.InMemory" />
+		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\JordiAragon.Cinema.Application.Contracts\JordiAragon.Cinema.Application.Contracts.csproj" />
+	</ItemGroup>
+</Project>
