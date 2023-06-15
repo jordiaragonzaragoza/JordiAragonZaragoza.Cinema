@@ -1,10 +1,10 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public class Ticket : BaseAuditableEntity<TicketId>

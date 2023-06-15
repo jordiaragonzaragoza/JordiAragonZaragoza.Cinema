@@ -1,12 +1,13 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Rules;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Rules;
     using JordiAragon.SharedKernel.Domain.Entities;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
@@ -18,12 +19,12 @@
             ShowtimeId id,
             MovieId movieId,
             DateTime sessionDateOnUtc,
-            Auditorium auditorium)
+            AuditoriumId auditoriumId)
             : this(id)
         {
             this.MovieId = Guard.Against.Null(movieId, nameof(movieId));
             this.SessionDateOnUtc = sessionDateOnUtc;
-            this.Auditorium = Guard.Against.Null(auditorium, nameof(auditorium));
+            this.AuditoriumId = Guard.Against.Null(auditoriumId, nameof(auditoriumId));
         }
 
         // Required by EF.
@@ -31,13 +32,14 @@
             ShowtimeId id)
             : base(id)
         {
+            this.RegisterDomainEvent(new ShowtimeCreatedEvent(this, this.AuditoriumId));
         }
 
         public MovieId MovieId { get; private set; }
 
         public DateTime SessionDateOnUtc { get; private set; }
 
-        public Auditorium Auditorium { get; private set; }
+        public AuditoriumId AuditoriumId { get; private set; }
 
         public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
@@ -45,14 +47,17 @@
             ShowtimeId id,
             MovieId movieId,
             DateTime sessionDateOnUtc,
-            Auditorium auditorium)
+            AuditoriumId auditoriumId)
         {
-            return new Showtime(id, movieId, sessionDateOnUtc, auditorium);
+            return new Showtime(id, movieId, sessionDateOnUtc, auditoriumId);
         }
 
+        // TODO: Complete with domain service.
         public Ticket ReserveSeats(IEnumerable<SeatId> desiredSeatsIds, TicketId ticketId, DateTime createdTimeOnUtc)
         {
-            var desiredSeats = this.Auditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
+            throw new NotImplementedException();
+            /*
+            var desiredSeats = this.AuditoriumId.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
 
             this.CheckRule(new OnlyContiguousSeatsCanBeReservedRule(desiredSeats));
 
@@ -65,7 +70,7 @@
             var newItemAddedEvent = new ReservedSeatsEvent(ticket);
             this.RegisterDomainEvent(newItemAddedEvent);
 
-            return ticket;
+            return ticket; */
         }
 
         public void PurchaseSeats(TicketId ticketId)
@@ -98,7 +103,7 @@
         {
             var reservedSeats = this.ReservedSeats();
 
-            return this.Auditorium.Seats.Except(reservedSeats)
+            return this.AuditoriumId.Seats.Except(reservedSeats)
                                         .OrderBy(s => s.Row)
                                         .ThenBy(s => s.SeatNumber);
         }
@@ -108,7 +113,7 @@
             var seatIds = this.Tickets.SelectMany(ticket => ticket.Seats)
                                       .Select(ticketSeat => ticketSeat.SeatId);
 
-            return this.Auditorium.Seats.Where(seat => seatIds.Contains(seat.Id))
+            return this.AuditoriumId.Seats.Where(seat => seatIds.Contains(seat.Id))
                                         .OrderBy(s => s.Row)
                                         .ThenBy(s => s.SeatNumber);
         }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public class Seat : BaseAuditableEntity<SeatId>

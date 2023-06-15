@@ -1,17 +1,16 @@
 ﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
-    using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public class Auditorium : BaseAuditableEntity<AuditoriumId>, IAggregateRoot
     {
-        private readonly List<Showtime> showtimes = new();
+        private readonly List<ShowtimeId> showtimes = new();
         private readonly List<Seat> seats;
 
         public Auditorium(
@@ -26,9 +25,10 @@
             AuditoriumId id)
             : base(id)
         {
+            this.RegisterDomainEvent(new AuditoriumCreatedEvent(this));
         }
 
-        public IEnumerable<Showtime> Showtimes => this.showtimes.AsReadOnly();
+        public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
         public IEnumerable<Seat> Seats => this.seats.AsReadOnly();
 
@@ -39,20 +39,12 @@
             return new Auditorium(id, seats);
         }
 
-        public Showtime AddShowtime(ShowtimeId id, MovieId movieId, DateTime sessionDateOnUtc)
+        public void AddShowtime(ShowtimeId showtimeId)
         {
-            var newShowtime = Showtime.Create(
-                id,
-                movieId,
-                sessionDateOnUtc,
-                this);
+            this.showtimes.Add(showtimeId);
 
-            this.showtimes.Add(newShowtime);
-
-            var newItemAddedEvent = new ShowtimeAddedEvent(newShowtime, this);
+            var newItemAddedEvent = new ShowtimeAddedEvent(showtimeId, this);
             this.RegisterDomainEvent(newItemAddedEvent);
-
-            return newShowtime;
         }
     }
 }

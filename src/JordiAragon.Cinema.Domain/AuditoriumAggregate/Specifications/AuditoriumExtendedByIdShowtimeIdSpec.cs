@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Ardalis.Specification;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
 
     public class AuditoriumExtendedByIdShowtimeIdSpec : SingleResultSpecification<Auditorium>
     {
@@ -9,12 +10,12 @@
         {
             this.Query
                 .Where(auditorium => auditorium.Id == id
-                       && auditorium.Showtimes.Any(showtime => showtime.Id == showtimeId));
+                       && auditorium.Showtimes.Any(showtime => showtime == showtimeId));
 
             this.Query
                 .Include(auditorium => auditorium.Showtimes)
-                    .ThenInclude(showtime => showtime.Tickets)
-                        .ThenInclude(ticket => ticket.Seats)
+                    ////.ThenInclude(showtime => showtime.Tickets)
+                        ////.ThenInclude(ticket => ticket.Seats)
                 .Include(auditorium => auditorium.Seats);
         }
     }

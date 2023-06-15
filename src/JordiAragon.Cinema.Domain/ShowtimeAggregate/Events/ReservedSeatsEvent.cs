@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate.Events
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate.Events
 {
     using JordiAragon.SharedKernel.Domain.Events;
 

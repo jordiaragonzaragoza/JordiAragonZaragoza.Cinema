@@ -1,8 +1,9 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate.Rules
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate.Rules
 {
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
     public class OnlyAvailableSeatsCanBeReservedRule : IBusinessRule

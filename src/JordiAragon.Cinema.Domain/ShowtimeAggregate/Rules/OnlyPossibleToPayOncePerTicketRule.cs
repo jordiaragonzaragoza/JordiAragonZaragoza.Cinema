@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate.Rules
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate.Rules
 {
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;

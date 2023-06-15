@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
+﻿namespace JordiAragon.Cinema.Domain.ShowtimeAggregate
 {
     using System;
     using System.Collections.Generic;
