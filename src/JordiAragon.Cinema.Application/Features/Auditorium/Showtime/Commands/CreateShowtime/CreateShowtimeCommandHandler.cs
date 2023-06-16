@@ -1,14 +1,16 @@
 ﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Showtime.Commands.CreateShowtime
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
@@ -16,22 +18,31 @@
     public class CreateShowtimeCommandHandler : ICommandHandler<CreateShowtimeCommand, Guid>
     {
         private readonly IReadRepository<Movie> movieRepository;
-        private readonly IRepository<Auditorium> auditoriumRepository;
+        private readonly IReadRepository<Auditorium> auditoriumRepository;
+        private readonly IRepository<Showtime> showtimeRepository;
         private readonly IGuidGenerator guidGenerator;
 
         public CreateShowtimeCommandHandler(
-            IRepository<Auditorium> auditoriumRepository,
+            IReadRepository<Auditorium> auditoriumRepository,
             IReadRepository<Movie> movieRepository,
+            IRepository<Showtime> showtimeRepository,
             IGuidGenerator guidGenerator)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
+            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
         public async Task<Result<Guid>> Handle(CreateShowtimeCommand request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumWithShowtimesByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
+            if (existingShowtime is not null)
+            {
+                return Result.Invalid(new List<ValidationError>()); // TODO: Complete.
+            }
+
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
@@ -43,12 +54,13 @@
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
             }
 
-            var newShowtime = existingAuditorium.AddShowtime(
+            var newShowtime = Showtime.Create(
                 ShowtimeId.Create(this.guidGenerator.Create()),
                 existingMovie.Id,
-                request.SessionDateOnUtc);
+                request.SessionDateOnUtc,
+                existingAuditorium.Id);
 
-            await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
+            await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);
 
             return Result.Success(newShowtime.Id.Value);
         }

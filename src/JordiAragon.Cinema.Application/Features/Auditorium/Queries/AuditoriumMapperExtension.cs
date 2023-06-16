@@ -3,9 +3,9 @@
     using System;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
     using JordiAragon.Cinema.Application.Mappers;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
 
     public static class AuditoriumMapperExtension
     {

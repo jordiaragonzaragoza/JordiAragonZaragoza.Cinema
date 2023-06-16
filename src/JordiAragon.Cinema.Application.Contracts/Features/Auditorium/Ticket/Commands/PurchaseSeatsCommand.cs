@@ -3,5 +3,5 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class PurchaseSeatsCommand(Guid AuditoriumId, Guid ShowtimeId, Guid TicketId) : ICommand;
+    public record class PurchaseSeatsCommand(Guid AuditoriumId, Guid ShowtimeId, Guid TicketId) : ICommand; // TODO: AuditoriumId. Not required.
 }

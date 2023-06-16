@@ -6,41 +6,33 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
     public class PurchaseSeatsCommandHandler : ICommandHandler<PurchaseSeatsCommand>
     {
-        private readonly IRepository<Auditorium> auditoriumRepository;
+        private readonly IRepository<Showtime> showtimeRepository;
 
         public PurchaseSeatsCommandHandler(
-            IRepository<Auditorium> auditoriumRepository)
+            IRepository<Showtime> showtimeRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
         public async Task<Result> Handle(PurchaseSeatsCommand request, CancellationToken cancellationToken)
         {
-            var specification = new AuditoriumWithReservedSeatsByIdShowtimeIdTicketIdSpec(AuditoriumId.Create(request.AuditoriumId), ShowtimeId.Create(request.ShowtimeId), TicketId.Create(request.TicketId));
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(specification, cancellationToken);
-            if (existingAuditorium is null)
+            var specification = new ShowtimeByTicketIdSpec(TicketId.Create(request.TicketId));
+            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(specification, cancellationToken);
+            if (existingShowtime is null)
             {
-                return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
+                return Result.NotFound($"{nameof(Ticket)}: {request.TicketId} not found.");
             }
 
-            var showtimeId = ShowtimeId.Create(request.ShowtimeId);
+            existingShowtime.PurchaseSeats(TicketId.Create(request.TicketId));
 
-            var showtime = existingAuditorium.Showtimes.FirstOrDefault(showtime => showtime.Id == showtimeId);
-            if (showtime is null)
-            {
-                return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
-            }
-
-            showtime.PurchaseSeats(TicketId.Create(request.TicketId));
-
-            await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
+            await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
             return Result.Success();
         }

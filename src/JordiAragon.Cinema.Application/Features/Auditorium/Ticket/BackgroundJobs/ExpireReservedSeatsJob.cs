@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using MediatR;
     using Microsoft.Extensions.Logging;

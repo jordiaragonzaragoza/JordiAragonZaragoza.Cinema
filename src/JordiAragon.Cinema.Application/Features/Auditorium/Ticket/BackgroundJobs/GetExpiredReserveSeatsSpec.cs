@@ -2,7 +2,7 @@
 {
     using System;
     using Ardalis.Specification;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
 
     public class GetExpiredReserveSeatsSpec : Specification<Ticket>
     {

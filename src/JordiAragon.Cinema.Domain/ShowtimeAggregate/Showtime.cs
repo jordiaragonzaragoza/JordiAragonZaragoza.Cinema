@@ -8,10 +8,11 @@
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Rules;
+    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class Showtime : BaseAuditableEntity<ShowtimeId>
+    public class Showtime : BaseAuditableEntity<ShowtimeId>, IAggregateRoot
     {
         private readonly List<Ticket> tickets = new();
 
@@ -32,7 +33,7 @@
             ShowtimeId id)
             : base(id)
         {
-            this.RegisterDomainEvent(new ShowtimeCreatedEvent(this, this.AuditoriumId));
+            this.RegisterDomainEvent(new ShowtimeCreatedEvent(this.Id, this.MovieId, this.SessionDateOnUtc, this.AuditoriumId));
         }
 
         public MovieId MovieId { get; private set; }
@@ -52,37 +53,16 @@
             return new Showtime(id, movieId, sessionDateOnUtc, auditoriumId);
         }
 
-        // TODO: Complete with domain service.
-        public Ticket ReserveSeats(IEnumerable<SeatId> desiredSeatsIds, TicketId ticketId, DateTime createdTimeOnUtc)
-        {
-            throw new NotImplementedException();
-            /*
-            var desiredSeats = this.AuditoriumId.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
-
-            this.CheckRule(new OnlyContiguousSeatsCanBeReservedRule(desiredSeats));
-
-            var availableSeats = this.AvailableSeats();
-
-            this.CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
-
-            var ticket = this.AddTicket(ticketId, desiredSeats, createdTimeOnUtc);
-
-            var newItemAddedEvent = new ReservedSeatsEvent(ticket);
-            this.RegisterDomainEvent(newItemAddedEvent);
-
-            return ticket; */
-        }
-
         public void PurchaseSeats(TicketId ticketId)
         {
             var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
                 ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
 
-            this.CheckRule(new OnlyPossibleToPayOncePerTicketRule(ticket));
+            CheckRule(new OnlyPossibleToPayOncePerTicketRule(ticket));
 
             ticket.MarkAsPaid();
 
-            var @event = new PurchasedSeatsEvent(ticket);
+            var @event = new PurchasedSeatsEvent(ticketId);
             this.RegisterDomainEvent(@event);
         }
 
@@ -95,30 +75,11 @@
 
             this.tickets.Remove(existingTicket);
 
-            var @event = new ExpiredReservedSeatsEvent(existingTicket);
+            var @event = new ExpiredReservedSeatsEvent(ticketToRemove);
             this.RegisterDomainEvent(@event);
         }
 
-        public IEnumerable<Seat> AvailableSeats()
-        {
-            var reservedSeats = this.ReservedSeats();
-
-            return this.AuditoriumId.Seats.Except(reservedSeats)
-                                        .OrderBy(s => s.Row)
-                                        .ThenBy(s => s.SeatNumber);
-        }
-
-        private IEnumerable<Seat> ReservedSeats()
-        {
-            var seatIds = this.Tickets.SelectMany(ticket => ticket.Seats)
-                                      .Select(ticketSeat => ticketSeat.SeatId);
-
-            return this.AuditoriumId.Seats.Where(seat => seatIds.Contains(seat.Id))
-                                        .OrderBy(s => s.Row)
-                                        .ThenBy(s => s.SeatNumber);
-        }
-
-        private Ticket AddTicket(TicketId id, IEnumerable<Seat> seats, DateTime createdTimeOnUtc)
+        public Ticket ReserveSeats(TicketId id, IEnumerable<Seat> seats, DateTime createdTimeOnUtc)
         {
             var newTicket = Ticket.Create(
                  id,
@@ -127,6 +88,8 @@
                  createdTimeOnUtc);
 
             this.tickets.Add(newTicket);
+
+            this.RegisterDomainEvent(new ReservedSeatsEvent(id, seats, createdTimeOnUtc));
 
             return newTicket;
         }

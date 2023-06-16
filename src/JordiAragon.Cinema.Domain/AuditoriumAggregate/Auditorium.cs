@@ -25,7 +25,7 @@
             AuditoriumId id)
             : base(id)
         {
-            this.RegisterDomainEvent(new AuditoriumCreatedEvent(this));
+            this.RegisterDomainEvent(new AuditoriumCreatedEvent(this.Id, this.Seats));
         }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
@@ -43,8 +43,7 @@
         {
             this.showtimes.Add(showtimeId);
 
-            var newItemAddedEvent = new ShowtimeAddedEvent(showtimeId, this);
-            this.RegisterDomainEvent(newItemAddedEvent);
+            this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
         }
     }
 }

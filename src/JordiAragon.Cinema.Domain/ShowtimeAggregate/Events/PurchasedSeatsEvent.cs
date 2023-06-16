@@ -2,5 +2,5 @@
 {
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public record class PurchasedSeatsEvent(Ticket Ticket) : BaseDomainEvent;
+    public record class PurchasedSeatsEvent(TicketId TicketId) : BaseDomainEvent;
 }
