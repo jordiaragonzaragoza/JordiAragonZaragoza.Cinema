@@ -12,7 +12,7 @@
     using JordiAragon.SharedKernel.Domain.Entities;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class Showtime : BaseAuditableEntity<ShowtimeId>, IAggregateRoot
+    public class Showtime : BaseAggregateRoot<ShowtimeId, Guid>, IAggregateRoot
     {
         private readonly List<Ticket> tickets = new();
 
@@ -21,19 +21,18 @@
             MovieId movieId,
             DateTime sessionDateOnUtc,
             AuditoriumId auditoriumId)
-            : this(id)
+            : base(id)
         {
             this.MovieId = Guard.Against.Null(movieId, nameof(movieId));
             this.SessionDateOnUtc = sessionDateOnUtc;
             this.AuditoriumId = Guard.Against.Null(auditoriumId, nameof(auditoriumId));
+
+            this.RegisterDomainEvent(new ShowtimeCreatedEvent(id, this.MovieId, this.SessionDateOnUtc, this.AuditoriumId));
         }
 
         // Required by EF.
-        private Showtime(
-            ShowtimeId id)
-            : base(id)
+        private Showtime()
         {
-            this.RegisterDomainEvent(new ShowtimeCreatedEvent(this.Id, this.MovieId, this.SessionDateOnUtc, this.AuditoriumId));
         }
 
         public MovieId MovieId { get; private set; }
@@ -42,7 +41,7 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
-        public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
+        public IReadOnlyList<Ticket> Tickets => this.tickets.AsReadOnly();
 
         public static Showtime Create(
             ShowtimeId id,
@@ -79,17 +78,17 @@
             this.RegisterDomainEvent(@event);
         }
 
-        public Ticket ReserveSeats(TicketId id, IEnumerable<Seat> seats, DateTime createdTimeOnUtc)
+        public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTime createdTimeOnUtc)
         {
             var newTicket = Ticket.Create(
                  id,
-                 this.Id,
-                 seats,
+                 ShowtimeId.Create(this.Id.Value),
+                 seatIds,
                  createdTimeOnUtc);
 
             this.tickets.Add(newTicket);
 
-            this.RegisterDomainEvent(new ReservedSeatsEvent(id, seats, createdTimeOnUtc));
+            this.RegisterDomainEvent(new ReservedSeatsEvent(id, seatIds, createdTimeOnUtc));
 
             return newTicket;
         }

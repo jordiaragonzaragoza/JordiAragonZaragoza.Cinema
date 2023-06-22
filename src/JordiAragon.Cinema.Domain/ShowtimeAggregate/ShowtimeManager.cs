@@ -21,11 +21,11 @@
         public static Ticket ReserveSeats(
             Auditorium auditorium,
             Showtime showtime,
-            IEnumerable<SeatId> desiredSeatsIds,
+            IEnumerable<SeatId> desiredSeatIds,
             TicketId ticketId,
             DateTime createdTimeOnUtc)
         {
-            var desiredSeats = auditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
+            var desiredSeats = auditorium.Seats.Where(seat => desiredSeatIds.Contains(seat.Id));
 
             CheckRule(new OnlyContiguousSeatsCanBeReservedRule(desiredSeats));
 
@@ -33,13 +33,12 @@
 
             CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
 
-            return showtime.ReserveSeats(ticketId, desiredSeats, createdTimeOnUtc);
+            return showtime.ReserveSeats(ticketId, desiredSeatIds, createdTimeOnUtc);
         }
 
         private static IEnumerable<Seat> ReservedSeats(Auditorium auditorium, Showtime showtime)
         {
-            var seatIds = showtime.Tickets.SelectMany(ticket => ticket.Seats)
-                                      .Select(ticketSeat => ticketSeat.SeatId);
+            var seatIds = showtime.Tickets.SelectMany(ticket => ticket.Seats);
 
             return auditorium.Seats.Where(seat => seatIds.Contains(seat.Id))
                                         .OrderBy(s => s.Row)

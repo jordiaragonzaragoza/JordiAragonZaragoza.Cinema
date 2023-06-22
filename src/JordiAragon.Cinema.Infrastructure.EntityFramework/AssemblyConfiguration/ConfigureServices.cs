@@ -30,6 +30,8 @@
                     optionsBuilder.UseInMemoryDatabase("JordiAragon.CinemaDb")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+
+                    /*optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));*/
                 }
                 else
                 {

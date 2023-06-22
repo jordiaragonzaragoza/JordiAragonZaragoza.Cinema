@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
@@ -8,7 +9,7 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Auditorium : BaseAuditableEntity<AuditoriumId>, IAggregateRoot
+    public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>, IAggregateRoot
     {
         private readonly List<ShowtimeId> showtimes = new();
         private readonly List<Seat> seats;
@@ -16,16 +17,16 @@
         public Auditorium(
             AuditoriumId id,
             IEnumerable<Seat> seats)
-            : this(id)
-        {
-            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
-        }
-
-        private Auditorium(
-            AuditoriumId id)
             : base(id)
         {
-            this.RegisterDomainEvent(new AuditoriumCreatedEvent(this.Id, this.Seats));
+            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
+
+            this.RegisterDomainEvent(new AuditoriumCreatedEvent(id, this.Seats));
+        }
+
+        // Required by EF
+        private Auditorium()
+        {
         }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();

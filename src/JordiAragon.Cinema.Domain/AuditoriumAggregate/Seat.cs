@@ -1,36 +1,28 @@
 ﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
 {
-    using System.Collections.Generic;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public class Seat : BaseAuditableEntity<SeatId>
     {
-        private readonly List<TicketSeat> tickets = new();
-
         private Seat(
             SeatId id,
             AuditoriumId auditoriumId,
             short row,
             short seatNumber)
-            : this(id)
+            : base(id)
         {
             this.AuditoriumId = Guard.Against.Null(auditoriumId, nameof(auditoriumId));
             this.Row = row;
             this.SeatNumber = seatNumber;
         }
 
-        // Required by EF.
-        private Seat(
-            SeatId id)
-            : base(id)
+        // Required by EF
+        private Seat()
         {
         }
 
-        public IEnumerable<TicketSeat> Tickets => this.tickets.AsReadOnly();
-
-        public AuditoriumId AuditoriumId { get; private set; }
+        public AuditoriumId AuditoriumId { get; private set; } // TODO: Review. Is it required?
 
         public short Row { get; private set; }
 

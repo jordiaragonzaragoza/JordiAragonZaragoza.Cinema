@@ -9,30 +9,28 @@
 
     public class Ticket : BaseAuditableEntity<TicketId>
     {
-        private readonly List<TicketSeat> seats;
+        private readonly List<SeatId> seats;
 
         private Ticket(
             TicketId id,
             ShowtimeId showtimeId,
-            List<TicketSeat> seats,
+            IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)
-            : this(id)
+            : base(id)
         {
             this.ShowtimeId = Guard.Against.Null(showtimeId, nameof(showtimeId));
-            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
+            this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
             this.CreatedTimeOnUtc = createdTimeOnUtc;
         }
 
         // Required by EF.
-        private Ticket(
-            TicketId id)
-            : base(id)
+        private Ticket()
         {
         }
 
         public ShowtimeId ShowtimeId { get; private set; }
 
-        public IEnumerable<TicketSeat> Seats => this.seats.AsReadOnly();
+        public IEnumerable<SeatId> Seats => this.seats.AsReadOnly();
 
         public DateTime CreatedTimeOnUtc { get; private set; }
 
@@ -41,20 +39,10 @@
         public static Ticket Create(
             TicketId id,
             ShowtimeId showtimeId,
-            IEnumerable<Seat> seatsData,
+            IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)
         {
-            Guard.Against.Null(id, nameof(id));
-            Guard.Against.NullOrEmpty(seatsData, nameof(seatsData));
-
-            var ticketSeats = new List<TicketSeat>();
-
-            foreach (var seat in seatsData)
-            {
-                ticketSeats.Add(new TicketSeat(TicketSeatId.CreateUnique(), seat.Id, id));
-            }
-
-            return new Ticket(id, showtimeId, ticketSeats, createdTimeOnUtc);
+            return new Ticket(id, showtimeId, seatIds, createdTimeOnUtc);
         }
 
         public void MarkAsPaid()

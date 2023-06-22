@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  jordiaragon.cinema:
+    image: ${DOCKER_REGISTRY-}jordiaragon.cinema
+    container_name: jordiaragon.cinema
+    build:
+      context: .
+      dockerfile: src/JordiAragon.Cinema/Dockerfile
+    depends_on:
+      - "azuresqledge.cinema"
+      - "rabbitmq.cinema"
+    links:
+      - "azuresqledge.cinema"
+      - "rabbitmq.cinema"
+
+  azuresqledge.cinema:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: azuresqledge.cinema
+
+  rabbitmq.cinema:
+    image: rabbitmq:3.11.10-management
+    container_name: rabbitmq.cinema
+    hostname: rabbitmq

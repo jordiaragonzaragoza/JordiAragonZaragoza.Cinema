@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +22,9 @@
             var auditoriumId1 = AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53"));
             var exampleAuditorium = Auditorium.Create(auditoriumId1, GenerateSeats(auditoriumId1, 28, 22));
 
-            exampleAuditorium.AddShowtime(ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")), exampleMovieId, new DateTime(2023, 1, 1));
+            var exampleShowtime = Showtime.Create(ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")), exampleMovieId, new DateTime(2023, 1, 1), AuditoriumId.Create(exampleAuditorium.Id.Value));
+            context.Showtimes.Add(exampleShowtime);
+            ////exampleAuditorium.AddShowtime(exampleShowtime.Id); // TODO: Remove.
 
             context.Auditoriums.Add(exampleAuditorium);
 
