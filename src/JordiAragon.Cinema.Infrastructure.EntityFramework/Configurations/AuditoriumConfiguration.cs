@@ -19,9 +19,9 @@
 
         private void ConfigureAuditoriumsTable(EntityTypeBuilder<Auditorium> builder)
         {
-            base.Configure(builder);
-
             builder.ToTable("Auditoriums");
+
+            base.Configure(builder);
 
             builder.Property(auditorium => auditorium.Id)
                 .ValueGeneratedNever()

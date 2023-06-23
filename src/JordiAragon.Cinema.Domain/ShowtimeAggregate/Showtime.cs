@@ -41,7 +41,7 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
-        public IReadOnlyList<Ticket> Tickets => this.tickets.AsReadOnly();
+        public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
         public static Showtime Create(
             ShowtimeId id,

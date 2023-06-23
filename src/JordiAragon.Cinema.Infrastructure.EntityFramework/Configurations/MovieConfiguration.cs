@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Configurations
 {
-    using System;
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
@@ -18,9 +17,9 @@
 
         private void ConfigureMoviesTable(EntityTypeBuilder<Movie> builder)
         {
-            base.Configure(builder);
-
             builder.ToTable("Movies");
+
+            base.Configure(builder);
 
             builder.Property(movie => movie.Id)
                 .ValueGeneratedNever()

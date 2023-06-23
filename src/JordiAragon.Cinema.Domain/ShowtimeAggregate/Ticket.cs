@@ -9,7 +9,7 @@
 
     public class Ticket : BaseAuditableEntity<TicketId>
     {
-        private readonly List<SeatId> seats;
+        private readonly List<SeatId> seats = new();
 
         private Ticket(
             TicketId id,

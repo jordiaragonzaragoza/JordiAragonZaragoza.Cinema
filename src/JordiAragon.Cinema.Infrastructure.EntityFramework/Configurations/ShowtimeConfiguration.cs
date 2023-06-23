@@ -17,9 +17,9 @@
 
         private void ConfigureShowtimesTable(EntityTypeBuilder<Showtime> builder)
         {
-            base.Configure(builder);
-
             builder.ToTable("Showtimes");
+
+            base.Configure(builder);
 
             builder.Property(showtime => showtime.Id)
                 .ValueGeneratedNever()
@@ -38,10 +38,9 @@
             {
                 ticketBuilder.ToTable("Tickets");
 
-                var x = ticketBuilder.WithOwner();
-                x.HasForeignKey("ShowtimeId");
+                ticketBuilder.WithOwner().HasForeignKey("ShowtimeId");
 
-                ticketBuilder.HasKey(nameof(Ticket.Id), nameof(ShowtimeId));
+                ticketBuilder.HasKey("Id", "ShowtimeId");
 
                 ticketBuilder.Property(ticket => ticket.Id)
                   .HasColumnName(nameof(TicketId))
@@ -55,9 +54,9 @@
                 {
                     ticketSeatBuilder.ToTable("TicketSeatIds");
 
-                    ticketSeatBuilder.WithOwner().HasForeignKey(nameof(TicketId), nameof(ShowtimeId));
+                    ticketSeatBuilder.WithOwner().HasForeignKey("TicketId", "ShowtimeId");
 
-                    ticketSeatBuilder.HasKey(nameof(Seat.Id));
+                    ticketSeatBuilder.HasKey("Id", "TicketId", "ShowtimeId");
 
                     ticketSeatBuilder.Property(seatId => seatId.Value)
                         .HasColumnName(nameof(SeatId))
@@ -68,7 +67,7 @@
                 ticketBuilder.Navigation(x => x.Seats).UsePropertyAccessMode(PropertyAccessMode.Field);
             });
 
-            builder.Metadata.FindNavigation(nameof(Showtime.Tickets))
+            builder.Metadata.FindNavigation(nameof(Showtime.Tickets))!
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }

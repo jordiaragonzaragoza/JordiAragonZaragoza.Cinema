@@ -3,7 +3,6 @@
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
-    using JordiAragon.Cinema.Infrastructure.EntityFramework.Configurations;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
@@ -29,10 +28,7 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AuditoriumConfiguration());
-            modelBuilder.ApplyConfiguration(new MovieConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowtimeConfiguration());
-            ////modelBuilder.ApplyConfigurationsFromAssembly(InfrastructureEntityFrameworkAssemblyReference.Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(InfrastructureEntityFrameworkAssemblyReference.Assembly);
 
             base.OnModelCreating(modelBuilder);
         }
