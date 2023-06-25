@@ -30,6 +30,7 @@
 
         // Required by EF.
         private Movie()
+            : base()
         {
         }
 

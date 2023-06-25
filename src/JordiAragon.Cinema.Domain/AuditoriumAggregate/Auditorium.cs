@@ -26,6 +26,7 @@
 
         // Required by EF
         private Auditorium()
+            : base()
         {
         }
 
