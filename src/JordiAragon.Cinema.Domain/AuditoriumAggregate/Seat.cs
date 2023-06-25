@@ -2,7 +2,7 @@
 {
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Seat : BaseAuditableEntity<SeatId>
+    public class Seat : BaseEntity<SeatId>
     {
         private Seat(
             SeatId id,

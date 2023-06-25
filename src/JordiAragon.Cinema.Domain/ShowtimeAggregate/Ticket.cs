@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Ticket : BaseAuditableEntity<TicketId>
+    public class Ticket : BaseEntity<TicketId>
     {
         private readonly List<SeatId> seats = new();
 
