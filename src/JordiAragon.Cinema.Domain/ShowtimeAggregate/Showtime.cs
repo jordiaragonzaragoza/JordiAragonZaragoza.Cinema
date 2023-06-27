@@ -20,14 +20,12 @@
             ShowtimeId id,
             MovieId movieId,
             DateTime sessionDateOnUtc,
-            AuditoriumId auditoriumId,
-            IEnumerable<Ticket> tickets)
+            AuditoriumId auditoriumId)
             : base(id)
         {
             this.MovieId = Guard.Against.Null(movieId, nameof(movieId));
             this.SessionDateOnUtc = sessionDateOnUtc;
             this.AuditoriumId = Guard.Against.Null(auditoriumId, nameof(auditoriumId));
-            this.tickets = Guard.Against.NullOrEmpty(tickets, nameof(tickets)).ToList();
 
             this.RegisterDomainEvent(new ShowtimeCreatedEvent(id, this.MovieId, this.SessionDateOnUtc, this.AuditoriumId));
         }
@@ -50,10 +48,9 @@
             ShowtimeId id,
             MovieId movieId,
             DateTime sessionDateOnUtc,
-            AuditoriumId auditoriumId,
-            IEnumerable<Ticket> tickets = null)
+            AuditoriumId auditoriumId)
         {
-            return new Showtime(id, movieId, sessionDateOnUtc, auditoriumId, tickets ?? new List<Ticket>());
+            return new Showtime(id, movieId, sessionDateOnUtc, auditoriumId);
         }
 
         public void PurchaseSeats(TicketId ticketId)
@@ -86,7 +83,6 @@
         {
             var newTicket = Ticket.Create(
                  id,
-                 ShowtimeId.Create(this.Id.Value),
                  seatIds,
                  createdTimeOnUtc);
 
