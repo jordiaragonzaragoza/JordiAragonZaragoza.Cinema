@@ -14,7 +14,7 @@
 
             ConfigureAuditoriumShowtimeIdsTable(builder);
 
-            ConfigureSeatsTable(builder);
+            ConfigureAuditoriumSeatsTable(builder);
         }
 
         private static void ConfigureAuditoriumShowtimeIdsTable(EntityTypeBuilder<Auditorium> builder)
@@ -36,11 +36,11 @@
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
-        private static void ConfigureSeatsTable(EntityTypeBuilder<Auditorium> builder)
+        private static void ConfigureAuditoriumSeatsTable(EntityTypeBuilder<Auditorium> builder)
         {
             builder.OwnsMany(auditorium => auditorium.Seats, sb =>
             {
-                sb.ToTable("Seats");
+                sb.ToTable("AuditoriumSeats");
 
                 sb.WithOwner().HasForeignKey(nameof(AuditoriumId));
 

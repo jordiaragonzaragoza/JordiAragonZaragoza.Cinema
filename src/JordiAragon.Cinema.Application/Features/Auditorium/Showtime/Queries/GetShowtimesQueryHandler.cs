@@ -42,7 +42,7 @@
                 var movie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
                 if (movie is null)
                 {
-                    return Result.NotFound($"{nameof(Movie)}: {showtime.MovieId} not found.");
+                    return Result.NotFound($"{nameof(Movie)}: {showtime.MovieId.Value} not found.");
                 }
 
                 showtimeOutputDtos.Add(new ShowtimeOutputDto(showtime.Id.Value, movie.Title, showtime.SessionDateOnUtc, request.AuditoriumId));

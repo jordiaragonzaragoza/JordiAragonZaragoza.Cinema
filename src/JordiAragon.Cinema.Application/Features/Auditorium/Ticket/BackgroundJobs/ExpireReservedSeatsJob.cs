@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.BackgroundJobs
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
@@ -14,18 +15,18 @@
     public class ExpireReservedSeatsJob : IJob
     {
         private readonly IDateTime dateTime;
-        private readonly IReadRepository<Ticket> ticketRepository;
+        private readonly IReadRepository<Showtime> showtimeRepository;
         private readonly ISender sender;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
-            IReadRepository<Ticket> ticketRepository,
+            IReadRepository<Showtime> showtimeRepository,
             ISender sender,
             ILogger<ExpireReservedSeatsJob> logger)
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
-            this.ticketRepository = Guard.Against.Null(ticketRepository, nameof(ticketRepository));
+            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
             this.sender = Guard.Against.Null(sender, nameof(sender));
             this.logger = Guard.Against.Null(logger, nameof(logger));
         }
@@ -34,13 +35,19 @@
         {
             try
             {
-                var expiredTickets = await this.ticketRepository.ListAsync(new GetExpiredReserveSeatsSpec(this.dateTime.UtcNow), context.CancellationToken);
-                foreach (var ticket in expiredTickets)
+                var dateTimeUtcNow = this.dateTime.UtcNow;
+                var showtimesWithExpiredTickets = await this.showtimeRepository.ListAsync(new GetExpiredReserveSeatsSpec(dateTimeUtcNow), context.CancellationToken);
+                foreach (var showtime in showtimesWithExpiredTickets)
                 {
-                    var result = await this.sender.Send(new ExpireReservedSeatsCommand(ticket.Id.Value), context.CancellationToken);
-                    if (!result.IsSuccess)
+                    var ticketIds = showtime.Tickets.Where(ticket => !ticket.IsPaid && dateTimeUtcNow > ticket.CreatedTimeOnUtc.AddMinutes(1)).Select(t => t.Id);
+
+                    foreach (var ticketId in ticketIds)
                     {
-                        // TODO: Complete log the error from result.
+                        var result = await this.sender.Send(new ExpireReservedSeatsCommand(showtime.Id.Value, ticketId.Value), context.CancellationToken);
+                        if (!result.IsSuccess)
+                        {
+                            // TODO: Complete log the error from result.
+                        }
                     }
                 }
             }
