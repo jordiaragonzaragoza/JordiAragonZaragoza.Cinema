@@ -9,6 +9,7 @@
         {
             this.MapAuditorium();
             this.MapMovie();
+            this.MapShowtime();
         }
     }
 }

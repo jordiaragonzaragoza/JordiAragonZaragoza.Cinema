@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries
 {
     using System;
 

@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Responses
 {
     using System;
 

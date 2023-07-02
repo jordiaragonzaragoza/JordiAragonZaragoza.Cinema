@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Requests
 {
     using System;
     using System.Collections.Generic;

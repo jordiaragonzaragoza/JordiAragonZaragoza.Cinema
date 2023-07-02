@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Showtime
 {
     public static class ShowtimeConstants
     {

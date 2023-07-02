@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.BackgroundJobs
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs
 {
     using System;
     using System.Linq;

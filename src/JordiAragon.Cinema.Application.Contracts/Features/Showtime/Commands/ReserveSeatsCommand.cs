@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,6 @@
 
     public record class ReserveSeatsCommand : ICommand<TicketOutputDto>
     {
-        public Guid AuditoriumId { get; set; } // This set is required to be wired post mapping.
-
         public Guid ShowtimeId { get; set; } // This set is required to be wired post mapping.
 
         public IEnumerable<Guid> SeatsIds { get; init; }

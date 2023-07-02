@@ -1,10 +1,10 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.BackgroundJobs
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using MediatR;

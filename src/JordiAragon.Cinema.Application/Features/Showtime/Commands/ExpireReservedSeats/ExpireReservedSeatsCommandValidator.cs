@@ -1,7 +1,7 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.Commands.ExpireReservedSeats
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Commands.ExpireReservedSeats
 {
     using FluentValidation;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
 
     public class ExpireReservedSeatsCommandValidator : AbstractValidator<ExpireReservedSeatsCommand>
     {

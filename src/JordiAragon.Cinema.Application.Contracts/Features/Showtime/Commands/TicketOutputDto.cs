@@ -1,8 +1,8 @@
-﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands
 {
     using System;
     using System.Collections.Generic;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
 
     public record class TicketOutputDto(
         Guid TicketId,

@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.Commands.ReserveSeats
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Commands.ReserveSeats
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,8 +7,8 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.MovieAggregate;
@@ -46,16 +46,16 @@
 
         public async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumReadRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
-            if (existingAuditorium is null)
-            {
-                return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
-            }
-
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
+            }
+
+            var existingAuditorium = await this.auditoriumReadRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(existingShowtime.AuditoriumId), cancellationToken);
+            if (existingAuditorium is null)
+            {
+                return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
             }
 
             // Make the reserve.

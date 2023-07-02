@@ -3,15 +3,9 @@
     using System.Collections.Generic;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Mappers.V1;
 
     public static class AuditoriumsMapperExtension
@@ -20,18 +14,12 @@
         {
             // Requests to queries or commands.
             maps.CreateMap<CreateShowtimeRequest, CreateShowtimeCommand>();
-            maps.CreateMap<CreateTicketRequest, ReserveSeatsCommand>();
 
             // OutputDtos to responses.
             maps.CreateMap<SeatOutputDto, SeatResponse>();
             maps.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
             maps.CreateMap<AuditoriumOutputDto, AuditoriumResponse>();
             maps.CreateMap<Result<IEnumerable<AuditoriumOutputDto>>, Result<IEnumerable<AuditoriumResponse>>>();
-            maps.CreateMap<TicketOutputDto, TicketResponse>();
-            maps.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
-
-            maps.CreateMap<ShowtimeOutputDto, ShowtimeResponse>();
-            maps.CreateMap<Result<IEnumerable<ShowtimeOutputDto>>, Result<IEnumerable<ShowtimeResponse>>>();
         }
     }
 }

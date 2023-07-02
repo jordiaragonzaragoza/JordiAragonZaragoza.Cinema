@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Application.AssemblyConfiguration
 {
-    using JordiAragon.Cinema.Application.Features.Auditorium.Ticket.BackgroundJobs;
+    using JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs;
     using JordiAragon.SharedKernel.Application.Behaviours;
     using MediatR;
     using MediatR.NotificationPublishers;

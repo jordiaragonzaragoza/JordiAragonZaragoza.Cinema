@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Seat.Queries.GetAvailableSeats
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Queries.GetAvailableSeats
 {
     using System.Collections.Generic;
     using System.Threading;
@@ -6,7 +6,8 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
@@ -32,16 +33,16 @@
 
         public async Task<Result<IEnumerable<SeatOutputDto>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
-            if (existingAuditorium is null)
-            {
-                return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
-            }
-
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
+            }
+
+            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(existingShowtime.AuditoriumId), cancellationToken);
+            if (existingAuditorium is null)
+            {
+                return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
             }
 
             var availableSeats = ShowtimeManager.AvailableSeats(existingAuditorium, existingShowtime);

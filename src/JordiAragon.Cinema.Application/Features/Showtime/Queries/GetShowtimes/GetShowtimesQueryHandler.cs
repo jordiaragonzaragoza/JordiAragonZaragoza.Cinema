@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Showtime.Queries
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Queries.GetShowtimes
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;

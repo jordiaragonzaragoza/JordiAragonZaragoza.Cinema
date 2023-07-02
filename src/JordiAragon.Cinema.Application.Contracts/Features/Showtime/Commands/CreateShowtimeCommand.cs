@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands
 {
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
@@ -7,7 +7,7 @@
     {
         public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
 
-        public Guid AuditoriumId { get; set; } // This set is required to be wired post mapping.
+        public Guid AuditoriumId { get; init; }
 
         public Guid MovieId { get; init; }
 

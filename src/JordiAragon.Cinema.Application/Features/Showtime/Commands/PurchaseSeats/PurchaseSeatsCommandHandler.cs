@@ -1,11 +1,10 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Ticket.Commands.PurchaseSeats
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Commands.PurchaseSeats
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;

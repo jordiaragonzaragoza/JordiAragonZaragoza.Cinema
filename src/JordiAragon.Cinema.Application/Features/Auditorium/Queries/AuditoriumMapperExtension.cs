@@ -2,10 +2,8 @@
 {
     using System;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
     using JordiAragon.Cinema.Application.Mappers;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
-    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
 
     public static class AuditoriumMapperExtension
     {
@@ -22,12 +20,6 @@
 
             maps.CreateMap<Seat, SeatOutputDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value));
-
-            maps.CreateMap<ShowtimeId, Guid>()
-                .ConvertUsing(src => src.Value);
-
-            maps.CreateMap<TicketId, Guid>()
-                .ConvertUsing(src => src.Value);
         }
     }
 }

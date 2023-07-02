@@ -1,9 +1,9 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Showtime.Commands.CreateShowtime
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Commands.CreateShowtime
 {
     using System;
     using Ardalis.GuardClauses;
     using FluentValidation;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
     public class CreateShowtimeCommandValidator : AbstractValidator<CreateShowtimeCommand>

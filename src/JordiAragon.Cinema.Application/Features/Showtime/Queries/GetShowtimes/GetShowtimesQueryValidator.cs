@@ -1,7 +1,7 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Showtime.Queries
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Queries.GetShowtimes
 {
     using FluentValidation;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
 
     public class GetShowtimesQueryValidator : AbstractValidator<GetShowtimesQuery>
     {
