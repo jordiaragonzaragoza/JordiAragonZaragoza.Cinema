@@ -32,7 +32,6 @@
 
         // Required by EF.
         private Showtime()
-            : base()
         {
         }
 

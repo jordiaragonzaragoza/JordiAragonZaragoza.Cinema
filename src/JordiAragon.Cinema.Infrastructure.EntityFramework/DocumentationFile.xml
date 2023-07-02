@@ -4,5 +4,17 @@
         <name>JordiAragon.Cinema.Infrastructure.EntityFramework</name>
     </assembly>
     <members>
+        <member name="T:JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

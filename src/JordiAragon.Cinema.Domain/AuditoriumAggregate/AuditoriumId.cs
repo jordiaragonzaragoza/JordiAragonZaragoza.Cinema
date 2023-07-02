@@ -2,16 +2,14 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragon.SharedKernel.Domain.Entities;
+    using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public sealed class AuditoriumId : BaseAggregateRootId<Guid>
     {
         private AuditoriumId(Guid value)
+            : base(value)
         {
-            this.Value = value;
         }
-
-        public override Guid Value { get; protected set; }
 
         public static AuditoriumId Create(Guid id)
         {

@@ -2,16 +2,14 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragon.SharedKernel.Domain.Entities;
+    using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public sealed class ShowtimeId : BaseAggregateRootId<Guid>
     {
         private ShowtimeId(Guid value)
+            : base(value)
         {
-            this.Value = value;
         }
-
-        public override Guid Value { get; protected set; }
 
         public static ShowtimeId Create(Guid id)
         {

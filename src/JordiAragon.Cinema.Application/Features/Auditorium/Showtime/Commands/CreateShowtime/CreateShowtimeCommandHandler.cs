@@ -8,7 +8,9 @@
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
@@ -42,13 +44,13 @@
                 return Result.Invalid(new List<ValidationError>()); // TODO: Complete.
             }
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.FirstOrDefaultAsync(new MovieByIdSpec(MovieId.Create(request.MovieId)), cancellationToken);
             if (existingMovie is null)
             {
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");

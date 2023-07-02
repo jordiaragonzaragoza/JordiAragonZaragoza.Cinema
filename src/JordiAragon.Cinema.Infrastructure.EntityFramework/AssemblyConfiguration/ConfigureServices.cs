@@ -27,11 +27,11 @@
             {
                 if (isDevelopment)
                 {
-                    optionsBuilder.UseInMemoryDatabase("JordiAragon.CinemaDb")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.CinemaDb")
                                   .EnableSensitiveDataLogging()
-                                  .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                                  .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
-                    /*optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));*/
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));
                 }
                 else
                 {

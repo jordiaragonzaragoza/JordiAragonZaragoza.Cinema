@@ -10,15 +10,18 @@
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 
     public class ReserveSeatsCommandHandler : ICommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
-        private readonly IReadRepository<Auditorium> auditoriumRepository;
+        private readonly IReadRepository<Auditorium> auditoriumReadRepository;
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
@@ -26,14 +29,14 @@
         private readonly IRepository<Showtime> showtimeRepository;
 
         public ReserveSeatsCommandHandler(
-            IReadRepository<Auditorium> auditoriumRepository,
+            IReadRepository<Auditorium> auditoriumReadRepository,
             IReadRepository<Movie> movieReadRepository,
             IRepository<Showtime> showtimeRepository,
             IMapper mapper,
             IGuidGenerator guidGenerator,
             IDateTime dateTime)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.auditoriumReadRepository = Guard.Against.Null(auditoriumReadRepository, nameof(auditoriumReadRepository));
             this.movieReadRepository = Guard.Against.Null(movieReadRepository, nameof(movieReadRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
@@ -43,13 +46,13 @@
 
         public async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
@@ -65,8 +68,10 @@
                 TicketId.Create(this.guidGenerator.Create()),
                 this.dateTime.UtcNow);
 
+            await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
+
             // Prepare OutputDto.
-            var existingmovie = await this.movieReadRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
+            var existingmovie = await this.movieReadRepository.FirstOrDefaultAsync(new MovieByIdSpec(existingShowtime.MovieId), cancellationToken);
             if (existingmovie is null)
             {
                 return Result.NotFound($"{nameof(Movie)}: {existingShowtime.MovieId} not found.");
@@ -80,8 +85,6 @@
                 existingAuditorium.Id.Value,
                 existingmovie.Title,
                 this.mapper.Map<IEnumerable<SeatOutputDto>>(seats));
-
-            await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
             return Result.Success(ticketOutputDto);
         }

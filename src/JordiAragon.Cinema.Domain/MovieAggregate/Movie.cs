@@ -30,7 +30,6 @@
 
         // Required by EF.
         private Movie()
-            : base()
         {
         }
 
@@ -47,6 +46,13 @@
         public static Movie Create(MovieId id, string title, string imdbId, DateTime releaseDateOnUtc, string stars)
         {
             return new Movie(id, title, imdbId, releaseDateOnUtc, stars);
+        }
+
+        public void AddShowtime(ShowtimeId showtimeId)
+        {
+            this.showtimes.Add(showtimeId);
+
+            this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
         }
     }
 }

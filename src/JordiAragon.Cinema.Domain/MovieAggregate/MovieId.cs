@@ -2,16 +2,14 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragon.SharedKernel.Domain.Entities;
+    using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public sealed class MovieId : BaseAggregateRootId<Guid>
     {
         private MovieId(Guid value)
+            : base(value)
         {
-            this.Value = value;
         }
-
-        public override Guid Value { get; protected set; }
 
         public static MovieId Create(Guid id)
         {

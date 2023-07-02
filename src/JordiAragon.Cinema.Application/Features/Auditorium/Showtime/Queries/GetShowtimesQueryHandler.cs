@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
@@ -39,7 +40,7 @@
 
             foreach (var showtime in existingShowtimes)
             {
-                var movie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
+                var movie = await this.movieRepository.FirstOrDefaultAsync(new MovieByIdSpec(showtime.MovieId), cancellationToken);
                 if (movie is null)
                 {
                     return Result.NotFound($"{nameof(Movie)}: {showtime.MovieId.Value} not found.");

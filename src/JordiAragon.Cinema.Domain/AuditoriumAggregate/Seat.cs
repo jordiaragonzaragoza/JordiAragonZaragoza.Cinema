@@ -16,7 +16,6 @@
 
         // Required by EF
         private Seat()
-            : base()
         {
         }
 

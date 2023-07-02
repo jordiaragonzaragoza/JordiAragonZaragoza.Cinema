@@ -8,7 +8,9 @@
     using AutoMapper;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
@@ -30,13 +32,13 @@
 
         public async Task<Result<IEnumerable<SeatOutputDto>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
