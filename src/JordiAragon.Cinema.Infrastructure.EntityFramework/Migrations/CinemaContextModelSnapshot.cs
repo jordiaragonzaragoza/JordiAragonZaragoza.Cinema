@@ -164,7 +164,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                             b1.HasIndex("AuditoriumId");
 
-                            b1.ToTable("AuditoriumShowtimeIds", (string)null);
+                            b1.ToTable("AuditoriumsShowtimeIds", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AuditoriumId");
@@ -201,7 +201,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                             b1.HasIndex("AuditoriumId");
 
-                            b1.ToTable("AuditoriumSeats", (string)null);
+                            b1.ToTable("AuditoriumsSeats", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AuditoriumId");
@@ -233,7 +233,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                             b1.HasIndex("MovieId");
 
-                            b1.ToTable("MovieShowtimeIds", (string)null);
+                            b1.ToTable("MoviesShowtimeIds", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MovieId");
@@ -274,7 +274,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                             b1.HasIndex("ShowtimeId");
 
-                            b1.ToTable("ShowtimeTickets", (string)null);
+                            b1.ToTable("ShowtimesTickets", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ShowtimeId");

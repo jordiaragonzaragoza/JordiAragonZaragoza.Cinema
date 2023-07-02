@@ -12,16 +12,16 @@
         {
             this.ConfigureAuditoriumsTable(builder);
 
-            ConfigureAuditoriumShowtimeIdsTable(builder);
+            ConfigureAuditoriumsShowtimeIdsTable(builder);
 
-            ConfigureAuditoriumSeatsTable(builder);
+            ConfigureAuditoriumsSeatsTable(builder);
         }
 
-        private static void ConfigureAuditoriumShowtimeIdsTable(EntityTypeBuilder<Auditorium> builder)
+        private static void ConfigureAuditoriumsShowtimeIdsTable(EntityTypeBuilder<Auditorium> builder)
         {
             builder.OwnsMany(auditorium => auditorium.Showtimes, sib =>
             {
-                sib.ToTable("AuditoriumShowtimeIds");
+                sib.ToTable("AuditoriumsShowtimeIds");
 
                 sib.WithOwner().HasForeignKey(nameof(AuditoriumId));
 
@@ -36,11 +36,11 @@
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
-        private static void ConfigureAuditoriumSeatsTable(EntityTypeBuilder<Auditorium> builder)
+        private static void ConfigureAuditoriumsSeatsTable(EntityTypeBuilder<Auditorium> builder)
         {
             builder.OwnsMany(auditorium => auditorium.Seats, sb =>
             {
-                sb.ToTable("AuditoriumSeats");
+                sb.ToTable("AuditoriumsSeats");
 
                 sb.WithOwner().HasForeignKey(nameof(AuditoriumId));
 

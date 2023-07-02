@@ -12,14 +12,14 @@
         {
             this.ConfigureMoviesTable(builder);
 
-            ConfigureMovieShowtimeIdsTable(builder);
+            ConfigureMoviesShowtimeIdsTable(builder);
         }
 
-        private static void ConfigureMovieShowtimeIdsTable(EntityTypeBuilder<Movie> builder)
+        private static void ConfigureMoviesShowtimeIdsTable(EntityTypeBuilder<Movie> builder)
         {
             builder.OwnsMany(movie => movie.Showtimes, sib =>
             {
-                sib.ToTable("MovieShowtimeIds");
+                sib.ToTable("MoviesShowtimeIds");
 
                 sib.WithOwner().HasForeignKey(nameof(MovieId));
 

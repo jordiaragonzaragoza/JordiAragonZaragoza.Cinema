@@ -58,7 +58,7 @@
 
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            SampleData.Initialize(app);
+            ////SampleData.Initialize(app);
 
             app.Run();
         }

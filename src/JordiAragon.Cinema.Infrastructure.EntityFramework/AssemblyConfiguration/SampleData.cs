@@ -37,8 +37,8 @@
             var exampleShowtime = Showtime.Create(exampleShowtimeId, exampleMovieId, new DateTime(2023, 1, 1), AuditoriumId.Create(exampleAuditorium.Id.Value));
             context.Showtimes.Add(exampleShowtime);
 
-            exampleAuditorium.AddShowtime(exampleShowtimeId); // On runtime, this will be stored by a domain event.
-            exampleMovie.AddShowtime(exampleShowtimeId); // On runtime, this will be stored by a domain event.
+            exampleAuditorium.AddShowtime(exampleShowtimeId);
+            exampleMovie.AddShowtime(exampleShowtimeId);
 
             var auditoriumId2 = AuditoriumId.Create(Guid.NewGuid());
             context.Auditoriums.Add(Auditorium.Create(auditoriumId2, GenerateSeats(21, 18)));

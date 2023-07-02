@@ -83,7 +83,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuditoriumSeats",
+                name: "AuditoriumsSeats",
                 columns: table => new
                 {
                     SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -97,9 +97,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuditoriumSeats", x => new { x.SeatId, x.AuditoriumId });
+                    table.PrimaryKey("PK_AuditoriumsSeats", x => new { x.SeatId, x.AuditoriumId });
                     table.ForeignKey(
-                        name: "FK_AuditoriumSeats_Auditoriums_AuditoriumId",
+                        name: "FK_AuditoriumsSeats_Auditoriums_AuditoriumId",
                         column: x => x.AuditoriumId,
                         principalTable: "Auditoriums",
                         principalColumn: "Id",
@@ -107,7 +107,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuditoriumShowtimeIds",
+                name: "AuditoriumsShowtimeIds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -117,9 +117,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuditoriumShowtimeIds", x => x.Id);
+                    table.PrimaryKey("PK_AuditoriumsShowtimeIds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AuditoriumShowtimeIds_Auditoriums_AuditoriumId",
+                        name: "FK_AuditoriumsShowtimeIds_Auditoriums_AuditoriumId",
                         column: x => x.AuditoriumId,
                         principalTable: "Auditoriums",
                         principalColumn: "Id",
@@ -127,7 +127,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MovieShowtimeIds",
+                name: "MoviesShowtimeIds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -137,9 +137,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MovieShowtimeIds", x => x.Id);
+                    table.PrimaryKey("PK_MoviesShowtimeIds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovieShowtimeIds_Movies_MovieId",
+                        name: "FK_MoviesShowtimeIds_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -147,7 +147,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShowtimeTickets",
+                name: "ShowtimesTickets",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -161,9 +161,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShowtimeTickets", x => new { x.Id, x.ShowtimeId });
+                    table.PrimaryKey("PK_ShowtimesTickets", x => new { x.Id, x.ShowtimeId });
                     table.ForeignKey(
-                        name: "FK_ShowtimeTickets_Showtimes_ShowtimeId",
+                        name: "FK_ShowtimesTickets_Showtimes_ShowtimeId",
                         column: x => x.ShowtimeId,
                         principalTable: "Showtimes",
                         principalColumn: "Id",
@@ -184,31 +184,31 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_TicketSeatIds", x => new { x.TicketId, x.ShowtimeId, x.Id });
                     table.ForeignKey(
-                        name: "FK_TicketSeatIds_ShowtimeTickets_TicketId_ShowtimeId",
+                        name: "FK_TicketSeatIds_ShowtimesTickets_TicketId_ShowtimeId",
                         columns: x => new { x.TicketId, x.ShowtimeId },
-                        principalTable: "ShowtimeTickets",
+                        principalTable: "ShowtimesTickets",
                         principalColumns: new[] { "Id", "ShowtimeId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditoriumSeats_AuditoriumId",
-                table: "AuditoriumSeats",
+                name: "IX_AuditoriumsSeats_AuditoriumId",
+                table: "AuditoriumsSeats",
                 column: "AuditoriumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditoriumShowtimeIds_AuditoriumId",
-                table: "AuditoriumShowtimeIds",
+                name: "IX_AuditoriumsShowtimeIds_AuditoriumId",
+                table: "AuditoriumsShowtimeIds",
                 column: "AuditoriumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovieShowtimeIds_MovieId",
-                table: "MovieShowtimeIds",
+                name: "IX_MoviesShowtimeIds_MovieId",
+                table: "MoviesShowtimeIds",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShowtimeTickets_ShowtimeId",
-                table: "ShowtimeTickets",
+                name: "IX_ShowtimesTickets_ShowtimeId",
+                table: "ShowtimesTickets",
                 column: "ShowtimeId");
         }
 
@@ -216,13 +216,13 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuditoriumSeats");
+                name: "AuditoriumsSeats");
 
             migrationBuilder.DropTable(
-                name: "AuditoriumShowtimeIds");
+                name: "AuditoriumsShowtimeIds");
 
             migrationBuilder.DropTable(
-                name: "MovieShowtimeIds");
+                name: "MoviesShowtimeIds");
 
             migrationBuilder.DropTable(
                 name: "OutboxMessages");
@@ -237,7 +237,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "ShowtimeTickets");
+                name: "ShowtimesTickets");
 
             migrationBuilder.DropTable(
                 name: "Showtimes");

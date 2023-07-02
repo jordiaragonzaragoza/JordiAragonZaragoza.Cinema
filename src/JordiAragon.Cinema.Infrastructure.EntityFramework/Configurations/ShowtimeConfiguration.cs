@@ -12,14 +12,14 @@
         public override void Configure(EntityTypeBuilder<Showtime> builder)
         {
             this.ConfigureShowtimesTable(builder);
-            ConfigureShowtimeTicketsTable(builder);
+            ConfigureShowtimesTicketsTable(builder);
         }
 
-        private static void ConfigureShowtimeTicketsTable(EntityTypeBuilder<Showtime> builder)
+        private static void ConfigureShowtimesTicketsTable(EntityTypeBuilder<Showtime> builder)
         {
             builder.OwnsMany(showtime => showtime.Tickets, tb =>
             {
-                tb.ToTable("ShowtimeTickets");
+                tb.ToTable("ShowtimesTickets");
 
                 tb.WithOwner().HasForeignKey(nameof(ShowtimeId));
 

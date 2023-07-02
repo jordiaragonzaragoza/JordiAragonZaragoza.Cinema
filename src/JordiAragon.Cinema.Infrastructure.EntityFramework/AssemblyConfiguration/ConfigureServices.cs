@@ -31,7 +31,8 @@
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"))
+                                  .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
                 }
                 else
                 {
