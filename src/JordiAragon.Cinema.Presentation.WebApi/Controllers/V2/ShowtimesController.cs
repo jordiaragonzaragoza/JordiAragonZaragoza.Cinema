@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V1
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V2
 {
     using System;
     using System.Collections.Generic;
@@ -7,13 +7,17 @@
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Requests;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Requests;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Responses;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Controllers;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class ShowtimesController : BaseVersionedApiController
+    [AllowAnonymous]
+    [ApiVersion("2.0", Deprecated = false)]
+    public class ShowtimesController : BaseApiController
     {
         // Get showtimes.
         [HttpGet]

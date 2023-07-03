@@ -1,18 +1,18 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V1
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V2
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Movie.Queries;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Movie.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Movie.Responses;
     using JordiAragon.SharedKernel.Presentation.WebApi.Controllers;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [AllowAnonymous]
-    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("2.0", Deprecated = false)]
     public class MoviesController : BaseApiController
     {
         [HttpGet]

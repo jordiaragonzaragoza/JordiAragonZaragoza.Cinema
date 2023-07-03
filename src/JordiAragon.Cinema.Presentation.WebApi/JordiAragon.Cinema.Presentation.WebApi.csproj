@@ -22,6 +22,7 @@
 		<PackageReference Include="Serilog.Sinks.Graylog" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.csproj" />
 		<ProjectReference Include="..\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.csproj" />
 		<ProjectReference Include="..\JordiAragon.Cinema.Application.Contracts\JordiAragon.Cinema.Application.Contracts.csproj" />
 	</ItemGroup>

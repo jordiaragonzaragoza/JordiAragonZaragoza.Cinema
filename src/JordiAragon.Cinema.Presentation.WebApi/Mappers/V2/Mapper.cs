@@ -1,7 +1,7 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Mappers.V1
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Mappers.V2
 {
     using AutoMapper;
-    using JordiAragon.Cinema.Presentation.WebApi.Controllers.V1;
+    using JordiAragon.Cinema.Presentation.WebApi.Controllers.V2;
 
     public class Mapper : Profile
     {
@@ -9,6 +9,7 @@
         {
             this.MapAuditorium();
             this.MapMovie();
+            this.MapShowtime();
         }
     }
 }

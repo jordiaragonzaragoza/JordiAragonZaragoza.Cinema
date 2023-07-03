@@ -7,7 +7,7 @@
     {
         public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
 
-        public Guid AuditoriumId { get; init; }
+        public Guid AuditoriumId { get; set; } // This set is required to be wired post mapping.
 
         public Guid MovieId { get; init; }
 

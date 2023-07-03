@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Requests
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Requests
 {
     using System;
 

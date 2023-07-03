@@ -1,12 +1,12 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V1
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.Controllers.V2
 {
     using System.Collections.Generic;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Requests;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Showtime.Responses;
-    using JordiAragon.Cinema.Presentation.WebApi.Mappers.V1;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Requests;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Mappers.V2;
 
     public static class ShowtimesMapperExtension
     {

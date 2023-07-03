@@ -1,8 +1,6 @@
 ﻿namespace JordiAragon.Cinema.ArchitectureTests
 {
     using FluentAssertions;
-    using JordiAragon.SharedKernel;
-    using JordiAragon.SharedKernel.Domain.Contracts;
     using JordiAragon.Cinema.Application;
     using JordiAragon.Cinema.Application.Contracts;
     using JordiAragon.Cinema.Domain;
@@ -10,6 +8,9 @@
     using JordiAragon.Cinema.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Presentation.WebApi;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2;
+    using JordiAragon.SharedKernel;
+    using JordiAragon.SharedKernel.Domain.Contracts;
     using NetArchTest.Rules;
     using Xunit;
 
@@ -23,6 +24,7 @@
         private readonly string infrastructureEntityFrameworkNamespace = InfrastructureEntityFrameworkAssemblyReference.Assembly.GetName().Name;
         private readonly string webApiNamespace = WebApiAssemblyReference.Assembly.GetName().Name;
         private readonly string webApiContractsV1Namespace = WebApiContractsV1AssemblyReference.Assembly.GetName().Name;
+        private readonly string webApiContractsV2Namespace = WebApiContractsV2AssemblyReference.Assembly.GetName().Name;
 
         [Fact]
         public void SharedKernel_Should_Not_HaveDependencyOnOtherProjects()
@@ -40,6 +42,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -67,6 +70,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -94,6 +98,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -119,6 +124,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -165,6 +171,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -189,6 +196,7 @@
                 this.infrastructureEntityFrameworkNamespace,
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
@@ -212,6 +220,7 @@
             {
                 this.webApiNamespace,
                 this.webApiContractsV1Namespace,
+                this.webApiContractsV2Namespace,
             };
 
             // Act.
