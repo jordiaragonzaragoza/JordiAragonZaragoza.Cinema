@@ -15,11 +15,11 @@
     using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 
-    public class ReserveSeatsCommandHandler : ICommandHandler<ReserveSeatsCommand, TicketOutputDto>
+    public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
         private readonly IReadRepository<Auditorium> auditoriumReadRepository;
         private readonly IGuidGenerator guidGenerator;
@@ -44,7 +44,7 @@
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
         }
 
-        public async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
             if (existingShowtime is null)

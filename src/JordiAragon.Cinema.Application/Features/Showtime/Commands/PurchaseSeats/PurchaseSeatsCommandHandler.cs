@@ -7,10 +7,10 @@
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class PurchaseSeatsCommandHandler : ICommandHandler<PurchaseSeatsCommand>
+    public class PurchaseSeatsCommandHandler : BaseCommandHandler<PurchaseSeatsCommand>
     {
         private readonly IRepository<Showtime> showtimeRepository;
 
@@ -20,7 +20,7 @@
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
-        public async Task<Result> Handle(PurchaseSeatsCommand request, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(PurchaseSeatsCommand request, CancellationToken cancellationToken)
         {
             var specification = new ShowtimeByTicketIdSpec(TicketId.Create(request.TicketId));
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(specification, cancellationToken);

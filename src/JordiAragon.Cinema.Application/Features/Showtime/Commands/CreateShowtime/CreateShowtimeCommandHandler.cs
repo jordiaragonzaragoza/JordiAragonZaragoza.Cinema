@@ -13,11 +13,11 @@
     using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 
-    public class CreateShowtimeCommandHandler : ICommandHandler<CreateShowtimeCommand, Guid>
+    public class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
     {
         private readonly IReadRepository<Movie> movieRepository;
         private readonly IReadRepository<Auditorium> auditoriumRepository;
@@ -36,7 +36,7 @@
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
-        public async Task<Result<Guid>> Handle(CreateShowtimeCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<Guid>> Handle(CreateShowtimeCommand request, CancellationToken cancellationToken)
         {
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
             if (existingShowtime is not null)
