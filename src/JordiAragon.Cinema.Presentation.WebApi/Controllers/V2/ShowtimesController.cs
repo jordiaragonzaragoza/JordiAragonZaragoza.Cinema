@@ -46,6 +46,15 @@
             return this.ToActionResult(result);
         }
 
+        // Delete showtime.
+        [HttpDelete("{showtimeId}")]
+        public async Task<ActionResult<Guid>> DeleteAsync(Guid showtimeId, CancellationToken cancellationToken)
+        {
+            var result = await this.Sender.Send(new DeleteShowtimeCommand(showtimeId), cancellationToken);
+
+            return this.ToActionResult(result);
+        }
+
         // Get available seats.
         [HttpGet("{showtimeId}/Seats/Available")]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(Guid showtimeId, CancellationToken cancellationToken)

@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.EventHandlers
+﻿namespace JordiAragon.Cinema.Application.Features.Auditorium.Events.Handlers
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -8,6 +8,7 @@
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public class ShowtimeCreatedEventHandler : IDomainEventHandler<ShowtimeCreatedEvent>
     {
@@ -21,11 +22,8 @@
 
         public async Task Handle(ShowtimeCreatedEvent @event, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(@event.AuditoriumId), cancellationToken);
-            if (existingAuditorium is null)
-            {
-                return; // TODO: Complete.
-            }
+            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(@event.AuditoriumId), cancellationToken)
+                                     ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
 
             existingAuditorium.AddShowtime(@event.ShowtimeId);
 

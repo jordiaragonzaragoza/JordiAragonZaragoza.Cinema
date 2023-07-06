@@ -1,16 +1,16 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Showtime.EventHandlers
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events.Handlers
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
+    using JordiAragon.Cinema.Domain.MovieAggregate.Events;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using Microsoft.Extensions.Logging;
 
-    public class ShowtimeAddedEventHandler : IDomainEventHandler<ShowtimeAddedEvent>
+    public class MovieShowtimeAddedEventHandler : IDomainEventHandler<ShowtimeAddedEvent>
     {
-        private readonly ILogger<ShowtimeAddedEventHandler> logger;
+        private readonly ILogger<MovieShowtimeAddedEventHandler> logger;
 
-        public ShowtimeAddedEventHandler(ILogger<ShowtimeAddedEventHandler> logger)
+        public MovieShowtimeAddedEventHandler(ILogger<MovieShowtimeAddedEventHandler> logger)
         {
             this.logger = logger;
         }

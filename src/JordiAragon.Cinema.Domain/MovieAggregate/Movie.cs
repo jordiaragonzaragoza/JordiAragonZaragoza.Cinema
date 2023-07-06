@@ -54,5 +54,12 @@
 
             this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
         }
+
+        public void RemoveShowtime(ShowtimeId showtimeId)
+        {
+            this.showtimes.Remove(showtimeId);
+
+            this.RegisterDomainEvent(new ShowtimeRemovedEvent(showtimeId));
+        }
     }
 }
