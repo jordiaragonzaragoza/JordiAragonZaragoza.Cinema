@@ -70,7 +70,7 @@
             serviceCollection.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             serviceCollection.AddEndpointsApiExplorer();
-            serviceCollection.AddSwaggerGen();
+            serviceCollection.AddSwaggerGen(options => options.EnableAnnotations());
 
             serviceCollection.AddQuartzHostedService();
 

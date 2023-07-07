@@ -10,12 +10,18 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Swashbuckle.AspNetCore.Annotations;
 
     [AllowAnonymous]
     [ApiVersion("2.0", Deprecated = false)]
     public class AuditoriumsController : BaseApiController
     {
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Gets a list of all Auditoriums",
+            Description = "Gets a list of all Auditoriums",
+            OperationId = "Auditorium.List")
+        ]
         public async Task<ActionResult<IEnumerable<AuditoriumResponse>>> GetAsync(CancellationToken cancellationToken)
         {
             var resultOutputDto = await this.Sender.Send(new GetAuditoriumsQuery(), cancellationToken);

@@ -14,13 +14,18 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Swashbuckle.AspNetCore.Annotations;
 
     [AllowAnonymous]
     [ApiVersion("2.0", Deprecated = false)]
     public class ShowtimesController : BaseApiController
     {
-        // Get showtimes.
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Gets a list of all Showtimes",
+            Description = "Gets a list of all Showtimes",
+            OperationId = "Showtime.List")
+        ]
         public async Task<ActionResult<IEnumerable<ShowtimeResponse>>> GetShowtimesAsync(
             [FromQuery] Guid auditoriumId,
             CancellationToken cancellationToken,
@@ -35,8 +40,12 @@
             return this.ToActionResult(resultResponse);
         }
 
-        // Create showtime.
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Creates a new Showtime",
+            Description = "Creates a new Showtime",
+            OperationId = "Showtime.Create")
+        ]
         public async Task<ActionResult<Guid>> CreateAsync(CreateShowtimeRequest request, CancellationToken cancellationToken)
         {
             var command = this.Mapper.Map<CreateShowtimeCommand>(request);
@@ -46,8 +55,12 @@
             return this.ToActionResult(result);
         }
 
-        // Delete showtime.
         [HttpDelete("{showtimeId}")]
+        [SwaggerOperation(
+            Summary = "Deletes an existing Showtime",
+            Description = "Deletes an existing Showtime",
+            OperationId = "Showtime.Delete")
+        ]
         public async Task<ActionResult<Guid>> DeleteAsync(Guid showtimeId, CancellationToken cancellationToken)
         {
             var result = await this.Sender.Send(new DeleteShowtimeCommand(showtimeId), cancellationToken);
@@ -55,8 +68,12 @@
             return this.ToActionResult(result);
         }
 
-        // Get available seats.
         [HttpGet("{showtimeId}/Seats/Available")]
+        [SwaggerOperation(
+            Summary = "Gets available Seats for an existing Showtime",
+            Description = "Gets available Seats for an existing Showtime",
+            OperationId = "Showtime.GetAvailableSeats")
+        ]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(Guid showtimeId, CancellationToken cancellationToken)
         {
             var resultOutputDto = await this.Sender.Send(new GetAvailableSeatsQuery(showtimeId), cancellationToken);
@@ -66,8 +83,12 @@
             return this.ToActionResult(resultResponse);
         }
 
-        // Reserve seats for a showtime.
         [HttpPost("{showtimeId}/Tickets")]
+        [SwaggerOperation(
+            Summary = "Reserve Seats for an existing Showtime",
+            Description = "Creates a Ticket for an existing Showtime",
+            OperationId = "Showtime.CreateTicket")
+        ]
         public async Task<ActionResult<TicketResponse>> CreateTicketAsync(Guid showtimeId, CreateTicketRequest request, CancellationToken cancellationToken)
         {
             var command = this.Mapper.Map<ReserveSeatsCommand>(request, opt =>
@@ -83,8 +104,12 @@
             return this.ToActionResult(resultResponse);
         }
 
-        // Purchase a reservation.
         [HttpPatch("{showtimeId}/Tickets/{ticketId}/Purchase")]
+        [SwaggerOperation(
+            Summary = "Purchase a reservation for an existing Showtime",
+            Description = "Purchase a Ticket for an existing Showtime",
+            OperationId = "Showtime.PurchaseTicket")
+        ]
         public async Task<ActionResult> PurchaseTicketAsync(Guid showtimeId, Guid ticketId, CancellationToken cancellationToken)
         {
             var result = await this.Sender.Send(new PurchaseSeatsCommand(showtimeId, ticketId), cancellationToken);

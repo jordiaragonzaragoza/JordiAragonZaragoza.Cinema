@@ -10,12 +10,18 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Swashbuckle.AspNetCore.Annotations;
 
     [AllowAnonymous]
     [ApiVersion("2.0", Deprecated = false)]
     public class MoviesController : BaseApiController
     {
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Gets a list of all Movies",
+            Description = "Gets a list of all Movies",
+            OperationId = "Movie.List")
+        ]
         public async Task<ActionResult<IEnumerable<MovieResponse>>> GetAsync(CancellationToken cancellationToken)
         {
             var resultOutputDto = await this.Sender.Send(new GetMoviesQuery(), cancellationToken);
