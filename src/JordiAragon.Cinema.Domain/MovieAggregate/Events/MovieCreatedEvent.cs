@@ -4,7 +4,7 @@
     using JordiAragon.SharedKernel.Domain.Events;
 
     public record class MovieCreatedEvent(
-        MovieId MovieId,
+        Guid MovieId,
         string Title,
         string ImdbId,
         DateTime ReleaseDateOnUtc,

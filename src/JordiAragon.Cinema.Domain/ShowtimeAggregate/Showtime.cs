@@ -87,7 +87,7 @@
 
             this.tickets.Add(newTicket);
 
-            this.RegisterDomainEvent(new ReservedSeatsEvent(id, seatIds, createdTimeOnUtc));
+            this.RegisterDomainEvent(new ReservedSeatsEvent(id, seatIds.Select(x => x.Value), createdTimeOnUtc));
 
             return newTicket;
         }

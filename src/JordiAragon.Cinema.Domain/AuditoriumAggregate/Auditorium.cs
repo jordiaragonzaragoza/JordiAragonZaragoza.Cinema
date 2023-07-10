@@ -21,7 +21,7 @@
         {
             this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
 
-            this.RegisterDomainEvent(new AuditoriumCreatedEvent(id, this.Seats));
+            this.RegisterDomainEvent(new AuditoriumCreatedEvent(id, this.Seats.Select(x => x.Id.Value)));
         }
 
         // Required by EF

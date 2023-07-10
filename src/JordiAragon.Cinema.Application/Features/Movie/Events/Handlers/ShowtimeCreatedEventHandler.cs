@@ -5,6 +5,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
@@ -22,10 +23,10 @@
 
         public async Task Handle(ShowtimeCreatedEvent @event, CancellationToken cancellationToken)
         {
-            var existingMovie = await this.movieRepository.FirstOrDefaultAsync(new MovieByIdSpec(@event.MovieId), cancellationToken)
+            var existingMovie = await this.movieRepository.FirstOrDefaultAsync(new MovieByIdSpec(MovieId.Create(@event.MovieId)), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());
 
-            existingMovie.AddShowtime(@event.ShowtimeId);
+            existingMovie.AddShowtime(ShowtimeId.Create(@event.ShowtimeId));
 
             await this.movieRepository.UpdateAsync(existingMovie, cancellationToken);
         }
