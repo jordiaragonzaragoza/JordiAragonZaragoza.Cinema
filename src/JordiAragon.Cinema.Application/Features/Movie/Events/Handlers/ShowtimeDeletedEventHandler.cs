@@ -7,11 +7,11 @@
     using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeDeletedEventHandler : IApplicationEventHandler<ShowtimeDeletedEvent>
+    public class ShowtimeDeletedEventHandler : INotificationHandler<ShowtimeDeletedEvent>
     {
         private readonly IRepository<Movie> movieRepository;
 
