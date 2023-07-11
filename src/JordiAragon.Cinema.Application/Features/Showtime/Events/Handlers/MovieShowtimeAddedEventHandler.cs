@@ -19,7 +19,7 @@
         {
             this.logger.LogInformation("Handled Domain Event: {DomainEvent}", @event.GetType().Name);
 
-            ////throw new InvalidOperationException($"{nameof(ToDoItemAddedEventHandler)} has crashed.");
+            ////throw new InvalidOperationException($"{nameof(MovieShowtimeAddedEventHandler)} has crashed.");
             return Task.CompletedTask;
         }
     }

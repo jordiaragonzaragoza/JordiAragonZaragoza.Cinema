@@ -1,9 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Application.AssemblyConfiguration
 {
     using JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs;
-    using JordiAragon.SharedKernel.Application.Behaviours;
-    using MediatR;
-    using MediatR.Pipeline;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Quartz;
@@ -13,15 +10,6 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.AddAutoMapper(ApplicationAssemblyReference.Assembly);
-
-            // Register pipeline behaviors for validations and other stuff.
-            serviceCollection.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggerBehaviour<>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehaviour<,>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(InvalidateCachingBehavior<,>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(DomainEventsDispatcherBehaviour<,>));
-            serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
             serviceCollection.AddQuartz(configure =>
             {

@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events.Handlers
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
@@ -19,7 +20,7 @@
         {
             this.logger.LogInformation("Handled Domain Event: {DomainEvent}", @event.GetType().Name);
 
-            ////throw new InvalidOperationException($"{nameof(ToDoItemAddedEventHandler)} has crashed.");
+            ////throw new InvalidOperationException($"{nameof(AuditoriumShowtimeAddedEventHandler)} has crashed.");
             return Task.CompletedTask;
         }
     }
