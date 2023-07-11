@@ -3,7 +3,6 @@
     using JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs;
     using JordiAragon.SharedKernel.Application.Behaviours;
     using MediatR;
-    using MediatR.NotificationPublishers;
     using MediatR.Pipeline;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -14,12 +13,6 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.AddAutoMapper(ApplicationAssemblyReference.Assembly);
-
-            serviceCollection.AddMediatR(configuration =>
-            {
-                configuration.RegisterServicesFromAssembly(ApplicationAssemblyReference.Assembly);
-                configuration.NotificationPublisher = new TaskWhenAllPublisher();
-            });
 
             // Register pipeline behaviors for validations and other stuff.
             serviceCollection.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggerBehaviour<>));

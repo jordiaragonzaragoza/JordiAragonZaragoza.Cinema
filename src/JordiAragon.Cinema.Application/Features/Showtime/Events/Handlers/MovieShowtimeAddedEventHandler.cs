@@ -3,10 +3,10 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Domain.MovieAggregate.Events;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class MovieShowtimeAddedEventHandler : IDomainEventHandler<ShowtimeAddedEvent>
+    public class MovieShowtimeAddedEventHandler : INotificationHandler<ShowtimeAddedEvent>
     {
         private readonly ILogger<MovieShowtimeAddedEventHandler> logger;
 

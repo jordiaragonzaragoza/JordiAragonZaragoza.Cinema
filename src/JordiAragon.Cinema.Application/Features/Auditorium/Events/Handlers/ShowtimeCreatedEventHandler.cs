@@ -7,11 +7,11 @@
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeCreatedEventHandler : IDomainEventHandler<ShowtimeCreatedEvent>
+    public class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
     {
         private readonly IRepository<Auditorium> auditoriumRepository;
 
