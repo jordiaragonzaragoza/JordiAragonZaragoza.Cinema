@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events
+﻿namespace JordiAragon.Cinema.Application.Contracts.Features.Showtime.Events
 {
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Events;

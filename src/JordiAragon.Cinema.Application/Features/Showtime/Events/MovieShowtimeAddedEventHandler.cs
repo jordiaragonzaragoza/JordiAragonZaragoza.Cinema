@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events.Handlers
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events
 {
     using System.Threading;
     using System.Threading.Tasks;
