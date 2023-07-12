@@ -5,7 +5,7 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Features.Showtime.Events;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Events;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Specifications;
     using JordiAragon.SharedKernel.Application.Commands;
