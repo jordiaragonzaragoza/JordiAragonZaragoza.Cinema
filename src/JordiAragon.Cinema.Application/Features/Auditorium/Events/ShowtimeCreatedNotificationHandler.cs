@@ -4,10 +4,10 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class ShowtimeCreatedNotificationHandler : IDomainEventNotificationHandler<ShowtimeCreatedNotification>
+    public class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
     {
         private readonly ILogger<ShowtimeCreatedNotificationHandler> logger;
 

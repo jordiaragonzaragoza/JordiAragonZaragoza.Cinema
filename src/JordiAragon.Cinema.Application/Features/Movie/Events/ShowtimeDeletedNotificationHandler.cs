@@ -4,10 +4,10 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Events;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class ShowtimeDeletedNotificationHandler : IApplicationEventNotificationHandler<ShowtimeDeletedNotification>
+    public class ShowtimeDeletedNotificationHandler : INotificationHandler<ShowtimeDeletedNotification>
     {
         private readonly ILogger<ShowtimeDeletedNotificationHandler> logger;
 
