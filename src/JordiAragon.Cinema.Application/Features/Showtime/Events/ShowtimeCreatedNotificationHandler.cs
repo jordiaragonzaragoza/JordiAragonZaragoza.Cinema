@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Application.Features.Movie.Events
+﻿namespace JordiAragon.Cinema.Application.Features.Showtime.Events
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -19,7 +19,7 @@
 
         public Task Handle(ShowtimeCreatedNotification notification, CancellationToken cancellationToken)
         {
-            this.logger.LogInformation("Handled Notification: {ApplicationEvent}", notification.GetType().Name);
+            this.logger.LogInformation("Handled Notification: {Event}", notification.GetType().Name);
 
             // TODO: Use some service to notify the admin.
             return Task.CompletedTask;
