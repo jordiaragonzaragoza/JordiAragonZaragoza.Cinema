@@ -35,7 +35,7 @@
         [HttpGet("{auditoriumId}/Showtimes")]
         public async Task<ActionResult<IEnumerable<ShowtimeResponse>>> GetShowtimesAsync(Guid auditoriumId, CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId), cancellationToken);
+            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId, MovieId: null, StartTimeOnUtc: null, EndTimeOnUtc: null), cancellationToken);
 
             var resultResponse = this.Mapper.Map<Result<IEnumerable<ShowtimeResponse>>>(resultOutputDto);
 

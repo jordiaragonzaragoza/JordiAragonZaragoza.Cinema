@@ -33,7 +33,7 @@
             [FromQuery] DateTime? startTimeOnUtc = null,
             [FromQuery] DateTime? endTimeOnUtc = null)
         {
-            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId), cancellationToken);
+            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId, movieId, startTimeOnUtc, endTimeOnUtc), cancellationToken);
 
             var resultResponse = this.Mapper.Map<Result<IEnumerable<ShowtimeResponse>>>(resultOutputDto);
 

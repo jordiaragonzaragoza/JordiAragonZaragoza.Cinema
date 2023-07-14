@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class CreateShowtimeCommand : ICommand<Guid>////, IInvalidateCacheRequest
+    public record class CreateShowtimeCommand : ICommand<Guid>, IInvalidateCacheRequest
     {
         public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
 

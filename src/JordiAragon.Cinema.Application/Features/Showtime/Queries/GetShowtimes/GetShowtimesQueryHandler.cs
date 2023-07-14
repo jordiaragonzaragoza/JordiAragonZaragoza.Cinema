@@ -30,10 +30,16 @@
 
         public async Task<Result<IEnumerable<ShowtimeOutputDto>>> Handle(GetShowtimesQuery request, CancellationToken cancellationToken)
         {
-            var existingShowtimes = await this.showtimeRepository.ListAsync(new ShowtimesByAuditoriumIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
+            var specification = new ShowtimesByAuditoriumIdSpec(
+                AuditoriumId.Create(request.AuditoriumId),
+                request.MovieId.HasValue ? MovieId.Create(request.MovieId.Value) : null,
+                request.StartTimeOnUtc,
+                request.EndTimeOnUtc);
+
+            var existingShowtimes = await this.showtimeRepository.ListAsync(specification, cancellationToken);
             if (!existingShowtimes.Any())
             {
-                return Result.NotFound($"There is not any {nameof(Showtime)} avaliable for {nameof(Auditorium)} {request.AuditoriumId}.");
+                return Result.NotFound($"There is not any {nameof(Showtime)} avaliable.");
             }
 
             var showtimeOutputDtos = new List<ShowtimeOutputDto>();
