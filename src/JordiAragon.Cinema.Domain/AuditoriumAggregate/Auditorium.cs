@@ -5,30 +5,31 @@
     using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
-    using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Auditorium : BaseAuditableEntity<AuditoriumId>, IAggregateRoot
+    public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>, IAggregateRoot
     {
-        private readonly List<Showtime> showtimes = new();
+        private readonly List<ShowtimeId> showtimes = new();
         private readonly List<Seat> seats;
 
         public Auditorium(
             AuditoriumId id,
             IEnumerable<Seat> seats)
-            : this(id)
-        {
-            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
-        }
-
-        private Auditorium(
-            AuditoriumId id)
             : base(id)
         {
+            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
+
+            this.RegisterDomainEvent(new AuditoriumCreatedEvent(id, this.Seats.Select(x => x.Id.Value)));
         }
 
-        public IEnumerable<Showtime> Showtimes => this.showtimes.AsReadOnly();
+        // Required by EF
+        private Auditorium()
+        {
+        }
+
+        public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
         public IEnumerable<Seat> Seats => this.seats.AsReadOnly();
 
@@ -39,20 +40,18 @@
             return new Auditorium(id, seats);
         }
 
-        public Showtime AddShowtime(ShowtimeId id, MovieId movieId, DateTime sessionDateOnUtc)
+        public void AddShowtime(ShowtimeId showtimeId)
         {
-            var newShowtime = Showtime.Create(
-                id,
-                movieId,
-                sessionDateOnUtc,
-                this);
+            this.showtimes.Add(showtimeId);
 
-            this.showtimes.Add(newShowtime);
+            this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
+        }
 
-            var newItemAddedEvent = new ShowtimeAddedEvent(newShowtime, this);
-            this.RegisterDomainEvent(newItemAddedEvent);
+        public void RemoveShowtime(ShowtimeId showtimeId)
+        {
+            this.showtimes.Remove(showtimeId);
 
-            return newShowtime;
+            this.RegisterDomainEvent(new ShowtimeRemovedEvent(showtimeId));
         }
     }
 }

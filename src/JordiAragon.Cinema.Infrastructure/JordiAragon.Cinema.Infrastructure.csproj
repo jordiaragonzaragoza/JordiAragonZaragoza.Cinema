@@ -4,10 +4,15 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure\JordiAragon.SharedKernel.Infrastructure.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
 		<PackageReference Include="EasyCaching.InMemory" />
-		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 	</ItemGroup>
 	<ItemGroup>

@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  jordiaragon.cinema:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "7172:80"
+      - "7443:443"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+  azuresqledge.cinema:
+    environment:
+      - SA_PASSWORD=@someThingComplicated1234
+      - ACCEPT_EULA=Y
+    ports:
+      - 1433:1433
+    volumes:
+      - ./containers/azuresqledge/:/var/opt/mssql
+
+  rabbitmq.cinema:
+    ports:
+        - 5672:5672
+        - 15672:15672
+    #volumes: 
+        #- ./containers/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+        #- ./containers/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json

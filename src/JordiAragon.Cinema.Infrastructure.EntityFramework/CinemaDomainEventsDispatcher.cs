@@ -7,7 +7,7 @@
     {
         public CinemaDomainEventsDispatcher(
             CinemaContext context,
-            IDomainEventsDispatcherService domainEventDispatcherService)
+            IEventsDispatcherService domainEventDispatcherService)
              : base(context, domainEventDispatcherService)
         {
         }

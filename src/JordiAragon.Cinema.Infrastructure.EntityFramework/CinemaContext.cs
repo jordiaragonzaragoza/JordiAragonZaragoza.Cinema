@@ -2,6 +2,7 @@
 {
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,6 @@
         public DbSet<Showtime> Showtimes => this.Set<Showtime>();
 
         public DbSet<Movie> Movies => this.Set<Movie>();
-
-        public DbSet<Ticket> Tickets => this.Set<Ticket>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
