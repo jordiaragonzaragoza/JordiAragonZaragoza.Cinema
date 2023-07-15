@@ -6,6 +6,11 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 ## How to use:
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - To run the project just find and build the solution file JordiAragon.Cinema.sln and select JordiAragon.Cinema as startup project.
+- Also Create the database and schema with .NET Core CLI using update command like this:
+
+```
+dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema.Infrastructure.EntityFramework/JordiAragon.Cinema.Infrastructure.EntityFramework.csproj -s /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema/JordiAragon.Cinema.csproj --connection "Server=localhost;Database=JordiAragon.CinemaDb;User Id=sa;Password=@someThingComplicated1234;Trusted_Connection=false;TrustServerCertificate=true;"
+```
 
 ## Architecture:
 
@@ -36,11 +41,10 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 - MediatR
 - AutoMapper
 - Autofac
-- Ardalis Libraries
- - Ardalis.Result
- - Ardalis.Specification
- - Ardalis.SmartEnums
- - Ardalis.GuardClauses
+- Ardalis.Result
+- Ardalis.Specification
+- Ardalis.SmartEnums
+- Ardalis.GuardClauses
 - FluentValidator
 - Serilog
 - Quartz
@@ -92,10 +96,16 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 - <a href="https://github.com/ardalis/CleanArchitecture" target="_blank">Ardalis: Clean Architecture</a>
 - <a href="https://www.youtube.com/watch?v=SUiWfhAhgQw" target="_blank">Jimmy Bogard: Vertical Slice Architecture</a>
 - <a href="https://github.com/jasontaylordev/CleanArchitecture" target="_blank">Jason Taylor: Clean Architecture</a>
+- <a href="https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/" target="_blank">Vaughn Vernon: Implementing Domain-Driven Design (book)</a>
+- <a href="https://kalele.io/books/ddd-destilado/" target="_blank">Vaughn Vernon: Domain-Driven Design Destilado (book)</a>
+- <a href="https://www.amazon.com/Hands-Domain-Driven-Design-NET-ebook/dp/B07C5WSR9B" target="_blank">Alexey Zimarev: Hands-on Domain-Driven Design (book)</a>
 - <a href="https://github.com/dotnet-architecture/eShopOnContainers" target="_blank">Microsoft eShopOnContainers</a>
 - <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank">Microsoft eShopOnWeb</a>
 - <a href="https://github.com/kgrzybek/sample-dotnet-core-cqrs-api" target="_blank">Kamil Grzybek: Sample .NET Core REST API CQRS</a>
 - <a href="https://github.com/kgrzybek/modular-monolith-with-ddd" target="_blank">Kamil Grzybek: Modular Monolith With DDD</a>
+- <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
+- <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
+
 
 ## About:
 

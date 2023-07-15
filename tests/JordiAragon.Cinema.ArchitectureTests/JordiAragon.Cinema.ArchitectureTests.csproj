@@ -28,5 +28,7 @@
 		<ProjectReference Include="..\..\src\JordiAragon.Cinema.Infrastructure.EntityFramework\JordiAragon.Cinema.Infrastructure.EntityFramework.csproj" />
 		<ProjectReference Include="..\..\src\JordiAragon.Cinema.Infrastructure\JordiAragon.Cinema.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\src\JordiAragon.Cinema.Presentation.WebApi\JordiAragon.Cinema.Presentation.WebApi.csproj" />
+		<ProjectReference Include="..\..\src\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.csproj" />
+		<ProjectReference Include="..\..\src\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.csproj" />
 	</ItemGroup>
 </Project>

@@ -8,9 +8,11 @@
     using JordiAragon.Cinema.Infrastructure.AssemblyConfiguration;
     using JordiAragon.Cinema.Infrastructure.EntityFramework.AssemblyConfiguration;
     using JordiAragon.Cinema.Presentation.WebApi.AssemblyConfiguration;
+    using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
+    using ApplicationModule = JordiAragon.Cinema.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
     using SharedKernelEntityFrameworkModule = JordiAragon.SharedKernel.Infrastructure.EntityFramework.AssemblyConfiguration.EntityFrameworkModule;
@@ -32,6 +34,7 @@
 
             // Add services to the container.
             builder.Services.AddApplicationServices(configuration);
+            builder.Services.AddSharedKernelApplicationServices();
             builder.Services.AddWebApiServices(configuration);
             builder.Services.AddInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");

@@ -6,19 +6,21 @@
     using System.Threading.Tasks;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Controllers;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class AuditoriumsController : BaseVersionedApiController
+    [AllowAnonymous]
+    [ApiVersion("1.0", Deprecated = true)]
+    public class AuditoriumsController : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AuditoriumResponse>>> GetAsync(CancellationToken cancellationToken)
@@ -33,7 +35,7 @@
         [HttpGet("{auditoriumId}/Showtimes")]
         public async Task<ActionResult<IEnumerable<ShowtimeResponse>>> GetShowtimesAsync(Guid auditoriumId, CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId), cancellationToken);
+            var resultOutputDto = await this.Sender.Send(new GetShowtimesQuery(auditoriumId, MovieId: null, StartTimeOnUtc: null, EndTimeOnUtc: null), cancellationToken);
 
             var resultResponse = this.Mapper.Map<Result<IEnumerable<ShowtimeResponse>>>(resultOutputDto);
 
@@ -63,7 +65,6 @@
                         opt.AfterMap((_, command) =>
                         {
                             command.ShowtimeId = showtimeId;
-                            command.AuditoriumId = auditoriumId;
                         }));
 
             var resultOutputDto = await this.Sender.Send(command, cancellationToken);
@@ -77,7 +78,7 @@
         [HttpPatch("{auditoriumId}/Showtimes/{showtimeId}/Tickets/{ticketId}/Purchase")]
         public async Task<ActionResult> PurchaseTicketAsync(Guid auditoriumId, Guid showtimeId, Guid ticketId, CancellationToken cancellationToken)
         {
-            var result = await this.Sender.Send(new PurchaseSeatsCommand(auditoriumId, showtimeId, ticketId), cancellationToken);
+            var result = await this.Sender.Send(new PurchaseSeatsCommand(showtimeId, ticketId), cancellationToken);
 
             return this.ToActionResult(result);
         }
@@ -86,7 +87,7 @@
         [HttpGet("{auditoriumId}/Showtimes/{showtimeId}/Seats/Available")]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(Guid auditoriumId, Guid showtimeId, CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.Sender.Send(new GetAvailableSeatsQuery(auditoriumId, showtimeId), cancellationToken);
+            var resultOutputDto = await this.Sender.Send(new GetAvailableSeatsQuery(showtimeId), cancellationToken);
 
             var resultResponse = this.Mapper.Map<Result<IEnumerable<SeatResponse>>>(resultOutputDto);
 

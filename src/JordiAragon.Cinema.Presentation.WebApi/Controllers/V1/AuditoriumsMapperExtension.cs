@@ -3,10 +3,8 @@
     using System.Collections.Generic;
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Seat.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Showtime.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Ticket.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses;

@@ -6,10 +6,14 @@
     using Ardalis.Result;
     using JordiAragon.Cinema.Application.Contracts.Features.Movie.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Movie.Responses;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Controllers;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class MoviesController : BaseVersionedApiController
+    [AllowAnonymous]
+    [ApiVersion("1.0", Deprecated = true)]
+    public class MoviesController : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieResponse>>> GetAsync(CancellationToken cancellationToken)
