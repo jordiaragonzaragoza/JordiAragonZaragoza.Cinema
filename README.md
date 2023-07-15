@@ -6,6 +6,11 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 ## How to use:
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - To run the project just find and build the solution file JordiAragon.Cinema.sln and select JordiAragon.Cinema as startup project.
+- Also Create the database and schema with .NET Core CLI using update command like this:
+
+```
+dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema.Infrastructure.EntityFramework/JordiAragon.Cinema.Infrastructure.EntityFramework.csproj -s /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema/JordiAragon.Cinema.csproj --connection "Server=localhost;Database=JordiAragon.CinemaDb;User Id=sa;Password=@someThingComplicated1234;Trusted_Connection=false;TrustServerCertificate=true;"
+```
 
 ## Architecture:
 
