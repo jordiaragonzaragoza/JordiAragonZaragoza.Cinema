@@ -3,5 +3,5 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public record class ExpiredReservedSeatsEvent(Guid TicketId) : BaseDomainEvent;
+    public record class ExpiredReservedSeatsEvent(Guid ShowtimeId, Guid TicketId) : BaseDomainEvent(ShowtimeId);
 }

@@ -17,7 +17,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -41,6 +41,12 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("ModificationDateOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<short>("Rows")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("SeatsPerRow")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

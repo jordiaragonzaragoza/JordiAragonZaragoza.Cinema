@@ -8,5 +8,5 @@
         Guid MovieId,
         DateTime SessionDateOnUtc,
         Guid AuditoriumId)
-        : BaseDomainEvent;
+        : BaseDomainEvent(ShowtimeId);
 }

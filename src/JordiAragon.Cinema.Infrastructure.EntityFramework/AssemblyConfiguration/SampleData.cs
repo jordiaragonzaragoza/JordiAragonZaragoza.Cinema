@@ -29,7 +29,7 @@
             context.Movies.Add(exampleMovie);
 
             var auditoriumId1 = AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53"));
-            var exampleAuditorium = Auditorium.Create(auditoriumId1, GenerateSeats(28, 22));
+            var exampleAuditorium = Auditorium.Create(auditoriumId1, 28, 22);
 
             context.Auditoriums.Add(exampleAuditorium);
 
@@ -41,10 +41,10 @@
             exampleMovie.AddShowtime(exampleShowtimeId);
 
             var auditoriumId2 = AuditoriumId.Create(Guid.NewGuid());
-            context.Auditoriums.Add(Auditorium.Create(auditoriumId2, GenerateSeats(21, 18)));
+            context.Auditoriums.Add(Auditorium.Create(auditoriumId2, 21, 18));
 
             var auditoriumId3 = AuditoriumId.Create(Guid.NewGuid());
-            context.Auditoriums.Add(Auditorium.Create(auditoriumId3, GenerateSeats(15, 21)));
+            context.Auditoriums.Add(Auditorium.Create(auditoriumId3, 15, 21));
 
             context.SaveChanges();
         }
@@ -66,20 +66,6 @@
             }
 
             return false;
-        }
-
-        private static List<Seat> GenerateSeats(short rows, short seatsPerRow)
-        {
-            var seats = new List<Seat>();
-            for (short r = 1; r <= rows; r++)
-            {
-                for (short s = 1; s <= seatsPerRow; s++)
-                {
-                    seats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), r, s));
-                }
-            }
-
-            return seats;
         }
     }
 }

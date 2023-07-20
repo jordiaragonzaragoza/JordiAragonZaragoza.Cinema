@@ -7,26 +7,11 @@
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
+    using JordiAragon.SharedKernel.Domain.Exceptions;
 
-    public class Movie : BaseAggregateRoot<MovieId, Guid>, IAggregateRoot
+    public class Movie : BaseAggregateRoot<MovieId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
-
-        private Movie(
-            MovieId id,
-            string title,
-            string imdbId,
-            DateTime releaseDateOnUtc,
-            string stars)
-            : base(id)
-        {
-            this.Title = Guard.Against.NullOrEmpty(title, nameof(title));
-            this.ImdbId = Guard.Against.NullOrEmpty(imdbId, nameof(imdbId));
-            this.ReleaseDateOnUtc = releaseDateOnUtc;
-            this.Stars = Guard.Against.NullOrEmpty(stars, nameof(stars));
-
-            this.RegisterDomainEvent(new MovieCreatedEvent(id, this.Title, this.ImdbId, this.ReleaseDateOnUtc, this.Stars));
-        }
 
         // Required by EF.
         private Movie()
@@ -45,21 +30,60 @@
 
         public static Movie Create(MovieId id, string title, string imdbId, DateTime releaseDateOnUtc, string stars)
         {
-            return new Movie(id, title, imdbId, releaseDateOnUtc, stars);
+            var movie = new Movie();
+
+            movie.Apply(new MovieCreatedEvent(id, title, imdbId, releaseDateOnUtc, stars));
+
+            return movie;
         }
 
         public void AddShowtime(ShowtimeId showtimeId)
-        {
-            this.showtimes.Add(showtimeId);
-
-            this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
-        }
+            => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
 
         public void RemoveShowtime(ShowtimeId showtimeId)
-        {
-            this.showtimes.Remove(showtimeId);
+            => this.Apply(new ShowtimeRemovedEvent(this.Id, showtimeId));
 
-            this.RegisterDomainEvent(new ShowtimeRemovedEvent(showtimeId));
+        protected override void When(IDomainEvent domainEvent)
+        {
+            switch (domainEvent)
+            {
+                case MovieCreatedEvent @event:
+                    this.ProcessMovieCreatedEvent(@event);
+                    break;
+
+                case ShowtimeAddedEvent @event:
+                    this.showtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                    break;
+
+                case ShowtimeRemovedEvent @event:
+                    this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                    break;
+            }
+        }
+
+        protected override void EnsureValidState()
+        {
+            try
+            {
+                Guard.Against.Null(this.Id, nameof(this.Id));
+                Guard.Against.NullOrWhiteSpace(this.Title, nameof(this.Title));
+                Guard.Against.NullOrWhiteSpace(this.ImdbId, nameof(this.ImdbId));
+                Guard.Against.Default(this.ReleaseDateOnUtc, nameof(this.ReleaseDateOnUtc));
+                Guard.Against.NullOrWhiteSpace(this.Stars, nameof(this.Stars));
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidAggregateStateException(this, exception.Message);
+            }
+        }
+
+        private void ProcessMovieCreatedEvent(MovieCreatedEvent @event)
+        {
+            this.Id = MovieId.Create(@event.AggregateId);
+            this.Title = @event.Title;
+            this.ImdbId = @event.ImdbId;
+            this.ReleaseDateOnUtc = @event.ReleaseDateOnUtc;
+            this.Stars = @event.Stars;
         }
     }
 }

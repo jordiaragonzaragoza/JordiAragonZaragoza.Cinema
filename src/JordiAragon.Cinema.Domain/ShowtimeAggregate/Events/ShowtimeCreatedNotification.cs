@@ -2,11 +2,6 @@
 {
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public record class ShowtimeCreatedNotification : BaseDomainEventNotification<ShowtimeCreatedEvent>
-    {
-        public ShowtimeCreatedNotification(ShowtimeCreatedEvent @event)
-            : base(@event)
-        {
-        }
-    }
+    public record class ShowtimeCreatedNotification(ShowtimeCreatedEvent Event)
+        : BaseDomainEventNotification<ShowtimeCreatedEvent>(Event);
 }

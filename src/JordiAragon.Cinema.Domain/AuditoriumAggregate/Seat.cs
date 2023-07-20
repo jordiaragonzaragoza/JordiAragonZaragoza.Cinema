@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Domain.AuditoriumAggregate
 {
+    using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public class Seat : BaseAuditableEntity<SeatId>
@@ -10,7 +11,10 @@
             short seatNumber)
             : base(id)
         {
-            this.Row = row; // TODO: Add Guard.
+            Guard.Against.NegativeOrZero(row, nameof(row));
+            Guard.Against.NegativeOrZero(seatNumber, nameof(seatNumber));
+
+            this.Row = row;
             this.SeatNumber = seatNumber;
         }
 

@@ -2,32 +2,26 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
+    using JordiAragon.SharedKernel.Domain.Exceptions;
 
-    public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>, IAggregateRoot
+    public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
-        private readonly List<Seat> seats;
-
-        public Auditorium(
-            AuditoriumId id,
-            IEnumerable<Seat> seats)
-            : base(id)
-        {
-            this.seats = Guard.Against.NullOrEmpty(seats, nameof(seats)).ToList();
-
-            this.RegisterDomainEvent(new AuditoriumCreatedEvent(id, this.Seats.Select(x => x.Id.Value)));
-        }
+        private List<Seat> seats;
 
         // Required by EF
         private Auditorium()
         {
         }
+
+        public short Rows { get; private set; }
+
+        public short SeatsPerRow { get; private set; }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
@@ -35,23 +29,78 @@
 
         public static Auditorium Create(
             AuditoriumId id,
-            IEnumerable<Seat> seats)
+            short rows,
+            short seatsPerRow)
         {
-            return new Auditorium(id, seats);
+            Guard.Against.Null(id, nameof(id));
+            Guard.Against.NegativeOrZero(rows, nameof(rows));
+            Guard.Against.NegativeOrZero(seatsPerRow, nameof(seatsPerRow));
+
+            var auditorium = new Auditorium();
+
+            auditorium.Apply(new AuditoriumCreatedEvent(id, rows, seatsPerRow));
+
+            return auditorium;
         }
 
         public void AddShowtime(ShowtimeId showtimeId)
-        {
-            this.showtimes.Add(showtimeId);
-
-            this.RegisterDomainEvent(new ShowtimeAddedEvent(showtimeId));
-        }
+            => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
 
         public void RemoveShowtime(ShowtimeId showtimeId)
-        {
-            this.showtimes.Remove(showtimeId);
+            => this.Apply(new ShowtimeRemovedEvent(this.Id, showtimeId));
 
-            this.RegisterDomainEvent(new ShowtimeRemovedEvent(showtimeId));
+        protected override void When(IDomainEvent domainEvent)
+        {
+            switch (domainEvent)
+            {
+                case AuditoriumCreatedEvent @event:
+                    this.ProcessAuditoriumCreatedEvent(@event);
+                    break;
+
+                case ShowtimeAddedEvent @event:
+                    this.showtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                    break;
+
+                case ShowtimeRemovedEvent @event:
+                    this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                    break;
+            }
+        }
+
+        protected override void EnsureValidState()
+        {
+            try
+            {
+                Guard.Against.Null(this.Id, nameof(this.Id));
+                Guard.Against.NegativeOrZero(this.Rows, nameof(this.Rows));
+                Guard.Against.NegativeOrZero(this.SeatsPerRow, nameof(this.SeatsPerRow));
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidAggregateStateException(this, exception.Message);
+            }
+        }
+
+        private static List<Seat> GenerateSeats(short rows, short seatsPerRow)
+        {
+            var generatedSeats = new List<Seat>();
+            for (short row = 1; row <= rows; row++)
+            {
+                for (short seat = 1; seat <= seatsPerRow; seat++)
+                {
+                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), row, seat));
+                }
+            }
+
+            return generatedSeats;
+        }
+
+        private void ProcessAuditoriumCreatedEvent(AuditoriumCreatedEvent @event)
+        {
+            this.Id = AuditoriumId.Create(@event.AggregateId);
+            this.Rows = @event.Rows;
+            this.SeatsPerRow = @event.SeatsPerRow;
+            this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
         }
     }
 }

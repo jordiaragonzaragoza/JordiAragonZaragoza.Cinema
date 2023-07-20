@@ -16,6 +16,8 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rows = table.Column<short>(type: "smallint", nullable: false),
+                    SeatsPerRow = table.Column<short>(type: "smallint", nullable: false),
                     CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),

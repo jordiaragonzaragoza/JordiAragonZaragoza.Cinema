@@ -18,7 +18,7 @@
             : base(id)
         {
             this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
-            this.CreatedTimeOnUtc = createdTimeOnUtc;
+            this.CreatedTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
         }
 
         // Required by EF.
