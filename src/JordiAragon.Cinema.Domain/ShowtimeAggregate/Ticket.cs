@@ -32,7 +32,7 @@
 
         public bool IsPaid { get; private set; }
 
-        public static Ticket Create(
+        internal static Ticket Create(
             TicketId id,
             IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)
@@ -40,7 +40,7 @@
             return new Ticket(id, seatIds, createdTimeOnUtc);
         }
 
-        public void MarkAsPaid()
+        internal void MarkAsPaid()
         {
             if (!this.IsPaid)
             {

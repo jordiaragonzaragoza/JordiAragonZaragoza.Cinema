@@ -48,6 +48,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<short>("SeatsPerRow")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Auditoriums", (string)null);
@@ -85,6 +88,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Movies", (string)null);
@@ -118,6 +124,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("SessionDateOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20230720160853_InitialMigration")]
+    [Migration("20230723160311_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -51,6 +51,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<short>("SeatsPerRow")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Auditoriums", (string)null);
@@ -88,6 +91,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Movies", (string)null);
@@ -121,6 +127,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("SessionDateOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

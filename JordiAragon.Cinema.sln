@@ -74,6 +74,10 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Presentation.WebApi.Contracts.V2", "src\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Infrastructure.EventStore", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EventStore\JordiAragon.SharedKernel.Infrastructure.EventStore.csproj", "{F763E219-5B84-41A2-943A-4BDE80E94D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Infrastructure.EventStore", "src\JordiAragon.Cinema.Infrastructure.EventStore\JordiAragon.Cinema.Infrastructure.EventStore.csproj", "{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +180,14 @@ Global
 		{FB21D050-710C-4432-A786-F369653E6D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB21D050-710C-4432-A786-F369653E6D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB21D050-710C-4432-A786-F369653E6D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F763E219-5B84-41A2-943A-4BDE80E94D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F763E219-5B84-41A2-943A-4BDE80E94D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F763E219-5B84-41A2-943A-4BDE80E94D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F763E219-5B84-41A2-943A-4BDE80E94D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,5 +219,7 @@ Global
 		{7FF3771A-AE55-4D93-B7E9-71807F86716C} = {CFFE2114-8356-49BA-B755-3427D19DB42A}
 		{89047CF8-31C0-4F59-9253-8E47B82F3949} = {CFFE2114-8356-49BA-B755-3427D19DB42A}
 		{FB21D050-710C-4432-A786-F369653E6D24} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{F763E219-5B84-41A2-943A-4BDE80E94D0F} = {CFFE2114-8356-49BA-B755-3427D19DB42A}
+		{D0A63DC8-7C00-4903-B8F9-DF4122E88A5D} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
 	EndGlobalSection
 EndGlobal

@@ -21,6 +21,19 @@ services:
     volumes:
       - ./containers/azuresqledge/:/var/opt/mssql
 
+  eventstore.cinema:
+    environment:
+      - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
+      - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - 2113:2113
+      - 1113:1113
+    volumes:
+      - ./containers/eventstore/data/:/var/lib/eventstore
+      - ./containers/eventstore/logs/:/var/log/eventstore
+
   rabbitmq.cinema:
     ports:
         - 5672:5672

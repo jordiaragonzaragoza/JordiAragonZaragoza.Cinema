@@ -27,7 +27,7 @@
 
         public short SeatNumber { get; private set; }
 
-        public static Seat Create(
+        internal static Seat Create(
             SeatId seatId,
             short row,
             short seatNumber)
