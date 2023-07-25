@@ -19,11 +19,11 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="..\..\GlobalSuppressions.cs">
+		<Compile Include="..\..\..\GlobalSuppressions.cs">
 			<Link>GlobalSuppressions.cs</Link>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\JordiAragon.Cinema.Application\JordiAragon.Cinema.Application.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinema.Application\JordiAragon.Cinema.Application.csproj" />
 	</ItemGroup>
 </Project>

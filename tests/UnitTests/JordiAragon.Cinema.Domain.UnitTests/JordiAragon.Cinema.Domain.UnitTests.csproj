@@ -18,11 +18,11 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="..\..\GlobalSuppressions.cs">
+		<Compile Include="..\..\..\GlobalSuppressions.cs">
 			<Link>GlobalSuppressions.cs</Link>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\JordiAragon.Cinema.Domain\JordiAragon.Cinema.Domain.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinema.Domain\JordiAragon.Cinema.Domain.csproj" />
 	</ItemGroup>
 </Project>
