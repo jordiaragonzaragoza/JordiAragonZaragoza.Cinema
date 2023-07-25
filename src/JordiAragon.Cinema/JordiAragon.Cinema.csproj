@@ -12,6 +12,7 @@
 		<ProjectReference Include="..\JordiAragon.Cinema.Application\JordiAragon.Cinema.Application.csproj" />
 		<ProjectReference Include="..\JordiAragon.Cinema.Infrastructure\JordiAragon.Cinema.Infrastructure.csproj" />
 		<ProjectReference Include="..\JordiAragon.Cinema.Infrastructure.EntityFramework\JordiAragon.Cinema.Infrastructure.EntityFramework.csproj" />
+		<ProjectReference Include="..\JordiAragon.Cinema.Infrastructure.EventStore\JordiAragon.Cinema.Infrastructure.EventStore.csproj" />
 		<ProjectReference Include="..\JordiAragon.Cinema.Presentation.WebApi\JordiAragon.Cinema.Presentation.WebApi.csproj" />
 	</ItemGroup>
 </Project>

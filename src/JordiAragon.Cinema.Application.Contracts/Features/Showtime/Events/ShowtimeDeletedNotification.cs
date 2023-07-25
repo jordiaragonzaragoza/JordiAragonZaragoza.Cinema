@@ -2,11 +2,6 @@
 {
     using JordiAragon.SharedKernel.Application.Contracts.Events;
 
-    public record class ShowtimeDeletedNotification : BaseApplicationEventNotification<ShowtimeDeletedEvent>
-    {
-        public ShowtimeDeletedNotification(ShowtimeDeletedEvent @event)
-            : base(@event)
-        {
-        }
-    }
+    public record class ShowtimeDeletedNotification(ShowtimeDeletedEvent Event)
+        : BaseApplicationEventNotification<ShowtimeDeletedEvent>(Event);
 }

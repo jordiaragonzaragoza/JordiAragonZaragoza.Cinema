@@ -9,14 +9,20 @@ services:
       dockerfile: src/JordiAragon.Cinema/Dockerfile
     depends_on:
       - "azuresqledge.cinema"
+      - "eventstore.cinema"
       - "rabbitmq.cinema"
     links:
       - "azuresqledge.cinema"
+      - "eventstore.cinema"
       - "rabbitmq.cinema"
 
   azuresqledge.cinema:
     image: mcr.microsoft.com/azure-sql-edge:latest
     container_name: azuresqledge.cinema
+
+  eventstore.cinema:
+    image: eventstore/eventstore:22.10.2-alpha-arm64v8
+    container_name: eventstore.cinema
 
   rabbitmq.cinema:
     image: rabbitmq:3.11.10-management

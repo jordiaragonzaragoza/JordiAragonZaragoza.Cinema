@@ -7,6 +7,7 @@
     using JordiAragon.Cinema.Domain.AssemblyConfiguration;
     using JordiAragon.Cinema.Infrastructure.AssemblyConfiguration;
     using JordiAragon.Cinema.Infrastructure.EntityFramework.AssemblyConfiguration;
+    using JordiAragon.Cinema.Infrastructure.EventStore.AssemblyConfiguration;
     using JordiAragon.Cinema.Presentation.WebApi.AssemblyConfiguration;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
     using SharedKernelEntityFrameworkModule = JordiAragon.SharedKernel.Infrastructure.EntityFramework.AssemblyConfiguration.EntityFrameworkModule;
+    using SharedKernelEventStoreModule = JordiAragon.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration.EventStoreModule;
     using SharedKernelInfrastructureModule = JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration.InfrastructureModule;
     using SharedKernelWebApiModule = JordiAragon.SharedKernel.Presentation.WebApi.AssemblyConfiguration.WebApiModule;
 
@@ -38,6 +40,7 @@
             builder.Services.AddWebApiServices(configuration);
             builder.Services.AddInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
+            builder.Services.AddEventStoreServices(configuration, builder.Environment.ApplicationName);
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -51,6 +54,8 @@
                 containerBuilder.RegisterModule(new InfrastructureModule());
                 containerBuilder.RegisterModule(new SharedKernelEntityFrameworkModule());
                 containerBuilder.RegisterModule(new EntityFrameworkModule());
+                containerBuilder.RegisterModule(new SharedKernelEventStoreModule());
+                containerBuilder.RegisterModule(new EventStoreModule());
                 containerBuilder.RegisterModule(new SharedKernelWebApiModule());
                 containerBuilder.RegisterModule(new WebApiModule());
             });

@@ -18,7 +18,7 @@
             : base(id)
         {
             this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
-            this.CreatedTimeOnUtc = createdTimeOnUtc;
+            this.CreatedTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
         }
 
         // Required by EF.
@@ -32,7 +32,7 @@
 
         public bool IsPaid { get; private set; }
 
-        public static Ticket Create(
+        internal static Ticket Create(
             TicketId id,
             IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)
@@ -40,7 +40,7 @@
             return new Ticket(id, seatIds, createdTimeOnUtc);
         }
 
-        public void MarkAsPaid()
+        internal void MarkAsPaid()
         {
             if (!this.IsPaid)
             {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20230702110705_InitialMigration")]
+    [Migration("20230723160311_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -44,6 +44,15 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("ModificationDateOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<short>("Rows")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("SeatsPerRow")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -82,6 +91,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Movies", (string)null);
@@ -115,6 +127,9 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<DateTime>("SessionDateOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

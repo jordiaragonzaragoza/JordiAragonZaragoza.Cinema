@@ -9,5 +9,5 @@
         string ImdbId,
         DateTime ReleaseDateOnUtc,
         string Stars)
-        : BaseDomainEvent;
+        : BaseDomainEvent(MovieId);
 }
