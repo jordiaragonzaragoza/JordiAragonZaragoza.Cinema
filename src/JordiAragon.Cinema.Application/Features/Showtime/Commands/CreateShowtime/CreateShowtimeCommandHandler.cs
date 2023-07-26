@@ -41,7 +41,7 @@
             var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
             if (existingShowtime is not null)
             {
-                return Result.Invalid(new List<ValidationError>()); // TODO: Complete.
+                return Result.Invalid(new List<ValidationError>() { new ValidationError() { ErrorMessage = $"{nameof(Showtime)} already exists for this {nameof(Movie)}: {request.MovieId}" } });
             }
 
             var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(request.AuditoriumId)), cancellationToken);
