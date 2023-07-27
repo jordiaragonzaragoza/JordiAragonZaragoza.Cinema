@@ -1,4 +1,4 @@
-namespace JordiAragon.Cinema.Application.UnitTests.TestUtils.Constants
+namespace JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants
 {
     using System;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;

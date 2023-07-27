@@ -2,7 +2,7 @@
 {
     using System;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
-    using JordiAragon.Cinema.Application.UnitTests.TestUtils.Constants;
+    using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
 
     public static class CreateShowtimeCommandUtils
     {

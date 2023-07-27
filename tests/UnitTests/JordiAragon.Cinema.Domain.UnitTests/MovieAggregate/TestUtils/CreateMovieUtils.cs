@@ -1,6 +1,6 @@
-﻿namespace JordiAragon.Cinema.Application.UnitTests.Features.Movie.TestUtils
+﻿namespace JordiAragon.Cinema.Domain.UnitTests.Features.Movie.TestUtils
 {
-    using JordiAragon.Cinema.Application.UnitTests.TestUtils.Constants;
+    using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
     using JordiAragon.Cinema.Domain.MovieAggregate;
 
     public static class CreateMovieUtils

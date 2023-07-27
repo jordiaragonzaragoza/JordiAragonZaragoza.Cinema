@@ -1,6 +1,6 @@
-﻿namespace JordiAragon.Cinema.Application.UnitTests.Features.Auditorium.TestUtils
+﻿namespace JordiAragon.Cinema.Domain.UnitTests.Features.Auditorium.TestUtils
 {
-    using JordiAragon.Cinema.Application.UnitTests.TestUtils.Constants;
+    using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
 
     public static class CreateAuditoriumUtils

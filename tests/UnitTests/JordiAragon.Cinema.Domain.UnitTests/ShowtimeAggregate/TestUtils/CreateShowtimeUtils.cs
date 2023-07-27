@@ -1,6 +1,6 @@
-﻿namespace JordiAragon.Cinema.Application.UnitTests.Features.Showtime.TestUtils
+﻿namespace JordiAragon.Cinema.Domain.UnitTests.Features.Showtime.TestUtils
 {
-    using JordiAragon.Cinema.Application.UnitTests.TestUtils.Constants;
+    using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
 
     public static class CreateShowtimeUtils
