@@ -43,6 +43,7 @@
                 this.mockGuidGenerator);
         }
 
+        // TODO: Add empty constructor tests.
         // T1: System Under Test - Logical component we're testing.
         // T2: Scenario - What we're testing.
         // T3: Expected outcome - What we expect the logical component to do
