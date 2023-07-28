@@ -32,10 +32,6 @@
             short rows,
             short seatsPerRow)
         {
-            Guard.Against.Null(id, nameof(id));
-            Guard.Against.NegativeOrZero(rows, nameof(rows));
-            Guard.Against.NegativeOrZero(seatsPerRow, nameof(seatsPerRow));
-
             var auditorium = new Auditorium();
 
             auditorium.Apply(new AuditoriumCreatedEvent(id, rows, seatsPerRow));
