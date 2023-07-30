@@ -50,7 +50,7 @@
             switch (domainEvent)
             {
                 case AuditoriumCreatedEvent @event:
-                    this.ProcessAuditoriumCreatedEvent(@event);
+                    this.Applier(@event);
                     break;
 
                 case ShowtimeAddedEvent @event:
@@ -91,7 +91,7 @@
             return generatedSeats;
         }
 
-        private void ProcessAuditoriumCreatedEvent(AuditoriumCreatedEvent @event)
+        private void Applier(AuditoriumCreatedEvent @event)
         {
             this.Id = AuditoriumId.Create(@event.AggregateId);
             this.Rows = @event.Rows;

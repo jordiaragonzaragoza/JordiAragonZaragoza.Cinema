@@ -5,16 +5,37 @@
     using System.Linq;
     using FluentAssertions;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.MovieAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
     using JordiAragon.Cinema.Domain.UnitTests.Features.Showtime.TestUtils;
     using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
+    using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     using Showtime = JordiAragon.Cinema.Domain.ShowtimeAggregate.Showtime;
 
     public class ShowtimeTests
     {
+        public static IEnumerable<object[]> InvalidParametersCreateShowtime()
+        {
+            yield return new object[] { null, null, default(DateTime), null };
+            yield return new object[] { null, null, default(DateTime), Constants.Showtime.AuditoriumId };
+            yield return new object[] { null, null, Constants.Showtime.SessionDateOnUtc, null };
+            yield return new object[] { null, null, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
+            yield return new object[] { null, Constants.Movie.Id, default(DateTime), null };
+            yield return new object[] { null, Constants.Movie.Id, default(DateTime), Constants.Showtime.AuditoriumId };
+            yield return new object[] { null, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, null };
+            yield return new object[] { null, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
+            yield return new object[] { Constants.Showtime.Id, null, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
+            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, null };
+            yield return new object[] { Constants.Showtime.Id, null, Constants.Showtime.SessionDateOnUtc, null };
+            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, default(DateTime), Constants.Showtime.AuditoriumId };
+            yield return new object[] { Constants.Showtime.Id, null, default(DateTime), Constants.Showtime.AuditoriumId };
+            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, default(DateTime), null };
+            yield return new object[] { Constants.Showtime.Id, null, default(DateTime), null };
+        }
+
         public static IEnumerable<object[]> InvalidParametersReserveSeats()
         {
             yield return new object[] { null, null, default(DateTime) };
@@ -30,7 +51,7 @@
         }
 
         [Fact]
-        public void CreateShowtime_WhenHavingCorrectArguments_ShouldCreateShowtimeAndAddShowtimeCreatedEvent()
+        public void CreateShowtime_WhenHavingValidArguments_ShouldCreateShowtimeAndAddShowtimeCreatedEvent()
         {
             // Arrange
             var id = Constants.Showtime.Id;
@@ -55,12 +76,27 @@
                                                                             e.AuditoriumId == auditoriumId);
         }
 
+        [Theory]
+        [MemberData(nameof(InvalidParametersCreateShowtime))]
+        public void CreateShowtime_WhenHavingInvalidArguments_ShouldShouldThrowException(
+            ShowtimeId id,
+            MovieId movieId,
+            DateTime sessionDateOnUtc,
+            AuditoriumId auditoriumId)
+        {
+            // Act
+            Func<Showtime> showtime = () => Showtime.Create(id, movieId, sessionDateOnUtc, auditoriumId);
+
+            // Assert
+            showtime.Should().Throw<Exception>();
+        }
+
         [Fact]
-        public void ReserveSeats_WhenHavingCorrectArguments_ShouldCreateTicketAndAddReservedSeatsEvent()
+        public void ReserveSeats_WhenHavingValidArguments_ShouldCreateTicketAddTheTickedAndAddReservedSeatsEvent()
         {
             // Arrange
             var showtime = CreateShowtimeUtils.Create();
-            var tickedId = Constants.Ticket.Id;
+            var ticketId = Constants.Ticket.Id;
 
             var seatIds = new List<SeatId>
             {
@@ -70,7 +106,7 @@
             var createdTimeOnUtc = DateTime.UtcNow;
 
             // Act
-            var ticketCreated = showtime.ReserveSeats(tickedId, seatIds, createdTimeOnUtc);
+            var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
             // Assert
             ticketCreated.Should().NotBeNull();
@@ -93,7 +129,7 @@
 
         [Theory]
         [MemberData(nameof(InvalidParametersReserveSeats))]
-        public void ReserveSeats_WhenHavingIncorrectParameters_ShouldThrowArgumentNullException(
+        public void ReserveSeats_WhenHavingIncorrectParameters_ShouldThrowArgumentException(
             TicketId tickedId,
             IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)
@@ -111,6 +147,166 @@
 
             showtime.Events.Should()
                               .NotContain(x => x.GetType() == typeof(ReservedSeatsEvent));
+        }
+
+        [Fact]
+        public void PurchaseSeats_WhenHavingValidTicketId_ShouldMarkTicketAsPaidAndAddPurchasedSeatsEvent()
+        {
+            // Arrange
+            var ticketId = Constants.Ticket.Id;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            var seatIds = new List<SeatId>
+            {
+                Constants.Seat.Id,
+            };
+
+            var createdTimeOnUtc = DateTime.UtcNow;
+
+            var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+
+            // Act
+            showtime.PurchaseSeats(ticketId);
+
+            // Assert
+            ticketCreated.IsPaid.Should().BeTrue();
+
+            showtime.Events.Should()
+                              .ContainSingle(x => x.GetType() == typeof(PurchasedSeatsEvent))
+                              .Which.Should().BeOfType<PurchasedSeatsEvent>()
+                              .Which.Should().Match<PurchasedSeatsEvent>(e =>
+                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.TicketId == ticketCreated.Id);
+        }
+
+        [Fact]
+        public void PurchaseSeats_WhenHavingNullTicketId_ShouldThrowArgumentException()
+        {
+            // Arrange
+            TicketId ticketId = null;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            // Act
+            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+
+            // Assert
+            showtimePurchaseSeats.Should().Throw<ArgumentException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x.GetType() == typeof(PurchasedSeatsEvent));
+        }
+
+        [Fact]
+        public void PurchaseSeats_WhenHavingInvalidTicketId_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var ticketId = Constants.Ticket.Id;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            // Act
+            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+
+            // Assert
+            showtimePurchaseSeats.Should().Throw<NotFoundException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x.GetType() == typeof(PurchasedSeatsEvent));
+        }
+
+        [Fact]
+        public void PurchaseSeats_WhenHavingAPurchasedTicketId_ShouldThrowBusinessRuleValidationException()
+        {
+            // Arrange
+            var ticketId = Constants.Ticket.Id;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            var seatIds = new List<SeatId>
+            {
+                Constants.Seat.Id,
+            };
+
+            var createdTimeOnUtc = DateTime.UtcNow;
+
+            showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+
+            showtime.PurchaseSeats(ticketId);
+
+            // Act
+            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+
+            // Assert
+            showtimePurchaseSeats.Should().Throw<BusinessRuleValidationException>().WithMessage("Only possible to pay once per reservation.");
+        }
+
+        [Fact]
+        public void ExpireReservedSeats_WhenHavingValidTickedId_ShouldRemoveTheTicketAndAddExpiredReservedSeatsEvent()
+        {
+            // Arrange
+            var ticketId = Constants.Ticket.Id;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            var seatIds = new List<SeatId>
+            {
+                Constants.Seat.Id,
+            };
+
+            var createdTimeOnUtc = DateTime.UtcNow;
+
+            showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+
+            // Act
+            showtime.ExpireReservedSeats(ticketId);
+
+            // Assert
+            showtime.Tickets.Should().BeEmpty();
+
+            showtime.Events.Should()
+                              .ContainSingle(x => x.GetType() == typeof(ExpiredReservedSeatsEvent))
+                              .Which.Should().BeOfType<ExpiredReservedSeatsEvent>()
+                              .Which.Should().Match<ExpiredReservedSeatsEvent>(e =>
+                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.TicketId == ticketId);
+        }
+
+        [Fact]
+        public void ExpireReservedSeats_WhenHavingNullTicketId_ShouldThrowArgumentException()
+        {
+            // Arrange
+            TicketId ticketId = null;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            // Act
+            Action showtimePurchaseSeats = () => showtime.ExpireReservedSeats(ticketId);
+
+            // Assert
+            showtimePurchaseSeats.Should().Throw<ArgumentException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x.GetType() == typeof(ExpiredReservedSeatsEvent));
+        }
+
+        [Fact]
+        public void ExpireReservedSeats_WhenHavingInvalidTicketId_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var ticketId = Constants.Ticket.Id;
+
+            var showtime = CreateShowtimeUtils.Create();
+
+            // Act
+            Action showtimePurchaseSeats = () => showtime.ExpireReservedSeats(ticketId);
+
+            // Assert
+            showtimePurchaseSeats.Should().Throw<NotFoundException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x.GetType() == typeof(ExpiredReservedSeatsEvent));
         }
     }
 }
