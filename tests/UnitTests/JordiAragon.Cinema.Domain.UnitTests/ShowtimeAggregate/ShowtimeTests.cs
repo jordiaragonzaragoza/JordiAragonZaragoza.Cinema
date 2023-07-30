@@ -1,0 +1,116 @@
+﻿namespace JordiAragon.Cinema.Domain.UnitTests.ShowtimeAggregate
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FluentAssertions;
+    using JordiAragon.Cinema.Domain.AuditoriumAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate.Events;
+    using JordiAragon.Cinema.Domain.UnitTests.Features.Showtime.TestUtils;
+    using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
+    using Xunit;
+
+    using Showtime = JordiAragon.Cinema.Domain.ShowtimeAggregate.Showtime;
+
+    public class ShowtimeTests
+    {
+        public static IEnumerable<object[]> InvalidParametersReserveSeats()
+        {
+            yield return new object[] { null, null, default(DateTime) };
+            yield return new object[] { Constants.Ticket.Id, null, default(DateTime) };
+            yield return new object[] { null, new List<SeatId> { Constants.Seat.Id }, default(DateTime) };
+            yield return new object[] { null, new List<SeatId>(), default(DateTime) };
+            yield return new object[] { Constants.Ticket.Id, new List<SeatId> { Constants.Seat.Id }, default(DateTime) };
+            yield return new object[] { Constants.Ticket.Id, new List<SeatId>(), default(DateTime) };
+            yield return new object[] { null, new List<SeatId> { Constants.Seat.Id }, DateTime.UtcNow };
+            yield return new object[] { null, new List<SeatId>(), DateTime.UtcNow };
+            yield return new object[] { Constants.Ticket.Id, null, DateTime.UtcNow };
+            yield return new object[] { null, null, DateTime.UtcNow };
+        }
+
+        [Fact]
+        public void CreateShowtime_WhenHavingCorrectArguments_ShouldCreateShowtimeAndAddShowtimeCreatedEvent()
+        {
+            // Arrange
+            var id = Constants.Showtime.Id;
+            var movieId = Constants.Movie.Id;
+            var sessionDateOnUtc = Constants.Showtime.SessionDateOnUtc;
+            var auditoriumId = Constants.Showtime.AuditoriumId;
+
+            // Act
+            var showtime = Showtime.Create(id, movieId, sessionDateOnUtc, auditoriumId);
+
+            // Assert
+            showtime.Should().NotBeNull();
+            showtime.Id.Should().Be(id);
+
+            showtime.Events.Should()
+                              .ContainSingle(x => x.GetType() == typeof(ShowtimeCreatedEvent))
+                              .Which.Should().BeOfType<ShowtimeCreatedEvent>()
+                              .Which.Should().Match<ShowtimeCreatedEvent>(e =>
+                                                                            e.ShowtimeId == id &&
+                                                                            e.MovieId == movieId &&
+                                                                            e.SessionDateOnUtc == sessionDateOnUtc &&
+                                                                            e.AuditoriumId == auditoriumId);
+        }
+
+        [Fact]
+        public void ReserveSeats_WhenHavingCorrectArguments_ShouldCreateTicketAndAddReservedSeatsEvent()
+        {
+            // Arrange
+            var showtime = CreateShowtimeUtils.Create();
+            var tickedId = Constants.Ticket.Id;
+
+            var seatIds = new List<SeatId>
+            {
+                Constants.Seat.Id,
+            };
+
+            var createdTimeOnUtc = DateTime.UtcNow;
+
+            // Act
+            var ticketCreated = showtime.ReserveSeats(tickedId, seatIds, createdTimeOnUtc);
+
+            // Assert
+            ticketCreated.Should().NotBeNull();
+            ticketCreated.Seats.Should().BeEquivalentTo(seatIds);
+            ticketCreated.CreatedTimeOnUtc.Should().Be(createdTimeOnUtc);
+            ticketCreated.IsPaid.Should().Be(false);
+
+            showtime.Tickets.Should().HaveCount(1).And.Contain(ticketCreated);
+
+            showtime.Events.Should()
+                              .ContainSingle(x => x.GetType() == typeof(ReservedSeatsEvent))
+                              .Which.Should().BeOfType<ReservedSeatsEvent>()
+                              .Which.Should().Match<ReservedSeatsEvent>(e =>
+                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.TicketId == ticketCreated.Id &&
+                                                                            e.SeatIds.Count() == seatIds.Count &&
+                                                                            e.SeatIds.All(id => seatIds.Contains(SeatId.Create(id))) &&
+                                                                            e.CreatedTimeOnUtc == createdTimeOnUtc);
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidParametersReserveSeats))]
+        public void ReserveSeats_WhenHavingIncorrectParameters_ShouldThrowArgumentNullException(
+            TicketId tickedId,
+            IEnumerable<SeatId> seatIds,
+            DateTime createdTimeOnUtc)
+        {
+            // Arrange
+            var showtime = CreateShowtimeUtils.Create();
+
+            // Act
+            Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, seatIds, createdTimeOnUtc);
+
+            // Assert
+            ticketCreated.Should().Throw<ArgumentException>();
+
+            showtime.Tickets.Should().BeEmpty();
+
+            showtime.Events.Should()
+                              .NotContain(x => x.GetType() == typeof(ReservedSeatsEvent));
+        }
+    }
+}
