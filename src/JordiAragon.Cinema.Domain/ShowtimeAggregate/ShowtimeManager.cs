@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate.Rules;
     using JordiAragon.SharedKernel.Domain.Services;
@@ -11,6 +12,9 @@
     {
         public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
         {
+            Guard.Against.Null(auditorium);
+            Guard.Against.Null(showtime);
+
             var reservedSeats = ReservedSeats(auditorium, showtime);
 
             return auditorium.Seats.Except(reservedSeats)
@@ -25,6 +29,12 @@
             TicketId ticketId,
             DateTime createdTimeOnUtc)
         {
+            Guard.Against.Null(auditorium);
+            Guard.Against.Null(showtime);
+            Guard.Against.NullOrEmpty(desiredSeatIds);
+            Guard.Against.Null(ticketId);
+            Guard.Against.Default(createdTimeOnUtc);
+
             var desiredSeats = auditorium.Seats.Where(seat => desiredSeatIds.Contains(seat.Id));
 
             CheckRule(new OnlyContiguousSeatsCanBeReservedRule(desiredSeats));

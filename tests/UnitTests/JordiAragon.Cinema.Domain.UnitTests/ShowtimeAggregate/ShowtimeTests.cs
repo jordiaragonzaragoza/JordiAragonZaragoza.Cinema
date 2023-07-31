@@ -17,7 +17,7 @@
 
     public class ShowtimeTests
     {
-        public static IEnumerable<object[]> InvalidParametersCreateShowtime()
+        public static IEnumerable<object[]> InvalidArgumentsCreateShowtime()
         {
             yield return new object[] { null, null, default(DateTime), null };
             yield return new object[] { null, null, default(DateTime), Constants.Showtime.AuditoriumId };
@@ -36,7 +36,7 @@
             yield return new object[] { Constants.Showtime.Id, null, default(DateTime), null };
         }
 
-        public static IEnumerable<object[]> InvalidParametersReserveSeats()
+        public static IEnumerable<object[]> InvalidArgumentsReserveSeats()
         {
             yield return new object[] { null, null, default(DateTime) };
             yield return new object[] { Constants.Ticket.Id, null, default(DateTime) };
@@ -77,7 +77,7 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidParametersCreateShowtime))]
+        [MemberData(nameof(InvalidArgumentsCreateShowtime))]
         public void CreateShowtime_WhenHavingInvalidArguments_ShouldShouldThrowException(
             ShowtimeId id,
             MovieId movieId,
@@ -128,8 +128,8 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidParametersReserveSeats))]
-        public void ReserveSeats_WhenHavingIncorrectParameters_ShouldThrowArgumentException(
+        [MemberData(nameof(InvalidArgumentsReserveSeats))]
+        public void ReserveSeats_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             TicketId tickedId,
             IEnumerable<SeatId> seatIds,
             DateTime createdTimeOnUtc)

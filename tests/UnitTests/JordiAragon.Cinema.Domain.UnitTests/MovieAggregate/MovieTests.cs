@@ -12,7 +12,7 @@
 
     public class MovieTests
     {
-        public static IEnumerable<object[]> InvalidParametersCreateMovie()
+        public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
         {
             yield return new object[] { null, null, default(DateTime), string.Empty };
             yield return new object[] { "Inception", null, default(DateTime), string.Empty };
@@ -32,7 +32,7 @@
         }
 
         [Fact]
-        public void CreateMovie_WhenHavingCorrectArguments_ShouldCreateMovieAndAddMovieCreatedEvent()
+        public void CreateMovie_WhenHavingValidArguments_ShouldCreateMovieAndAddMovieCreatedEvent()
         {
             // Arrange
             var id = Constants.Movie.Id;
@@ -77,8 +77,8 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidParametersCreateMovie))]
-        public void CreateMovie_WhenHavingInvalidParameters_ShouldThrowInvalidAggregateStateException(
+        [MemberData(nameof(InvalidArgumentsCreateMovie))]
+        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowInvalidAggregateStateException(
             string title,
             string imdbId,
             DateTime relaseDateOnUtc,
