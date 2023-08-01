@@ -7,4 +7,7 @@
 	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
 		<PackageReference Include="JordiAragon.SharedKernel.Domain" />
 	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="JordiAragon.Cinema.Domain.UnitTests" />
+	</ItemGroup>
 </Project>
