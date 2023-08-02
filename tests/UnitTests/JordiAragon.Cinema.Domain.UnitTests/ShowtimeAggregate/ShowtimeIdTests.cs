@@ -19,5 +19,18 @@
             // Assert
             showtimeId.Should().Throw<ArgumentException>();
         }
+
+        [Fact]
+        public void CreateShowtimeId_WhenHavingAValidGuid_ShouldReturnShowtimeId()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var showtimeId = ShowtimeId.Create(id);
+
+            // Assert
+            showtimeId.Should().NotBeNull();
+        }
     }
 }

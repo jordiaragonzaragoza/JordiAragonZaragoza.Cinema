@@ -1,9 +1,11 @@
 ﻿namespace JordiAragon.Cinema.Domain.UnitTests.AuditoriumAggregate
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Events;
+    using JordiAragon.Cinema.Domain.ShowtimeAggregate;
     using JordiAragon.Cinema.Domain.UnitTests.Features.Auditorium.TestUtils;
     using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
     using JordiAragon.SharedKernel.Domain.Exceptions;
@@ -11,6 +13,26 @@
 
     public class AuditoriumTests
     {
+        public static IEnumerable<object[]> InvalidArgumentsCreateAuditorium()
+        {
+            var argument1Values = new object[] { 10, -1, 0 };
+            var argument2Values = new object[] { 10, -1, 0 };
+
+            foreach (var arg1 in argument1Values)
+            {
+                foreach (var arg2 in argument2Values)
+                {
+                    if (arg1.Equals(10) &&
+                        arg2.Equals(10))
+                    {
+                        continue;
+                    }
+
+                    yield return new object[] { arg1, arg2 };
+                }
+            }
+        }
+
         [Fact]
         public void CreateAuditorium_WhenHavingCorrectArguments_ShouldCreateAuditoriumAndAddAuditoriumCreatedEvent()
         {
@@ -39,10 +61,7 @@
         }
 
         [Theory]
-        [InlineData(-1, 0)]
-        [InlineData(0, -1)]
-        [InlineData(-1, -1)]
-        [InlineData(0, 0)]
+        [MemberData(nameof(InvalidArgumentsCreateAuditorium))]
         public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(short rows, short seatsPerRow)
         {
             // Arrange
@@ -95,6 +114,20 @@
         }
 
         [Fact]
+        public void AddShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
+        {
+            // Arrange.
+            var auditorium = CreateAuditoriumUtils.Create();
+            ShowtimeId showtimeId = null;
+
+            // Act.
+            Action addShowtime = () => auditorium.AddShowtime(showtimeId);
+
+            // Assert.
+            addShowtime.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
         public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeRemovedEvent()
         {
             // Arrange.
@@ -117,6 +150,34 @@
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
                                                                             e.AuditoriumId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
+        }
+
+        [Fact]
+        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
+        {
+            // Arrange.
+            var auditorium = CreateAuditoriumUtils.Create();
+            ShowtimeId showtimeId = null;
+
+            // Act.
+            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+
+            // Assert.
+            removeShowtime.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsNotPresent_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var auditorium = CreateAuditoriumUtils.Create();
+            var showtimeId = Constants.Showtime.Id;
+
+            // Act.
+            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+
+            // Assert.
+            removeShowtime.Should().Throw<NotFoundException>();
         }
     }
 }

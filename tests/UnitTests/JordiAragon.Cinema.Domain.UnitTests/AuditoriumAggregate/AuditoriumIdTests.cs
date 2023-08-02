@@ -19,5 +19,18 @@
             // Assert
             auditoriumId.Should().Throw<ArgumentException>();
         }
+
+        [Fact]
+        public void CreateAuditoriumId_WhenHavingAValidGuid_ShouldReturnAuditoriumId()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var auditoriumId = AuditoriumId.Create(id);
+
+            // Assert
+            auditoriumId.Should().NotBeNull();
+        }
     }
 }

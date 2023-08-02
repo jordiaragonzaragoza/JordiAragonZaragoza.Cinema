@@ -18,14 +18,22 @@
             var desiredSeats = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3);
 
-            yield return new object[] { null, null };
-            yield return new object[] { desiredSeats, null };
-            yield return new object[] { null, availableSeats };
-            yield return new object[] { desiredSeats, new List<Seat>() };
-            yield return new object[] { new List<Seat>(), availableSeats };
-            yield return new object[] { null, new List<Seat>() };
-            yield return new object[] { new List<Seat>(), null };
-            yield return new object[] { new List<Seat>(), new List<Seat>() };
+            var desiredSeatsValues = new object[] { null, new List<Seat>(), desiredSeats };
+            var availableSeatsValues = new object[] { null, new List<Seat>(), availableSeats };
+
+            foreach (var desiredSeatValue in desiredSeatsValues)
+            {
+                foreach (var availableSeatValue in availableSeatsValues)
+                {
+                    if (desiredSeatValue != null && desiredSeatValue.Equals(desiredSeats) &&
+                        availableSeatValue != null && availableSeatValue.Equals(availableSeats))
+                    {
+                        continue;
+                    }
+
+                    yield return new object[] { desiredSeatValue, availableSeatValue };
+                }
+            }
         }
 
         [Theory]

@@ -19,5 +19,18 @@
             // Assert
             seatId.Should().Throw<ArgumentException>();
         }
+
+        [Fact]
+        public void CreateSeatId_WhenHavingAValidGuid_ShouldReturnSeatId()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var seatId = SeatId.Create(id);
+
+            // Assert
+            seatId.Should().NotBeNull();
+        }
     }
 }

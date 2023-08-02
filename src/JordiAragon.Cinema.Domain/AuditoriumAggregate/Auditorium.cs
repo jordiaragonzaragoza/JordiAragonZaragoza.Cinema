@@ -9,6 +9,8 @@
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
 
+    using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
+
     public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
@@ -58,7 +60,7 @@
                     break;
 
                 case ShowtimeRemovedEvent @event:
-                    this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                    this.Applier(@event);
                     break;
             }
         }
@@ -97,6 +99,15 @@
             this.Rows = @event.Rows;
             this.SeatsPerRow = @event.SeatsPerRow;
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
+        }
+
+        private void Applier(ShowtimeRemovedEvent @event)
+        {
+            var isRemoved = this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+            if (!isRemoved)
+            {
+                throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());
+            }
         }
     }
 }

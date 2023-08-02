@@ -14,21 +14,37 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
         {
-            yield return new object[] { null, null, default(DateTime), string.Empty };
-            yield return new object[] { "Inception", null, default(DateTime), string.Empty };
-            yield return new object[] { null, "tt1375666", default(DateTime), string.Empty };
-            yield return new object[] { null, null, new DateTime(2010, 01, 14), string.Empty };
-            yield return new object[] { null, null, default(DateTime), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { "Inception", "tt1375666", default(DateTime), string.Empty };
-            yield return new object[] { "Inception", null, new DateTime(2010, 01, 14), string.Empty };
-            yield return new object[] { "Inception", null, default(DateTime), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { null, "tt1375666", new DateTime(2010, 01, 14), string.Empty };
-            yield return new object[] { null, "tt1375666", default(DateTime), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { null, null, new DateTime(2010, 01, 14), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { "Inception", "tt1375666", new DateTime(2010, 01, 14), string.Empty };
-            yield return new object[] { "Inception", "tt1375666", default(DateTime), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { "Inception", null, new DateTime(2010, 01, 14), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
-            yield return new object[] { null, "tt1375666", new DateTime(2010, 01, 14), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe" };
+            var title = Constants.Movie.Title;
+            var imdbId = Constants.Movie.ImdbId;
+            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
+            var stars = Constants.Movie.Stars;
+
+            var titleValues = new object[] { null, string.Empty, " ", title };
+            var imdbIdValues = new object[] { null, string.Empty, " ", imdbId };
+            var relaseDateOnUtcValues = new object[] { default(DateTime), releaseDateOnUtc };
+            var starsValues = new object[] { null, string.Empty, " ", stars };
+
+            foreach (var titleValue in titleValues)
+            {
+                foreach (var imdbIdValue in imdbIdValues)
+                {
+                    foreach (var releaseDateOnUtcValue in relaseDateOnUtcValues)
+                    {
+                        foreach (var starsValue in starsValues)
+                        {
+                            if (titleValue != null && titleValue.Equals(title) &&
+                                imdbIdValue != null && imdbIdValue.Equals(imdbId) &&
+                                releaseDateOnUtcValue.Equals(releaseDateOnUtc) &&
+                                starsValue != null && starsValue.Equals(stars))
+                            {
+                                continue;
+                            }
+
+                            yield return new object[] { titleValue, imdbIdValue, releaseDateOnUtcValue, starsValue };
+                        }
+                    }
+                }
+            }
         }
 
         [Fact]

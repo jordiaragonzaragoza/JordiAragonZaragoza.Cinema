@@ -19,5 +19,18 @@
             // Assert
             movieId.Should().Throw<ArgumentException>();
         }
+
+        [Fact]
+        public void CreateMovieId_WhenHavingAValidGuid_ShouldReturnMovieId()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var movieId = MovieId.Create(id);
+
+            // Assert
+            movieId.Should().NotBeNull();
+        }
     }
 }
