@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Application.UnitTests.Features.Showtime.Commands.CreateShowtime
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
@@ -43,15 +44,57 @@
                 this.mockGuidGenerator);
         }
 
-        // TODO: Add empty constructor tests.
-        // T1: System Under Test - Logical component we're testing.
-        // T2: Scenario - What we're testing.
-        // T3: Expected outcome - What we expect the logical component to do
+        public static IEnumerable<object[]> InvalidArgumentsCreateHandleCreateShowtimeCommand()
+        {
+            var auditoriumRepository = Substitute.For<IReadRepository<Auditorium>>();
+            var movieRepository = Substitute.For<IReadRepository<Movie>>();
+            var showtimeRepository = Substitute.For<IRepository<Showtime>>();
+            var guidGenerator = Substitute.For<IGuidGenerator>();
+
+            var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
+            var movieRepositoryValues = new object[] { null, movieRepository };
+            var showtimeRepositoryValues = new object[] { null, showtimeRepository };
+            var guidGeneratorValues = new object[] { null, guidGenerator };
+
+            foreach (var auditoriumRepositoryValue in auditoriumRepositoryValues)
+            {
+                foreach (var movieRepositoryValue in movieRepositoryValues)
+                {
+                    foreach (var showtimeRepositoryValue in showtimeRepositoryValues)
+                    {
+                        foreach (var guidGeneratorValue in guidGeneratorValues)
+                        {
+                            if (auditoriumRepositoryValue != null && auditoriumRepositoryValue.Equals(auditoriumRepository) &&
+                                    movieRepositoryValue != null && movieRepositoryValue.Equals(movieRepository) &&
+                                    showtimeRepositoryValue != null && showtimeRepositoryValue.Equals(showtimeRepository) &&
+                                    guidGeneratorValue != null && guidGeneratorValue.Equals(guidGenerator))
+                            {
+                                continue;
+                            }
+
+                            yield return new object[] { auditoriumRepositoryValue, movieRepositoryValue, showtimeRepositoryValue, guidGeneratorValue };
+                        }
+                    }
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsCreateHandleCreateShowtimeCommand))]
+        public void CreateHandleCreateShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
+            IReadRepository<Auditorium> auditoriumRepository,
+            IReadRepository<Movie> movieRepository,
+            IRepository<Showtime> showtimeRepository,
+            IGuidGenerator guidGenerator)
+        {
+            FluentActions.Invoking(() => new CreateShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, guidGenerator))
+            .Should().Throw<ArgumentNullException>();
+        }
+
         [Fact]
         public async Task HandleCreateShowtimeCommand_WhenShowtimeIsValid_ShouldCreateAndReturnShowtimeGuid()
         {
-            // Arrange. Given
-            // Get hold of a valid showtime
+            // Arrange
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
 
             var existingMovie = CreateMovieUtils.Create();
@@ -68,11 +111,10 @@
 
             this.mockGuidGenerator.Create().Returns(Guid.NewGuid());
 
-            // Act. When.
-            // Invoke the handler.
+            // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
 
-            // Assert. Then.
+            // Assert
             // 1. Validate correct showtime created based on command.
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeEmpty();
@@ -85,18 +127,17 @@
         [Fact]
         public async Task HandleCreateShowtimeCommand_WhenShowtimeExist_ShouldReturnAValidationError()
         {
-            // Arrange. Given
+            // Arrange
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
             var existingShowtime = CreateShowtimeUtils.Create();
 
             this.mockShowtimeRepository.FirstOrDefaultAsync(Arg.Any<ShowtimeByMovieIdSessionDateSpec>(), Arg.Any<CancellationToken>())
                 .Returns(existingShowtime);
 
-            // Act. When.
-            // Invoke the handler.
+            // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
 
-            // Assert. Then.
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.ValidationErrors.Should().HaveCount(1);
             result.Value.Should().BeEmpty();
@@ -108,16 +149,16 @@
         [Fact]
         public async Task HandleCreateShowtimeCommand_WhenAuditoriumNotExist_ShouldReturnAError()
         {
-            // Arrange. Given
+            // Arrange
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
 
             this.mockAuditoriumRepository.FirstOrDefaultAsync(Arg.Any<AuditoriumByIdSpec>(), Arg.Any<CancellationToken>())
                 .Returns((Auditorium)null);
 
-            // Act. When Invoke the handler.
+            // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
 
-            // Assert. Then.
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
             result.Value.Should().BeEmpty();
@@ -129,7 +170,7 @@
         [Fact]
         public async Task HandleCreateShowtimeCommand_WhenMovieNotExist_ShouldReturnAError()
         {
-            // Arrange. Given
+            // Arrange
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
 
             var existingAuditorium = CreateAuditoriumUtils.Create();
@@ -143,10 +184,10 @@
             this.mockMovieRepository.FirstOrDefaultAsync(Arg.Any<MovieByIdSpec>(), Arg.Any<CancellationToken>())
                 .Returns((Movie)null);
 
-            // Act. When Invoke the handler.
+            // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
 
-            // Assert. Then.
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
             result.Value.Should().BeEmpty();

@@ -22,7 +22,13 @@
             this.validator = new CreateShowtimeCommandValidator(this.mockDatetime);
         }
 
-        // TODO: Add empty constructor tests.
+        [Fact]
+        public void CreateShowtimeCommandValidator_WhenHavingInvalidArguments_ShouldThrowArgumentException()
+        {
+            FluentActions.Invoking(() => new CreateShowtimeCommandValidator(null))
+            .Should().Throw<ArgumentNullException>();
+        }
+
         [Fact]
         public void ValidateCreateShowtimeCommand_WhenCommandIsValid_ShouldNotHaveError()
         {

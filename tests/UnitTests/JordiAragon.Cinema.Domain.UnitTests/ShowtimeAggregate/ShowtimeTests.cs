@@ -12,42 +12,72 @@
     using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
-
     using Showtime = JordiAragon.Cinema.Domain.ShowtimeAggregate.Showtime;
 
     public class ShowtimeTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateShowtime()
         {
-            yield return new object[] { null, null, default(DateTime), null };
-            yield return new object[] { null, null, default(DateTime), Constants.Showtime.AuditoriumId };
-            yield return new object[] { null, null, Constants.Showtime.SessionDateOnUtc, null };
-            yield return new object[] { null, null, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
-            yield return new object[] { null, Constants.Movie.Id, default(DateTime), null };
-            yield return new object[] { null, Constants.Movie.Id, default(DateTime), Constants.Showtime.AuditoriumId };
-            yield return new object[] { null, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, null };
-            yield return new object[] { null, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
-            yield return new object[] { Constants.Showtime.Id, null, Constants.Showtime.SessionDateOnUtc, Constants.Showtime.AuditoriumId };
-            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, Constants.Showtime.SessionDateOnUtc, null };
-            yield return new object[] { Constants.Showtime.Id, null, Constants.Showtime.SessionDateOnUtc, null };
-            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, default(DateTime), Constants.Showtime.AuditoriumId };
-            yield return new object[] { Constants.Showtime.Id, null, default(DateTime), Constants.Showtime.AuditoriumId };
-            yield return new object[] { Constants.Showtime.Id, Constants.Movie.Id, default(DateTime), null };
-            yield return new object[] { Constants.Showtime.Id, null, default(DateTime), null };
+            var showtimeId = Constants.Showtime.Id;
+            var movieId = Constants.Movie.Id;
+            var sessionDateOnUtc = Constants.Showtime.SessionDateOnUtc;
+            var auditoriumId = Constants.Showtime.AuditoriumId;
+
+            var showtimeIdValues = new object[] { null, showtimeId };
+            var movieIdValues = new object[] { null, movieId };
+            var sessionDateOnUtcValues = new object[] { default(DateTime), sessionDateOnUtc };
+            var auditoriumIdValues = new object[] { null, auditoriumId };
+
+            foreach (var showtimeIdValue in showtimeIdValues)
+            {
+                foreach (var movieIdValue in movieIdValues)
+                {
+                    foreach (var sessionDateOnUtcValue in sessionDateOnUtcValues)
+                    {
+                        foreach (var auditoriumIdValue in auditoriumIdValues)
+                        {
+                            if (showtimeIdValue != null && showtimeIdValue.Equals(showtimeId) &&
+                                    movieIdValue != null && movieIdValue.Equals(movieId) &&
+                                    sessionDateOnUtcValue.Equals(sessionDateOnUtc) &&
+                                    auditoriumIdValue != null && auditoriumIdValue.Equals(auditoriumId))
+                            {
+                                continue;
+                            }
+
+                            yield return new object[] { showtimeIdValue, movieIdValue, sessionDateOnUtcValue, auditoriumIdValue };
+                        }
+                    }
+                }
+            }
         }
 
         public static IEnumerable<object[]> InvalidArgumentsReserveSeats()
         {
-            yield return new object[] { null, null, default(DateTime) };
-            yield return new object[] { Constants.Ticket.Id, null, default(DateTime) };
-            yield return new object[] { null, new List<SeatId> { Constants.Seat.Id }, default(DateTime) };
-            yield return new object[] { null, new List<SeatId>(), default(DateTime) };
-            yield return new object[] { Constants.Ticket.Id, new List<SeatId> { Constants.Seat.Id }, default(DateTime) };
-            yield return new object[] { Constants.Ticket.Id, new List<SeatId>(), default(DateTime) };
-            yield return new object[] { null, new List<SeatId> { Constants.Seat.Id }, DateTime.UtcNow };
-            yield return new object[] { null, new List<SeatId>(), DateTime.UtcNow };
-            yield return new object[] { Constants.Ticket.Id, null, DateTime.UtcNow };
-            yield return new object[] { null, null, DateTime.UtcNow };
+            var ticketId = Constants.Ticket.Id;
+            var seatIds = new List<SeatId> { Constants.Seat.Id };
+            var createdTimeOnUtc = DateTime.UtcNow;
+
+            var ticketIdValues = new object[] { null, ticketId };
+            var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
+            var createdTimeOnUtcValues = new object[] { default(DateTime), createdTimeOnUtc };
+
+            foreach (var ticketIdValue in ticketIdValues)
+            {
+                foreach (var seatIdsValue in seatIdsValues)
+                {
+                    foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
+                    {
+                        if (ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
+                                    seatIdsValue != null && seatIdsValue.Equals(seatIds) &&
+                                    createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                        {
+                            continue;
+                        }
+
+                        yield return new object[] { ticketIdValue, seatIdsValue, createdTimeOnUtcValue };
+                    }
+                }
+            }
         }
 
         [Fact]
@@ -78,7 +108,7 @@
 
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateShowtime))]
-        public void CreateShowtime_WhenHavingInvalidArguments_ShouldShouldThrowException(
+        public void CreateShowtime_WhenHavingInvalidArguments_ShouldThrowException(
             ShowtimeId id,
             MovieId movieId,
             DateTime sessionDateOnUtc,

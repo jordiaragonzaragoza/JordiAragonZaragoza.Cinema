@@ -31,56 +31,41 @@
             var showtime = CreateShowtimeUtils.Create();
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
-                                                 .Select(seat => seat.Id);
+                                                 .Select(seat => seat.Id).ToList();
             var ticketId = Constants.Ticket.Id;
             var createdTimeOnUtc = DateTime.UtcNow;
 
-            yield return new object[] { null, null, null, null, default(DateTime) };
-            yield return new object[] { null, null, null, ticketId, default(DateTime) };
-            yield return new object[] { null, null, desiredSeatIds, null, default(DateTime) };
-            yield return new object[] { null, null, desiredSeatIds, ticketId, default(DateTime) };
-            yield return new object[] { null, showtime, null, null, default(DateTime) };
-            yield return new object[] { null, showtime, null, ticketId, default(DateTime) };
-            yield return new object[] { null, showtime, desiredSeatIds, null, default(DateTime) };
-            yield return new object[] { null, showtime, desiredSeatIds, ticketId, default(DateTime) };
-            yield return new object[] { auditorium, null, null, null, default(DateTime) };
-            yield return new object[] { auditorium, null, null, ticketId, default(DateTime) };
-            yield return new object[] { auditorium, null, desiredSeatIds, null, default(DateTime) };
-            yield return new object[] { auditorium, null, desiredSeatIds, ticketId, default(DateTime) };
-            yield return new object[] { auditorium, showtime, null, null, default(DateTime) };
-            yield return new object[] { auditorium, showtime, null, ticketId, default(DateTime) };
-            yield return new object[] { auditorium, showtime, desiredSeatIds, null, default(DateTime) };
-            yield return new object[] { auditorium, showtime, desiredSeatIds, ticketId, default(DateTime) };
-            yield return new object[] { null, null, null, null, createdTimeOnUtc };
-            yield return new object[] { null, null, null, ticketId, createdTimeOnUtc };
-            yield return new object[] { null, null, desiredSeatIds, null, createdTimeOnUtc };
-            yield return new object[] { null, null, desiredSeatIds, ticketId, createdTimeOnUtc };
-            yield return new object[] { null, showtime, null, null, createdTimeOnUtc };
-            yield return new object[] { null, showtime, null, ticketId, createdTimeOnUtc };
-            yield return new object[] { null, showtime, desiredSeatIds, null, createdTimeOnUtc };
-            yield return new object[] { null, showtime, desiredSeatIds, ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, null, null, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, null, ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, desiredSeatIds, null, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, desiredSeatIds, ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, showtime, null, null, createdTimeOnUtc };
-            yield return new object[] { auditorium, showtime, null, ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, showtime, desiredSeatIds, null, createdTimeOnUtc };
-            yield return new object[] { null, null, new List<SeatId>(), null, default(DateTime) };
-            yield return new object[] { null, null, new List<SeatId>(), ticketId, default(DateTime) };
-            yield return new object[] { null, showtime, new List<SeatId>(), null, default(DateTime) };
-            yield return new object[] { null, showtime, new List<SeatId>(), ticketId, default(DateTime) };
-            yield return new object[] { auditorium, null, new List<SeatId>(), null, default(DateTime) };
-            yield return new object[] { auditorium, null, new List<SeatId>(), ticketId, default(DateTime) };
-            yield return new object[] { auditorium, showtime, new List<SeatId>(), null, default(DateTime) };
-            yield return new object[] { auditorium, showtime, new List<SeatId>(), ticketId, default(DateTime) };
-            yield return new object[] { null, null, new List<SeatId>(), null, createdTimeOnUtc };
-            yield return new object[] { null, null, new List<SeatId>(), ticketId, createdTimeOnUtc };
-            yield return new object[] { null, showtime, new List<SeatId>(), null, createdTimeOnUtc };
-            yield return new object[] { null, showtime, new List<SeatId>(), ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, new List<SeatId>(), null, createdTimeOnUtc };
-            yield return new object[] { auditorium, null, new List<SeatId>(), ticketId, createdTimeOnUtc };
-            yield return new object[] { auditorium, showtime, new List<SeatId>(), null, createdTimeOnUtc };
+            var auditoriumValues = new object[] { null, auditorium };
+            var showtimeValues = new object[] { null, showtime };
+            var desiredSeatIdsValues = new object[] { null, new List<SeatId>(), desiredSeatIds };
+            var ticketIdValues = new object[] { null, ticketId };
+            var createdTimeOnUtcValues = new object[] { default(DateTime), createdTimeOnUtc };
+
+            foreach (var auditoriumValue in auditoriumValues)
+            {
+                foreach (var showtimeValue in showtimeValues)
+                {
+                    foreach (var desiredSeatIdsValue in desiredSeatIdsValues)
+                    {
+                        foreach (var ticketIdValue in ticketIdValues)
+                        {
+                            foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
+                            {
+                                if (auditoriumValue != null && auditoriumValue.Equals(auditorium) &&
+                                    showtimeValue != null && showtimeValue.Equals(showtime) &&
+                                    desiredSeatIdsValue != null && desiredSeatIdsValue.Equals(desiredSeatIds) &&
+                                    ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
+                                    createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                                {
+                                    continue;
+                                }
+
+                                yield return new object[] { auditoriumValue, showtimeValue, desiredSeatIdsValue, ticketIdValue, createdTimeOnUtcValue };
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         [Fact]
@@ -145,11 +130,8 @@
             TicketId ticketId,
             DateTime createdTimeOnUtc)
         {
-            // Act
-            Func<Ticket> ticketCreated = () => ShowtimeManager.ReserveSeats(auditorium, showtime, desiredSeatIds, ticketId, createdTimeOnUtc);
-
-            // Assert
-            ticketCreated.Should().Throw<ArgumentException>();
+            FluentActions.Invoking(() => ShowtimeManager.ReserveSeats(auditorium, showtime, desiredSeatIds, ticketId, createdTimeOnUtc))
+            .Should().Throw<ArgumentException>();
         }
 
         [Fact]
