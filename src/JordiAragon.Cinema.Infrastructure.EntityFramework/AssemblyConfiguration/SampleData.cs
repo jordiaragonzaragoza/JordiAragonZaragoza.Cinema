@@ -16,13 +16,42 @@
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var context = serviceScope.ServiceProvider.GetService<CinemaContext>();
-            context.Database.EnsureCreated();
+
+            if (context.Database.IsSqlServer())
+            {
+                context.Database.Migrate();
+                context.Database.EnsureCreated();
+            }
 
             if (HasAnyData(context))
             {
                 return;
             }
 
+            SetPreconfiguredData(context);
+        }
+
+        private static bool HasAnyData(CinemaContext context)
+        {
+            var dbSets = context.GetType().GetProperties()
+                                           .Where(p => p.PropertyType.IsGenericType
+                                                    && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+
+            foreach (var dbSetProperty in dbSets)
+            {
+                var dbSet = (IEnumerable<object>)dbSetProperty.GetValue(context);
+
+                if (dbSet.Any())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void SetPreconfiguredData(CinemaContext context)
+        {
             var exampleMovieId = MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
             var exampleMovie = Movie.Create(exampleMovieId, "Inception", "tt1375666", new DateTime(2010, 01, 14), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe");
 
@@ -47,25 +76,6 @@
             context.Auditoriums.Add(Auditorium.Create(auditoriumId3, 15, 21));
 
             context.SaveChanges();
-        }
-
-        private static bool HasAnyData(CinemaContext context)
-        {
-            var dbSets = context.GetType().GetProperties()
-                                           .Where(p => p.PropertyType.IsGenericType
-                                                    && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
-
-            foreach (var dbSetProperty in dbSets)
-            {
-                var dbSet = (IEnumerable<object>)dbSetProperty.GetValue(context);
-
-                if (dbSet.Any())
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }

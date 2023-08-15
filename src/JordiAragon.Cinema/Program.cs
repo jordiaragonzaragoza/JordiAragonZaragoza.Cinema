@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using ApplicationModule = JordiAragon.Cinema.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
@@ -64,9 +65,14 @@
 
             var app = builder.Build();
 
+            app.Logger.LogInformation("App created...");
+
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            SampleData.Initialize(app);
+            if (builder.Environment.EnvironmentName == "Development")
+            {
+                SampleData.Initialize(app);
+            }
 
             app.Run();
         }
