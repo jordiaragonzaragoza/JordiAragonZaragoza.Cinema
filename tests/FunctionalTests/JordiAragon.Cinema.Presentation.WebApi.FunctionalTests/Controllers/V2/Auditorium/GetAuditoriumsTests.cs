@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Auditoriums
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Auditorium
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -9,10 +9,11 @@
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Controllers.V2;
     using JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common;
+    using Microsoft.AspNetCore.Mvc.Testing;
     using Xunit;
 
-    [Collection("Sequential")]
-    public class GetAuditoriumsTests : IClassFixture<FunctionalTestsFixture<Program>>
+    [Collection(nameof(SharedTestCollection))]
+    public class GetAuditoriumsTests
     {
         private readonly HttpClient httpClient;
 

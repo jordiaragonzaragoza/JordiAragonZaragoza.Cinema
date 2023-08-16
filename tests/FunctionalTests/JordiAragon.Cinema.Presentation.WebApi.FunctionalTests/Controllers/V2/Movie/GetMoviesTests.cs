@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Movies
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Movie
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -11,8 +11,8 @@
     using JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common;
     using Xunit;
 
-    [Collection("Sequential")]
-    public class GetMoviesTests : IClassFixture<FunctionalTestsFixture<Program>>
+    [Collection(nameof(SharedTestCollection))]
+    public class GetMoviesTests
     {
         private readonly HttpClient httpClient;
 
