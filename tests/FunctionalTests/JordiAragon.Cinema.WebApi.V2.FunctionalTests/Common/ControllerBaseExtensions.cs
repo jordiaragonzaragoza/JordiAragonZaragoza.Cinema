@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.WebApi.V2.FunctionalTests.Common
 {
     using System;
-    using System.Linq.Expressions;
     using Microsoft.AspNetCore.Mvc;
 
     public static class ControllerBaseExtensions

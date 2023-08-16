@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.WebApi.V2.FunctionalTests.MoviesController
+﻿namespace JordiAragon.Cinema.WebApi.V2.FunctionalTests.AuditoriumsController
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -6,17 +6,17 @@
     using Ardalis.GuardClauses;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Movie.Responses;
+    using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Controllers.V2;
     using JordiAragon.Cinema.WebApi.V2.FunctionalTests.Common;
     using Xunit;
 
     [Collection("Sequential")]
-    public class GetMoviesControllerTests : IClassFixture<FunctionalTestsFixture<Program>>
+    public class GetAuditoriumsControllerTests : IClassFixture<FunctionalTestsFixture<Program>>
     {
         private readonly HttpClient httpClient;
 
-        public GetMoviesControllerTests(FunctionalTestsFixture<Program> fixture)
+        public GetAuditoriumsControllerTests(FunctionalTestsFixture<Program> fixture)
         {
             Guard.Against.Null(fixture, nameof(fixture));
 
@@ -24,19 +24,19 @@
         }
 
         [Fact]
-        public async Task GetAllMovies_WhenHavingValidUrl_ShouldReturnOneMovie()
+        public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnThreeAuditoriums()
         {
             // Arrange
-            var url = ControllerBaseExtensions.GetControllerBaseRoute<MoviesController>();
+            var url = ControllerBaseExtensions.GetControllerBaseRoute<AuditoriumsController>();
 
             // Act
-            var response = await this.httpClient.GetAndDeserializeAsync<IEnumerable<MovieResponse>>(url);
+            var response = await this.httpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url);
 
             // Assert
             response.Should()
                 .NotBeNullOrEmpty()
                 .And
-                .HaveCount(1);
+                .HaveCount(3);
         }
     }
 }
