@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>JordiAragon.Cinema.WebApi.V2.FunctionalTests</name>
+        <name>JordiAragon.Cinema.Presentation.WebApi.FunctionalTests</name>
     </assembly>
     <members>
     </members>

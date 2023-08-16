@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.WebApi.V2.FunctionalTests.Common
+﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common
 {
     using System;
     using Microsoft.AspNetCore.Mvc;
