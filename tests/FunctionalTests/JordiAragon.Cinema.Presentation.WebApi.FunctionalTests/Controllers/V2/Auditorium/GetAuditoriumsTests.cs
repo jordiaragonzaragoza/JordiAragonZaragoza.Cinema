@@ -21,7 +21,10 @@
         {
             Guard.Against.Null(fixture, nameof(fixture));
 
-            this.httpClient = fixture.HttpClient;
+            this.httpClient = fixture.CustomApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
         }
 
         [Fact]
@@ -37,7 +40,7 @@
             response.Should()
                 .NotBeNullOrEmpty()
                 .And
-                .HaveCount(3);
+                .HaveCount(1);
         }
     }
 }

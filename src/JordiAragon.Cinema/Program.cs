@@ -71,7 +71,7 @@
 
             if (builder.Environment.EnvironmentName == "Development")
             {
-                SampleData.Initialize(app);
+                SeedData.Initialize(app);
             }
 
             app.Run();

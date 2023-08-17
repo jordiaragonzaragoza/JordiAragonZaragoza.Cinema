@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Movie.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Controllers.V2;
     using JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common;
+    using Microsoft.AspNetCore.Mvc.Testing;
     using Xunit;
 
     [Collection(nameof(SharedTestCollection))]
@@ -20,7 +21,10 @@
         {
             Guard.Against.Null(fixture, nameof(fixture));
 
-            this.httpClient = fixture.HttpClient;
+            this.httpClient = fixture.CustomApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
         }
 
         [Fact]

@@ -13,13 +13,12 @@
         where TProgram : class
     {
         private readonly SqlEdgeContainer container = new SqlEdgeBuilder().WithImage("mcr.microsoft.com/azure-sql-edge:latest").WithAutoRemove(true).Build();
-        private CustomWebApplicationFactory<TProgram> customApplicationFactory;
         private SqlConnection connection;
         private bool disposedValue;
 
         ////private readonly IServiceScopeFactory scopeFactory;
 
-        public HttpClient HttpClient { get; private set; }
+        public CustomWebApplicationFactory<TProgram> CustomApplicationFactory { get; private set; }
 
         public async Task InitializeAsync()
         {
@@ -27,14 +26,9 @@
 
             this.connection = new SqlConnection(this.container.GetConnectionString());
 
-            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.connection);
+            this.CustomApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.connection);
 
             ////this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
-
-            this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false,
-            });
         }
 
         public async Task DisposeAsync()
@@ -56,10 +50,10 @@
             {
                 if (disposing)
                 {
-                    this.customApplicationFactory.Dispose();
+                    this.CustomApplicationFactory.Dispose();
                 }
 
-                this.customApplicationFactory = null;
+                this.CustomApplicationFactory = null;
                 this.disposedValue = true;
             }
         }

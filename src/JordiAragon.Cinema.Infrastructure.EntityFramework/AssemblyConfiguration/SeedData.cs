@@ -10,8 +10,29 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class SampleData
+    public static class SeedData
     {
+        public static readonly Movie ExampleMovie =
+            Movie.Create(
+                id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
+                title: "Inception",
+                imdbId: "tt1375666",
+                releaseDateOnUtc: new DateTime(2010, 01, 14),
+                stars: "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe");
+
+        public static readonly Auditorium ExampleAuditorium =
+            Auditorium.Create(
+                id: AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
+                rows: 28,
+                seatsPerRow: 22);
+
+        public static readonly Showtime ExampleShowtime =
+            Showtime.Create(
+                id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
+                movieId: MovieId.Create(ExampleMovie.Id.Value),
+                sessionDateOnUtc: new DateTime(2023, 1, 1),
+                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id.Value));
+
         public static void Initialize(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -52,28 +73,15 @@
 
         private static void SetPreconfiguredData(CinemaContext context)
         {
-            var exampleMovieId = MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"));
-            var exampleMovie = Movie.Create(exampleMovieId, "Inception", "tt1375666", new DateTime(2010, 01, 14), "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe");
+            context.Movies.Add(ExampleMovie);
 
-            context.Movies.Add(exampleMovie);
+            context.Auditoriums.Add(ExampleAuditorium);
 
-            var auditoriumId1 = AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53"));
-            var exampleAuditorium = Auditorium.Create(auditoriumId1, 28, 22);
+            context.Showtimes.Add(ExampleShowtime);
 
-            context.Auditoriums.Add(exampleAuditorium);
+            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
 
-            var exampleShowtimeId = ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b"));
-            var exampleShowtime = Showtime.Create(exampleShowtimeId, exampleMovieId, new DateTime(2023, 1, 1), AuditoriumId.Create(exampleAuditorium.Id.Value));
-            context.Showtimes.Add(exampleShowtime);
-
-            exampleAuditorium.AddShowtime(exampleShowtimeId);
-            exampleMovie.AddShowtime(exampleShowtimeId);
-
-            var auditoriumId2 = AuditoriumId.Create(Guid.NewGuid());
-            context.Auditoriums.Add(Auditorium.Create(auditoriumId2, 21, 18));
-
-            var auditoriumId3 = AuditoriumId.Create(Guid.NewGuid());
-            context.Auditoriums.Add(Auditorium.Create(auditoriumId3, 15, 21));
+            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
 
             context.SaveChanges();
         }
