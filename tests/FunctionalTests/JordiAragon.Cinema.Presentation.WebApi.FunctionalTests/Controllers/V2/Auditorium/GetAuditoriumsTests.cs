@@ -1,40 +1,38 @@
 ﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Auditorium
 {
     using System.Collections.Generic;
-    using System.Net.Http;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
+    using JordiAragon.Cinema;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Controllers.V2;
     using JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common;
-    using Microsoft.AspNetCore.Mvc.Testing;
     using Xunit;
+    using Xunit.Abstractions;
 
-    [Collection(nameof(SharedTestCollection))]
-    public class GetAuditoriumsTests
+    public class GetAuditoriumsTests : BaseWebApiFunctionalTests
     {
-        private readonly HttpClient httpClient;
-
-        public GetAuditoriumsTests(FunctionalTestsFixture<Program> fixture)
+        public GetAuditoriumsTests(
+            FunctionalTestsFixture<Program> fixture,
+            ITestOutputHelper outputHelper)
+            : base(fixture, outputHelper)
         {
-            Guard.Against.Null(fixture, nameof(fixture));
+        }
 
-            this.httpClient = fixture.CustomApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false,
-            });
+        protected override string ControllerBasePath
+        {
+            get => ControllerRouteHelpers.GetControllerBasePath<AuditoriumsController>();
         }
 
         [Fact]
-        public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnThreeAuditoriums()
+        public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnOneAuditorium()
         {
             // Arrange
-            var url = ControllerBaseExtensions.GetControllerBaseRoute<AuditoriumsController>();
+            var url = this.ControllerBasePath;
 
             // Act
-            var response = await this.httpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url);
+            var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url, this.OutputHelper);
 
             // Assert
             response.Should()

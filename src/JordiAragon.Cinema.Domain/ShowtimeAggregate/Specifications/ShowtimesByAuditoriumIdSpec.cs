@@ -11,13 +11,11 @@
     {
         public ShowtimesByAuditoriumIdSpec(
             AuditoriumId auditoriumId,
-            MovieId movieId,
             DateTime? startTimeOnUtc,
-            DateTime? endTimeOnUtc)
+            DateTime? endTimeOnUtc,
+            MovieId movieId = null)
         {
             Guard.Against.Null(auditoriumId);
-            Guard.Against.Null(movieId);
-            ////Guard.Against.Default(startTimeOnUtc);
 
             // TODO: Complete the query.
             this.Query

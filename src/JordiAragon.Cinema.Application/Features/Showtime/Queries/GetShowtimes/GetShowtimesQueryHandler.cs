@@ -32,9 +32,9 @@
         {
             var specification = new ShowtimesByAuditoriumIdSpec(
                 AuditoriumId.Create(request.AuditoriumId),
-                request.MovieId.HasValue ? MovieId.Create(request.MovieId.Value) : null,
                 request.StartTimeOnUtc,
-                request.EndTimeOnUtc);
+                request.EndTimeOnUtc,
+                request.MovieId.HasValue ? MovieId.Create(request.MovieId.Value) : null);
 
             var existingShowtimes = await this.showtimeRepository.ListAsync(specification, cancellationToken);
             if (!existingShowtimes.Any())
