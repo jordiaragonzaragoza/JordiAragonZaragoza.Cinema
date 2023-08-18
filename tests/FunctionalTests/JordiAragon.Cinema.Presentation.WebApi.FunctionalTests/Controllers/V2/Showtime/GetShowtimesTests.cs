@@ -13,7 +13,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetShowtimesTests : BaseWebApiFunctionalTests
+    public class GetShowtimesTests : BaseWebApiFunctionalTests<ShowtimesController>
     {
         public GetShowtimesTests(
             FunctionalTestsFixture<Program> fixture,
@@ -22,22 +22,17 @@
         {
         }
 
-        protected override string ControllerBasePath
-        {
-            get => ControllerRouteHelpers.GetControllerBasePath<ShowtimesController>();
-        }
-
         public static IEnumerable<object[]> InvalidArgumentsGetAllShowtimes()
         {
             var movieId = SeedData.ExampleMovie.Id.ToString();
             var auditoriumId = SeedData.ExampleAuditorium.Id.ToString();
-            var startTimeOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
-            var endTimeOnUtc = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            var startTimeOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc.ToString("O");
+            var endTimeOnUtc = DateTime.UtcNow.ToString("O");
 
             var movieIdValues = new object[] { null, string.Empty, " ", movieId };
             var auditoriumIdValues = new object[] { null, string.Empty, " ", auditoriumId };
-            var startTimeOnUtcValues = new object[] { null, string.Empty, " ", SeedData.ExampleShowtime.SessionDateOnUtc.ToString(), startTimeOnUtc };
-            var endTimeOnUtcValues = new object[] { null, string.Empty, " ", DateTime.UtcNow.ToString(), endTimeOnUtc };
+            var startTimeOnUtcValues = new object[] { null, string.Empty, " ", default(DateTime).ToString("O"), startTimeOnUtc };
+            var endTimeOnUtcValues = new object[] { null, string.Empty, " ", default(DateTime).ToString("O"), endTimeOnUtc };
 
             foreach (var movieIdValue in movieIdValues)
             {
@@ -65,11 +60,15 @@
             // Arrange
             var movieId = SeedData.ExampleMovie.Id.ToString();
             var auditoriumId = SeedData.ExampleAuditorium.Id.ToString();
+            var startTimeOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc.ToString("O");
+            var endTimeOnUtc = DateTime.UtcNow.ToString("O");
 
             string pathAndQuery = ControllerRouteHelpers.BuildUriWithQueryParameters(
-                this.ControllerBasePath,
+                this.ControllerBaseRoute,
                 (nameof(movieId), movieId),
-                (nameof(auditoriumId), auditoriumId));
+                (nameof(auditoriumId), auditoriumId),
+                (nameof(startTimeOnUtc), startTimeOnUtc),
+                (nameof(endTimeOnUtc), endTimeOnUtc));
 
             // Act
             var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
@@ -83,14 +82,14 @@
 
         [Theory]
         [MemberData(nameof(InvalidArgumentsGetAllShowtimes))]
-        public async Task XXX_GetAllShowtimes_WhenHavingInValidArguments_ShouldReturnBadRequest(
+        public async Task GetAllShowtimes_WhenHavingInValidArguments_ShouldReturnBadRequest(
             string movieId,
             string auditoriumId,
             string startTimeOnUtc,
             string endTimeOnUtc)
         {
             string pathAndQuery = ControllerRouteHelpers.BuildUriWithQueryParameters(
-                this.ControllerBasePath,
+                this.ControllerBaseRoute,
                 (nameof(movieId), movieId),
                 (nameof(auditoriumId), auditoriumId),
                 (nameof(startTimeOnUtc), startTimeOnUtc),

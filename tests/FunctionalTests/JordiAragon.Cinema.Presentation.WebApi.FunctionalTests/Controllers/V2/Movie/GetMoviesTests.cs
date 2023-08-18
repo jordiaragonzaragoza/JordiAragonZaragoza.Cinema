@@ -10,7 +10,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetMoviesTests : BaseWebApiFunctionalTests
+    public class GetMoviesTests : BaseWebApiFunctionalTests<MoviesController>
     {
         public GetMoviesTests(
             FunctionalTestsFixture<Program> fixture,
@@ -19,16 +19,11 @@
         {
         }
 
-        protected override string ControllerBasePath
-        {
-            get => ControllerRouteHelpers.GetControllerBasePath<MoviesController>();
-        }
-
         [Fact]
         public async Task GetAllMovies_WhenHavingValidUrl_ShouldReturnOneMovie()
         {
             // Arrange
-            var url = this.ControllerBasePath;
+            var url = this.ControllerBaseRoute;
 
             // Act
             var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<MovieResponse>>(url, this.OutputHelper);

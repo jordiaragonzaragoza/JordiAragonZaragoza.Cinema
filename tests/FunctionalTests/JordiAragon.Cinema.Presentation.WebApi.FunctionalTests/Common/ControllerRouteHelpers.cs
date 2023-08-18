@@ -1,8 +1,11 @@
 ﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
     using System.Web;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Routing;
 
     public static class ControllerRouteHelpers
     {
@@ -28,7 +31,7 @@
             return uriBuilder.Uri.PathAndQuery;
         }
 
-        public static string GetControllerBasePath<TController>()
+        public static string GetControllerBaseRoute<TController>()
             where TController : ControllerBase
         {
             var controllerType = typeof(TController);
@@ -42,6 +45,28 @@
             }
 
             return $"api/v{version[0]}/{controllerName.ToLowerInvariant()}"; // Use only the major version
+        }
+
+        public static string GetControllerMethodRoute<TController>(string methodName)
+            where TController : ControllerBase
+        {
+            var controllerType = typeof(TController);
+            var methodInfo = controllerType.GetMethod(methodName);
+
+            if (methodInfo != null)
+            {
+                var attributeRouteModel = methodInfo
+                    .GetCustomAttributes(typeof(HttpMethodAttribute), inherit: false)
+                    .OfType<HttpMethodAttribute>()
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(attributeRouteModel?.Template))
+                {
+                    return "/" + attributeRouteModel.Template;
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -11,7 +11,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetAuditoriumsTests : BaseWebApiFunctionalTests
+    public class GetAuditoriumsTests : BaseWebApiFunctionalTests<AuditoriumsController>
     {
         public GetAuditoriumsTests(
             FunctionalTestsFixture<Program> fixture,
@@ -20,16 +20,11 @@
         {
         }
 
-        protected override string ControllerBasePath
-        {
-            get => ControllerRouteHelpers.GetControllerBasePath<AuditoriumsController>();
-        }
-
         [Fact]
         public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnOneAuditorium()
         {
             // Arrange
-            var url = this.ControllerBasePath;
+            var url = this.ControllerBaseRoute;
 
             // Act
             var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url, this.OutputHelper);

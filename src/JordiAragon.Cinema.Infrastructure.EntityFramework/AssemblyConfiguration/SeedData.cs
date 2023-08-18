@@ -17,7 +17,7 @@
                 id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
                 imdbId: "tt1375666",
-                releaseDateOnUtc: new DateTime(2010, 01, 14),
+                releaseDateOnUtc: new DateTime(2010, 01, 14, 1, 1, 1, 1, DateTimeKind.Utc),
                 stars: "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe");
 
         public static readonly Auditorium ExampleAuditorium =
@@ -30,7 +30,7 @@
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
                 movieId: MovieId.Create(ExampleMovie.Id.Value),
-                sessionDateOnUtc: new DateTime(2023, 1, 1),
+                sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id.Value));
 
         public static void Initialize(IApplicationBuilder app)
