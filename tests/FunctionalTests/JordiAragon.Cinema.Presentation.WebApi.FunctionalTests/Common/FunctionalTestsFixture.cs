@@ -3,9 +3,12 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using JordiAragon.Cinema.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Infrastructure.EntityFramework.AssemblyConfiguration;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
+    using Respawn;
     using Testcontainers.SqlEdge;
     using Xunit;
 
@@ -14,11 +17,12 @@
     {
         private readonly SqlEdgeContainer container = new SqlEdgeBuilder().WithImage("mcr.microsoft.com/azure-sql-edge:latest").WithAutoRemove(true).Build();
         private SqlConnection connection;
+        private CustomWebApplicationFactory<TProgram> customApplicationFactory;
+        private IServiceScopeFactory scopeFactory;
+        private Respawner respawner;
         private bool disposedValue;
 
-        ////private readonly IServiceScopeFactory scopeFactory;
-
-        public CustomWebApplicationFactory<TProgram> CustomApplicationFactory { get; private set; }
+        public HttpClient HttpClient { get; private set; }
 
         public async Task InitializeAsync()
         {
@@ -26,9 +30,31 @@
 
             this.connection = new SqlConnection(this.container.GetConnectionString());
 
-            this.CustomApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.connection);
+            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.connection);
 
-            ////this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
+            this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+            this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
+
+            this.respawner = await Respawner.CreateAsync(this.container.GetConnectionString(), new RespawnerOptions
+            {
+                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+            });
+        }
+
+        public void InitDatabase()
+        {
+            using var scope = this.scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetService<CinemaContext>();
+            SeedData.PopulateTestData(context);
+        }
+
+        public async Task ResetDatabaseAsync()
+        {
+            await this.respawner.ResetAsync(this.container.GetConnectionString());
         }
 
         public async Task DisposeAsync()
@@ -50,10 +76,10 @@
             {
                 if (disposing)
                 {
-                    this.CustomApplicationFactory.Dispose();
+                    this.customApplicationFactory.Dispose();
                 }
 
-                this.CustomApplicationFactory = null;
+                this.customApplicationFactory = null;
                 this.disposedValue = true;
             }
         }

@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Common
 {
+    using System;
     using System.Data.Common;
     using JordiAragon.Cinema.Infrastructure.EntityFramework;
     using Microsoft.AspNetCore.Hosting;

@@ -71,7 +71,7 @@
                 (nameof(endTimeOnUtc), endTimeOnUtc));
 
             // Act
-            var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
 
             // Assert
             response.Should()
@@ -96,7 +96,7 @@
                 (nameof(endTimeOnUtc), endTimeOnUtc));
 
             // Act
-            var response = await this.HttpClient.GetAndEnsureBadRequestAsync(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndEnsureBadRequestAsync(pathAndQuery, this.OutputHelper);
 
             // Assert
             response.StatusCode.Should()

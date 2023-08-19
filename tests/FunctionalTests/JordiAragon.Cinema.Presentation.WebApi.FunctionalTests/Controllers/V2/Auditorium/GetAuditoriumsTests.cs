@@ -27,7 +27,7 @@
             var url = this.ControllerBaseRoute;
 
             // Act
-            var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url, this.OutputHelper);
 
             // Assert
             response.Should()

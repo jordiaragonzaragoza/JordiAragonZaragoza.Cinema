@@ -37,7 +37,11 @@
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var context = serviceScope.ServiceProvider.GetService<CinemaContext>();
+            PopulateTestData(context);
+        }
 
+        public static void PopulateTestData(CinemaContext context)
+        {
             if (context.Database.IsSqlServer())
             {
                 context.Database.Migrate();

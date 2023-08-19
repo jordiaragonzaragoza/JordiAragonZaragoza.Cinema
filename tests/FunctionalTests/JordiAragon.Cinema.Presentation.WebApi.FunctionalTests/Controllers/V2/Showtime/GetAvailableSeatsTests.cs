@@ -30,7 +30,7 @@
             route = route.Replace("{showtimeId}", showtimeId);
 
             // Act
-            var response = await this.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);
 
             // Assert
             response.Should()
