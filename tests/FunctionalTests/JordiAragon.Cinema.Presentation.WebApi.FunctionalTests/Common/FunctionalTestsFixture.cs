@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Respawn;
     using Testcontainers.SqlEdge;
     using Xunit;
@@ -48,8 +49,17 @@
         public void InitDatabase()
         {
             using var scope = this.scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetService<CinemaContext>();
-            SeedData.PopulateTestData(context);
+            var context = scope.ServiceProvider.GetRequiredService<CinemaContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
+
+            try
+            {
+                SeedData.PopulateTestData(context);
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(exception, "An error occurred seeding the database with test data. Error: {exceptionMessage}", exception.Message);
+            }
         }
 
         public async Task ResetDatabaseAsync()

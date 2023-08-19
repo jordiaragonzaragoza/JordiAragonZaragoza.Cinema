@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public static class SeedData
     {
@@ -33,11 +34,18 @@
                 sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id.Value));
 
-        public static void Initialize(IApplicationBuilder app)
+        public static void Initialize(WebApplication app)
         {
-            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetService<CinemaContext>();
-            PopulateTestData(context);
+            using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<CinemaContext>();
+            try
+            {
+                PopulateTestData(context);
+            }
+            catch (Exception exception)
+            {
+                app.Logger.LogError(exception, "An error occurred seeding the database with test data. Error: {exceptionMessage}", exception.Message);
+            }
         }
 
         public static void PopulateTestData(CinemaContext context)
