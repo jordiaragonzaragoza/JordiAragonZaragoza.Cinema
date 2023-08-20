@@ -61,7 +61,7 @@
             Description = "Deletes an existing Showtime",
             OperationId = "Showtime.Delete")
         ]
-        public async Task<ActionResult<Guid>> DeleteAsync(Guid showtimeId, CancellationToken cancellationToken)
+        public async Task<ActionResult> DeleteAsync(Guid showtimeId, CancellationToken cancellationToken)
         {
             var result = await this.Sender.Send(new DeleteShowtimeCommand(showtimeId), cancellationToken);
 
