@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Showtime
 {
-    using System;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
@@ -34,7 +33,7 @@
 
             // Assert
             response.StatusCode.Should()
-                .Be(System.Net.HttpStatusCode.NoContent);
+                .Be(System.Net.HttpStatusCode.OK);
         }
     }
 }
