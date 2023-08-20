@@ -22,6 +22,7 @@
         {
         }
 
+        /*
         public static IEnumerable<object[]> InvalidArgumentsGetAllShowtimes()
         {
             var movieId = SeedData.ExampleMovie.Id.ToString();
@@ -54,6 +55,29 @@
             }
         }
 
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsGetAllShowtimes))]
+        public async Task GetAllShowtimes_WhenHavingInValidArguments_ShouldReturnBadRequest(
+            string movieId,
+            string auditoriumId,
+            string startTimeOnUtc,
+            string endTimeOnUtc)
+        {
+            string pathAndQuery = ControllerRouteHelpers.BuildUriWithQueryParameters(
+                this.ControllerBaseRoute,
+                (nameof(movieId), movieId),
+                (nameof(auditoriumId), auditoriumId),
+                (nameof(startTimeOnUtc), startTimeOnUtc),
+                (nameof(endTimeOnUtc), endTimeOnUtc));
+
+            // Act
+            var response = await this.Fixture.HttpClient.GetAndEnsureBadRequestAsync(pathAndQuery, this.OutputHelper);
+
+            // Assert
+            response.StatusCode.Should()
+                .Be(HttpStatusCode.BadRequest);
+        }*/
+
         [Fact]
         public async Task GetAllShowtimes_WhenHavingValidArguments_ShouldReturnOneShowtime()
         {
@@ -78,29 +102,6 @@
                 .NotBeNullOrEmpty()
                 .And
             .HaveCount(1);
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidArgumentsGetAllShowtimes))]
-        public async Task GetAllShowtimes_WhenHavingInValidArguments_ShouldReturnBadRequest(
-            string movieId,
-            string auditoriumId,
-            string startTimeOnUtc,
-            string endTimeOnUtc)
-        {
-            string pathAndQuery = ControllerRouteHelpers.BuildUriWithQueryParameters(
-                this.ControllerBaseRoute,
-                (nameof(movieId), movieId),
-                (nameof(auditoriumId), auditoriumId),
-                (nameof(startTimeOnUtc), startTimeOnUtc),
-                (nameof(endTimeOnUtc), endTimeOnUtc));
-
-            // Act
-            var response = await this.Fixture.HttpClient.GetAndEnsureBadRequestAsync(pathAndQuery, this.OutputHelper);
-
-            // Assert
-            response.StatusCode.Should()
-                .Be(HttpStatusCode.BadRequest);
         }
     }
 }

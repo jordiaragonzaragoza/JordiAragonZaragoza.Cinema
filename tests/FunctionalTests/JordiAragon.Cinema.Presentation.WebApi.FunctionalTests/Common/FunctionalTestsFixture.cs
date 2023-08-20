@@ -16,7 +16,12 @@
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
-        private readonly SqlEdgeContainer container = new SqlEdgeBuilder().WithImage("mcr.microsoft.com/azure-sql-edge:latest").WithAutoRemove(true).Build();
+        private readonly SqlEdgeContainer container =
+            new SqlEdgeBuilder()
+            .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
+            .WithName("azuresqledge.test.cinema")
+            .WithAutoRemove(true).Build();
+
         private SqlConnection connection;
         private CustomWebApplicationFactory<TProgram> customApplicationFactory;
         private IServiceScopeFactory scopeFactory;

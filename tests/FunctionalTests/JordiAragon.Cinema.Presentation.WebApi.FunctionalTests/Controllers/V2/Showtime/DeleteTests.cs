@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Presentation.WebApi.FunctionalTests.Controllers.V2.Showtime
 {
     using System.Threading.Tasks;
-    using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinema;
     using JordiAragon.Cinema.Infrastructure.EntityFramework.AssemblyConfiguration;
@@ -29,7 +28,8 @@
             route = route.Replace("{showtimeId}", showtimeId);
 
             // Act
-            var response = await this.Fixture.HttpClient.DeleteAndEnsureNoContentAsync(route, this.OutputHelper);
+            this.OutputHelper.WriteLine($"Requesting with DELETE {route}");
+            var response = await this.Fixture.HttpClient.DeleteAsync(route);
 
             // Assert
             response.StatusCode.Should()
