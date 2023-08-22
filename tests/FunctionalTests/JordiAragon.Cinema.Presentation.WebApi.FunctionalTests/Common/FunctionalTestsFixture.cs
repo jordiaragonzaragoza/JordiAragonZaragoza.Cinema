@@ -19,7 +19,7 @@
         private readonly SqlEdgeContainer container =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.test.cinema")
+            .WithName("azuresqledge.cinema.presentation.webapi.functionaltests")
             .WithAutoRemove(true).Build();
 
         private SqlConnection connection;
