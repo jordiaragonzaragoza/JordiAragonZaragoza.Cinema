@@ -26,8 +26,9 @@ dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinem
 - Repository & Specification
 - Custom API Error Handling
 - Architecture Tests
-- Domain and Application Unit Tests
-- WebApi Functional Tests with Testcontainers
+- Unit Tests: Domain and Application
+- Functional Tests with Testcontainers: Presentation.WebApi
+- Integration Tests with Testcontainers: Infrastructure.EntityFramework
 
 ## Custom Shared Kernel:
 - This project uses [JordiAragon.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragon.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
