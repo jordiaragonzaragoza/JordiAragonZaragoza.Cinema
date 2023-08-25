@@ -26,9 +26,12 @@ COPY ["src/JordiAragon.Cinema.Infrastructure/JordiAragon.Cinema.Infrastructure.c
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure/JordiAragon.SharedKernel.Infrastructure.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure/"]
 COPY ["src/JordiAragon.Cinema.Infrastructure.EntityFramework/JordiAragon.Cinema.Infrastructure.EntityFramework.csproj", "src/JordiAragon.Cinema.Infrastructure.EntityFramework/"]
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EntityFramework/JordiAragon.SharedKernel.Infrastructure.EntityFramework.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EntityFramework/"]
+COPY ["src/JordiAragon.Cinema.Infrastructure.EventStore/JordiAragon.Cinema.Infrastructure.EventStore.csproj", "src/JordiAragon.Cinema.Infrastructure.EventStore/"]
+COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EventStore/JordiAragon.SharedKernel.Infrastructure.EventStore.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EventStore/"]
 COPY ["src/JordiAragon.Cinema.Presentation.WebApi/JordiAragon.Cinema.Presentation.WebApi.csproj", "src/JordiAragon.Cinema.Presentation.WebApi/"]
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi/JordiAragon.SharedKernel.Presentation.WebApi.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi/"]
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi.Contracts/JordiAragon.SharedKernel.Presentation.WebApi.Contracts.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi.Contracts/"]
+COPY ["src/JordiAragon.Cinema.Presentation.WebApi.Contracts.V2/JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.csproj", "src/JordiAragon.Cinema.Presentation.WebApi.Contracts.V2/"]
 COPY ["src/JordiAragon.Cinema.Presentation.WebApi.Contracts.V1/JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.csproj", "src/JordiAragon.Cinema.Presentation.WebApi.Contracts.V1/"]
 RUN dotnet restore "src/JordiAragon.Cinema/JordiAragon.Cinema.csproj"
 COPY . .
