@@ -13,7 +13,7 @@ on:
       - release
     
 jobs:
-  build:
+  build-test:
 
     runs-on: ubuntu-latest
 
@@ -33,6 +33,13 @@ jobs:
 
     - name: Test
       run: dotnet test JordiAragon.Cinema.sln --no-build --configuration Release
+  
+  analyze:
+
+    runs-on: windows-latest
+    needs: build-test
+    
+    steps:
     
     - name: Set up JDK 17
       uses: actions/setup-java@v3
