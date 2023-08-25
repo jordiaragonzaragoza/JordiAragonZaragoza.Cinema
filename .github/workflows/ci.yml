@@ -29,7 +29,7 @@ jobs:
       run: dotnet restore JordiAragon.Cinema.sln
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build JordiAragon.Cinema.sln --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test --no-build --configuration Release
+      run: dotnet test JordiAragon.Cinema.sln --no-build --configuration Release
