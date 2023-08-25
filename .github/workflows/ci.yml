@@ -1,4 +1,4 @@
-name: Build and test .NET Core
+name: Build, Test, and SonarCloud Analysis on .NET Core
 
 on:
   push:
@@ -33,3 +33,9 @@ jobs:
 
     - name: Test
       run: dotnet test JordiAragon.Cinema.sln --no-build --configuration Release
+    
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
