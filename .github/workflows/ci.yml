@@ -26,7 +26,7 @@ jobs:
           dotnet-version: '7.x'
 
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore JordiAragon.Cinema.sln
 
     - name: Build
       run: dotnet build --no-restore --configuration Release
