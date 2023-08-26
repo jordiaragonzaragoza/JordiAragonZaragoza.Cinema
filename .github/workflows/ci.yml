@@ -13,9 +13,9 @@ on:
       - release
     
 jobs:
-  build-test-analyze:
+  build-test:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -33,7 +33,20 @@ jobs:
 
     - name: Test and Generate Coverage
       run: dotnet test JordiAragon.Cinema.sln --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage.xml
+    
+    - name: Upload Coverage Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-reports
+        path: ./**/coverage.xml
   
+  analyze:
+
+    runs-on: windows-latest
+    needs: build-test
+    
+    steps:
+    
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -42,6 +55,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+    
+    - name: Download Coverage Reports
+      uses: actions/download-artifact@v3
+      with:
+        name: coverage-reports
+
     - name: Cache SonarCloud packages
       uses: actions/cache@v3
       with:
@@ -67,6 +86,16 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=**/coverage.xml /d:sonar.host.url="https://sonarcloud.io"
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="./coverage-reports/**/coverage.xml" /d:sonar.host.url="https://sonarcloud.io"
         dotnet build JordiAragon.Cinema.sln --no-incremental
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+  cleanup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Clean up artifacts
+      uses: GeekyEggo/delete-artifact@v2.0.0
+      with:
+        name: coverage-reports
