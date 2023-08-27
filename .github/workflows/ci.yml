@@ -32,13 +32,13 @@ jobs:
       run: dotnet build JordiAragon.Cinema.sln --no-restore --configuration Release
 
     - name: Test and Generate Coverage
-      run: dotnet test JordiAragon.Cinema.sln --no-build --configuration Release /p:CollectCoverage=true  /p:CoverletOutput=../../CoverageResults/ /p:MergeWith="../../CoverageResults/coverage.json" /p:CoverletOutputFormat=\"opencover,json\" -m:1
+      run: dotnet test JordiAragon.Cinema.sln /p:CollectCoverage=true  /p:CoverletOutput=../../CoverageResults/ /p:MergeWith="../../CoverageResults/coverage.json" /p:CoverletOutputFormat=\"opencover,json\" -m:1
     
     - name: Upload Coverage Reports
       uses: actions/upload-artifact@v3
       with:
         name: coverage-reports
-        path: tests/CoverageResults/coverage.xml
+        path: tests/CoverageResults/
   
   analyze:
 
