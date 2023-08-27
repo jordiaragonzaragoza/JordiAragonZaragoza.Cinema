@@ -86,7 +86,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="./coverage-reports/**/coverage.xml" /d:sonar.host.url="https://sonarcloud.io"
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="./coverage-reports/coverage.opencover.xml" /d:sonar.host.url="https://sonarcloud.io"
         dotnet build JordiAragon.Cinema.sln --no-incremental
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
