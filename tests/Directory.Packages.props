@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageVersion Include="Ardalis.HttpClientTestExtensions" Version="4.1.0" />
 		<PackageVersion Include="coverlet.collector" Version="6.0.0" />
+		<PackageVersion Include="coverlet.msbuild" Version="6.0.0" />
 		<PackageVersion Include="FluentAssertions" Version="6.12.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.10" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.10" />
