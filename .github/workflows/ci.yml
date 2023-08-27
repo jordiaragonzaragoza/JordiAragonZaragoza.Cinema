@@ -63,7 +63,6 @@ jobs:
 
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: coverage-reports
 
     - name: Cache SonarCloud packages
       uses: actions/cache@v3
@@ -86,14 +85,14 @@ jobs:
       run: |
         New-Item -Path .\.sonar\scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-        
+
     - name: Build and analyze
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=/coverage-reports/coverage.opencover.xml /d:sonar.host.url="https://sonarcloud.io"
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:"jordiaragonzaragoza_JordiAragon.Cinema" /o:"jordiaragonzaragoza" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="D:/a/JordiAragon.Cinema/JordiAragon.Cinema/coverage.opencover.xml" /d:sonar.host.url="https://sonarcloud.io"
         dotnet build JordiAragon.Cinema.sln --no-incremental
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
