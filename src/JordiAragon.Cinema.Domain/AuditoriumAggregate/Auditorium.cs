@@ -9,6 +9,8 @@
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
 
+    using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
+
     public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
@@ -32,10 +34,6 @@
             short rows,
             short seatsPerRow)
         {
-            Guard.Against.Null(id, nameof(id));
-            Guard.Against.NegativeOrZero(rows, nameof(rows));
-            Guard.Against.NegativeOrZero(seatsPerRow, nameof(seatsPerRow));
-
             var auditorium = new Auditorium();
 
             auditorium.Apply(new AuditoriumCreatedEvent(id, rows, seatsPerRow));
@@ -54,7 +52,7 @@
             switch (domainEvent)
             {
                 case AuditoriumCreatedEvent @event:
-                    this.ProcessAuditoriumCreatedEvent(@event);
+                    this.Applier(@event);
                     break;
 
                 case ShowtimeAddedEvent @event:
@@ -62,7 +60,7 @@
                     break;
 
                 case ShowtimeRemovedEvent @event:
-                    this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                    this.Applier(@event);
                     break;
             }
         }
@@ -95,12 +93,21 @@
             return generatedSeats;
         }
 
-        private void ProcessAuditoriumCreatedEvent(AuditoriumCreatedEvent @event)
+        private void Applier(AuditoriumCreatedEvent @event)
         {
             this.Id = AuditoriumId.Create(@event.AggregateId);
             this.Rows = @event.Rows;
             this.SeatsPerRow = @event.SeatsPerRow;
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
+        }
+
+        private void Applier(ShowtimeRemovedEvent @event)
+        {
+            var isRemoved = this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+            if (!isRemoved)
+            {
+                throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());
+            }
         }
     }
 }

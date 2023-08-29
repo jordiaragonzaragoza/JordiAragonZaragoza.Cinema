@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using Ardalis.GuardClauses;
     using Ardalis.Specification;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.MovieAggregate;
@@ -10,10 +11,12 @@
     {
         public ShowtimesByAuditoriumIdSpec(
             AuditoriumId auditoriumId,
-            MovieId movieId,
             DateTime? startTimeOnUtc,
-            DateTime? endTimeOnUtc)
+            DateTime? endTimeOnUtc,
+            MovieId movieId = null)
         {
+            Guard.Against.Null(auditoriumId);
+
             // TODO: Complete the query.
             this.Query
                 .Where(showtime => showtime.AuditoriumId == auditoriumId);

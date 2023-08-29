@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Events;
-    using JordiAragon.Cinema.Application.Features.Showtime.Events;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;
     using JordiAragon.Cinema.Domain.ShowtimeAggregate;

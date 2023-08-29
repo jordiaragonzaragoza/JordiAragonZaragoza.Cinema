@@ -48,7 +48,7 @@
             switch (domainEvent)
             {
                 case MovieCreatedEvent @event:
-                    this.ProcessMovieCreatedEvent(@event);
+                    this.Applier(@event);
                     break;
 
                 case ShowtimeAddedEvent @event:
@@ -77,7 +77,7 @@
             }
         }
 
-        private void ProcessMovieCreatedEvent(MovieCreatedEvent @event)
+        private void Applier(MovieCreatedEvent @event)
         {
             this.Id = MovieId.Create(@event.AggregateId);
             this.Title = @event.Title;

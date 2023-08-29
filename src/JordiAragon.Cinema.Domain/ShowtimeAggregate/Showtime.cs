@@ -43,12 +43,6 @@
             return showtime;
         }
 
-        public void PurchaseSeats(TicketId ticketId)
-            => this.Apply(new PurchasedSeatsEvent(this.Id, ticketId));
-
-        public void ExpireReservedSeats(TicketId ticketToRemove)
-            => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
-
         public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTime createdTimeOnUtc)
         {
             this.Apply(new ReservedSeatsEvent(this.Id, id, seatIds.Select(x => x.Value), createdTimeOnUtc));
@@ -56,24 +50,30 @@
             return this.tickets.Last();
         }
 
+        public void PurchaseSeats(TicketId ticketId)
+            => this.Apply(new PurchasedSeatsEvent(this.Id, ticketId));
+
+        public void ExpireReservedSeats(TicketId ticketToRemove)
+            => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
+
         protected override void When(IDomainEvent domainEvent)
         {
             switch (domainEvent)
             {
                 case ShowtimeCreatedEvent @event:
-                    this.ProccessShowtimeCreatedEvent(@event);
-                    break;
-
-                case PurchasedSeatsEvent @event:
-                    this.ProcessPurchaseSeatsEvent(@event);
-                    break;
-
-                case ExpiredReservedSeatsEvent @event:
-                    this.ProccessExpiredReservedSeatsEvent(@event);
+                    this.Applier(@event);
                     break;
 
                 case ReservedSeatsEvent @event:
-                    this.ProcessReservedSeatsEvent(@event);
+                    this.Applier(@event);
+                    break;
+
+                case PurchasedSeatsEvent @event:
+                    this.Applier(@event);
+                    break;
+
+                case ExpiredReservedSeatsEvent @event:
+                    this.Applier(@event);
                     break;
             }
         }
@@ -93,7 +93,7 @@
             }
         }
 
-        private void ProccessShowtimeCreatedEvent(ShowtimeCreatedEvent @event)
+        private void Applier(ShowtimeCreatedEvent @event)
         {
             this.Id = ShowtimeId.Create(@event.AggregateId);
             this.MovieId = MovieId.Create(@event.MovieId);
@@ -101,7 +101,19 @@
             this.AuditoriumId = AuditoriumId.Create(@event.AuditoriumId);
         }
 
-        private void ProcessPurchaseSeatsEvent(PurchasedSeatsEvent @event)
+        private void Applier(ReservedSeatsEvent @event)
+        {
+            var seatIds = @event.SeatIds.Select(SeatId.Create);
+
+            var newTicket = Ticket.Create(
+                 TicketId.Create(@event.TicketId),
+                 seatIds,
+                 @event.CreatedTimeOnUtc);
+
+            this.tickets.Add(newTicket);
+        }
+
+        private void Applier(PurchasedSeatsEvent @event)
         {
             var ticketId = TicketId.Create(@event.TicketId);
 
@@ -113,7 +125,7 @@
             ticket.MarkAsPaid();
         }
 
-        private void ProccessExpiredReservedSeatsEvent(ExpiredReservedSeatsEvent @event)
+        private void Applier(ExpiredReservedSeatsEvent @event)
         {
             var ticketToRemove = TicketId.Create(@event.TicketId);
 
@@ -121,18 +133,6 @@
                                    ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value.ToString());
 
             this.tickets.Remove(existingTicket);
-        }
-
-        private void ProcessReservedSeatsEvent(ReservedSeatsEvent @event)
-        {
-            var seatIds = @event.SeatIds.Select(SeatId.Create);
-
-            var newTicket = Ticket.Create(
-                 TicketId.Create(@event.TicketId),
-                 seatIds,
-                 @event.CreatedTimeOnUtc);
-
-            this.tickets.Add(newTicket);
         }
     }
 }

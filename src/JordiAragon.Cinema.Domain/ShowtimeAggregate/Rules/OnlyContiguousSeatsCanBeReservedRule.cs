@@ -15,7 +15,7 @@
             this.desiredSeats = Guard.Against.NullOrEmpty(desiredSeats, nameof(desiredSeats));
         }
 
-        public string Message => $"Only contiguous seats can be reserved.";
+        public string Message => "Only contiguous seats can be reserved.";
 
         public bool IsBroken()
         {

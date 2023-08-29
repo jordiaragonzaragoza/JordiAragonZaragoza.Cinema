@@ -58,8 +58,6 @@
                 .AddTrigger(trigger => trigger.ForJob(jobKey)
                                               .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(intervalInSeconds)
                                                                                       .RepeatForever()));
-
-                configure.UseMicrosoftDependencyInjectionJobFactory();
             });
 
             return serviceCollection;

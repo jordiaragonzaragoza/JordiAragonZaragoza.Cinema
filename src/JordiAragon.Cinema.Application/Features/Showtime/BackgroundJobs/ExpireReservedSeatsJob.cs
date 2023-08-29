@@ -39,7 +39,7 @@
                 var showtimesWithExpiredTickets = await this.showtimeRepository.ListAsync(new GetExpiredReserveSeatsSpec(dateTimeUtcNow), context.CancellationToken);
                 foreach (var showtime in showtimesWithExpiredTickets)
                 {
-                    var ticketIds = showtime.Tickets.Where(ticket => !ticket.IsPaid && dateTimeUtcNow > ticket.CreatedTimeOnUtc.AddMinutes(1)).Select(t => t.Id);
+                    var ticketIds = showtime.Tickets.Where(ticket => !ticket.IsPaid && dateTimeUtcNow > ticket.CreatedTimeOnUtc.AddMinutes(1)).Select(t => t.Id).ToList();
 
                     foreach (var ticketId in ticketIds)
                     {
