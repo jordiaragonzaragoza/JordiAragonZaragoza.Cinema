@@ -54,5 +54,5 @@ jobs:
           dotnet test JordiAragon.Cinema.sln --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       
-      - name: Display structure of files
-        run: ls -R
+      #- name: Display structure of files
+        #run: ls -R
