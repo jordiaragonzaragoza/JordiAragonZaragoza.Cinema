@@ -4,13 +4,10 @@ The Cinema Project is a WebApi project written in .NET 7 following DDD and Clean
 The application represents a Cinema. We want to manage the showtimes of the cinema and ticket reservation.
 
 ## How to use:
-- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
-- To run the project just find and build the solution file JordiAragon.Cinema.sln and select JordiAragon.Cinema as startup project.
-- Also Create the database and schema with .NET Core CLI using update command like this:
 
-```
-dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema.Infrastructure.EntityFramework/JordiAragon.Cinema.Infrastructure.EntityFramework.csproj -s /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinema/src/JordiAragon.Cinema/JordiAragon.Cinema.csproj --connection "Server=localhost;Database=JordiAragon.CinemaDb;User Id=sa;Password=@someThingComplicated1234;Trusted_Connection=false;TrustServerCertificate=true;"
-```
+- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
+- You will need also Docker Desktop running on your machine.
+- To run the project just find and build the solution file JordiAragon.Cinema.sln and select docker-compose as startup project.
 
 ## Architecture:
 
@@ -25,10 +22,6 @@ dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinem
 - Unit of Work
 - Repository & Specification
 - Custom API Error Handling
-- Architecture Tests
-- Unit Tests: Domain and Application
-- Functional Tests with Testcontainers: Presentation.WebApi
-- Integration Tests with Testcontainers: Infrastructure.EntityFramework
 
 ## Custom Shared Kernel:
 - This project uses [JordiAragon.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragon.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
@@ -87,6 +80,15 @@ dotnet ef database update -p /Users/jordiaragonzaragoza/GitHub/JordiAragon.Cinem
 - Buy seats
     - We will need the GUID of the reservation, it is only possible to do it while the seats are reserved.
     - It is not possible to buy two times the same seat.
+
+## Testing
+
+- Architecture Tests
+- Unit Tests: Domain and Application
+- Functional Tests with Testcontainers: Presentation.WebApi
+- Integration Tests with Testcontainers: Infrastructure.EntityFramework
+- GitHub workflow CI with SonarCloud integration
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
 
 ## Model and Data Diagram:
 

@@ -17,7 +17,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,29 +27,11 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDateOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModificationDateOnUtc")
-                        .HasColumnType("datetime2");
-
                     b.Property<short>("Rows")
                         .HasColumnType("smallint");
 
                     b.Property<short>("SeatsPerRow")
                         .HasColumnType("smallint");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -61,23 +43,8 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDateOnUtc")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("ImdbId")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModificationDateOnUtc")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ReleaseDateOnUtc")
                         .HasColumnType("datetime2");
@@ -87,9 +54,6 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -104,29 +68,11 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     b.Property<Guid?>("AuditoriumId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDateOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedByUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModificationDateOnUtc")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SessionDateOnUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

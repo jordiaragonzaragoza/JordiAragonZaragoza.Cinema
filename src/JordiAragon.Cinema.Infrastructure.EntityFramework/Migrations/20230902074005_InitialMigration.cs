@@ -17,13 +17,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rows = table.Column<short>(type: "smallint", nullable: false),
-                    SeatsPerRow = table.Column<short>(type: "smallint", nullable: false),
-                    CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    SeatsPerRow = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,13 +32,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImdbId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Stars = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReleaseDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    ReleaseDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,13 +62,7 @@ namespace JordiAragon.Cinema.Infrastructure.EntityFramework.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SessionDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
