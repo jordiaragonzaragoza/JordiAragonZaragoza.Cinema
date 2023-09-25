@@ -5,7 +5,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
+		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinemas</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
 		<UseProjectReference>true</UseProjectReference>
 	</PropertyGroup>

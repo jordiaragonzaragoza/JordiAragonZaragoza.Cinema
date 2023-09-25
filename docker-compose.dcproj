@@ -6,7 +6,7 @@
     <ProjectGuid>{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>jordiaragon.cinema</DockerServiceName>
+    <DockerServiceName>jordiaragon.cinemas.ticketing</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -7,7 +7,7 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - You will need also Docker Desktop running on your machine.
-- To run the project just find and build the solution file JordiAragon.Cinema.sln and select docker-compose as startup project.
+- To run the project just find and build the solution file JordiAragon.Cinemas.Ticketing.sln and select docker-compose as startup project.
 
 ## Architecture:
 
@@ -28,7 +28,7 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 
 ## Diagram:
 
-![JordiAragon.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
+![JordiAragon.Cinemas - Clean architecture graph](./docs/CleanArchitecture.jpg)
 
 ## Technologies implemented:
 
@@ -92,9 +92,9 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 
 ## Model and Data Diagram:
 
-![JordiAragon.Cinema - Model graph](./docs/Model.jpg)  
+![JordiAragon.Cinemas - Model graph](./docs/Model.jpg)  
 
-![JordiAragon.Cinema - Data graph](./docs/DataModel.jpg)  
+![JordiAragon.Cinemas - Data graph](./docs/DataModel.jpg)  
 
 ## Resources and Inspiration
 
