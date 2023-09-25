@@ -1,7 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Application.UnitTests.Features.Showtime.Commands.TestUtils
 {
     using System;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Commands;
     using JordiAragon.Cinema.Domain.UnitTests.TestUtils.Constants;
 
     public static class CreateShowtimeCommandUtils

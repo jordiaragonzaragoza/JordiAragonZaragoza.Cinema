@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Auditorium.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Commands;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Mappers.V2;

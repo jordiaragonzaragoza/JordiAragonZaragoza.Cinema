@@ -5,7 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using JordiAragon.Cinema.Application.Features.Showtime.Commands.CreateShowtime;
+    using JordiAragon.Cinema.Application.Showtime.Commands.CreateShowtime;
     using JordiAragon.Cinema.Application.UnitTests.Features.Showtime.Commands.TestUtils;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate;
     using JordiAragon.Cinema.Domain.AuditoriumAggregate.Specifications;

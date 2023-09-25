@@ -5,8 +5,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Showtime.Responses;

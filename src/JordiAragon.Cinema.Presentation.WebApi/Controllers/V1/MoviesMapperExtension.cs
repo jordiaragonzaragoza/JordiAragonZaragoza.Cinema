@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Movie.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Movie.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Movie.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Mappers.V1;
 

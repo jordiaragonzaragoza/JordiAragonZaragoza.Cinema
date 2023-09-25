@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Application.AssemblyConfiguration
 {
-    using JordiAragon.Cinema.Application.Features.Showtime.BackgroundJobs;
+    using JordiAragon.Cinema.Application.Showtime.BackgroundJobs;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Quartz;

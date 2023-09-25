@@ -4,7 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Auditorium.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.SharedKernel.Presentation.WebApi.Controllers;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;

@@ -5,9 +5,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Application.Contracts.Features.Auditorium.Queries;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Commands;
-    using JordiAragon.Cinema.Application.Contracts.Features.Showtime.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Auditorium.Queries;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Commands;
+    using JordiAragon.Cinema.Application.Contracts.Showtime.Queries;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinema.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses;
