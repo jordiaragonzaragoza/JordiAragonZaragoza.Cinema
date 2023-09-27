@@ -32,7 +32,7 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
 
-        protected CinemaRepository<TAggregate> GetRepository()
+        protected TicketingRepository<TAggregate> GetRepository()
             => new(this.Fixture.Context);
     }
 }

@@ -34,8 +34,8 @@
             builder.ConfigureTestServices(services =>
             {
                 services
-                    .RemoveAll<DbContextOptions<CinemaContext>>()
-                    .AddDbContext<CinemaContext>((options) =>
+                    .RemoveAll<DbContextOptions<TicketingContext>>()
+                    .AddDbContext<TicketingContext>((options) =>
                     {
                         options.UseSqlServer(this.connection);
                     });

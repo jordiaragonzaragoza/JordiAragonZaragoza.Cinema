@@ -23,7 +23,7 @@
             configuration.Bind(AzureSqlDatabaseOptions.Section, azureSqlDatabaseOptions);
             serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptions));
 
-            serviceCollection.AddDbContext<CinemaContext>(optionsBuilder =>
+            serviceCollection.AddDbContext<TicketingContext>(optionsBuilder =>
             {
                 if (isDevelopment)
                 {
@@ -40,7 +40,7 @@
                 }
             });
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<CinemaContext>();
+            serviceCollection.AddHealthChecks().AddDbContextCheck<TicketingContext>();
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
 

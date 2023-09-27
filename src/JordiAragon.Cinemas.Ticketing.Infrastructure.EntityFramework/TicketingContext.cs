@@ -9,10 +9,10 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class CinemaContext : BaseContext
+    public class TicketingContext : BaseContext
     {
-        public CinemaContext(
-            DbContextOptions<CinemaContext> options,
+        public TicketingContext(
+            DbContextOptions<TicketingContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment,
             AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

@@ -13,15 +13,15 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(CinemaRepository<>))
+            builder.RegisterGeneric(typeof(TicketingRepository<>))
                 .As(typeof(IRepository<>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(CinemaCachedRepository<>))
+            builder.RegisterGeneric(typeof(TicketingCachedRepository<>))
                 .As(typeof(ICachedRepository<>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(CinemaReadRepository<>))
+            builder.RegisterGeneric(typeof(TicketingReadRepository<>))
                 .As(typeof(IReadRepository<>))
                 .InstancePerLifetimeScope();
         }

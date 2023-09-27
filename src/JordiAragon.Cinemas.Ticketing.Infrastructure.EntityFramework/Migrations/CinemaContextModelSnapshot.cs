@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.Migrations
 {
-    [DbContext(typeof(CinemaContext))]
+    [DbContext(typeof(TicketingContext))]
     partial class CinemaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

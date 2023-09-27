@@ -2,10 +2,10 @@
 {
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class CinemaUnitOfWork : BaseUnitOfWork
+    public class TicketingUnitOfWork : BaseUnitOfWork
     {
-        public CinemaUnitOfWork(
-            CinemaContext context)
+        public TicketingUnitOfWork(
+            TicketingContext context)
             : base(context)
         {
         }

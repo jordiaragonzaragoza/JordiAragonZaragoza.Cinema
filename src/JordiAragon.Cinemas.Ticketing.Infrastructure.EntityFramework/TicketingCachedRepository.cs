@@ -5,12 +5,12 @@
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
     using Microsoft.Extensions.Logging;
 
-    public class CinemaCachedRepository<T> : BaseCachedRepository<T>
+    public class TicketingCachedRepository<T> : BaseCachedRepository<T>
         where T : class, IAggregateRoot
     {
-        public CinemaCachedRepository(
-            CinemaContext dbContext,
-            ILogger<CinemaCachedRepository<T>> logger,
+        public TicketingCachedRepository(
+            TicketingContext dbContext,
+            ILogger<TicketingCachedRepository<T>> logger,
             ICacheService cacheService)
             : base(dbContext, logger, cacheService)
         {

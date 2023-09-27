@@ -3,10 +3,10 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class CinemaRepository<T> : BaseRepository<T>
+    public class TicketingRepository<T> : BaseRepository<T>
         where T : class, IAggregateRoot
     {
-        public CinemaRepository(CinemaContext dbContext)
+        public TicketingRepository(TicketingContext dbContext)
             : base(dbContext)
         {
         }

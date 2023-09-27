@@ -2,10 +2,10 @@
 {
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class CinemaReadRepository<T> : BaseReadRepository<T>
+    public class TicketingReadRepository<T> : BaseReadRepository<T>
         where T : class
     {
-        public CinemaReadRepository(CinemaContext dbContext)
+        public TicketingReadRepository(TicketingContext dbContext)
             : base(dbContext)
         {
         }
