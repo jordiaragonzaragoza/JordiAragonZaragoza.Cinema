@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EventStore\JordiAragon.SharedKernel.Infrastructure.EventStore.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure.EventStore" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\JordiAragon.Cinemas.Ticketing.Domain\JordiAragon.Cinemas.Ticketing.Domain.csproj" />
+	  <ProjectReference Include="..\JordiAragon.Cinemas.Ticketing.Application.Contracts\JordiAragon.Cinemas.Ticketing.Application.Contracts.csproj" />
+	</ItemGroup>
+</Project>

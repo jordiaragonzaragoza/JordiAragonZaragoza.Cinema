@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  jordiaragon.cinema:
+  jordiaragon.cinemas.ticketing:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -12,7 +12,7 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 
-  azuresqledge.cinema:
+  azuresqledge.cinemas:
     environment:
       - SA_PASSWORD=@someThingComplicated1234
       - ACCEPT_EULA=Y
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./containers/azuresqledge/:/var/opt/mssql
 
-  eventstore.cinema:
+  eventstore.cinemas:
     environment:
       - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
       - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
@@ -34,7 +34,7 @@ services:
       - ./containers/eventstore/data/:/var/lib/eventstore
       - ./containers/eventstore/logs/:/var/log/eventstore
 
-  rabbitmq.cinema:
+  rabbitmq.cinemas:
     ports:
         - 5672:5672
         - 15672:15672
