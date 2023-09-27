@@ -1,24 +1,30 @@
 version: '3.4'
 
 services:
-  jordiaragon.cinema:
-    image: ${DOCKER_REGISTRY-}jordiaragon.cinema
-    container_name: jordiaragon.cinema
+  jordiaragon.cinemas.ticketing:
+    image: ${DOCKER_REGISTRY-}jordiaragon.cinemas.ticketing
+    container_name: jordiaragon.cinemas.ticketing
     build:
       context: .
-      dockerfile: src/JordiAragon.Cinema/Dockerfile
+      dockerfile: src/JordiAragon.Cinemas.Ticketing/Dockerfile
     depends_on:
-      - "azuresqledge.cinema"
-      - "rabbitmq.cinema"
+      - "azuresqledge.cinemas"
+      - "eventstore.cinemas"
+      - "rabbitmq.cinemas"
     links:
-      - "azuresqledge.cinema"
-      - "rabbitmq.cinema"
+      - "azuresqledge.cinemas"
+      - "eventstore.cinemas"
+      - "rabbitmq.cinemas"
 
-  azuresqledge.cinema:
+  azuresqledge.cinemas:
     image: mcr.microsoft.com/azure-sql-edge:latest
-    container_name: azuresqledge.cinema
+    container_name: azuresqledge.cinemas
 
-  rabbitmq.cinema:
+  eventstore.cinemas:
+    image: eventstore/eventstore:22.10.2-alpha-arm64v8
+    container_name: eventstore.cinemas
+
+  rabbitmq.cinemas:
     image: rabbitmq:3.11.10-management
-    container_name: rabbitmq.cinema
+    container_name: rabbitmq.cinemas
     hostname: rabbitmq
