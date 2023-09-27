@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.WebApi\JordiAragon.SharedKernel.Presentation.WebApi.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragon.SharedKernel.Presentation.WebApi" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+		<PackageReference Include="Quartz.Extensions.Hosting" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+		<PackageReference Include="Serilog.AspNetCore" />
+		<PackageReference Include="Serilog.Enrichers.Environment" />
+		<PackageReference Include="Serilog.Enrichers.Thread" />
+		<PackageReference Include="Serilog.Sinks.Async" />
+		<PackageReference Include="Serilog.Sinks.AzureTableStorage" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Sinks.Graylog" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.csproj" />
+		<ProjectReference Include="..\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.csproj" />
+		<ProjectReference Include="..\JordiAragon.Cinemas.Ticketing.Application.Contracts\JordiAragon.Cinemas.Ticketing.Application.Contracts.csproj" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework</name>
+    </assembly>
+    <members>
+        <member name="T:JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

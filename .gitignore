@@ -374,3 +374,7 @@ containers/azuresqledge/.system
 containers/azuresqledge/data
 containers/azuresqledge/log
 containers/azuresqledge/secrets
+
+# Event Store DB
+containers/eventstore/data
+containers/eventstore/logs
