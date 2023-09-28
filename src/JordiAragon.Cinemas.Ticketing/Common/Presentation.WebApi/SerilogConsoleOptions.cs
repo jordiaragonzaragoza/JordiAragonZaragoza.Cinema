@@ -1,0 +1,13 @@
+namespace JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi
+{
+    using Serilog.Events;
+
+    public class SerilogConsoleOptions
+    {
+        public const string Section = "Serilog:Console";
+
+        public bool Enabled { get; set; }
+
+        public LogEventLevel MinimumLevel { get; set; }
+    }
+}

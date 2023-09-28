@@ -2,19 +2,16 @@
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using JordiAragon.Cinemas.Ticketing.Application.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Application.Contracts.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Domain.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EventStore.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.AssemblyConfiguration;
+    using JordiAragon.Cinemas.Ticketing.Common.Application;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EventStore;
+    using JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using ApplicationModule = JordiAragon.Cinemas.Ticketing.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
     using SharedKernelEntityFrameworkModule = JordiAragon.SharedKernel.Infrastructure.EntityFramework.AssemblyConfiguration.EntityFrameworkModule;
@@ -46,19 +43,13 @@
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
-                containerBuilder.RegisterModule(new DomainModule());
                 containerBuilder.RegisterModule(new SharedKernelDomainModule());
                 containerBuilder.RegisterModule(new SharedKernelApplicationModule());
-                containerBuilder.RegisterModule(new ApplicationModule(builder.Environment.EnvironmentName == "Development"));
-                containerBuilder.RegisterModule(new ApplicationContractsModule());
                 containerBuilder.RegisterModule(new SharedKernelInfrastructureModule());
-                containerBuilder.RegisterModule(new InfrastructureModule());
                 containerBuilder.RegisterModule(new SharedKernelEntityFrameworkModule());
                 containerBuilder.RegisterModule(new EntityFrameworkModule());
                 containerBuilder.RegisterModule(new SharedKernelEventStoreModule());
-                containerBuilder.RegisterModule(new EventStoreModule());
                 containerBuilder.RegisterModule(new SharedKernelWebApiModule());
-                containerBuilder.RegisterModule(new WebApiModule());
             });
 
             builder.Host.AddWebApiHostBuilderConfigurations();
