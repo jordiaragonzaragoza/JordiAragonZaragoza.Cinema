@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.OpenApi.Models;
     using Quartz;
 
     public static class ConfigureServices
@@ -58,7 +59,7 @@
                 {
                     options.AllowEmptyInputInBodyModelBinding = true;
                 })
-                ////.AddApplicationPart(WebApiAssemblyReference.Assembly)
+                .AddApplicationPart(WebApiAssemblyReference.Assembly)
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -75,12 +76,34 @@
 
             ////serviceCollection.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-            serviceCollection.AddEndpointsApiExplorer();
-            serviceCollection.AddSwaggerGen(options => options.EnableAnnotations());
-            serviceCollection.SwaggerDocument(o =>
+            ////serviceCollection.AddEndpointsApiExplorer();
+            serviceCollection.AddSwaggerGen(options =>
             {
-                o.ShortSchemaNames = true;
-            }); // Required by FastEndpoints
+                options.EnableAnnotations();
+            });
+
+            serviceCollection.SwaggerDocument(documentOptions =>
+            {
+                documentOptions.MaxEndpointVersion = 1;
+                documentOptions.DocumentSettings = s =>
+                {
+                    s.DocumentName = "V1";
+                    s.Version = "1.0";
+                };
+
+                documentOptions.ShortSchemaNames = true;
+            });
+
+            serviceCollection.SwaggerDocument(documentOptions =>
+            {
+                documentOptions.MaxEndpointVersion = 2;
+                documentOptions.DocumentSettings = s =>
+                {
+                    s.DocumentName = "V2";
+                    s.Version = "2.0";
+                };
+                documentOptions.ShortSchemaNames = true;
+            });
 
             serviceCollection.AddQuartzHostedService();
 

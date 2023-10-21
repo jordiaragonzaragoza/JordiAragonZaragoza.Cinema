@@ -9,11 +9,8 @@
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinemas.Ticketing.Vertical.Common.Presentation.WebApi;
     using MediatR;
-    using Microsoft.AspNetCore.Authorization;
     using IMapper = AutoMapper.IMapper;
 
-    [HttpGet("/api/v2/auditoriums")]
-    [AllowAnonymous]
     public class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         private readonly ISender sender;
@@ -25,14 +22,20 @@
             this.mapper = mapper;
         }
 
+        public override void Configure()
+        {
+            this.Get("auditoriums");
+            this.AllowAnonymous();
+            this.Version(2);
+        }
+
         public override async Task HandleAsync(CancellationToken ct)
         {
             var resultOutputDto = await this.sender.Send(new GetAuditoriumsQuery(), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<AuditoriumResponse>>>(resultOutputDto);
             ////this.Response = this.ToActionResult(resultResponse);
-
-            await this.SendResponseAsync(resultResponse);
+            await this.SendResponseAsync(resultResponse, ct);
         }
     }
 }

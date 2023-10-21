@@ -9,6 +9,7 @@
     using Serilog;
     using FastEndpoints;
     using FastEndpoints.Swagger;
+    using Microsoft.AspNetCore.Mvc;
 
     public static class ConfigureWebApplication
     {
@@ -20,18 +21,17 @@
             }
             else
             {
-                app.UseDefaultExceptionHandler(); // from FastEndpoints
+                ////app.UseDefaultExceptionHandler(); // from FastEndpoints
                 app.UseHsts();
             }
 
             app.UseMiddleware<ExceptionMiddleware>();
 
+            /*
             if (app.Environment.IsDevelopment())
             {
-                ////app.UseSwagger();
-                ////app.UseSwaggerGen(); // FastEndpoints middleware
+                app.UseSwagger();
 
-                /*
                 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
                 app.UseSwaggerUI(options =>
                 {
@@ -39,8 +39,8 @@
                     {
                         options.SwaggerEndpoint($"/swagger/{version}/swagger.json", version.ToUpperInvariant());
                     }
-                });*/
-            }
+                });
+            }*/
 
             app.UseSerilogRequestLogging();
 
@@ -53,8 +53,22 @@
             app.UseAuthorization();
 
             ////app.MapControllers();
-            app.UseFastEndpoints();
-            app.UseSwaggerGen();
+            app.UseFastEndpoints(config =>
+            {
+                config.Endpoints.RoutePrefix = "api";
+                config.Versioning.Prefix = "v";
+                config.Versioning.PrependToRoute = true;
+                config.Versioning.DefaultVersion = 2;
+                config.Errors.UseProblemDetails();
+
+                config.Errors.ResponseBuilder = ResponseBuilderHelper.BuildResponse;
+            });
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwaggerGen();
+            }
+
             app.MapHealthChecks("/health");
 
             return app;
