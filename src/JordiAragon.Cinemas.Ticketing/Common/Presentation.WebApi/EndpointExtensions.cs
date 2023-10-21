@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Vertical.Common.Presentation.WebApi
+﻿namespace JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi
 {
     using System;
     using System.Collections.Generic;
