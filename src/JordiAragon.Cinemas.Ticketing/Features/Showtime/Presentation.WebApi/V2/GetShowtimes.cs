@@ -25,9 +25,14 @@
 
         public override void Configure()
         {
-            this.Get("showtimes");
             this.AllowAnonymous();
+            this.Get("showtimes");
             this.Version(2);
+            this.Summary(summary =>
+            {
+                summary.Summary = "Gets a list of all Showtimes";
+                summary.Description = "Gets a list of all Showtimes";
+            });
         }
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)

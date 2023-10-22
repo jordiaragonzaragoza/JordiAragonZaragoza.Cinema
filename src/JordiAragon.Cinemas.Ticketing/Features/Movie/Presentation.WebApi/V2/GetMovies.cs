@@ -24,9 +24,14 @@
 
         public override void Configure()
         {
-            this.Get("movies");
             this.AllowAnonymous();
+            this.Get("movies");
             this.Version(2);
+            this.Summary(summary =>
+            {
+                summary.Summary = "Gets a list of all Movies";
+                summary.Description = "Gets a list of all Movies";
+            });
         }
 
         public override async Task HandleAsync(CancellationToken ct)

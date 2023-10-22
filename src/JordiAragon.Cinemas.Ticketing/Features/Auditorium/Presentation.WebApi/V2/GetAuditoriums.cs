@@ -24,9 +24,14 @@
 
         public override void Configure()
         {
-            this.Get("auditoriums");
             this.AllowAnonymous();
+            this.Get("auditoriums");
             this.Version(2);
+            this.Summary(summary =>
+            {
+                summary.Summary = "Gets a list of all Auditoriums";
+                summary.Description = "Gets a list of all Auditoriums";
+            });
         }
 
         public override async Task HandleAsync(CancellationToken ct)
