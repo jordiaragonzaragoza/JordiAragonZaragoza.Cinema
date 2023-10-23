@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class CreateShowtimeRequest(Guid AuditoriumId, Guid MovieId, DateTime SessionDateOnUtc);
+    public record class PurchaseTicketRequest(Guid AuditoriumId, Guid ShowtimeId, Guid TicketId);
 }

@@ -77,10 +77,10 @@
             ////serviceCollection.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             ////serviceCollection.AddEndpointsApiExplorer();
-            serviceCollection.AddSwaggerGen(options =>
+            /*serviceCollection.AddSwaggerGen(options =>
             {
                 options.EnableAnnotations();
-            });
+            });*/
 
             serviceCollection.SwaggerDocument(documentOptions =>
             {
