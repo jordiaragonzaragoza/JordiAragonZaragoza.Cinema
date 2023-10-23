@@ -4,9 +4,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using FastEndpoints;
-    using JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 

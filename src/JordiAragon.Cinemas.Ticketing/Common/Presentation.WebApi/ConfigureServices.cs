@@ -72,7 +72,7 @@
 
             serviceCollection.AddFastEndpoints();
 
-            serviceCollection.AddAuthentication(); // Required by FastEndpoints
+            serviceCollection.AddAuthentication();
 
             ////serviceCollection.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
@@ -84,6 +84,17 @@
 
             serviceCollection.SwaggerDocument(documentOptions =>
             {
+                documentOptions.MaxEndpointVersion = 2;
+                documentOptions.DocumentSettings = s =>
+                {
+                    s.DocumentName = "V2";
+                    s.Version = "2.0";
+                };
+                documentOptions.ShortSchemaNames = true;
+            });
+
+            serviceCollection.SwaggerDocument(documentOptions =>
+            {
                 documentOptions.MaxEndpointVersion = 1;
                 documentOptions.DocumentSettings = s =>
                 {
@@ -91,17 +102,6 @@
                     s.Version = "1.0";
                 };
 
-                documentOptions.ShortSchemaNames = true;
-            });
-
-            serviceCollection.SwaggerDocument(documentOptions =>
-            {
-                documentOptions.MaxEndpointVersion = 2;
-                documentOptions.DocumentSettings = s =>
-                {
-                    s.DocumentName = "V2";
-                    s.Version = "2.0";
-                };
                 documentOptions.ShortSchemaNames = true;
             });
 

@@ -6,8 +6,8 @@
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragon.Cinemas.Ticketing.Auditorium.Application.Contracts.Queries;
-    using JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 

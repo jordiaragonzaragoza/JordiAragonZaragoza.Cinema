@@ -34,7 +34,6 @@
 		<PackageVersion Include="CsvHelper" Version="30.0.1" />
 		<PackageVersion Include="EasyCaching.Core" Version="1.9.1" />
 		<PackageVersion Include="EasyCaching.InMemory" Version="1.9.1" />
-		<PackageVersion Include="FastEndpoints" Version="5.17.1.1" />
 		<PackageVersion Include="FastEndpoints.Swagger" Version="5.17.1.1" />
 		<PackageVersion Include="FluentValidation" Version="11.7.1" />
 		<PackageVersion Include="MassTransit" Version="8.1.0" />

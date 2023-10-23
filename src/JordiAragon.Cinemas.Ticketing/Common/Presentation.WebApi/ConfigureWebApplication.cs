@@ -10,6 +10,7 @@
     using FastEndpoints;
     using FastEndpoints.Swagger;
     using Microsoft.AspNetCore.Mvc;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
 
     public static class ConfigureWebApplication
     {
@@ -25,7 +26,7 @@
                 app.UseHsts();
             }
 
-            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>(); // TODO: Review Exception Handler.
 
             /*
             if (app.Environment.IsDevelopment())
