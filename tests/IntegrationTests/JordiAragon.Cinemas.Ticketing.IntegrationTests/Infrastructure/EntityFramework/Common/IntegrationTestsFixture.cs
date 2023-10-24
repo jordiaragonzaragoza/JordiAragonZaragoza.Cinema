@@ -1,8 +1,8 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.IntegrationTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.IntegrationTests.Infrastructure.EntityFramework.Common
 {
     using System.Threading.Tasks;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
@@ -20,7 +20,7 @@
         private readonly SqlEdgeContainer container =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.infrastructure.entityframework.integrationtests")
+            .WithName("azuresqledge.cinema.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
         private SqlConnection connection;

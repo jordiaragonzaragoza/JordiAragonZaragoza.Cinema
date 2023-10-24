@@ -30,6 +30,6 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework\JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing\JordiAragon.Cinemas.Ticketing.csproj" />
 	</ItemGroup>
 </Project>

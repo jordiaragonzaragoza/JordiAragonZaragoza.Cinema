@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.IntegrationTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.IntegrationTests.Infrastructure.EntityFramework.Common
 {
     using Xunit;
 

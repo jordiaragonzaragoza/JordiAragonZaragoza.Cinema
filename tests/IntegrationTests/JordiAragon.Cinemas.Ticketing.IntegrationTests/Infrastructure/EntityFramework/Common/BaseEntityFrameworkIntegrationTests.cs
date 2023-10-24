@@ -1,7 +1,8 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.IntegrationTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.IntegrationTests.Infrastructure.EntityFramework.Common
 {
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Xunit;
     using Xunit.Abstractions;

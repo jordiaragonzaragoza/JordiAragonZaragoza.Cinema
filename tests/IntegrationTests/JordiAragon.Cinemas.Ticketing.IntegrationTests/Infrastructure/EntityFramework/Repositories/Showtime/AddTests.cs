@@ -1,13 +1,13 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.IntegrationTests.Repositories.Showtime
+﻿namespace JordiAragon.Cinemas.Ticketing.IntegrationTests.Infrastructure.EntityFramework.Repositories.Showtime
 {
     using System;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using JordiAragon.Cinemas.Ticketing.Domain.AuditoriumAggregate;
-    using JordiAragon.Cinemas.Ticketing.Domain.MovieAggregate;
-    using JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.IntegrationTests.Common;
+    using JordiAragon.Cinemas.Ticketing.Auditorium.Domain;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinemas.Ticketing.IntegrationTests.Infrastructure.EntityFramework.Common;
+    using JordiAragon.Cinemas.Ticketing.Movie.Domain;
+    using JordiAragon.Cinemas.Ticketing.Showtime.Domain;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using Xunit.Abstractions;
