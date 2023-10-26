@@ -53,11 +53,10 @@
 
             app.UseAuthorization();
 
-            ////app.MapControllers();
             app.UseFastEndpoints(config =>
             {
-                config.Endpoints.RoutePrefix = "api";
-                config.Versioning.Prefix = "v";
+                config.Endpoints.RoutePrefix = Constants.EndpointsRoutePrefix;
+                config.Versioning.Prefix = Constants.EndpointsVersioningPrefix;
                 config.Versioning.PrependToRoute = true;
                 config.Versioning.DefaultVersion = 2;
                 config.Errors.UseProblemDetails();

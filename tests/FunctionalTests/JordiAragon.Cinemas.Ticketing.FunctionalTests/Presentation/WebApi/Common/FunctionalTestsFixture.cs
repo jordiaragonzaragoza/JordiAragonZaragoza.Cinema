@@ -1,10 +1,10 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common
 {
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +19,7 @@
         private readonly SqlEdgeContainer container =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.ticketing.presentation.webapi.functionaltests")
+            .WithName("azuresqledge.cinema.ticketing.functionaltests.presentation.webapi")
             .WithAutoRemove(true).Build();
 
         private SqlConnection connection;

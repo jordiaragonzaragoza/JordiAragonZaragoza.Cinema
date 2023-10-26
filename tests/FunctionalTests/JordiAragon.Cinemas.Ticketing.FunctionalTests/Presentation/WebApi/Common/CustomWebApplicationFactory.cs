@@ -1,7 +1,7 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common
 {
     using System.Data.Common;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;

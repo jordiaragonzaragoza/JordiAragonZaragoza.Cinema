@@ -1,19 +1,18 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Controllers.V2.Showtime
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System;
     using System.Collections.Generic;
-    using System.Net;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Responses;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Controllers.V2;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common;
+    using JordiAragon.Cinemas.Ticketing.Showtime.Presentation.WebApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetShowtimesTests : BaseWebApiFunctionalTests<ShowtimesController>
+    public class GetShowtimesTests : BaseWebApiFunctionalTests
     {
         public GetShowtimesTests(
             FunctionalTestsFixture<Program> fixture,
@@ -87,8 +86,9 @@
             var startTimeOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc.ToString("O");
             var endTimeOnUtc = DateTime.UtcNow.ToString("O");
 
-            string pathAndQuery = ControllerRouteHelpers.BuildUriWithQueryParameters(
-                this.ControllerBaseRoute,
+            var route = $"api/v2/{GetShowtimes.Route}";
+            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
                 (nameof(movieId), movieId),
                 (nameof(auditoriumId), auditoriumId),
                 (nameof(startTimeOnUtc), startTimeOnUtc),

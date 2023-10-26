@@ -13,6 +13,8 @@
 
     public class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
+        public const string Route = "auditoriums";
+
         private readonly ISender sender;
         private readonly IMapper mapper;
 
@@ -25,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get("auditoriums");
+            this.Get(GetAuditoriums.Route);
             this.Version(2);
             this.Summary(summary =>
             {

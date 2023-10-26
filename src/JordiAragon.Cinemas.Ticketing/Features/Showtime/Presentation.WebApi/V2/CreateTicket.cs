@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using Ardalis.Result;
     using FastEndpoints;
-    using JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinemas.Ticketing.Showtime.Application.Contracts.Commands;
@@ -14,6 +13,8 @@
 
     public class CreateTicket : Endpoint<CreateTicketRequest, TicketResponse>
     {
+        public const string Route = "showtimes/{showtimeId}/tickets";
+
         private readonly ISender sender;
         private readonly IMapper mapper;
 
@@ -26,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Post("showtimes/{showtimeId}/tickets");
+            this.Post(CreateTicket.Route);
             this.Version(2);
             this.Summary(summary =>
             {

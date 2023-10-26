@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Controllers.V2.Showtime
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,16 +7,16 @@
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinemas.Ticketing;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Responses;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Controllers.V2;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common;
+    using JordiAragon.Cinemas.Ticketing.Showtime.Presentation.WebApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
-    public class PurchaseTicketTests : BaseWebApiFunctionalTests<ShowtimesController>
+    public class PurchaseTicketTests : BaseWebApiFunctionalTests
     {
         public PurchaseTicketTests(
             FunctionalTestsFixture<Program> fixture,
@@ -29,37 +29,37 @@
         public async Task PurchaseTicket_WhenHavingValidArguments_ShouldMarkTicketAsPaid()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id.ToString();
+            var showtimeId = SeedData.ExampleShowtime.Id;
 
-            var routeAvailableSeats = this.ControllerBaseRoute + this.GetControllerMethodRoute(nameof(ShowtimesController.GetAvailableSeatsAsync));
-            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId);
+            var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
+            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString());
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
 
-            var request = new CreateTicketRequest(seatsIds);
+            var request = new CreateTicketRequest(showtimeId, seatsIds);
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            var routeCreateTicket = this.ControllerBaseRoute + this.GetControllerMethodRoute(nameof(ShowtimesController.CreateTicketAsync));
-            routeCreateTicket = routeCreateTicket.Replace("{showtimeId}", showtimeId);
+            var routeCreateTicket = $"api/v2/{CreateTicket.Route}";
+            routeCreateTicket = routeCreateTicket.Replace("{showtimeId}", showtimeId.ToString());
 
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(routeCreateTicket, content, this.OutputHelper);
 
             var ticketId = ticketResponse.TicketId.ToString();
 
-            var route = this.ControllerBaseRoute + this.GetControllerMethodRoute(nameof(ShowtimesController.PurchaseTicketAsync));
-            route = route.Replace("{showtimeId}", showtimeId);
+            var route = $"api/v2/{PurchaseTicket.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString());
             route = route.Replace("{ticketId}", ticketId);
 
             // Act
-            this.OutputHelper.WriteLine($"Requesting with PATCH {route}");
+            this.OutputHelper.WriteLine($"Requesting with PATCH {route} ");
             var response = await this.Fixture.HttpClient.PatchAsync(route, content: null);
 
             // Assert
             response.StatusCode.Should()
-                .Be(HttpStatusCode.OK);
+                .Be(HttpStatusCode.NoContent);
         }
     }
 }

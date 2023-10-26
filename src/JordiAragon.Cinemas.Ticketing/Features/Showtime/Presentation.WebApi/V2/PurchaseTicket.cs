@@ -10,6 +10,8 @@
 
     public class PurchaseTicket : Endpoint<PurchaseTicketRequest>
     {
+        public const string Route = "showtimes/{showtimeId}/tickets/{ticketId}/purchase";
+
         private readonly ISender sender;
 
         public PurchaseTicket(ISender sender)
@@ -20,7 +22,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Patch("showtimes/{showtimeId}/tickets/{ticketId}/purchase");
+            this.Patch(PurchaseTicket.Route);
             this.Version(2);
             this.Summary(summary =>
             {

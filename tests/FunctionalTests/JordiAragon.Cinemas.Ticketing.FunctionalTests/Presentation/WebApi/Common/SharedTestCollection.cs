@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common
 {
     using Xunit;
 

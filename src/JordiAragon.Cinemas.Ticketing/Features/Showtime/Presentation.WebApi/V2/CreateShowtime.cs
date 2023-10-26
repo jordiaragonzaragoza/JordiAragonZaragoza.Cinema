@@ -4,7 +4,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using FastEndpoints;
-    using JordiAragon.Cinemas.Ticketing.Common.Presentation.WebApi;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Showtime.Application.Contracts.Commands;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
@@ -13,6 +12,8 @@
 
     public class CreateShowtime : Endpoint<CreateShowtimeRequest, Guid>
     {
+        public const string Route = "showtimes";
+
         private readonly ISender sender;
         private readonly IMapper mapper;
 
@@ -25,7 +26,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Post("showtimes");
+            this.Post(CreateShowtime.Route);
             this.Version(2);
             this.Summary(summary =>
             {

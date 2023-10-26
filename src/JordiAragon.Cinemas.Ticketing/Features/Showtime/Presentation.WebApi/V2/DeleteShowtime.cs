@@ -10,6 +10,8 @@
 
     public class DeleteShowtime : Endpoint<DeleteShowtimeRequest>
     {
+        public const string Route = "showtimes/{showtimeId}";
+
         private readonly ISender sender;
 
         public DeleteShowtime(ISender sender)
@@ -20,7 +22,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Delete("showtimes");
+            this.Delete(DeleteShowtime.Route);
             this.Version(2);
             this.Summary(summary =>
             {

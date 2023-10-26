@@ -1,16 +1,16 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Controllers.V2.Auditorium
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.V2.Auditorium
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
+    using JordiAragon.Cinemas.Ticketing.Auditorium.Presentation.WebApi.V2;
+    using JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Controllers.V2;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common;
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetAuditoriumsTests : BaseWebApiFunctionalTests<AuditoriumsController>
+    public class GetAuditoriumsTests : BaseWebApiFunctionalTests
     {
         public GetAuditoriumsTests(
             FunctionalTestsFixture<Program> fixture,
@@ -23,7 +23,7 @@
         public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnOneAuditorium()
         {
             // Arrange
-            var url = this.ControllerBaseRoute;
+            var url = $"api/v2/{GetAuditoriums.Route}";
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<AuditoriumResponse>>(url, this.OutputHelper);

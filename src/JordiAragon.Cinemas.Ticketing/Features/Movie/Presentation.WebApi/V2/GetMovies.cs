@@ -13,6 +13,8 @@
 
     public class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
     {
+        public const string Route = "movies";
+
         private readonly ISender sender;
         private readonly IMapper mapper;
 
@@ -25,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get("movies");
+            this.Get(GetMovies.Route);
             this.Version(2);
             this.Summary(summary =>
             {

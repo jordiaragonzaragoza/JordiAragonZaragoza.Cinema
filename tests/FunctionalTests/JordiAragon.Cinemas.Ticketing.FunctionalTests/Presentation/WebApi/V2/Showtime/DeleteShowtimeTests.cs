@@ -1,17 +1,17 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Controllers.V2.Showtime
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System.Threading.Tasks;
     using FluentAssertions;
     using JordiAragon.Cinemas.Ticketing;
-    using JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.AssemblyConfiguration;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Controllers.V2;
-    using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common;
+    using JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common;
+    using JordiAragon.Cinemas.Ticketing.Showtime.Presentation.WebApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
-    public class DeleteTests : BaseWebApiFunctionalTests<ShowtimesController>
+    public class DeleteShowtimeTests : BaseWebApiFunctionalTests
     {
-        public DeleteTests(
+        public DeleteShowtimeTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -24,8 +24,8 @@
             // Arrange
             var showtimeId = SeedData.ExampleShowtime.Id.ToString();
 
-            var route = this.ControllerBaseRoute + this.GetControllerMethodRoute(nameof(ShowtimesController.DeleteAsync));
-            route = route.Replace("{showtimeId}", showtimeId);
+            var route = $"api/v2/{DeleteShowtime.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString());
 
             // Act
             this.OutputHelper.WriteLine($"Requesting with DELETE {route}");

@@ -1,14 +1,12 @@
-﻿namespace JordiAragon.Cinemas.Ticketing.Presentation.WebApi.FunctionalTests.Common
+﻿namespace JordiAragon.Cinemas.Ticketing.FunctionalTests.Presentation.WebApi.Common
 {
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using Microsoft.AspNetCore.Mvc;
     using Xunit;
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
-    public abstract class BaseWebApiFunctionalTests<TController> : IAsyncLifetime
-        where TController : ControllerBase
+    public abstract class BaseWebApiFunctionalTests : IAsyncLifetime
     {
         protected BaseWebApiFunctionalTests(
             FunctionalTestsFixture<Program> fixture,
@@ -22,9 +20,6 @@
 
         protected ITestOutputHelper OutputHelper { get; private init; }
 
-        protected string ControllerBaseRoute
-            => ControllerRouteHelpers.GetControllerBaseRoute<TController>();
-
         public virtual Task InitializeAsync()
         {
             this.Fixture.InitDatabase();
@@ -34,8 +29,5 @@
 
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
-
-        protected string GetControllerMethodRoute(string methodName)
-            => ControllerRouteHelpers.GetControllerMethodRoute<TController>(methodName);
     }
 }
