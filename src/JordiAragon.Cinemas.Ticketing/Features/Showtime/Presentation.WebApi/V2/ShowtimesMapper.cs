@@ -13,7 +13,7 @@
         public ShowtimesMapper()
         {
             // Requests to queries or commands.
-            this.CreateMap<CreateTicketRequest, ReserveSeatsCommand>();
+            this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
 
             // OutputDtos to responses.
             this.CreateMap<TicketOutputDto, TicketResponse>();

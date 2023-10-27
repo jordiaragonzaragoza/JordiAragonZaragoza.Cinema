@@ -76,11 +76,11 @@ Ticketing bounded context manage the cinema showtimes and ticket reservation.
     - It should not be possible to reserve the same seats two times.
     - It shouldn't be possible to reserve an already sold seat.
     - All the seats, when doing a reservation, need to be contiguous.
-    - Reservation will expire in 1 minute unless marked as paid.
+    - Reservation will expire in 1 minute unless marked as purchased.
 
-- Buy seats
-    - We will need the GUID of the reservation, it is only possible to do it while the seats are reserved.
-    - It is not possible to buy two times the same seat.
+- Purchase ticket reservation
+    - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
+    - It is not possible to purchase ticket reservation two times.
 
 ## Testing
 

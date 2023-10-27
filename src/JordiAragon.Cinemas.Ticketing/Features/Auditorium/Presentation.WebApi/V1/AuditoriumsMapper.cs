@@ -18,7 +18,7 @@
         {
             // Requests to queries or commands.
             this.CreateMap<CreateShowtimeRequest, CreateShowtimeCommand>();
-            this.CreateMap<CreateTicketRequest, ReserveSeatsCommand>();
+            this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
 
             // OutputDtos to responses.
             this.CreateMap<SeatOutputDto, SeatResponse>();

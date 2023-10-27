@@ -3,6 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
     using FastEndpoints;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Showtime.Application.Contracts.Commands;
@@ -17,8 +18,8 @@
 
         public CreateShowtime(ISender sender, IMapper mapper)
         {
-            this.sender = sender;
-            this.mapper = mapper;
+            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public override void Configure()

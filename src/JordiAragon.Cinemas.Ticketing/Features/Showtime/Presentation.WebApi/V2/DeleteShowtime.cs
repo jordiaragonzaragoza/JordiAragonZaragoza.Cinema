@@ -2,6 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
     using FastEndpoints;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinemas.Ticketing.Showtime.Application.Contracts.Commands;
@@ -16,7 +17,7 @@
 
         public DeleteShowtime(ISender sender)
         {
-            this.sender = sender;
+            this.sender = Guard.Against.Null(sender, nameof(sender));
         }
 
         public override void Configure()

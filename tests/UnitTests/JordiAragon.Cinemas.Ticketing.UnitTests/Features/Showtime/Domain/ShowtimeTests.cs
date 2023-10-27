@@ -196,15 +196,15 @@
             var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
             // Act
-            showtime.PurchaseSeats(ticketId);
+            showtime.PurchaseTicket(ticketId);
 
             // Assert
             ticketCreated.IsPaid.Should().BeTrue();
 
             showtime.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(PurchasedSeatsEvent))
-                              .Which.Should().BeOfType<PurchasedSeatsEvent>()
-                              .Which.Should().Match<PurchasedSeatsEvent>(e =>
+                              .ContainSingle(x => x.GetType() == typeof(PurchasedTicketEvent))
+                              .Which.Should().BeOfType<PurchasedTicketEvent>()
+                              .Which.Should().Match<PurchasedTicketEvent>(e =>
                                                                             e.ShowtimeId == showtime.Id &&
                                                                             e.TicketId == ticketCreated.Id);
         }
@@ -218,13 +218,13 @@
             var showtime = CreateShowtimeUtils.Create();
 
             // Act
-            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+            Action showtimePurchaseSeats = () => showtime.PurchaseTicket(ticketId);
 
             // Assert
             showtimePurchaseSeats.Should().Throw<ArgumentException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(PurchasedSeatsEvent));
+                           .NotContain(x => x.GetType() == typeof(PurchasedTicketEvent));
         }
 
         [Fact]
@@ -236,13 +236,13 @@
             var showtime = CreateShowtimeUtils.Create();
 
             // Act
-            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+            Action showtimePurchaseSeats = () => showtime.PurchaseTicket(ticketId);
 
             // Assert
             showtimePurchaseSeats.Should().Throw<NotFoundException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(PurchasedSeatsEvent));
+                           .NotContain(x => x.GetType() == typeof(PurchasedTicketEvent));
         }
 
         [Fact]
@@ -262,13 +262,13 @@
 
             showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
-            showtime.PurchaseSeats(ticketId);
+            showtime.PurchaseTicket(ticketId);
 
             // Act
-            Action showtimePurchaseSeats = () => showtime.PurchaseSeats(ticketId);
+            Action showtimePurchaseSeats = () => showtime.PurchaseTicket(ticketId);
 
             // Assert
-            showtimePurchaseSeats.Should().Throw<BusinessRuleValidationException>().WithMessage("Only possible to pay once per reservation.");
+            showtimePurchaseSeats.Should().Throw<BusinessRuleValidationException>().WithMessage("Only possible to purchase once per ticket.");
         }
 
         [Fact]

@@ -50,8 +50,13 @@
             return this.tickets.Last();
         }
 
-        public void PurchaseSeats(TicketId ticketId)
-            => this.Apply(new PurchasedSeatsEvent(this.Id, ticketId));
+        public Ticket PurchaseTicket(TicketId ticketId)
+        {
+            this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
+
+            return this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
+                ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
+        }
 
         public void ExpireReservedSeats(TicketId ticketToRemove)
             => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
@@ -68,7 +73,7 @@
                     this.Applier(@event);
                     break;
 
-                case PurchasedSeatsEvent @event:
+                case PurchasedTicketEvent @event:
                     this.Applier(@event);
                     break;
 
@@ -113,16 +118,16 @@
             this.tickets.Add(newTicket);
         }
 
-        private void Applier(PurchasedSeatsEvent @event)
+        private void Applier(PurchasedTicketEvent @event)
         {
             var ticketId = TicketId.Create(@event.TicketId);
 
             var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
                 ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
 
-            CheckRule(new OnlyPossibleToPayOncePerTicketRule(ticket));
+            CheckRule(new OnlyPossibleToPurchaseOncePerTicketRule(ticket));
 
-            ticket.MarkAsPaid();
+            ticket.MarkAsPurchased();
         }
 
         private void Applier(ExpiredReservedSeatsEvent @event)

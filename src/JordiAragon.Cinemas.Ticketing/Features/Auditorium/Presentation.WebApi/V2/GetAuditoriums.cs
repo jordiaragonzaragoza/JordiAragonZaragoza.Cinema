@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragon.Cinemas.Ticketing.Auditorium.Application.Contracts.Queries;
@@ -20,8 +21,8 @@
 
         public GetAuditoriums(ISender sender, IMapper mapper)
         {
-            this.sender = sender;
-            this.mapper = mapper;
+            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public override void Configure()

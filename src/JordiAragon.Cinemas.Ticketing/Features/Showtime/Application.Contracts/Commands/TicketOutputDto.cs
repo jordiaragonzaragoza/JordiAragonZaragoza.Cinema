@@ -9,5 +9,6 @@
         DateTime SessionDateOnUtc,
         Guid Auditorium,
         string MovieName,
-        IEnumerable<SeatOutputDto> Seats);
+        IEnumerable<SeatOutputDto> Seats,
+        bool IsPurchased);
 }

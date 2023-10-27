@@ -49,11 +49,10 @@
         public void ValidateCreateShowtimeCommand_WhenMovieIdIsEmpty_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand
-            {
-                AuditoriumId = AuditoriumId.Create(Guid.NewGuid()),
-                SessionDateOnUtc = DateTime.UtcNow.AddYears(1),
-            };
+            var createShowtimeCommand = new CreateShowtimeCommand(
+                AuditoriumId: AuditoriumId.Create(Guid.NewGuid()),
+                MovieId: Guid.Empty,
+                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
 
             this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
 
@@ -70,11 +69,10 @@
         public void ValidateCreateShowtimeCommand_WhenAuditoriumIdIsEmpty_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand
-            {
-                MovieId = MovieId.Create(Guid.NewGuid()),
-                SessionDateOnUtc = DateTime.UtcNow.AddYears(1),
-            };
+            var createShowtimeCommand = new CreateShowtimeCommand(
+                AuditoriumId: Guid.Empty,
+                MovieId: MovieId.Create(Guid.NewGuid()),
+                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
 
             this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
 
@@ -91,12 +89,10 @@
         public void ValidateCreateShowtimeCommand_WhenSessionDateOnUtcExpired_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand
-            {
-                MovieId = MovieId.Create(Guid.NewGuid()),
-                AuditoriumId = AuditoriumId.Create(Guid.NewGuid()),
-                SessionDateOnUtc = DateTime.UtcNow.AddYears(-1),
-            };
+            var createShowtimeCommand = new CreateShowtimeCommand(
+                AuditoriumId.Create(Guid.NewGuid()),
+                MovieId.Create(Guid.NewGuid()),
+                DateTime.UtcNow.AddYears(-1));
 
             this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
 

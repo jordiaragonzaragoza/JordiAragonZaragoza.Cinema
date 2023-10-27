@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
@@ -39,13 +38,13 @@
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
 
-            var request = new CreateTicketRequest(showtimeId, seatsIds);
-            var content = StringContentHelpers.FromModelAsJson(request);
+            var reserveSeatsRequest = new ReserveSeatsRequest(showtimeId, seatsIds);
+            var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
-            var routeCreateTicket = $"api/v2/{CreateTicket.Route}";
+            var routeCreateTicket = $"api/v2/{ReserveSeats.Route}";
             routeCreateTicket = routeCreateTicket.Replace("{showtimeId}", showtimeId.ToString());
 
-            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(routeCreateTicket, content, this.OutputHelper);
+            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(routeCreateTicket, reserveSeatsContent, this.OutputHelper);
 
             var ticketId = ticketResponse.TicketId.ToString();
 
@@ -53,13 +52,14 @@
             route = route.Replace("{showtimeId}", showtimeId.ToString());
             route = route.Replace("{ticketId}", ticketId);
 
+            var purchaseTicketRequest = new PurchaseTicketRequest(showtimeId, ticketResponse.TicketId, true);
+            var purchaseTicketContent = StringContentHelpers.FromModelAsJson(purchaseTicketRequest);
+
             // Act
-            this.OutputHelper.WriteLine($"Requesting with PATCH {route} ");
-            var response = await this.Fixture.HttpClient.PatchAsync(route, content: null);
+            var response = await this.Fixture.HttpClient.PatchAndDeserializeAsync<TicketResponse>(route, purchaseTicketContent, this.OutputHelper);
 
             // Assert
-            response.StatusCode.Should()
-                .Be(HttpStatusCode.NoContent);
+            response.IsPurchased.Should().BeTrue();
         }
     }
 }

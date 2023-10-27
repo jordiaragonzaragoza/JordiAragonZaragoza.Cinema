@@ -15,9 +15,9 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class CreateTicketTests : BaseWebApiFunctionalTests
+    public class ReserveSeatsTests : BaseWebApiFunctionalTests
     {
-        public CreateTicketTests(
+        public ReserveSeatsTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -38,10 +38,10 @@
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
 
-            var request = new CreateTicketRequest(showtimeId, seatsIds);
+            var request = new ReserveSeatsRequest(showtimeId, seatsIds);
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            var route = $"api/v2/{CreateTicket.Route}";
+            var route = $"api/v2/{ReserveSeats.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString());
 
             // Act
@@ -59,6 +59,8 @@
 
             ticketResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(seatsIds);
+
+            ticketResponse.IsPurchased.Should().BeFalse();
         }
     }
 }

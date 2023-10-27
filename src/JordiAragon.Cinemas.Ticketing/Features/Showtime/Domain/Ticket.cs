@@ -30,7 +30,7 @@
 
         public DateTime CreatedTimeOnUtc { get; private set; }
 
-        public bool IsPaid { get; private set; }
+        public bool IsPaid { get; private set; } // TODO: Rename to IsPurchased
 
         internal static Ticket Create(
             TicketId id,
@@ -40,7 +40,7 @@
             return new Ticket(id, seatIds, createdTimeOnUtc);
         }
 
-        internal void MarkAsPaid()
+        internal void MarkAsPurchased()
         {
             if (!this.IsPaid)
             {

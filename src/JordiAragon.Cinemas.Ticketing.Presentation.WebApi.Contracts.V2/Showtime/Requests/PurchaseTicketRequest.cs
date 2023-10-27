@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class PurchaseTicketRequest(Guid ShowtimeId, Guid TicketId);
+    public record class PurchaseTicketRequest(Guid ShowtimeId, Guid TicketId, bool IsPurchased);
 }

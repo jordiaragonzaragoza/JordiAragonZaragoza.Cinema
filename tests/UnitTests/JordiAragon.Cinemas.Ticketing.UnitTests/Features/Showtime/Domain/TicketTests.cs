@@ -61,7 +61,7 @@
             var ticket = CreateTicketUtils.Create();
 
             // Act
-            ticket.MarkAsPaid();
+            ticket.MarkAsPurchased();
 
             // Assert
             ticket.IsPaid.Should().Be(true);
@@ -73,10 +73,10 @@
             // Arrange
             var ticket = CreateTicketUtils.Create();
 
-            ticket.MarkAsPaid();
+            ticket.MarkAsPurchased();
 
             // Act
-            ticket.MarkAsPaid();
+            ticket.MarkAsPurchased();
 
             // Assert
             ticket.IsPaid.Should().Be(true);

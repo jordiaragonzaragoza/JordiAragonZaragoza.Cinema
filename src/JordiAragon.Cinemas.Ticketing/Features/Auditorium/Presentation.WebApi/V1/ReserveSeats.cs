@@ -2,6 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
@@ -11,15 +12,15 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class CreateTicket : Endpoint<CreateTicketRequest, TicketResponse>
+    public class ReserveSeats : Endpoint<ReserveSeatsRequest, TicketResponse>
     {
         private readonly ISender sender;
         private readonly IMapper mapper;
 
-        public CreateTicket(ISender sender, IMapper mapper)
+        public ReserveSeats(ISender sender, IMapper mapper)
         {
-            this.sender = sender;
-            this.mapper = mapper;
+            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public override void Configure()
@@ -34,7 +35,7 @@
             });
         }
 
-        public async override Task HandleAsync(CreateTicketRequest req, CancellationToken ct)
+        public async override Task HandleAsync(ReserveSeatsRequest req, CancellationToken ct)
         {
             var command = this.mapper.Map<ReserveSeatsCommand>(req);
 

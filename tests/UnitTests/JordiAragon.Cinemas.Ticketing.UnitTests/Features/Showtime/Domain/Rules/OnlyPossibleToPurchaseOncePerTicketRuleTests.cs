@@ -7,7 +7,7 @@
     using JordiAragon.Cinemas.Ticketing.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class OnlyPossibleToPayOncePerTicketRuleTests
+    public class OnlyPossibleToPurchaseOncePerTicketRuleTests
     {
         [Fact]
         public void ConstructorOnlyPossibleToPayOncePerTicketRule_WhenHavingInvalidArgument_ShouldThrowArgumentException()
@@ -16,7 +16,7 @@
             Ticket reservation = null;
 
             // Act
-            Func<OnlyPossibleToPayOncePerTicketRule> constructor = () => new OnlyPossibleToPayOncePerTicketRule(reservation);
+            Func<OnlyPossibleToPurchaseOncePerTicketRule> constructor = () => new OnlyPossibleToPurchaseOncePerTicketRule(reservation);
 
             // Assert
             constructor.Should().Throw<ArgumentException>();
@@ -27,10 +27,10 @@
         {
             // Arrange
             var ticket = CreateTicketUtils.Create();
-            ticket.MarkAsPaid();
+            ticket.MarkAsPurchased();
 
             // Act
-            var rule = new OnlyPossibleToPayOncePerTicketRule(ticket);
+            var rule = new OnlyPossibleToPurchaseOncePerTicketRule(ticket);
 
             // Assert
             rule.IsBroken().Should().Be(true);
@@ -43,7 +43,7 @@
             var ticket = CreateTicketUtils.Create();
 
             // Act
-            var rule = new OnlyPossibleToPayOncePerTicketRule(ticket);
+            var rule = new OnlyPossibleToPurchaseOncePerTicketRule(ticket);
 
             // Assert
             rule.IsBroken().Should().Be(false);
