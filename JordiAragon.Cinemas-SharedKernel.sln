@@ -67,6 +67,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunctionalTests", "Function
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.FunctionalTests", "tests\FunctionalTests\JordiAragon.Cinemas.Ticketing.FunctionalTests\JordiAragon.Cinemas.Ticketing.FunctionalTests.csproj", "{51013E47-35CE-4280-A6C3-D25B402C0C1E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArchitectureTests", "ArchitectureTests", "{8140039B-A305-40E1-A5CC-A5E3982DBE5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.ArchitectureTests", "tests\ArchitectureTests\JordiAragon.Cinemas.Ticketing.ArchitectureTests\JordiAragon.Cinemas.Ticketing.ArchitectureTests.csproj", "{0E8A32A5-501D-44B1-8823-6671E05609C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +153,10 @@ Global
 		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,5 +186,7 @@ Global
 		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F} = {2AB57345-0FA2-4944-84C8-973D8F0FD96D}
 		{3663F1BD-7551-43FA-9A49-5703A63ADEB6} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
 		{51013E47-35CE-4280-A6C3-D25B402C0C1E} = {3663F1BD-7551-43FA-9A49-5703A63ADEB6}
+		{8140039B-A305-40E1-A5CC-A5E3982DBE5B} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{0E8A32A5-501D-44B1-8823-6671E05609C0} = {8140039B-A305-40E1-A5CC-A5E3982DBE5B}
 	EndGlobalSection
 EndGlobal

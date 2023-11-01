@@ -28,10 +28,7 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Application\JordiAragon.Cinemas.Ticketing.Application.csproj" />
-		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework\JordiAragon.Cinemas.Ticketing.Infrastructure.EntityFramework.csproj" />
-		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Infrastructure\JordiAragon.Cinemas.Ticketing.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Presentation.WebApi\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing\JordiAragon.Cinemas.Ticketing.csproj" />
 		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.csproj" />
 		<ProjectReference Include="..\..\..\src\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.csproj" />
 	</ItemGroup>
