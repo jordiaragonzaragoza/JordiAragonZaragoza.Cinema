@@ -3,7 +3,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Seat : BaseAuditableEntity<SeatId>
+    public class Seat : BaseAuditableEntity<SeatId> // TODO: Use BaseEntity
     {
         private Seat(
             SeatId id,

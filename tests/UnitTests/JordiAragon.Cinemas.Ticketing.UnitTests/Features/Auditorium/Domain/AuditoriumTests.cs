@@ -51,7 +51,7 @@
             auditorium.Seats.Should().HaveCount(rows * seatsPerRow);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(AuditoriumCreatedEvent))
+                              .ContainSingle(x => x is AuditoriumCreatedEvent)
                               .Which.Should().BeOfType<AuditoriumCreatedEvent>()
                               .Which.Should().Match<AuditoriumCreatedEvent>(e =>
                                                                             e.AuditoriumId == id &&
@@ -105,7 +105,7 @@
                           .HaveCount(1);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ShowtimeAddedEvent))
+                              .ContainSingle(x => x is ShowtimeAddedEvent)
                               .Which.Should().BeOfType<ShowtimeAddedEvent>()
                               .Which.Should().Match<ShowtimeAddedEvent>(e =>
                                                                             e.AuditoriumId == auditorium.Id &&
@@ -144,7 +144,7 @@
                           .HaveCount(0);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ShowtimeRemovedEvent))
+                              .ContainSingle(x => x is ShowtimeRemovedEvent)
                               .Which.Should().BeOfType<ShowtimeRemovedEvent>()
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
                                                                             e.AuditoriumId == auditorium.Id &&

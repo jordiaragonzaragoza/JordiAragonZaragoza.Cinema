@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public record class MovieCreatedEvent(
+    public sealed record class MovieCreatedEvent(
         Guid MovieId,
         string Title,
         string ImdbId,

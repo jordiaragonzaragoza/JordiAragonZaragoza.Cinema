@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public record class ShowtimeCreatedEvent(
+    public sealed record class ShowtimeCreatedEvent(
         Guid ShowtimeId,
         Guid MovieId,
         DateTime SessionDateOnUtc,

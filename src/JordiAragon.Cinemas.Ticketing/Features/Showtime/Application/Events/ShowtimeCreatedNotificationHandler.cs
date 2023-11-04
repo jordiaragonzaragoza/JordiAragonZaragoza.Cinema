@@ -3,7 +3,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinemas.Ticketing.Showtime.Domain.Events;
+    using JordiAragon.Cinemas.Ticketing.Showtime.Domain.Notifications;
     using MediatR;
     using Microsoft.Extensions.Logging;
 

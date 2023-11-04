@@ -96,7 +96,7 @@
             showtime.Id.Should().Be(id);
 
             showtime.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ShowtimeCreatedEvent))
+                              .ContainSingle(x => x is ShowtimeCreatedEvent)
                               .Which.Should().BeOfType<ShowtimeCreatedEvent>()
                               .Which.Should().Match<ShowtimeCreatedEvent>(e =>
                                                                             e.ShowtimeId == id &&
@@ -146,7 +146,7 @@
             showtime.Tickets.Should().HaveCount(1).And.Contain(ticketCreated);
 
             showtime.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ReservedSeatsEvent))
+                              .ContainSingle(x => x is ReservedSeatsEvent)
                               .Which.Should().BeOfType<ReservedSeatsEvent>()
                               .Which.Should().Match<ReservedSeatsEvent>(e =>
                                                                             e.ShowtimeId == showtime.Id &&
@@ -175,7 +175,7 @@
             showtime.Tickets.Should().BeEmpty();
 
             showtime.Events.Should()
-                              .NotContain(x => x.GetType() == typeof(ReservedSeatsEvent));
+                              .NotContain(x => x is ReservedSeatsEvent);
         }
 
         [Fact]
@@ -202,7 +202,7 @@
             ticketCreated.IsPaid.Should().BeTrue();
 
             showtime.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(PurchasedTicketEvent))
+                              .ContainSingle(x => x is PurchasedTicketEvent)
                               .Which.Should().BeOfType<PurchasedTicketEvent>()
                               .Which.Should().Match<PurchasedTicketEvent>(e =>
                                                                             e.ShowtimeId == showtime.Id &&
@@ -224,7 +224,7 @@
             showtimePurchaseSeats.Should().Throw<ArgumentException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(PurchasedTicketEvent));
+                           .NotContain(x => x is PurchasedTicketEvent);
         }
 
         [Fact]
@@ -242,7 +242,7 @@
             showtimePurchaseSeats.Should().Throw<NotFoundException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(PurchasedTicketEvent));
+                           .NotContain(x => x is PurchasedTicketEvent);
         }
 
         [Fact]
@@ -295,7 +295,7 @@
             showtime.Tickets.Should().BeEmpty();
 
             showtime.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ExpiredReservedSeatsEvent))
+                              .ContainSingle(x => x is ExpiredReservedSeatsEvent)
                               .Which.Should().BeOfType<ExpiredReservedSeatsEvent>()
                               .Which.Should().Match<ExpiredReservedSeatsEvent>(e =>
                                                                             e.ShowtimeId == showtime.Id &&
@@ -317,7 +317,7 @@
             showtimePurchaseSeats.Should().Throw<ArgumentException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(ExpiredReservedSeatsEvent));
+                           .NotContain(x => x is ExpiredReservedSeatsEvent);
         }
 
         [Fact]
@@ -335,7 +335,7 @@
             showtimePurchaseSeats.Should().Throw<NotFoundException>();
 
             showtime.Events.Should()
-                           .NotContain(x => x.GetType() == typeof(ExpiredReservedSeatsEvent));
+                           .NotContain(x => x is ExpiredReservedSeatsEvent);
         }
     }
 }

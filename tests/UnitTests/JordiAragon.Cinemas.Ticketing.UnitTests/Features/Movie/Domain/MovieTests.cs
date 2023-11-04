@@ -64,7 +64,7 @@
             movie.Id.Should().Be(id);
 
             movie.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(MovieCreatedEvent))
+                              .ContainSingle(x => x is MovieCreatedEvent)
                               .Which.Should().BeOfType<MovieCreatedEvent>()
                               .Which.Should().Match<MovieCreatedEvent>(e =>
                                                                             e.MovieId == id &&
@@ -126,7 +126,7 @@
                           .HaveCount(1);
 
             movie.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ShowtimeAddedEvent))
+                              .ContainSingle(x => x is ShowtimeAddedEvent)
                               .Which.Should().BeOfType<ShowtimeAddedEvent>()
                               .Which.Should().Match<ShowtimeAddedEvent>(e =>
                                                                             e.MovieId == movie.Id &&
@@ -151,7 +151,7 @@
                           .HaveCount(0);
 
             movie.Events.Should()
-                              .ContainSingle(x => x.GetType() == typeof(ShowtimeRemovedEvent))
+                              .ContainSingle(x => x is ShowtimeRemovedEvent)
                               .Which.Should().BeOfType<ShowtimeRemovedEvent>()
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
                                                                             e.MovieId == movie.Id &&
