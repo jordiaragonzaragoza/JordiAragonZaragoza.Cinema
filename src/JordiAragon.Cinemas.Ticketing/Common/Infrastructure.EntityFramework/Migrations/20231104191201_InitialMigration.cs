@@ -76,11 +76,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Row = table.Column<short>(type: "smallint", nullable: false),
-                    SeatNumber = table.Column<short>(type: "smallint", nullable: false),
-                    CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SeatNumber = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,11 +136,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedTimeOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModificationDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IsPurchased = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -17,12 +17,12 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.AuditoriumAggregate.Auditorium", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Auditorium.Domain.Auditorium", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -38,7 +38,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     b.ToTable("Auditoriums", (string)null);
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.MovieAggregate.Movie", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Movie.Domain.Movie", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -60,7 +60,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     b.ToTable("Movies", (string)null);
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate.Showtime", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Showtime.Domain.Showtime", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -104,9 +104,9 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     b.ToTable("OutboxMessages");
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.AuditoriumAggregate.Auditorium", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Auditorium.Domain.Auditorium", b =>
                 {
-                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate.ShowtimeId", "Showtimes", b1 =>
+                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
@@ -131,7 +131,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                                 .HasForeignKey("AuditoriumId");
                         });
 
-                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Domain.AuditoriumAggregate.Seat", "Seats", b1 =>
+                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Auditorium.Domain.Seat", "Seats", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -139,18 +139,6 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
 
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("CreatedByUserId")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("CreationDateOnUtc")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("LastModifiedByUserId")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("ModificationDateOnUtc")
-                                .HasColumnType("datetime2");
 
                             b1.Property<short>("Row")
                                 .HasColumnType("smallint");
@@ -173,9 +161,9 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     b.Navigation("Showtimes");
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.MovieAggregate.Movie", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Movie.Domain.Movie", b =>
                 {
-                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate.ShowtimeId", "Showtimes", b1 =>
+                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
@@ -203,9 +191,9 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                     b.Navigation("Showtimes");
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate.Showtime", b =>
+            modelBuilder.Entity("JordiAragon.Cinemas.Ticketing.Showtime.Domain.Showtime", b =>
                 {
-                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Domain.ShowtimeAggregate.Ticket", "Tickets", b1 =>
+                    b.OwnsMany("JordiAragon.Cinemas.Ticketing.Showtime.Domain.Ticket", "Tickets", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier");
@@ -213,23 +201,11 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                             b1.Property<Guid>("ShowtimeId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("CreatedByUserId")
-                                .HasColumnType("nvarchar(max)");
-
                             b1.Property<DateTime>("CreatedTimeOnUtc")
                                 .HasColumnType("datetime2");
 
-                            b1.Property<DateTime>("CreationDateOnUtc")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<bool>("IsPaid")
+                            b1.Property<bool>("IsPurchased")
                                 .HasColumnType("bit");
-
-                            b1.Property<string>("LastModifiedByUserId")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("ModificationDateOnUtc")
-                                .HasColumnType("datetime2");
 
                             b1.HasKey("Id", "ShowtimeId");
 
@@ -240,7 +216,7 @@ namespace JordiAragon.Cinemas.Ticketing.Common.Infrastructure.EntityFramework.Mi
                             b1.WithOwner()
                                 .HasForeignKey("ShowtimeId");
 
-                            b1.OwnsMany("JordiAragon.Cinemas.Ticketing.Domain.AuditoriumAggregate.SeatId", "Seats", b2 =>
+                            b1.OwnsMany("JordiAragon.Cinemas.Ticketing.Auditorium.Domain.SeatId", "Seats", b2 =>
                                 {
                                     b2.Property<Guid>("TicketId")
                                         .HasColumnType("uniqueidentifier");
