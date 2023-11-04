@@ -6,11 +6,11 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class StrongIdsTests
+    public class EntityIdsTests
     {
         private readonly Assembly assembly;
 
-        public StrongIdsTests()
+        public EntityIdsTests()
         {
             this.assembly = AssemblyReference.Assembly;
         }
