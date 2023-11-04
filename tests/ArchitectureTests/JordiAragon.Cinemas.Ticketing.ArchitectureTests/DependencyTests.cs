@@ -276,39 +276,40 @@
             testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
         }
 
-        /*
         [Fact]
         public void InfrastructureEventStore_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assembly = InfrastructureEventStoreAssemblyReference.Assembly;
-
-            var forbiddenDependencies = new[]
+            var namespacesCollections = new List<IEnumerable<string>>
             {
-                this.infrastructureNamespace,
-                this.infrastructureEntityFrameworkNamespace,
-                this.webApiNamespace,
-                this.webApiContractsNamespace,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.webApiNamespaces,
             };
 
-            var dependencies = new[]
+            var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
+            forbiddenReferences.Add(this.webApiContractsV1Namespace);
+            forbiddenReferences.Add(this.webApiContractsV2Namespace);
+
+            var allowedDependencies = new List<IEnumerable<string>>
             {
-                this.applicationContractsNamespace,
-                this.sharedKernelNamespace,
-                this.domainNamespace,
-            };
+                this.applicationContractsNamespaces,
+                this.domainNamespaces,
+            }.SelectMany(collection => collection).ToArray();
 
             // Act.
             var testResult = Types
-                .InAssembly(assembly)
+                .InAssembly(this.assembly)
+                .That()
+                .ResideInNamespaceContaining("Infrastructure.EventStore")
                 .Should()
-                .NotHaveDependencyOnAny(forbiddenDependencies)
-                .And()
-                .HaveDependencyOn(this.infrastructureEventStoreNamespace)
+                .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOnAny(dependencies)
+                .HaveDependencyOnAny(this.infrastructureEventStoreNamespaces.ToArray())
                 .Or()
-                .NotHaveDependencyOnAny(this.allProjects)
+                .HaveDependencyOnAny(allowedDependencies)
+                .Or()
+                .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
 
             // Assert.
@@ -316,37 +317,74 @@
         }
 
         [Fact]
-        public void WebApiContracts_Should_Not_HaveDependencyOnOtherProjects()
+        public void WebApiContractsV1_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assembly = WebApiContractsAssemblyReference.Assembly;
+            var assemblyV1 = WebApiContractsV1AssemblyReference.Assembly;
 
-            var otherProjects = new[]
+            var namespacesCollections = new List<IEnumerable<string>>
             {
-                this.sharedKernelNamespace,
-                this.sharedKernelContractsNamespace,
-                this.domainNamespace,
-                this.domainContractsNamespace,
-                this.applicationNamespace,
-                this.applicationContractsNamespace,
-                this.applicationContractsIntegrationMessagesNamespace,
-                this.infrastructureNamespace,
-                this.infrastructureEntityFrameworkNamespace,
-                this.infrastructureEventStoreNamespace,
-                this.webApiNamespace,
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.applicationContractsNamespaces,
+                this.applicationContractsIntegrationMessagesNamespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+                this.webApiNamespaces,
             };
+
+            var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
+            forbiddenReferences.Add(this.webApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(assembly)
+                .InAssembly(assemblyV1)
                 .Should()
-                .NotHaveDependencyOnAny(otherProjects)
+                .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOn(this.webApiContractsNamespace)
+                .HaveDependencyOn(this.webApiContractsV1Namespace)
                 .Or()
-                .NotHaveDependencyOnAny(this.allProjects)
+                .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
 
+            // Assert.
+            testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
+        }
+
+        [Fact]
+        public void WebApiContractsV2_Should_Not_HaveDependencyOnOtherProjects()
+        {
+            // Arrange.
+            var assemblyV2 = WebApiContractsV2AssemblyReference.Assembly;
+
+            var namespacesCollections = new List<IEnumerable<string>>
+            {
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.applicationContractsNamespaces,
+                this.applicationContractsIntegrationMessagesNamespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+                this.webApiNamespaces,
+            };
+
+            var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
+            forbiddenReferences.Add(this.webApiContractsV1Namespace);
+
+            // Act.
+            var testResult = Types
+                .InAssembly(assemblyV2)
+                .Should()
+                .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
+                .Or()
+                .HaveDependencyOn(this.webApiContractsV1Namespace)
+                .Or()
+                .NotHaveDependencyOnAny(this.allNamespaces)
+                .GetResult();
+
+            // Assert.
             testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
         }
 
@@ -354,41 +392,39 @@
         public void WebApi_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assembly = WebApiAssemblyReference.Assembly;
-
-            var forbiddenDependencies = new[]
+            var forbiddenReferences = new List<IEnumerable<string>>
             {
-                this.domainNamespace,
-                this.domainContractsNamespace,
-                this.applicationNamespace,
-                this.infrastructureNamespace,
-                this.infrastructureEntityFrameworkNamespace,
-                this.infrastructureEventStoreNamespace,
-            };
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+            }.SelectMany(collection => collection).ToArray();
 
-            var dependencies = new[]
+            var allowedDependencies = new List<IEnumerable<string>>
             {
-                this.applicationContractsNamespace,
-                this.sharedKernelNamespace,
-                this.webApiContractsNamespace,
-            };
+                this.applicationContractsNamespaces,
+            }.SelectMany(collection => collection).ToList();
+            allowedDependencies.Add(this.webApiContractsV1Namespace);
+            allowedDependencies.Add(this.webApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(assembly)
+                .InAssembly(this.assembly)
+                .That()
+                .ResideInNamespaceContaining("Presentation.WebApi")
                 .Should()
-                .NotHaveDependencyOnAny(forbiddenDependencies)
+                .NotHaveDependencyOnAny(forbiddenReferences)
                 .Or()
-                .HaveDependencyOn(this.webApiNamespace)
+                .HaveDependencyOnAny(this.webApiNamespaces.ToArray())
                 .Or()
-                .HaveDependencyOnAny(dependencies)
+                .HaveDependencyOnAny(allowedDependencies.ToArray())
                 .Or()
-                .NotHaveDependencyOnAny(this.allProjects)
+                .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
 
             testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
         }
-         */
 
         private static IEnumerable<string> GetNamespacesContaining(Assembly assembly, string fragmentNamespace)
         {
