@@ -85,7 +85,7 @@
                 existingAuditorium.Id.Value,
                 existingmovie.Title,
                 this.mapper.Map<IEnumerable<SeatOutputDto>>(seats),
-                newticket.IsPaid);
+                newticket.IsPurchased);
 
             return Result.Success(ticketOutputDto);
         }

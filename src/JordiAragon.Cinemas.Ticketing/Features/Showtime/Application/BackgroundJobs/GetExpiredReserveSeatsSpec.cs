@@ -11,7 +11,7 @@
         {
             this.Query
                 .Where(showtime => currentDateTimeOnUtc < showtime.SessionDateOnUtc
-                                    && showtime.Tickets.Any(ticket => !ticket.IsPaid && currentDateTimeOnUtc > ticket.CreatedTimeOnUtc.AddMinutes(1)));
+                                    && showtime.Tickets.Any(ticket => !ticket.IsPurchased && currentDateTimeOnUtc > ticket.CreatedTimeOnUtc.AddMinutes(1)));
 
             this.Query.Include(showtime => showtime.Tickets);
         }

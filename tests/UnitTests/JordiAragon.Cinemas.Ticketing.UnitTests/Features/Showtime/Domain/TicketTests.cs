@@ -64,7 +64,7 @@
             ticket.MarkAsPurchased();
 
             // Assert
-            ticket.IsPaid.Should().Be(true);
+            ticket.IsPurchased.Should().Be(true);
         }
 
         [Fact]
@@ -79,7 +79,7 @@
             ticket.MarkAsPurchased();
 
             // Assert
-            ticket.IsPaid.Should().Be(true);
+            ticket.IsPurchased.Should().Be(true);
         }
     }
 }

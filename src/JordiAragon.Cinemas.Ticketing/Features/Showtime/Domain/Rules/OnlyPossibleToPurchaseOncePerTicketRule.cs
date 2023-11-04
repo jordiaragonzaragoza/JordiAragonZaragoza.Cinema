@@ -14,6 +14,6 @@
 
         public string Message => "Only possible to purchase once per ticket.";
 
-        public bool IsBroken() => this.ticket.IsPaid;
+        public bool IsBroken() => this.ticket.IsPurchased;
     }
 }

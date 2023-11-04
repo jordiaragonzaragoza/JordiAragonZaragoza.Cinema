@@ -23,7 +23,7 @@
         }
 
         [Fact]
-        public void IsBroken_WhenReservationIsPaid_ShouldBeTrue()
+        public void IsBroken_WhenReservationIsPurchased_ShouldBeTrue()
         {
             // Arrange
             var ticket = CreateTicketUtils.Create();

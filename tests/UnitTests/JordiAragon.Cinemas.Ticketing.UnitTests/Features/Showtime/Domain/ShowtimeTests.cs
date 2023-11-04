@@ -141,7 +141,7 @@
             ticketCreated.Should().NotBeNull();
             ticketCreated.Seats.Should().BeEquivalentTo(seatIds);
             ticketCreated.CreatedTimeOnUtc.Should().Be(createdTimeOnUtc);
-            ticketCreated.IsPaid.Should().Be(false);
+            ticketCreated.IsPurchased.Should().Be(false);
 
             showtime.Tickets.Should().HaveCount(1).And.Contain(ticketCreated);
 
@@ -199,7 +199,7 @@
             showtime.PurchaseTicket(ticketId);
 
             // Assert
-            ticketCreated.IsPaid.Should().BeTrue();
+            ticketCreated.IsPurchased.Should().BeTrue();
 
             showtime.Events.Should()
                               .ContainSingle(x => x is PurchasedTicketEvent)
