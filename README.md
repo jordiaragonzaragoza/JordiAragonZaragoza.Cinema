@@ -1,13 +1,13 @@
 What is the Cinemas Project?
 =====================
 The Cinemas Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
-Ticketing bounded context manage the cinema showtimes and ticket reservation.
+Reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## How to use:
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - You will need also Docker Desktop running on your machine.
-- To run the project just find and build the solution file JordiAragon.Cinemas.Ticketing.sln and select docker-compose as startup project.
+- To run the project just find and build the solution file JordiAragon.Cinemas.Reservation.sln and select docker-compose as startup project.
 
 ## Architecture:
 
@@ -66,7 +66,7 @@ Ticketing bounded context manage the cinema showtimes and ticket reservation.
  - DomainEventsDispatcherBehaviour to dispatch domain events before complete the transation.
  - PerformanceBehaviour to track the execution time performance.
 
-## Ticketing Bounded Context - Commands and queries.
+## Reservation Bounded Context - Commands and queries.
 
 - Create showtime
     Create showtime for a given movie data.

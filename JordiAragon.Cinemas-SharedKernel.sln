@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9F
 		src\Directory.Packages.props = src\Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1", "src\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V1", "src\JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V1\JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKernel", "{CFFE2114-8356-49BA-B755-3427D19DB42A}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,29 +47,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Pr
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2", "src\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2\JordiAragon.Cinemas.Ticketing.Presentation.WebApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V2", "src\JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V2\JordiAragon.Cinemas.Reservation.Presentation.WebApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Infrastructure.EventStore", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EventStore\JordiAragon.SharedKernel.Infrastructure.EventStore.csproj", "{F763E219-5B84-41A2-943A-4BDE80E94D0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing", "src\JordiAragon.Cinemas.Ticketing\JordiAragon.Cinemas.Ticketing.csproj", "{38FECB83-906F-4B6C-B721-AC515C6EA2E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation", "src\JordiAragon.Cinemas.Reservation\JordiAragon.Cinemas.Reservation.csproj", "{38FECB83-906F-4B6C-B721-AC515C6EA2E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{B7AA27C9-CBB9-40DC-86D5-B6224E693854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.UnitTests", "tests\UnitTests\JordiAragon.Cinemas.Ticketing.UnitTests\JordiAragon.Cinemas.Ticketing.UnitTests.csproj", "{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.UnitTests", "tests\UnitTests\JordiAragon.Cinemas.Reservation.UnitTests\JordiAragon.Cinemas.Reservation.UnitTests.csproj", "{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{2AB57345-0FA2-4944-84C8-973D8F0FD96D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.IntegrationTests", "tests\IntegrationTests\JordiAragon.Cinemas.Ticketing.IntegrationTests\JordiAragon.Cinemas.Ticketing.IntegrationTests.csproj", "{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.IntegrationTests", "tests\IntegrationTests\JordiAragon.Cinemas.Reservation.IntegrationTests\JordiAragon.Cinemas.Reservation.IntegrationTests.csproj", "{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunctionalTests", "FunctionalTests", "{3663F1BD-7551-43FA-9A49-5703A63ADEB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.FunctionalTests", "tests\FunctionalTests\JordiAragon.Cinemas.Ticketing.FunctionalTests\JordiAragon.Cinemas.Ticketing.FunctionalTests.csproj", "{51013E47-35CE-4280-A6C3-D25B402C0C1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.FunctionalTests", "tests\FunctionalTests\JordiAragon.Cinemas.Reservation.FunctionalTests\JordiAragon.Cinemas.Reservation.FunctionalTests.csproj", "{51013E47-35CE-4280-A6C3-D25B402C0C1E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArchitectureTests", "ArchitectureTests", "{8140039B-A305-40E1-A5CC-A5E3982DBE5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Ticketing.ArchitectureTests", "tests\ArchitectureTests\JordiAragon.Cinemas.Ticketing.ArchitectureTests\JordiAragon.Cinemas.Ticketing.ArchitectureTests.csproj", "{0E8A32A5-501D-44B1-8823-6671E05609C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinemas.Reservation.ArchitectureTests", "tests\ArchitectureTests\JordiAragon.Cinemas.Reservation.ArchitectureTests\JordiAragon.Cinemas.Reservation.ArchitectureTests.csproj", "{0E8A32A5-501D-44B1-8823-6671E05609C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  jordiaragon.cinemas.ticketing:
-    image: ${DOCKER_REGISTRY-}jordiaragon.cinemas.ticketing
-    container_name: jordiaragon.cinemas.ticketing
+  jordiaragon.cinemas.reservation:
+    image: ${DOCKER_REGISTRY-}jordiaragon.cinemas.reservation
+    container_name: jordiaragon.cinemas.reservation
     build:
       context: .
-      dockerfile: src/JordiAragon.Cinemas.Ticketing/Dockerfile
+      dockerfile: src/JordiAragon.Cinemas.Reservation/Dockerfile
     depends_on:
       - "azuresqledge.cinemas"
       - "eventstore.cinemas"
