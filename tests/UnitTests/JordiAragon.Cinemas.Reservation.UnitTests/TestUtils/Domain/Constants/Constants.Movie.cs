@@ -11,7 +11,7 @@ namespace JordiAragon.Cinemas.Reservation.UnitTests.TestUtils.Domain
             public const string ImdbId = "tt1375666";
             public const string Stars = "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe";
             public static readonly MovieId Id = MovieId.Create(Guid.NewGuid());
-            public static readonly DateTime ReleaseDateOnUtc = new(2010, 01, 14);
+            public static readonly DateTime ReleaseDateOnUtc = new(2010, 01, 14, 0, 0, 0, DateTimeKind.Utc);
         }
     }
 }

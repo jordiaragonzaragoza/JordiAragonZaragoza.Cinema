@@ -74,6 +74,8 @@
 
             serviceCollection.AddAuthentication();
 
+            serviceCollection.AddAuthorization();
+
             ////serviceCollection.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             ////serviceCollection.AddEndpointsApiExplorer();

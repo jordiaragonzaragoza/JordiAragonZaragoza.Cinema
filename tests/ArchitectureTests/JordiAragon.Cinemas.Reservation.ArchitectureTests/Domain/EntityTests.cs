@@ -31,7 +31,7 @@
             foreach (var type in types)
             {
                 var constructors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
-                if (!constructors.Any(c => c.IsPrivate && c.GetParameters().Length == 0)
+                if (!Array.Exists(constructors, c => c.IsPrivate && c.GetParameters().Length == 0)
                     && constructors.Length == 1)
                 {
                     failingTypes.Add(type);

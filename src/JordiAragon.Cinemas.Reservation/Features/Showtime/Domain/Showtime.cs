@@ -47,7 +47,7 @@
         {
             this.Apply(new ReservedSeatsEvent(this.Id, id, seatIds.Select(x => x.Value), createdTimeOnUtc));
 
-            return this.tickets.Last();
+            return this.tickets[this.tickets.Count - 1];
         }
 
         public Ticket PurchaseTicket(TicketId ticketId)
