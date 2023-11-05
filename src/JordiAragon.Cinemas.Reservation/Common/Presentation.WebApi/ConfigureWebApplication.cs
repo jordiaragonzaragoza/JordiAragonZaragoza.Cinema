@@ -1,16 +1,12 @@
 ﻿namespace JordiAragon.Cinemas.Reservation.Common.Presentation.WebApi
 {
-    using System.Linq;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Mvc.ApiExplorer;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using JordiAragon.SharedKernel.Presentation.WebApi.Middlewares;
-    using Serilog;
     using FastEndpoints;
     using FastEndpoints.Swagger;
-    using Microsoft.AspNetCore.Mvc;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Middlewares;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.Extensions.Hosting;
+    using Serilog;
 
     public static class ConfigureWebApplication
     {
@@ -22,26 +18,10 @@
             }
             else
             {
-                ////app.UseDefaultExceptionHandler(); // from FastEndpoints
                 app.UseHsts();
             }
 
-            app.UseMiddleware<ExceptionMiddleware>(); // TODO: Review Exception Handler.
-
-            /*
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-
-                var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-                app.UseSwaggerUI(options =>
-                {
-                    foreach (var version in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse().Select(description => description.GroupName))
-                    {
-                        options.SwaggerEndpoint($"/swagger/{version}/swagger.json", version.ToUpperInvariant());
-                    }
-                });
-            }*/
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseSerilogRequestLogging();
 
