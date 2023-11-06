@@ -17,3 +17,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Warning not applicable to .NET Core")]
 [assembly: SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "Ok for Ardalis.GuardClauses")]
+[assembly: SuppressMessage("Minor Code Smell", "S2094:Classes should not be empty", Justification = "Ok for empty records")]

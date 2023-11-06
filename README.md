@@ -1,27 +1,27 @@
-What is the Cinema Project?
+What is the Cinemas Project?
 =====================
-The Cinema Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
-The application represents a Cinema. We want to manage the showtimes of the cinema and ticket reservation.
+The Cinemas Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
+Reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## How to use:
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - You will need also Docker Desktop running on your machine.
-- To run the project just find and build the solution file JordiAragon.Cinemas.Ticketing.sln and select docker-compose as startup project.
+- To run the project just find and build the solution file JordiAragon.Cinemas.Reservation.sln and select docker-compose as startup project.
 
 ## Architecture:
 
 - Full architecture with responsibility separation concerns, SOLID and clean code (including zero warnings policy)
 - Clean Architecture (Onion Architecture)
-- Vertical Slices by feature on each layer.
-- Domain Driven Design
+- Vertical Slices Architecture.
+- Domain Driven-Design 
 - Rich Domain Model with Aggregates and Strong Ids
 - Domain/Application Events
 - Outbox Pattern
 - CQRS with MediatR and FluentValidation
 - Unit of Work
 - Repository & Specification
-- Custom API Error Handling
+- Custom API Error Handling with Problems Details
 
 ## Custom Shared Kernel:
 - This project uses [JordiAragon.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragon.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
@@ -34,6 +34,7 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 
 - ASP.NET 7.0
 - Entity Framework Core 7.0
+- FastEndpoints
 - MediatR
 - AutoMapper
 - Autofac
@@ -55,7 +56,6 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 - Outbox pattern to handle the domain event out side the source transaction.
 - Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
-- Auditable Entity to track changes.
 - Application cache request with invalidation.
 - Generic cache repository with invalidation.
 - MediatR Pipelines (Decorator pattern)
@@ -66,28 +66,30 @@ The application represents a Cinema. We want to manage the showtimes of the cine
  - DomainEventsDispatcherBehaviour to dispatch domain events before complete the transation.
  - PerformanceBehaviour to track the execution time performance.
 
-## Commands and queries
+## Reservation Bounded Context - Commands and queries.
 
 - Create showtime
-    Create showtime and should grab the movie data.
+    Create showtime for a given movie data.
     
 - Reserve seats
     - Reserving the seat response will contain a GUID of the reservation, also the number of seats, the auditorium used and the movie that will be played.
-    - It should not be possible to reserve the same seats two times in 1 minute.
+    - It should not be possible to reserve the same seats two times.
     - It shouldn't be possible to reserve an already sold seat.
     - All the seats, when doing a reservation, need to be contiguous.
+    - Reservation will expire in 1 minute unless marked as purchased.
 
-- Buy seats
-    - We will need the GUID of the reservation, it is only possible to do it while the seats are reserved.
-    - It is not possible to buy two times the same seat.
+- Purchase ticket reservation
+    - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
+    - It is not possible to purchase ticket reservation two times.
 
 ## Testing
 
-- Architecture Tests
+- Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
 - Unit Tests: Domain and Application
 - Functional Tests with Testcontainers: Presentation.WebApi
 - Integration Tests with Testcontainers: Infrastructure.EntityFramework
 - GitHub workflow CI with SonarCloud integration
+
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
 
 ## Model and Data Diagram:
@@ -108,8 +110,10 @@ The application represents a Cinema. We want to manage the showtimes of the cine
 - <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank">Microsoft eShopOnWeb</a>
 - <a href="https://github.com/kgrzybek/sample-dotnet-core-cqrs-api" target="_blank">Kamil Grzybek: Sample .NET Core REST API CQRS</a>
 - <a href="https://github.com/kgrzybek/modular-monolith-with-ddd" target="_blank">Kamil Grzybek: Modular Monolith With DDD</a>
+- <a href="https://www.youtube.com/@CodeOpinion" target="_blank">CodeOpinion: Youtube Channel</a>
 - <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
 - <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
+- <a href="https://www.youtube.com/watch?v=26xrX113KZc" target="_blank">Explore DDD: Mauro Servienti - Talk Session: Welcome to the (State) Machine</a>
 
 
 ## About:
