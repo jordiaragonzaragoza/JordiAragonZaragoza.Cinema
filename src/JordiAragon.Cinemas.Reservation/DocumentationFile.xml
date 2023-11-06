@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JordiAragon.Cinemas.Reservation</name>
+    </assembly>
+    <members>
+        <member name="T:JordiAragon.Cinemas.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure each API discovered for Swagger Documentation.
+            </summary>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.Configure(System.String,Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure Swagger Options. Inherited from the Interface.
+            </summary>
+            <param name="name">The name of the options instance being configured.</param>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragon.Cinemas.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.CreateVersionInfo(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiVersionDescription)">
+            <summary>
+            Create information about the version of the API.
+            </summary>
+            <param name="description">The description of the API version.</param>
+            <returns>Information about the API.</returns>
+        </member>
+    </members>
+</doc>
