@@ -5,9 +5,9 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinemas</RepositoryUrl>
+		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
-		<UseProjectReference>false</UseProjectReference>
+		<UseProjectReference>true</UseProjectReference>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\..\GlobalSuppressions.cs">
