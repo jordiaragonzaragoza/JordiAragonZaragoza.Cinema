@@ -13,10 +13,10 @@
 
     public class ShowtimeDeletedEventHandler : INotificationHandler<ShowtimeDeletedEvent>
     {
-        private readonly IRepository<Auditorium> auditoriumRepository;
+        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public ShowtimeDeletedEventHandler(
-            IRepository<Auditorium> auditoriumRepository)
+            IRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }

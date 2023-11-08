@@ -21,17 +21,17 @@
 
     public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
-        private readonly IReadRepository<Auditorium> auditoriumReadRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository;
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
-        private readonly IReadRepository<Movie> movieReadRepository;
-        private readonly IRepository<Showtime> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieReadRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public ReserveSeatsCommandHandler(
-            IReadRepository<Auditorium> auditoriumReadRepository,
-            IReadRepository<Movie> movieReadRepository,
-            IRepository<Showtime> showtimeRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
+            IReadRepository<Movie, MovieId> movieReadRepository,
+            IRepository<Showtime, ShowtimeId> showtimeRepository,
             IMapper mapper,
             IGuidGenerator guidGenerator,
             IDateTime dateTime)

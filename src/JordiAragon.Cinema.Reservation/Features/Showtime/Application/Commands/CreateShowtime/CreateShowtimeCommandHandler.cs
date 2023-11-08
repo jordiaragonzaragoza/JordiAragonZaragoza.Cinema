@@ -19,15 +19,15 @@
 
     public class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
     {
-        private readonly IReadRepository<Movie> movieRepository;
-        private readonly IReadRepository<Auditorium> auditoriumRepository;
-        private readonly IRepository<Showtime> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IGuidGenerator guidGenerator;
 
         public CreateShowtimeCommandHandler(
-            IReadRepository<Auditorium> auditoriumRepository,
-            IReadRepository<Movie> movieRepository,
-            IRepository<Showtime> showtimeRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
+            IRepository<Showtime, ShowtimeId> showtimeRepository,
             IGuidGenerator guidGenerator)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));

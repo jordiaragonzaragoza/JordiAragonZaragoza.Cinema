@@ -13,10 +13,10 @@
 
     public class DeleteShowtimeCommandHandler : BaseCommandHandler<DeleteShowtimeCommand>
     {
-        private readonly IRepository<Showtime> showtimeRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public DeleteShowtimeCommandHandler(
-            IRepository<Showtime> showtimeRepository)
+            IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }

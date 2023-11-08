@@ -15,13 +15,13 @@
     public class ExpireReservedSeatsJob : IJob
     {
         private readonly IDateTime dateTime;
-        private readonly IReadRepository<Showtime> showtimeRepository;
+        private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly ISender sender;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
-            IReadRepository<Showtime> showtimeRepository,
+            IReadRepository<Showtime, ShowtimeId> showtimeRepository,
             ISender sender,
             ILogger<ExpireReservedSeatsJob> logger)
         {

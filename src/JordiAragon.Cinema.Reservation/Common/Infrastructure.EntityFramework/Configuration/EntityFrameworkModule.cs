@@ -13,16 +13,16 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(TicketingRepository<>))
-                .As(typeof(IRepository<>))
+            builder.RegisterGeneric(typeof(TicketingRepository<,>))
+                .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingCachedRepository<>))
-                .As(typeof(ICachedRepository<>))
+            builder.RegisterGeneric(typeof(TicketingCachedRepository<,>))
+                .As(typeof(ICachedRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingReadRepository<>))
-                .As(typeof(IReadRepository<>))
+            builder.RegisterGeneric(typeof(TicketingReadRepository<,>))
+                .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
         }
     }

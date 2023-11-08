@@ -8,8 +8,8 @@
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
-    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate> : IAsyncLifetime
-        where TAggregate : class, IAggregateRoot
+    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId> : IAsyncLifetime
+        where TAggregate : class, IAggregateRoot<TId>
     {
         protected BaseEntityFrameworkIntegrationTests(
             IntegrationTestsFixture fixture,
@@ -33,7 +33,7 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
 
-        protected TicketingRepository<TAggregate> GetRepository()
+        protected TicketingRepository<TAggregate, TId> GetRepository()
             => new(this.Fixture.Context);
     }
 }

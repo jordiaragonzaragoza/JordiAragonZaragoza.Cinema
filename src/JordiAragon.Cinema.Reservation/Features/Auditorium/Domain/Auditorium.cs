@@ -75,7 +75,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException(this, exception.Message);
+                throw new InvalidAggregateStateException<Auditorium, AuditoriumId>(this, exception.Message);
             }
         }
 

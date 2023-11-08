@@ -5,12 +5,12 @@
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
     using Microsoft.Extensions.Logging;
 
-    public class TicketingCachedRepository<T> : BaseCachedRepository<T>
-        where T : class, IAggregateRoot
+    public class TicketingCachedRepository<T, TId> : BaseCachedRepository<T, TId>
+        where T : class, IAggregateRoot<TId>
     {
         public TicketingCachedRepository(
             TicketingContext dbContext,
-            ILogger<TicketingCachedRepository<T>> logger,
+            ILogger<TicketingCachedRepository<T, TId>> logger,
             ICacheService cacheService)
             : base(dbContext, logger, cacheService)
         {
