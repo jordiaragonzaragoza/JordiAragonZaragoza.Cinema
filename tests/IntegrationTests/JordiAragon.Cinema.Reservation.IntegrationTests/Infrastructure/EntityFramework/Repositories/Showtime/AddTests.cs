@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class AddTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId>
+    public class AddTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId, Guid>
     {
         public AddTests(
             IntegrationTestsFixture fixture,

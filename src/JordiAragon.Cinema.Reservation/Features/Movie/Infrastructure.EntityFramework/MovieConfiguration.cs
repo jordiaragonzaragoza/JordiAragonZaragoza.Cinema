@@ -23,8 +23,6 @@
 
                 sib.WithOwner().HasForeignKey(nameof(MovieId));
 
-                sib.HasKey("Id");
-
                 sib.Property(showtimeId => showtimeId.Value)
                 .ValueGeneratedNever()
                 .HasColumnName(nameof(ShowtimeId));

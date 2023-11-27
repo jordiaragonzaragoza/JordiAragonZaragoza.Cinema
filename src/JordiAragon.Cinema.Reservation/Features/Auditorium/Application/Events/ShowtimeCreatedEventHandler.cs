@@ -1,10 +1,10 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Events
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Auditorium.Domain.Specifications;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
@@ -13,17 +13,17 @@
 
     public class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
     {
-        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository;
 
         public ShowtimeCreatedEventHandler(
-            IRepository<Auditorium, AuditoriumId> auditoriumRepository)
+            IRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
         public async Task Handle(ShowtimeCreatedEvent @event, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(@event.AuditoriumId)), cancellationToken)
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken)
                                      ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
 
             existingAuditorium.AddShowtime(ShowtimeId.Create(@event.ShowtimeId));

@@ -1,9 +1,10 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Domain
 {
+    using System;
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Seat : BaseEntity<SeatId>
+    public sealed class Seat : BaseEntity<SeatId, Guid>
     {
         private Seat(
             SeatId id,

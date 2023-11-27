@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Commands.DeleteShowtime
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -7,23 +8,22 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
     public class DeleteShowtimeCommandHandler : BaseCommandHandler<DeleteShowtimeCommand>
     {
-        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
+        private readonly IRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
 
         public DeleteShowtimeCommandHandler(
-            IRepository<Showtime, ShowtimeId> showtimeRepository)
+            IRepository<Showtime, ShowtimeId, Guid> showtimeRepository)
         {
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
         public override async Task<Result> Handle(DeleteShowtimeCommand request, CancellationToken cancellationToken)
         {
-            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");

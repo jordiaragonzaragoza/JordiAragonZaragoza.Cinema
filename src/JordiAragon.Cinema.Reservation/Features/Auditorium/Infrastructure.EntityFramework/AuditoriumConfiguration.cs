@@ -25,8 +25,6 @@
 
                 sib.WithOwner().HasForeignKey(nameof(AuditoriumId));
 
-                sib.HasKey(nameof(Showtime.Id));
-
                 sib.Property(showtimeId => showtimeId.Value)
                 .ValueGeneratedNever()
                 .HasColumnName(nameof(ShowtimeId));
@@ -47,7 +45,7 @@
                 sb.HasKey(nameof(Seat.Id), nameof(AuditoriumId));
 
                 sb.Property(seat => seat.Id)
-                .HasColumnName(nameof(SeatId))
+                .HasColumnName(nameof(Seat.Id))
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => SeatId.Create(value));
             });

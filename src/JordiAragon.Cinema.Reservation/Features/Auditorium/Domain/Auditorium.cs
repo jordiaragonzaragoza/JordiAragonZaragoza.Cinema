@@ -11,7 +11,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
+    public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
         private List<Seat> seats;
@@ -75,7 +75,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException<Auditorium, AuditoriumId>(this, exception.Message);
+                throw new InvalidAggregateStateException<Auditorium, AuditoriumId, Guid>(this, exception.Message);
             }
         }
 

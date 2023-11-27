@@ -1,11 +1,11 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Events
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Auditorium.Domain.Specifications;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using MediatR;
@@ -13,17 +13,17 @@
 
     public class ShowtimeDeletedEventHandler : INotificationHandler<ShowtimeDeletedEvent>
     {
-        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository;
 
         public ShowtimeDeletedEventHandler(
-            IRepository<Auditorium, AuditoriumId> auditoriumRepository)
+            IRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
         public async Task Handle(ShowtimeDeletedEvent @event, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(AuditoriumId.Create(@event.AuditoriumId)), cancellationToken)
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken)
                                     ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
 
             existingAuditorium.RemoveShowtime(ShowtimeId.Create(@event.ShowtimeId));

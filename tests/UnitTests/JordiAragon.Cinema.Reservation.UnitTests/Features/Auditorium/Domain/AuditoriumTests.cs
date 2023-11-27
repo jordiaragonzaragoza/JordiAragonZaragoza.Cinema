@@ -70,7 +70,7 @@
             Func<Auditorium> auditorium = () => Auditorium.Create(id, rows, seatsPerRow);
 
             // Assert
-            auditorium.Should().Throw<InvalidAggregateStateException<Auditorium, AuditoriumId>>();
+            auditorium.Should().Throw<InvalidAggregateStateException<Auditorium, AuditoriumId, Guid>>();
         }
 
         [Fact]

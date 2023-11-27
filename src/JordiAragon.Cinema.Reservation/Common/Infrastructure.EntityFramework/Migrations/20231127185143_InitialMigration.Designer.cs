@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20231104191201_InitialMigration")]
+    [Migration("20231127185143_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -111,22 +111,20 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
+                            b1.Property<Guid>("AuditoriumId")
+                                .HasColumnType("uniqueidentifier");
+
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
-                            b1.Property<Guid>("AuditoriumId")
-                                .HasColumnType("uniqueidentifier");
-
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("ShowtimeId");
 
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("AuditoriumId");
+                            b1.HasKey("AuditoriumId", "Id");
 
                             b1.ToTable("AuditoriumsShowtimeIds", (string)null);
 
@@ -138,7 +136,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
-                                .HasColumnName("SeatId");
+                                .HasColumnName("Id");
 
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uniqueidentifier");
@@ -168,22 +166,20 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
+                            b1.Property<Guid>("MovieId")
+                                .HasColumnType("uniqueidentifier");
+
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
-                            b1.Property<Guid>("MovieId")
-                                .HasColumnType("uniqueidentifier");
-
                             b1.Property<Guid>("Value")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("ShowtimeId");
 
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("MovieId");
+                            b1.HasKey("MovieId", "Id");
 
                             b1.ToTable("MoviesShowtimeIds", (string)null);
 
@@ -199,7 +195,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.Ticket", "Tickets", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Id");
 
                             b1.Property<Guid>("ShowtimeId")
                                 .HasColumnType("uniqueidentifier");
@@ -239,7 +236,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                                     b2.HasKey("TicketId", "ShowtimeId", "Id");
 
-                                    b2.ToTable("TicketSeatIds", (string)null);
+                                    b2.ToTable("ShowtimeTicketSeatIds", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("TicketId", "ShowtimeId");

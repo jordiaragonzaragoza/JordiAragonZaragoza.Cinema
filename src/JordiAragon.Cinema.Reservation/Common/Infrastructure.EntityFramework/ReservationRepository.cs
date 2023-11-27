@@ -3,8 +3,9 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class ReservationRepository<T, TId> : BaseRepository<T, TId>
-        where T : class, IAggregateRoot<TId>
+    public class ReservationRepository<TAggregate, TId, TIdType> : BaseRepository<TAggregate, TId, TIdType>
+        where TAggregate : class, IAggregateRoot<TId, TIdType>
+        where TId : IEntityId<TIdType>
     {
         public ReservationRepository(ReservationContext dbContext)
             : base(dbContext)
