@@ -13,15 +13,15 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(TicketingRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingCachedRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationCachedRepository<,>))
                 .As(typeof(ICachedRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
         }

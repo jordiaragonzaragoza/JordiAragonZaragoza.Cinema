@@ -3,10 +3,10 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class TicketingReadRepository<T, TId> : BaseReadRepository<T, TId>
-        where T : class, IEntity<TId>
+    public class ReservationRepository<T, TId> : BaseRepository<T, TId>
+        where T : class, IAggregateRoot<TId>
     {
-        public TicketingReadRepository(TicketingContext dbContext)
+        public ReservationRepository(ReservationContext dbContext)
             : base(dbContext)
         {
         }

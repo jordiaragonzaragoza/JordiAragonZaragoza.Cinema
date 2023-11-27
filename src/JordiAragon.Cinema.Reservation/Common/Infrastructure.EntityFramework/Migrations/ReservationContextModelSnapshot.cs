@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
-    [DbContext(typeof(TicketingContext))]
-    partial class TicketingContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ReservationContext))]
+    partial class ReservationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

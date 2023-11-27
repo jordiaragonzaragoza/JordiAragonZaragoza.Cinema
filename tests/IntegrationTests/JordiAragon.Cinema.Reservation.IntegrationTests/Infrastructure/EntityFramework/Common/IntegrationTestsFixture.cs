@@ -26,7 +26,7 @@
         private SqlConnection connection;
         private Respawner respawner;
 
-        public TicketingContext Context { get; private set; }
+        public ReservationContext Context { get; private set; }
 
         public async Task InitializeAsync()
         {
@@ -50,7 +50,7 @@
 
             var auditableEntitySaveChangesInterceptor = new AuditableEntitySaveChangesInterceptor(mockCurrentUserService, mockDateTimeService);
 
-            this.Context = new TicketingContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
+            this.Context = new ReservationContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
             SeedData.PopulateTestData(this.Context);
         }
@@ -66,10 +66,10 @@
             await this.container.DisposeAsync();
         }
 
-        private DbContextOptions<TicketingContext> CreateNewContextOptions()
+        private DbContextOptions<ReservationContext> CreateNewContextOptions()
         {
             // Create a new options instance telling the context to use an
-            var builder = new DbContextOptionsBuilder<TicketingContext>();
+            var builder = new DbContextOptionsBuilder<ReservationContext>();
             builder.UseSqlServer(this.connection);
 
             return builder.Options;

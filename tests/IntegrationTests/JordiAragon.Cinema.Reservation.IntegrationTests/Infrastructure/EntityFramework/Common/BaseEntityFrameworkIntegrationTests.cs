@@ -33,7 +33,7 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
 
-        protected TicketingRepository<TAggregate, TId> GetRepository()
+        protected ReservationRepository<TAggregate, TId> GetRepository()
             => new(this.Fixture.Context);
     }
 }

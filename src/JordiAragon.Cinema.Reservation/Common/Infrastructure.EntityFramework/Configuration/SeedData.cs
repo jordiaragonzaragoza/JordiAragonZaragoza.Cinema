@@ -37,7 +37,7 @@
         public static void Initialize(WebApplication app)
         {
             using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<TicketingContext>();
+            var context = serviceScope.ServiceProvider.GetRequiredService<ReservationContext>();
             try
             {
                 PopulateTestData(context);
@@ -48,7 +48,7 @@
             }
         }
 
-        public static void PopulateTestData(TicketingContext context)
+        public static void PopulateTestData(ReservationContext context)
         {
             if (context.Database.IsSqlServer())
             {
@@ -64,7 +64,7 @@
             SetPreconfiguredData(context);
         }
 
-        private static bool HasAnyData(TicketingContext context)
+        private static bool HasAnyData(ReservationContext context)
         {
             var dbSets = context.GetType().GetProperties()
                                            .Where(p => p.PropertyType.IsGenericType
@@ -83,7 +83,7 @@
             return false;
         }
 
-        private static void SetPreconfiguredData(TicketingContext context)
+        private static void SetPreconfiguredData(ReservationContext context)
         {
             context.Movies.Add(ExampleMovie);
 

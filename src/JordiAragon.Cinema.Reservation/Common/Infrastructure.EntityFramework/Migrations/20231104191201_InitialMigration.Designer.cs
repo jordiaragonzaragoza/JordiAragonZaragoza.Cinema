@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
-    [DbContext(typeof(TicketingContext))]
+    [DbContext(typeof(ReservationContext))]
     [Migration("20231104191201_InitialMigration")]
     partial class InitialMigration
     {
