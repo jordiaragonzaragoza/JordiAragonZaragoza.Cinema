@@ -94,7 +94,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException<Showtime, ShowtimeId, Guid>(this, exception.Message);
+                throw new InvalidAggregateStateException<Showtime, ShowtimeId>(this, exception.Message);
             }
         }
 

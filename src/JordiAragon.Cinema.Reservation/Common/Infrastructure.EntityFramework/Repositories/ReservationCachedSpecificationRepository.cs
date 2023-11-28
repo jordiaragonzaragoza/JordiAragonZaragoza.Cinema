@@ -5,13 +5,13 @@
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Repositories;
     using Microsoft.Extensions.Logging;
 
-    public class ReservationCachedSpecificationRepository<TAggregate, TId, TIdType> : BaseCachedSpecificationRepository<TAggregate, TId, TIdType>
-        where TAggregate : class, IAggregateRoot<TId, TIdType>
-        where TId : class, IEntityId<TIdType>
+    public class ReservationCachedSpecificationRepository<TAggregate, TId> : BaseCachedSpecificationRepository<TAggregate, TId>
+        where TAggregate : class, IAggregateRoot<TId>
+        where TId : class, IEntityId
     {
         public ReservationCachedSpecificationRepository(
             ReservationContext dbContext,
-            ILogger<ReservationCachedSpecificationRepository<TAggregate, TId, TIdType>> logger,
+            ILogger<ReservationCachedSpecificationRepository<TAggregate, TId>> logger,
             ICacheService cacheService)
             : base(dbContext, logger, cacheService)
         {

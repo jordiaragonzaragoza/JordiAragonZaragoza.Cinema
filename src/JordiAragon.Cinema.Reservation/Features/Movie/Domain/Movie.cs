@@ -73,7 +73,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException<Movie, MovieId, Guid>(this, exception.Message);
+                throw new InvalidAggregateStateException<Movie, MovieId>(this, exception.Message);
             }
         }
 

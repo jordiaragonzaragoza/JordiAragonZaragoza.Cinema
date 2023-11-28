@@ -15,7 +15,7 @@
             IDateTime dateTime,
             IPublisher mediator,
             ILogger<ProcessOutboxMessagesJob> logger,
-            ICachedSpecificationRepository<OutboxMessage, OutboxMessageId, Guid> repositoryOutboxMessages)
+            ICachedSpecificationRepository<OutboxMessage, OutboxMessageId> repositoryOutboxMessages)
             : base(dateTime, mediator, logger, repositoryOutboxMessages)
         {
         }

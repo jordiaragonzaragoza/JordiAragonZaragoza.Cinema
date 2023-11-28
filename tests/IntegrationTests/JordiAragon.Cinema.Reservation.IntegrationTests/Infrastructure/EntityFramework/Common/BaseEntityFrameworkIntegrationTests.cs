@@ -8,9 +8,9 @@
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
-    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId, TIdType> : IAsyncLifetime
-        where TAggregate : class, IAggregateRoot<TId, TIdType>
-        where TId : class, IEntityId<TIdType>
+    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId> : IAsyncLifetime
+        where TAggregate : class, IAggregateRoot<TId>
+        where TId : class, IEntityId
     {
         protected BaseEntityFrameworkIntegrationTests(
             IntegrationTestsFixture fixture,
@@ -34,7 +34,7 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
 
-        protected ReservationRepository<TAggregate, TId, TIdType> GetRepository()
+        protected ReservationRepository<TAggregate, TId> GetRepository()
             => new(this.Fixture.Context);
     }
 }

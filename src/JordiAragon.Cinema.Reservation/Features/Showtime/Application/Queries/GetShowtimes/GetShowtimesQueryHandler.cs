@@ -17,12 +17,12 @@
 
     public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, IEnumerable<ShowtimeOutputDto>>
     {
-        private readonly IReadRepository<Movie, MovieId, Guid> movieRepository;
-        private readonly ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public GetShowtimesQueryHandler(
-            IReadRepository<Movie, MovieId, Guid> movieRepository,
-            ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository)
+            IReadRepository<Movie, MovieId> movieRepository,
+            ISpecificationReadRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));

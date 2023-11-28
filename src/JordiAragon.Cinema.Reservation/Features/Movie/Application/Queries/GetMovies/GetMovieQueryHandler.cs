@@ -14,11 +14,11 @@
 
     public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieOutputDto>>
     {
-        private readonly IReadRepository<Movie, MovieId, Guid> movieRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IMapper mapper;
 
         public GetMovieQueryHandler(
-            IReadRepository<Movie, MovieId, Guid> movieRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
             IMapper mapper)
         {
             this.movieRepository = movieRepository;

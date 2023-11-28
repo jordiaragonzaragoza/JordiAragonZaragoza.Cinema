@@ -13,10 +13,10 @@
 
     public class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
     {
-        private readonly IRepository<Movie, MovieId, Guid> movieRepository;
+        private readonly IRepository<Movie, MovieId> movieRepository;
 
         public ShowtimeCreatedEventHandler(
-            IRepository<Movie, MovieId, Guid> movieRepository)
+            IRepository<Movie, MovieId> movieRepository)
         {
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
         }

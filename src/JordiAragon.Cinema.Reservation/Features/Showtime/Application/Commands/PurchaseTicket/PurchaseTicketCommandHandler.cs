@@ -18,15 +18,15 @@
 
     public class PurchaseTicketCommandHandler : BaseCommandHandler<PurchaseTicketCommand, TicketOutputDto>
     {
-        private readonly IRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
-        private readonly IReadRepository<Movie, MovieId, Guid> movieReadRepository;
-        private readonly IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumReadRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieReadRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository;
         private readonly IMapper mapper;
 
         public PurchaseTicketCommandHandler(
-            IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumReadRepository,
-            IReadRepository<Movie, MovieId, Guid> movieReadRepository,
-            IRepository<Showtime, ShowtimeId, Guid> showtimeRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
+            IReadRepository<Movie, MovieId> movieReadRepository,
+            IRepository<Showtime, ShowtimeId> showtimeRepository,
             IMapper mapper)
         {
             this.auditoriumReadRepository = Guard.Against.Null(auditoriumReadRepository, nameof(auditoriumReadRepository));

@@ -24,7 +24,7 @@
             var types = Types
                 .InAssembly(this.assembly)
                 .That()
-                .Inherit(typeof(BaseEntity<,>))
+                .Inherit(typeof(BaseEntity<>))
                 .GetTypes();
 
             var failingTypes = new List<Type>();
@@ -47,7 +47,7 @@
             var types = Types
                 .InAssembly(this.assembly)
                 .That()
-                .Inherit(typeof(BaseEntity<,>))
+                .Inherit(typeof(BaseEntity<>))
                 .GetTypes();
 
             var failingTypes = new List<Type>();

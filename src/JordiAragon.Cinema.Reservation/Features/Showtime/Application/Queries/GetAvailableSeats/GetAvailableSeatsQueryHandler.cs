@@ -16,13 +16,13 @@
 
     public class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<SeatOutputDto>>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository;
-        private readonly IReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IMapper mapper;
 
         public GetAvailableSeatsQueryHandler(
-            IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository,
-            IReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Showtime, ShowtimeId> showtimeRepository,
             IMapper mapper)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));

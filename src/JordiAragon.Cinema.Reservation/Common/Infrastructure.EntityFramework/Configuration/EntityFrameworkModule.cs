@@ -14,20 +14,20 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(ReservationRepository<,,>))
-                .As(typeof(IRepository<,,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
+                .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,,>))
-                .As(typeof(ICachedSpecificationRepository<,,>))
+            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
+                .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,,>))
-                .As(typeof(IReadRepository<,,>))
+            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+                .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationSpecificationReadRepository<,,>))
-                .As(typeof(ISpecificationReadRepository<,,>))
+            builder.RegisterGeneric(typeof(ReservationSpecificationReadRepository<,>))
+                .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
         }
     }

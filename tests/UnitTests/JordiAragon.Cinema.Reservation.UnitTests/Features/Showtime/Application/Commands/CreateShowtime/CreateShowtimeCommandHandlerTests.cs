@@ -21,18 +21,18 @@
     {
         private readonly CreateShowtimeCommandHandler handler;
 
-        private readonly IReadRepository<Auditorium, AuditoriumId, Guid> mockAuditoriumRepository;
-        private readonly IReadRepository<Movie, MovieId, Guid> mockMovieRepository;
-        private readonly IRepository<Showtime, ShowtimeId, Guid> mockShowtimeRepository;
-        private readonly ISpecificationReadRepository<Showtime, ShowtimeId, Guid> mockShowtimeReadRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
+        private readonly IReadRepository<Movie, MovieId> mockMovieRepository;
+        private readonly IRepository<Showtime, ShowtimeId> mockShowtimeRepository;
+        private readonly ISpecificationReadRepository<Showtime, ShowtimeId> mockShowtimeReadRepository;
         private readonly IGuidGenerator mockGuidGenerator;
 
         public CreateShowtimeCommandHandlerTests()
         {
-            this.mockAuditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId, Guid>>();
-            this.mockMovieRepository = Substitute.For<IReadRepository<Movie, MovieId, Guid>>();
-            this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId, Guid>>();
-            this.mockShowtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId, Guid>>();
+            this.mockAuditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
+            this.mockMovieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
+            this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
+            this.mockShowtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             this.mockGuidGenerator = Substitute.For<IGuidGenerator>();
 
             this.handler = new CreateShowtimeCommandHandler(
@@ -45,10 +45,10 @@
 
         public static IEnumerable<object[]> InvalidArgumentsCreateHandleCreateShowtimeCommand()
         {
-            var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId, Guid>>();
-            var movieRepository = Substitute.For<IReadRepository<Movie, MovieId, Guid>>();
-            var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId, Guid>>();
-            var showtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId, Guid>>();
+            var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
+            var movieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
+            var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
+            var showtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             var guidGenerator = Substitute.For<IGuidGenerator>();
 
             var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
@@ -87,10 +87,10 @@
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateHandleCreateShowtimeCommand))]
         public void CreateHandleCreateShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
-            IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository,
-            IReadRepository<Movie, MovieId, Guid> movieRepository,
-            IRepository<Showtime, ShowtimeId, Guid> showtimeRepository,
-            ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeReadRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
+            IRepository<Showtime, ShowtimeId> showtimeRepository,
+            ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IGuidGenerator guidGenerator)
         {
             FluentActions.Invoking(() => new CreateShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, showtimeReadRepository, guidGenerator))

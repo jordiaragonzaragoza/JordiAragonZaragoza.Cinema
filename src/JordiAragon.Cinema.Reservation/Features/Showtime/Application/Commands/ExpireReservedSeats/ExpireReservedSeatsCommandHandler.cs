@@ -12,10 +12,10 @@
 
     public class ExpireReservedSeatsCommandHandler : BaseCommandHandler<ExpireReservedSeatsCommand>
     {
-        private readonly IRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public ExpireReservedSeatsCommandHandler(
-            IRepository<Showtime, ShowtimeId, Guid> showRepository)
+            IRepository<Showtime, ShowtimeId> showRepository)
         {
             this.showtimeRepository = Guard.Against.Null(showRepository, nameof(showRepository));
         }

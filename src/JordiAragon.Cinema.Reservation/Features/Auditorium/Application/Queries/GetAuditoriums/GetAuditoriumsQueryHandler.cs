@@ -15,11 +15,11 @@
 
     public class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, IEnumerable<AuditoriumOutputDto>>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IMapper mapper;
 
         public GetAuditoriumsQueryHandler(
-            IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IMapper mapper)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
