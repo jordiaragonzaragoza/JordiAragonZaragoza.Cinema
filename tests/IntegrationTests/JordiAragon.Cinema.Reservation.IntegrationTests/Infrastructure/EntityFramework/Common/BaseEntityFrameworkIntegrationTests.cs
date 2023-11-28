@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Xunit;
     using Xunit.Abstractions;
@@ -10,7 +10,7 @@
     [Collection(nameof(SharedTestCollection))]
     public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId, TIdType> : IAsyncLifetime
         where TAggregate : class, IAggregateRoot<TId, TIdType>
-        where TId : IEntityId<TIdType>
+        where TId : class, IEntityId<TIdType>
     {
         protected BaseEntityFrameworkIntegrationTests(
             IntegrationTestsFixture fixture,

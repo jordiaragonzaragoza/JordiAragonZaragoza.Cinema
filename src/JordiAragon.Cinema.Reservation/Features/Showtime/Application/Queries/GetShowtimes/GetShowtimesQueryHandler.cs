@@ -18,11 +18,11 @@
     public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, IEnumerable<ShowtimeOutputDto>>
     {
         private readonly IReadRepository<Movie, MovieId, Guid> movieRepository;
-        private readonly IReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
+        private readonly ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository;
 
         public GetShowtimesQueryHandler(
             IReadRepository<Movie, MovieId, Guid> movieRepository,
-            IReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository)
+            ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeRepository)
         {
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
@@ -52,7 +52,7 @@
                     return Result.NotFound($"{nameof(Movie)}: {showtime.MovieId.Value} not found.");
                 }
 
-                showtimeOutputDtos.Add(new ShowtimeOutputDto(showtime.Id.Value, movie.Title, showtime.SessionDateOnUtc, request.AuditoriumId));
+                showtimeOutputDtos.Add(new ShowtimeOutputDto(showtime.Id, movie.Title, showtime.SessionDateOnUtc, request.AuditoriumId));
             }
 
             return Result.Success(showtimeOutputDtos.AsEnumerable());

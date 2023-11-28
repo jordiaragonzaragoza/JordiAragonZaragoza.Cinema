@@ -24,7 +24,7 @@
         private readonly IReadRepository<Auditorium, AuditoriumId, Guid> mockAuditoriumRepository;
         private readonly IReadRepository<Movie, MovieId, Guid> mockMovieRepository;
         private readonly IRepository<Showtime, ShowtimeId, Guid> mockShowtimeRepository;
-        private readonly IReadRepository<Showtime, ShowtimeId, Guid> mockShowtimeReadRepository;
+        private readonly ISpecificationReadRepository<Showtime, ShowtimeId, Guid> mockShowtimeReadRepository;
         private readonly IGuidGenerator mockGuidGenerator;
 
         public CreateShowtimeCommandHandlerTests()
@@ -32,7 +32,7 @@
             this.mockAuditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId, Guid>>();
             this.mockMovieRepository = Substitute.For<IReadRepository<Movie, MovieId, Guid>>();
             this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId, Guid>>();
-            this.mockShowtimeReadRepository = Substitute.For<IReadRepository<Showtime, ShowtimeId, Guid>>();
+            this.mockShowtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId, Guid>>();
             this.mockGuidGenerator = Substitute.For<IGuidGenerator>();
 
             this.handler = new CreateShowtimeCommandHandler(
@@ -48,7 +48,7 @@
             var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId, Guid>>();
             var movieRepository = Substitute.For<IReadRepository<Movie, MovieId, Guid>>();
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId, Guid>>();
-            var showtimeReadRepository = Substitute.For<IReadRepository<Showtime, ShowtimeId, Guid>>();
+            var showtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId, Guid>>();
             var guidGenerator = Substitute.For<IGuidGenerator>();
 
             var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
@@ -90,7 +90,7 @@
             IReadRepository<Auditorium, AuditoriumId, Guid> auditoriumRepository,
             IReadRepository<Movie, MovieId, Guid> movieRepository,
             IRepository<Showtime, ShowtimeId, Guid> showtimeRepository,
-            IReadRepository<Showtime, ShowtimeId, Guid> showtimeReadRepository,
+            ISpecificationReadRepository<Showtime, ShowtimeId, Guid> showtimeReadRepository,
             IGuidGenerator guidGenerator)
         {
             FluentActions.Invoking(() => new CreateShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, showtimeReadRepository, guidGenerator))
