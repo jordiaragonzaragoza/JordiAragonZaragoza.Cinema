@@ -31,7 +31,7 @@
 
             await this.showtimeRepository.DeleteAsync(existingShowtime, cancellationToken);
 
-            this.RegisterApplicationEvent(new ShowtimeDeletedEvent(existingShowtime.Id.Value, existingShowtime.AuditoriumId.Value, existingShowtime.MovieId.Value));
+            this.RegisterApplicationEvent(new ShowtimeDeletedEvent(existingShowtime.Id, existingShowtime.AuditoriumId, existingShowtime.MovieId));
 
             return Result.Success();
         }

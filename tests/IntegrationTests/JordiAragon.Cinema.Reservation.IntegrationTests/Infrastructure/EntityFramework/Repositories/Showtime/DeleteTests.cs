@@ -45,7 +45,7 @@
             // Arrange
             var newShowtime = Showtime.Create(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id.Value),
+                MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 

@@ -63,9 +63,9 @@
             var seats = existingAuditorium.Seats.Where(seat => existingTicket.Seats.Contains(seat.Id));
 
             var ticketOutputDto = new TicketOutputDto(
-                existingTicket.Id.Value,
+                existingTicket.Id,
                 existingShowtime.SessionDateOnUtc,
-                existingAuditorium.Id.Value,
+                existingAuditorium.Id,
                 existingmovie.Title,
                 this.mapper.Map<IEnumerable<SeatOutputDto>>(seats),
                 existingTicket.IsPurchased);

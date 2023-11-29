@@ -30,9 +30,9 @@
         public static readonly Showtime ExampleShowtime =
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
-                movieId: MovieId.Create(ExampleMovie.Id.Value),
+                movieId: MovieId.Create(ExampleMovie.Id),
                 sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
-                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id.Value));
+                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
         public static void Initialize(WebApplication app)
         {
@@ -91,9 +91,9 @@
 
             context.Showtimes.Add(ExampleShowtime);
 
-            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
+            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
-            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
+            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
             context.SaveChanges();
         }

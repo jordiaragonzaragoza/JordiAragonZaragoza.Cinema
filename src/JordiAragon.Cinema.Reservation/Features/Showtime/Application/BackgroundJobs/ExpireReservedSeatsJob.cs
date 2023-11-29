@@ -43,7 +43,7 @@
 
                     foreach (var ticketId in ticketIds)
                     {
-                        var result = await this.sender.Send(new ExpireReservedSeatsCommand(showtime.Id.Value, ticketId.Value), context.CancellationToken);
+                        var result = await this.sender.Send(new ExpireReservedSeatsCommand(showtime.Id, ticketId), context.CancellationToken);
                         if (!result.IsSuccess)
                         {
                             // TODO: Complete log the error from result.
