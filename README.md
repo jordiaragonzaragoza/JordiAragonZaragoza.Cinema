@@ -1,13 +1,13 @@
-What is the Cinemas Project?
+What is the Cinema Project?
 =====================
-The Cinemas Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
-Reservation bounded context manage the cinema showtimes and ticket reservation.
+The Cinema Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
+The reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## How to use:
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - You will need also Docker Desktop running on your machine.
-- To run the project just find and build the solution file JordiAragon.Cinemas.Reservation.sln and select docker-compose as startup project.
+- To run the project just find and build the solution file JordiAragon.Cinema.Reservation.sln and select docker-compose as startup project.
 
 ## Architecture:
 
@@ -28,7 +28,7 @@ Reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## Diagram:
 
-![JordiAragon.Cinemas - Clean architecture graph](./docs/CleanArchitecture.jpg)
+![JordiAragon.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
 
 ## Technologies implemented:
 
@@ -54,7 +54,7 @@ Reservation bounded context manage the cinema showtimes and ticket reservation.
 ## Cross-cutting concerns
 
 - Outbox pattern to handle the domain event out side the source transaction.
-- Flow Control using Ardalis.Result avoiding throwing exceptions.
+- Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
 - Application cache request with invalidation.
 - Generic cache repository with invalidation.
@@ -94,9 +94,9 @@ Reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## Model and Data Diagram:
 
-![JordiAragon.Cinemas - Model graph](./docs/Model.jpg)  
+![JordiAragon.Cinema - Model graph](./docs/Model.jpg)  
 
-![JordiAragon.Cinemas - Data graph](./docs/DataModel.jpg)  
+![JordiAragon.Cinema - Data graph](./docs/DataModel.jpg)  
 
 ## Resources and Inspiration
 
@@ -110,6 +110,7 @@ Reservation bounded context manage the cinema showtimes and ticket reservation.
 - <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank">Microsoft eShopOnWeb</a>
 - <a href="https://github.com/kgrzybek/sample-dotnet-core-cqrs-api" target="_blank">Kamil Grzybek: Sample .NET Core REST API CQRS</a>
 - <a href="https://github.com/kgrzybek/modular-monolith-with-ddd" target="_blank">Kamil Grzybek: Modular Monolith With DDD</a>
+- <a href="https://github.com/oskardudycz/EventSourcing.NetCore" target="_blank">Oskar Dudycz: EventSourcing .NET</a>
 - <a href="https://www.youtube.com/@CodeOpinion" target="_blank">CodeOpinion: Youtube Channel</a>
 - <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
 - <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
