@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Commands.DeleteShowtime
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
