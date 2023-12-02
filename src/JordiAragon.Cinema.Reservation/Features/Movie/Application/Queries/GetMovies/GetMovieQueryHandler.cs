@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Movie.Application.Queries.GetMovies
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -13,11 +14,11 @@
 
     public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieOutputDto>>
     {
-        private readonly IReadRepository<Movie> movieRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IMapper mapper;
 
         public GetMovieQueryHandler(
-            IReadRepository<Movie> movieRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
             IMapper mapper)
         {
             this.movieRepository = movieRepository;

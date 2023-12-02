@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
 
-    public class Movie : BaseAggregateRoot<MovieId, Guid>
+    public sealed class Movie : BaseAggregateRoot<MovieId, Guid>
     {
         private readonly List<ShowtimeId> showtimes = new();
 
@@ -73,7 +73,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException(this, exception.Message);
+                throw new InvalidAggregateStateException<Movie, MovieId>(this, exception.Message);
             }
         }
 

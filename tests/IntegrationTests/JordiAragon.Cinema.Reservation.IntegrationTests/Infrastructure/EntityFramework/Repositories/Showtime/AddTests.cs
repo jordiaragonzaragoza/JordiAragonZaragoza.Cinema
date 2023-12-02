@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class AddTests : BaseEntityFrameworkIntegrationTests<Showtime>
+    public class AddTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId>
     {
         public AddTests(
             IntegrationTestsFixture fixture,
@@ -27,7 +27,7 @@
             // Arrange
             var newShowtime = Showtime.Create(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id.Value),
+                MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 

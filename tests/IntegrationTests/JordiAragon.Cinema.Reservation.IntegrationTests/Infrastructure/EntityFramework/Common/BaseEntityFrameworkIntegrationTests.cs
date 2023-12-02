@@ -2,14 +2,15 @@
 {
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Xunit;
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
-    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate> : IAsyncLifetime
-        where TAggregate : class, IAggregateRoot
+    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId> : IAsyncLifetime
+        where TAggregate : class, IAggregateRoot<TId>
+        where TId : class, IEntityId
     {
         protected BaseEntityFrameworkIntegrationTests(
             IntegrationTestsFixture fixture,
@@ -33,7 +34,7 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabaseAsync();
 
-        protected TicketingRepository<TAggregate> GetRepository()
+        protected ReservationRepository<TAggregate, TId> GetRepository()
             => new(this.Fixture.Context);
     }
 }

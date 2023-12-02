@@ -9,10 +9,10 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class TicketingContext : BaseContext
+    public class ReservationContext : BaseContext
     {
-        public TicketingContext(
-            DbContextOptions<TicketingContext> options,
+        public ReservationContext(
+            DbContextOptions<ReservationContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment,
             AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

@@ -7,7 +7,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
-		<UseProjectReference>true</UseProjectReference>
+		<UseProjectReference>false</UseProjectReference>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\..\GlobalSuppressions.cs">
@@ -15,18 +15,18 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="2.2.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="2.2.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="3.0.0" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
@@ -34,39 +34,39 @@
 		<PackageVersion Include="CsvHelper" Version="30.0.1" />
 		<PackageVersion Include="EasyCaching.Core" Version="1.9.2" />
 		<PackageVersion Include="EasyCaching.InMemory" Version="1.9.2" />
-		<PackageVersion Include="FastEndpoints.Swagger" Version="5.19.1" />
-		<PackageVersion Include="FluentValidation" Version="11.8.0" />
-		<PackageVersion Include="MassTransit" Version="8.1.1" />
-		<PackageVersion Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.1" />
-		<PackageVersion Include="MassTransit.RabbitMQ" Version="8.1.1" />
+		<PackageVersion Include="FastEndpoints.Swagger" Version="5.20.1" />
+		<PackageVersion Include="FluentValidation" Version="11.8.1" />
+		<PackageVersion Include="MassTransit" Version="8.1.2" />
+		<PackageVersion Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.2" />
+		<PackageVersion Include="MassTransit.RabbitMQ" Version="8.1.2" />
 		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
 		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.13" />
 		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.13" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13"/>
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13" />
 		<PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.13" />
 		<PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 		<PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.7.30" />
-		<PackageVersion Include="Quartz" Version="3.7.0" />
-		<PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="3.7.0" />
-		<PackageVersion Include="Quartz.Extensions.Hosting" Version="3.7.0" />
+		<PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14" />
+		<PackageVersion Include="Quartz" Version="3.8.0" />
+		<PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="3.8.0" />
+		<PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
 		<PackageVersion Include="Refit.HttpClientFactory" Version="7.0.0" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.12.0.78982"/>
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.14.0.81108" />
 		<PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
 		<PackageVersion Include="Serilog.Enrichers.Environment" Version="2.3.0" />
 		<PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
 		<PackageVersion Include="Serilog.Sinks.Async" Version="1.5.0" />
-		<PackageVersion Include="Serilog.Sinks.AzureTableStorage" Version="9.0.0" />
-		<PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0" />
-		<PackageVersion Include="Serilog.Sinks.Graylog" Version="3.1.0" />
+		<PackageVersion Include="Serilog.Sinks.AzureTableStorage" Version="9.1.0" />
+		<PackageVersion Include="Serilog.Sinks.Console" Version="5.0.1" />
+		<PackageVersion Include="Serilog.Sinks.Graylog" Version="3.1.1" />
 		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
 		<PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
-		<PackageVersion Include="Volo.Abp.Guids" Version="7.4.1" />
+		<PackageVersion Include="Volo.Abp.Guids" Version="7.4.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="StyleCop.Analyzers">

@@ -3,10 +3,10 @@
     using JordiAragon.SharedKernel.Domain.Events.Services;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class TicketingDomainEventsDispatcher : BaseDomainEventsDispatcher
+    public class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
     {
-        public TicketingDomainEventsDispatcher(
-            TicketingContext context,
+        public ReservationDomainEventsDispatcher(
+            ReservationContext context,
             IEventsDispatcherService domainEventDispatcherService)
              : base(context, domainEventDispatcherService)
         {

@@ -30,14 +30,14 @@
         public static readonly Showtime ExampleShowtime =
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
-                movieId: MovieId.Create(ExampleMovie.Id.Value),
+                movieId: MovieId.Create(ExampleMovie.Id),
                 sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
-                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id.Value));
+                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
         public static void Initialize(WebApplication app)
         {
             using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<TicketingContext>();
+            var context = serviceScope.ServiceProvider.GetRequiredService<ReservationContext>();
             try
             {
                 PopulateTestData(context);
@@ -48,7 +48,7 @@
             }
         }
 
-        public static void PopulateTestData(TicketingContext context)
+        public static void PopulateTestData(ReservationContext context)
         {
             if (context.Database.IsSqlServer())
             {
@@ -64,7 +64,7 @@
             SetPreconfiguredData(context);
         }
 
-        private static bool HasAnyData(TicketingContext context)
+        private static bool HasAnyData(ReservationContext context)
         {
             var dbSets = context.GetType().GetProperties()
                                            .Where(p => p.PropertyType.IsGenericType
@@ -83,7 +83,7 @@
             return false;
         }
 
-        private static void SetPreconfiguredData(TicketingContext context)
+        private static void SetPreconfiguredData(ReservationContext context)
         {
             context.Movies.Add(ExampleMovie);
 
@@ -91,9 +91,9 @@
 
             context.Showtimes.Add(ExampleShowtime);
 
-            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
+            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
-            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id.Value));
+            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
             context.SaveChanges();
         }

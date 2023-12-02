@@ -2,6 +2,7 @@
 {
     using System.Reflection;
     using Autofac;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
@@ -13,16 +14,20 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(TicketingRepository<>))
-                .As(typeof(IRepository<>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
+                .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingCachedRepository<>))
-                .As(typeof(ICachedRepository<>))
+            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
+                .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(TicketingReadRepository<>))
-                .As(typeof(IReadRepository<>))
+            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+                .As(typeof(IReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationSpecificationReadRepository<,>))
+                .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
         }
     }

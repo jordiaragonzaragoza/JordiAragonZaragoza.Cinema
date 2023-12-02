@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.SharedKernel.Domain.Entities;
 
-    public class Ticket : BaseEntity<TicketId>
+    public sealed class Ticket : BaseEntity<TicketId>
     {
         private readonly List<SeatId> seats = new();
 

@@ -26,17 +26,15 @@
                 tb.HasKey(nameof(Ticket.Id), nameof(ShowtimeId));
 
                 tb.Property(ticket => ticket.Id)
-                  ////.HasColumnName(nameof(TicketId))
+                  .HasColumnName(nameof(Ticket.Id))
                   .ValueGeneratedNever()
                   .HasConversion(ticketId => ticketId.Value, guidValue => TicketId.Create(guidValue));
 
                 tb.OwnsMany(ticket => ticket.Seats, ticketSeatBuilder =>
                 {
-                    ticketSeatBuilder.ToTable("TicketSeatIds");
+                    ticketSeatBuilder.ToTable("ShowtimeTicketSeatIds");
 
                     ticketSeatBuilder.WithOwner().HasForeignKey(nameof(TicketId), nameof(ShowtimeId));
-
-                    ////ticketSeatBuilder.HasKey("Id");
 
                     ticketSeatBuilder.Property(seatId => seatId.Value)
                         .HasColumnName(nameof(SeatId))

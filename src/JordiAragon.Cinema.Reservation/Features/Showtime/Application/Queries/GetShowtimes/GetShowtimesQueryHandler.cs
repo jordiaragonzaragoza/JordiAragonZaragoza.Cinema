@@ -1,15 +1,15 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Queries.GetShowtimes
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Movie.Domain.Specifications;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
@@ -17,12 +17,12 @@
 
     public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, IEnumerable<ShowtimeOutputDto>>
     {
-        private readonly IReadRepository<Movie> movieRepository;
-        private readonly IReadRepository<Showtime> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public GetShowtimesQueryHandler(
-            IReadRepository<Movie> movieRepository,
-            IReadRepository<Showtime> showtimeRepository)
+            IReadRepository<Movie, MovieId> movieRepository,
+            ISpecificationReadRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
@@ -46,13 +46,13 @@
 
             foreach (var showtime in existingShowtimes)
             {
-                var movie = await this.movieRepository.FirstOrDefaultAsync(new MovieByIdSpec(showtime.MovieId), cancellationToken);
+                var movie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
                 if (movie is null)
                 {
                     return Result.NotFound($"{nameof(Movie)}: {showtime.MovieId.Value} not found.");
                 }
 
-                showtimeOutputDtos.Add(new ShowtimeOutputDto(showtime.Id.Value, movie.Title, showtime.SessionDateOnUtc, request.AuditoriumId));
+                showtimeOutputDtos.Add(new ShowtimeOutputDto(showtime.Id, movie.Title, showtime.SessionDateOnUtc, request.AuditoriumId));
             }
 
             return Result.Success(showtimeOutputDtos.AsEnumerable());

@@ -106,7 +106,7 @@
             Func<Movie> movie = () => Movie.Create(id, title, imdbId, relaseDateOnUtc, stars);
 
             // Assert
-            movie.Should().Throw<InvalidAggregateStateException>();
+            movie.Should().Throw<InvalidAggregateStateException<Movie, MovieId>>();
         }
 
         [Fact]

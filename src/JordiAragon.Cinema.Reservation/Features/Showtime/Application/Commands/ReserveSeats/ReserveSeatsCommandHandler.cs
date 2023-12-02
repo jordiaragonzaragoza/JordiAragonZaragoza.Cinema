@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Commands.ReserveSeats
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -8,30 +9,27 @@
     using Ardalis.Result;
     using AutoMapper;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Auditorium.Domain.Specifications;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Movie.Domain.Specifications;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 
     public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
-        private readonly IReadRepository<Auditorium> auditoriumReadRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository;
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
-        private readonly IReadRepository<Movie> movieReadRepository;
-        private readonly IRepository<Showtime> showtimeRepository;
+        private readonly IReadRepository<Movie, MovieId> movieReadRepository;
+        private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public ReserveSeatsCommandHandler(
-            IReadRepository<Auditorium> auditoriumReadRepository,
-            IReadRepository<Movie> movieReadRepository,
-            IRepository<Showtime> showtimeRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
+            IReadRepository<Movie, MovieId> movieReadRepository,
+            IRepository<Showtime, ShowtimeId> showtimeRepository,
             IMapper mapper,
             IGuidGenerator guidGenerator,
             IDateTime dateTime)
@@ -46,13 +44,13 @@
 
         public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
-            var existingShowtime = await this.showtimeRepository.FirstOrDefaultAsync(new ShowtimeByIdSpec(ShowtimeId.Create(request.ShowtimeId)), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
-            var existingAuditorium = await this.auditoriumReadRepository.FirstOrDefaultAsync(new AuditoriumByIdSpec(existingShowtime.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadRepository.GetByIdAsync(existingShowtime.AuditoriumId, cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
@@ -71,7 +69,7 @@
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
             // TODO: Prepare OutputDto: Replace with correct projections on EventSourcing.
-            var existingmovie = await this.movieReadRepository.FirstOrDefaultAsync(new MovieByIdSpec(existingShowtime.MovieId), cancellationToken);
+            var existingmovie = await this.movieReadRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
             if (existingmovie is null)
             {
                 return Result.NotFound($"{nameof(Movie)}: {existingShowtime.MovieId} not found.");
@@ -80,9 +78,9 @@
             var seats = existingAuditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
 
             var ticketOutputDto = new TicketOutputDto(
-                newticket.Id.Value,
+                newticket.Id,
                 existingShowtime.SessionDateOnUtc,
-                existingAuditorium.Id.Value,
+                existingAuditorium.Id,
                 existingmovie.Title,
                 this.mapper.Map<IEnumerable<SeatOutputDto>>(seats),
                 newticket.IsPurchased);

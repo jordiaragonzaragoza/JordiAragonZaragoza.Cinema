@@ -73,14 +73,14 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "AuditoriumsSeats",
                 columns: table => new
                 {
-                    SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Row = table.Column<short>(type: "smallint", nullable: false),
                     SeatNumber = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuditoriumsSeats", x => new { x.SeatId, x.AuditoriumId });
+                    table.PrimaryKey("PK_AuditoriumsSeats", x => new { x.Id, x.AuditoriumId });
                     table.ForeignKey(
                         name: "FK_AuditoriumsSeats_Auditoriums_AuditoriumId",
                         column: x => x.AuditoriumId,
@@ -93,14 +93,14 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "AuditoriumsShowtimeIds",
                 columns: table => new
                 {
+                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuditoriumsShowtimeIds", x => x.Id);
+                    table.PrimaryKey("PK_AuditoriumsShowtimeIds", x => new { x.AuditoriumId, x.Id });
                     table.ForeignKey(
                         name: "FK_AuditoriumsShowtimeIds_Auditoriums_AuditoriumId",
                         column: x => x.AuditoriumId,
@@ -113,14 +113,14 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "MoviesShowtimeIds",
                 columns: table => new
                 {
+                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoviesShowtimeIds", x => x.Id);
+                    table.PrimaryKey("PK_MoviesShowtimeIds", x => new { x.MovieId, x.Id });
                     table.ForeignKey(
                         name: "FK_MoviesShowtimeIds_Movies_MovieId",
                         column: x => x.MovieId,
@@ -150,7 +150,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketSeatIds",
+                name: "ShowtimeTicketSeatIds",
                 columns: table => new
                 {
                     TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -161,9 +161,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketSeatIds", x => new { x.TicketId, x.ShowtimeId, x.Id });
+                    table.PrimaryKey("PK_ShowtimeTicketSeatIds", x => new { x.TicketId, x.ShowtimeId, x.Id });
                     table.ForeignKey(
-                        name: "FK_TicketSeatIds_ShowtimesTickets_TicketId_ShowtimeId",
+                        name: "FK_ShowtimeTicketSeatIds_ShowtimesTickets_TicketId_ShowtimeId",
                         columns: x => new { x.TicketId, x.ShowtimeId },
                         principalTable: "ShowtimesTickets",
                         principalColumns: new[] { "Id", "ShowtimeId" },
@@ -174,16 +174,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "IX_AuditoriumsSeats_AuditoriumId",
                 table: "AuditoriumsSeats",
                 column: "AuditoriumId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AuditoriumsShowtimeIds_AuditoriumId",
-                table: "AuditoriumsShowtimeIds",
-                column: "AuditoriumId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MoviesShowtimeIds_MovieId",
-                table: "MoviesShowtimeIds",
-                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShowtimesTickets_ShowtimeId",
@@ -207,7 +197,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "OutboxMessages");
 
             migrationBuilder.DropTable(
-                name: "TicketSeatIds");
+                name: "ShowtimeTicketSeatIds");
 
             migrationBuilder.DropTable(
                 name: "Auditoriums");

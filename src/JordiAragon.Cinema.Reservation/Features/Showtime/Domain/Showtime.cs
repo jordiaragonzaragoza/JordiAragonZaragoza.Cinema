@@ -13,7 +13,7 @@
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
+    public sealed class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
     {
         private readonly List<Ticket> tickets = new();
 
@@ -94,7 +94,7 @@
             }
             catch (Exception exception)
             {
-                throw new InvalidAggregateStateException(this, exception.Message);
+                throw new InvalidAggregateStateException<Showtime, ShowtimeId>(this, exception.Message);
             }
         }
 

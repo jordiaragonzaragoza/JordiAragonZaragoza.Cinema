@@ -54,7 +54,7 @@
         public void InitDatabase()
         {
             using var scope = this.scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<TicketingContext>();
+            var context = scope.ServiceProvider.GetRequiredService<ReservationContext>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
 
             try

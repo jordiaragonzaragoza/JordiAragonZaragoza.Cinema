@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class DeleteTests : BaseEntityFrameworkIntegrationTests<Showtime>
+    public class DeleteTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId>
     {
         public DeleteTests(
             IntegrationTestsFixture fixture,
@@ -45,7 +45,7 @@
             // Arrange
             var newShowtime = Showtime.Create(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id.Value),
+                MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
