@@ -18,16 +18,20 @@
                 .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
-                .As(typeof(ICachedSpecificationRepository<,>))
-                .InstancePerLifetimeScope();
-
             builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationSpecificationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+                .As(typeof(IReadListRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
                 .As(typeof(ISpecificationReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
+                .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
         }
     }
