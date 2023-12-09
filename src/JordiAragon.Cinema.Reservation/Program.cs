@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Common.Application;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStoreDb.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Presentation.WebApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
@@ -49,6 +49,7 @@
                 containerBuilder.RegisterModule(new SharedKernelEntityFrameworkModule());
                 containerBuilder.RegisterModule(new EntityFrameworkModule());
                 containerBuilder.RegisterModule(new SharedKernelEventStoreModule());
+                containerBuilder.RegisterModule(new EventStoreDbModule());
                 containerBuilder.RegisterModule(new SharedKernelWebApiModule());
             });
 

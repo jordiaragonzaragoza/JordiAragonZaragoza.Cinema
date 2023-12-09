@@ -13,7 +13,7 @@
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
+    public sealed class Showtime : BaseEventSourcedAggregateRoot<ShowtimeId, Guid>
     {
         private readonly List<Ticket> tickets = new();
 
