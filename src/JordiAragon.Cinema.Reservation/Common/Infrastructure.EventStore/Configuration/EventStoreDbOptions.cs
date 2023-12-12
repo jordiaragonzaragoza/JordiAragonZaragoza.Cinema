@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStoreDb.Configuration
+﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration
 {
     public class EventStoreDbOptions
     {

@@ -66,7 +66,7 @@
 
             Console.WriteLine(this.showtimeRepository.ToString());
 
-            ////await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);
+            await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);
 
             return Result.Success(newShowtime.Id.Value);
         }

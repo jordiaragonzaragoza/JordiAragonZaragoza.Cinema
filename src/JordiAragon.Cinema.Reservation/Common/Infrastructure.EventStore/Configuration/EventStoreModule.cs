@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStoreDb.Configuration
+﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration
 {
     using System.Reflection;
     using Autofac;
@@ -6,7 +6,7 @@
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class EventStoreDbModule : AssemblyModule
+    public class EventStoreModule : AssemblyModule
     {
         protected override Assembly CurrentAssembly => AssemblyReference.Assembly;
 

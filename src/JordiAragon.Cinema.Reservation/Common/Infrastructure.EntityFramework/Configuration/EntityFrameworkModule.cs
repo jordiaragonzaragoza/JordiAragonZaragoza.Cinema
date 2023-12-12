@@ -16,6 +16,7 @@
         {
             base.Load(builder);
 
+            // Write Repositories
             builder.RegisterType<ReservationRepository<Movie, MovieId>>()
                     .As<IRepository<Movie, MovieId>>()
                     .InstancePerLifetimeScope();
@@ -24,6 +25,7 @@
                     .As<IRepository<Auditorium, AuditoriumId>>()
                     .InstancePerLifetimeScope();
 
+            // Read Repositories
             builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();

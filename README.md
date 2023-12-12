@@ -19,6 +19,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - Domain/Application Events
 - Outbox Pattern
 - CQRS with MediatR and FluentValidation
+- Event Sourcing
 - Unit of Work
 - Repository & Specification
 - Custom API Error Handling with Problems Details
@@ -34,6 +35,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 - ASP.NET 7.0
 - Entity Framework Core 7.0
+- EventStoreDb
 - FastEndpoints
 - MediatR
 - AutoMapper
@@ -58,18 +60,17 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - API Versioning
 - Application cache request with invalidation.
 - Generic cache repository with invalidation.
-- MediatR Pipelines (Decorator pattern)
+- MediatR Pipelines Behaviours (Decorator pattern)
  - LoggerBehaviour to track all requests.
  - UnitOfWorkBehaviour as a main exception handler to commit or rollback the transaction.
  - ValidationBehaviour to add custom validation per each query or command.
  - CachingBehavior and InvalidateCachingBehavior to apply/remove requests to the cache.
- - DomainEventsDispatcherBehaviour to dispatch domain events before complete the transation.
+ - DomainEventsDispatcherBehaviour. Deferred approach to raise and dispatch events before complete the transation.
  - PerformanceBehaviour to track the execution time performance.
 
 ## Reservation Bounded Context - Commands and queries.
 
-- Create showtime
-    Create showtime for a given movie data.
+- Create/Cancel showtime
     
 - Reserve seats
     - Reserving the seat response will contain a GUID of the reservation, also the number of seats, the auditorium used and the movie that will be played.
