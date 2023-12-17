@@ -64,8 +64,6 @@
                 request.SessionDateOnUtc,
                 AuditoriumId.Create(existingAuditorium.Id));
 
-            Console.WriteLine(this.showtimeRepository.ToString());
-
             await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);
 
             return Result.Success(newShowtime.Id.Value);

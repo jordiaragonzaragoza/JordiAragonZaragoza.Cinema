@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Events
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
