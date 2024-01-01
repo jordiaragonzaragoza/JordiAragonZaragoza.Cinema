@@ -30,9 +30,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImdbId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Stars = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReleaseDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Runtime = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {

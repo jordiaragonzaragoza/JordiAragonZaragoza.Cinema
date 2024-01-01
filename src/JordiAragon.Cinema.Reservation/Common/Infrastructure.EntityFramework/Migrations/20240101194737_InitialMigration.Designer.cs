@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20231128194709_InitialMigration")]
+    [Migration("20240101194737_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -46,14 +46,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImdbId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReleaseDateOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Stars")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("Runtime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");

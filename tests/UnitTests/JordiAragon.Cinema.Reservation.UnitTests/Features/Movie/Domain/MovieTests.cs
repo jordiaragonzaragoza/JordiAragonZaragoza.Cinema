@@ -14,34 +14,22 @@
         public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
         {
             var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
+            var runtime = Constants.Movie.Runtime;
 
             var titleValues = new object[] { null, string.Empty, " ", title };
-            var imdbIdValues = new object[] { null, string.Empty, " ", imdbId };
-            var relaseDateOnUtcValues = new object[] { default(DateTime), releaseDateOnUtc };
-            var starsValues = new object[] { null, string.Empty, " ", stars };
+            var runtimeValues = new object[] { default(TimeSpan), runtime };
 
             foreach (var titleValue in titleValues)
             {
-                foreach (var imdbIdValue in imdbIdValues)
+                foreach (var imdbIdValue in runtimeValues)
                 {
-                    foreach (var releaseDateOnUtcValue in relaseDateOnUtcValues)
+                    if (titleValue != null && titleValue.Equals(title) &&
+                                imdbIdValue != null && imdbIdValue.Equals(runtime))
                     {
-                        foreach (var starsValue in starsValues)
-                        {
-                            if (titleValue != null && titleValue.Equals(title) &&
-                                imdbIdValue != null && imdbIdValue.Equals(imdbId) &&
-                                releaseDateOnUtcValue.Equals(releaseDateOnUtc) &&
-                                starsValue != null && starsValue.Equals(stars))
-                            {
-                                continue;
-                            }
-
-                            yield return new object[] { titleValue, imdbIdValue, releaseDateOnUtcValue, starsValue };
-                        }
+                        continue;
                     }
+
+                    yield return new object[] { titleValue, imdbIdValue };
                 }
             }
         }
@@ -52,12 +40,10 @@
             // Arrange
             var id = Constants.Movie.Id;
             var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
+            var runtime = Constants.Movie.Runtime;
 
             // Act
-            var movie = Movie.Create(id, title, imdbId, releaseDateOnUtc, stars);
+            var movie = Movie.Create(id, title, runtime);
 
             // Assert
             movie.Should().NotBeNull();
@@ -69,9 +55,7 @@
                               .Which.Should().Match<MovieCreatedEvent>(e =>
                                                                             e.MovieId == id &&
                                                                             e.Title == title &&
-                                                                            e.ImdbId == imdbId &&
-                                                                            e.ReleaseDateOnUtc == releaseDateOnUtc &&
-                                                                            e.Stars == stars);
+                                                                            e.Runtime == runtime);
         }
 
         [Fact]
@@ -80,12 +64,10 @@
             // Arrange
             MovieId id = null;
             var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
+            var runtime = Constants.Movie.Runtime;
 
             // Act
-            Func<Movie> movie = () => Movie.Create(id, title, imdbId, releaseDateOnUtc, stars);
+            Func<Movie> movie = () => Movie.Create(id, title, runtime);
 
             // Assert
             movie.Should().Throw<ArgumentNullException>();
@@ -95,15 +77,13 @@
         [MemberData(nameof(InvalidArgumentsCreateMovie))]
         public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowInvalidAggregateStateException(
             string title,
-            string imdbId,
-            DateTime relaseDateOnUtc,
-            string stars)
+            TimeSpan runtime)
         {
             // Arrange
             var id = Constants.Movie.Id;
 
             // Act
-            Func<Movie> movie = () => Movie.Create(id, title, imdbId, relaseDateOnUtc, stars);
+            Func<Movie> movie = () => Movie.Create(id, title, runtime);
 
             // Assert
             movie.Should().Throw<InvalidAggregateStateException<Movie, MovieId>>();

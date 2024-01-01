@@ -20,19 +20,15 @@
 
         public string Title { get; private set; }
 
-        public string ImdbId { get; private set; }
-
-        public string Stars { get; private set; }
-
-        public DateTime ReleaseDateOnUtc { get; private set; }
+        public TimeSpan Runtime { get; private set; }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
-        public static Movie Create(MovieId id, string title, string imdbId, DateTime releaseDateOnUtc, string stars)
+        public static Movie Create(MovieId id, string title, TimeSpan runtime)
         {
             var movie = new Movie();
 
-            movie.Apply(new MovieCreatedEvent(id, title, imdbId, releaseDateOnUtc, stars));
+            movie.Apply(new MovieCreatedEvent(id, title, runtime));
 
             return movie;
         }
@@ -67,9 +63,7 @@
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.NullOrWhiteSpace(this.Title, nameof(this.Title));
-                Guard.Against.NullOrWhiteSpace(this.ImdbId, nameof(this.ImdbId));
-                Guard.Against.Default(this.ReleaseDateOnUtc, nameof(this.ReleaseDateOnUtc));
-                Guard.Against.NullOrWhiteSpace(this.Stars, nameof(this.Stars));
+                Guard.Against.Default(this.Runtime, nameof(this.Runtime));
             }
             catch (Exception exception)
             {
@@ -81,9 +75,7 @@
         {
             this.Id = MovieId.Create(@event.AggregateId);
             this.Title = @event.Title;
-            this.ImdbId = @event.ImdbId;
-            this.ReleaseDateOnUtc = @event.ReleaseDateOnUtc;
-            this.Stars = @event.Stars;
+            this.Runtime = @event.Runtime;
         }
     }
 }

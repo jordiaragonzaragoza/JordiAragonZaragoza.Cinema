@@ -6,8 +6,6 @@
     public sealed record class MovieCreatedEvent(
         Guid MovieId,
         string Title,
-        string ImdbId,
-        DateTime ReleaseDateOnUtc,
-        string Stars)
+        TimeSpan Runtime)
         : BaseDomainEvent(MovieId);
 }
