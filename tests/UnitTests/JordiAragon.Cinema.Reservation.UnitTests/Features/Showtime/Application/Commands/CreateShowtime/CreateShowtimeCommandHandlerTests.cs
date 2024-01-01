@@ -45,8 +45,8 @@
 
         public static IEnumerable<object[]> InvalidArgumentsCreateHandleCreateShowtimeCommand()
         {
-            var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
-            var movieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
+            var auditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
+            var movieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
             var showtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             var guidGenerator = Substitute.For<IGuidGenerator>();
