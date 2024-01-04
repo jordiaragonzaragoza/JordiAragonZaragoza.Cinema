@@ -16,8 +16,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Rows = table.Column<short>(type: "smallint", nullable: false),
-                    SeatsPerRow = table.Column<short>(type: "smallint", nullable: false)
+                    Rows = table.Column<int>(type: "int", nullable: false),
+                    SeatsPerRow = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Runtime = table.Column<TimeSpan>(type: "time", nullable: false)
+                    Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    StartingExhibitionPeriodOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndOfExhibitionPeriodOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

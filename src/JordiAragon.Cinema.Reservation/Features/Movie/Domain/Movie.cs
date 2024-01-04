@@ -22,13 +22,19 @@
 
         public TimeSpan Runtime { get; private set; }
 
+        public ExhibitionPeriod ExhibitionPeriod { get; private set; }
+
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
-        public static Movie Create(MovieId id, string title, TimeSpan runtime)
+        public static Movie Create(
+            MovieId id,
+            string title,
+            TimeSpan runtime,
+            ExhibitionPeriod exhibitionPeriod)
         {
             var movie = new Movie();
 
-            movie.Apply(new MovieCreatedEvent(id, title, runtime));
+            movie.Apply(new MovieCreatedEvent(id, title, runtime, exhibitionPeriod.StartingPeriodOnUtc, exhibitionPeriod.EndOfPeriodOnUtc));
 
             return movie;
         }
@@ -64,6 +70,7 @@
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.NullOrWhiteSpace(this.Title, nameof(this.Title));
                 Guard.Against.Default(this.Runtime, nameof(this.Runtime));
+                Guard.Against.Null(this.ExhibitionPeriod, nameof(this.ExhibitionPeriod));
             }
             catch (Exception exception)
             {
@@ -76,6 +83,9 @@
             this.Id = MovieId.Create(@event.AggregateId);
             this.Title = @event.Title;
             this.Runtime = @event.Runtime;
+            this.ExhibitionPeriod = ExhibitionPeriod.Create(
+                StartingPeriod.Create(DateTime.SpecifyKind(@event.StartingExhibitionPeriodOnUtc, DateTimeKind.Utc)),
+                EndOfPeriod.Create(DateTime.SpecifyKind(@event.EndOfExhibitionPeriodOnUtc, DateTimeKind.Utc)));
         }
     }
 }

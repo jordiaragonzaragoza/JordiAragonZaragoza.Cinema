@@ -17,7 +17,10 @@
             Movie.Create(
                 id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
-                runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28));
+                runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
+                exhibitionPeriod: ExhibitionPeriod.Create(
+                    (StartingPeriod)new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
+                    (EndOfPeriod)DateTime.UtcNow.AddYears(1)));
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(

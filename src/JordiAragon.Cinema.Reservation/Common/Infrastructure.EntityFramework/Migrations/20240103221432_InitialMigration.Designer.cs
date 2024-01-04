@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20240101194737_InitialMigration")]
+    [Migration("20240103221432_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -30,11 +30,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<short>("Rows")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Rows")
+                        .HasColumnType("int");
 
-                    b.Property<short>("SeatsPerRow")
-                        .HasColumnType("smallint");
+                    b.Property<int>("SeatsPerRow")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -158,6 +158,27 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Movie.Domain.Movie", b =>
                 {
+                    b.OwnsOne("JordiAragon.Cinema.Reservation.Movie.Domain.ExhibitionPeriod", "ExhibitionPeriodOnUtc", b1 =>
+                        {
+                            b1.Property<Guid>("MovieId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime?>("EndOfPeriodOnUtc")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("EndOfExhibitionPeriodOnUtc");
+
+                            b1.Property<DateTime?>("StartingPeriodOnUtc")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("StartingExhibitionPeriodOnUtc");
+
+                            b1.HasKey("MovieId");
+
+                            b1.ToTable("Movies");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MovieId");
+                        });
+
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
                             b1.Property<Guid>("MovieId")
@@ -180,6 +201,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.WithOwner()
                                 .HasForeignKey("MovieId");
                         });
+
+                    b.Navigation("ExhibitionPeriodOnUtc")
+                        .IsRequired();
 
                     b.Navigation("Showtimes");
                 });

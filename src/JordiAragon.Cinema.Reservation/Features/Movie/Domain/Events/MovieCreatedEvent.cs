@@ -6,6 +6,8 @@
     public sealed record class MovieCreatedEvent(
         Guid MovieId,
         string Title,
-        TimeSpan Runtime)
+        TimeSpan Runtime,
+        DateTime StartingExhibitionPeriodOnUtc,
+        DateTime EndOfExhibitionPeriodOnUtc)
         : BaseDomainEvent(MovieId);
 }
