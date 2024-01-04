@@ -11,8 +11,8 @@ namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
             public static readonly MovieId Id = MovieId.Create(Guid.NewGuid());
             public static readonly TimeSpan Runtime = TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28);
             public static readonly ExhibitionPeriod ExhibitionPeriod = ExhibitionPeriod.Create(
-                    (StartingPeriod)new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
-                    (EndOfPeriod)DateTime.UtcNow.AddYears(1));
+                    (StartingPeriod)new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero),
+                    EndOfPeriod.Create(DateTime.UtcNow.AddYears(1)));
         }
     }
 }

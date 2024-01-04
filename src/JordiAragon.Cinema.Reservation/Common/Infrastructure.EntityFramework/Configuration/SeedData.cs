@@ -19,8 +19,8 @@
                 title: "Inception",
                 runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
                 exhibitionPeriod: ExhibitionPeriod.Create(
-                    (StartingPeriod)new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
-                    (EndOfPeriod)DateTime.UtcNow.AddYears(1)));
+                    StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, TimeSpan.Zero)),
+                    EndOfPeriod.Create(DateTime.UtcNow.AddYears(1))));
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(

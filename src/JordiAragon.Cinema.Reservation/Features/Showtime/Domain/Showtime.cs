@@ -24,7 +24,7 @@
 
         public MovieId MovieId { get; private set; }
 
-        public DateTime SessionDateOnUtc { get; private set; }
+        public DateTimeOffset SessionDateOnUtc { get; private set; }
 
         public AuditoriumId AuditoriumId { get; private set; }
 
@@ -33,7 +33,7 @@
         public static Showtime Create(
             ShowtimeId id,
             MovieId movieId,
-            DateTime sessionDateOnUtc,
+            DateTimeOffset sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
             var showtime = new Showtime();
@@ -43,7 +43,7 @@
             return showtime;
         }
 
-        public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTime createdTimeOnUtc)
+        public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {
             this.Apply(new ReservedSeatsEvent(this.Id, id, seatIds.Select(x => x.Value), createdTimeOnUtc));
 

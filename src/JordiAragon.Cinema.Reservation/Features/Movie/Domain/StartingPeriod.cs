@@ -3,34 +3,32 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
-    using JordiAragon.SharedKernel.Domain.Guards;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public class StartingPeriod : BaseValueObject
     {
-        private StartingPeriod(DateTime value)
+        private StartingPeriod(DateTimeOffset value)
         {
             Guard.Against.Default(value, nameof(value));
-            Guard.Against.NotUtc(value, nameof(value));
 
             this.Value = value;
         }
 
-        public DateTime Value { get; init; }
+        public DateTimeOffset Value { get; init; }
 
-        public static implicit operator DateTime(StartingPeriod startingPeriod)
+        public static implicit operator DateTimeOffset(StartingPeriod startingPeriod)
         {
             Guard.Against.Null(startingPeriod, nameof(startingPeriod));
 
             return startingPeriod.Value;
         }
 
-        public static explicit operator StartingPeriod(DateTime value)
+        public static explicit operator StartingPeriod(DateTimeOffset value)
         {
             return new StartingPeriod(value);
         }
 
-        public static StartingPeriod Create(DateTime value)
+        public static StartingPeriod Create(DateTimeOffset value)
             => new(value);
 
         public override string ToString()

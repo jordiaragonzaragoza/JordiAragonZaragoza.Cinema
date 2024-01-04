@@ -6,7 +6,7 @@
     public sealed record class ShowtimeCreatedEvent(
         Guid ShowtimeId,
         Guid MovieId,
-        DateTime SessionDateOnUtc,
+        DateTimeOffset SessionDateOnUtc,
         Guid AuditoriumId)
         : BaseDomainEvent(ShowtimeId);
 }

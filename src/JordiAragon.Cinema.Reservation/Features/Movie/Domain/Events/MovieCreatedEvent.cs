@@ -7,7 +7,7 @@
         Guid MovieId,
         string Title,
         TimeSpan Runtime,
-        DateTime StartingExhibitionPeriodOnUtc,
-        DateTime EndOfExhibitionPeriodOnUtc)
+        DateTimeOffset StartingExhibitionPeriodOnUtc,
+        DateTimeOffset EndOfExhibitionPeriodOnUtc)
         : BaseDomainEvent(MovieId);
 }

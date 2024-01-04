@@ -49,13 +49,13 @@
                 .HasColumnName("StartingExhibitionPeriodOnUtc")
                 .HasConversion(
                     startingPeriod => startingPeriod.Value,
-                    value => StartingPeriod.Create(DateTime.SpecifyKind(value, DateTimeKind.Utc)));
+                    value => StartingPeriod.Create(value));
 
                 exhibitionBuilder.Property(x => x.EndOfPeriodOnUtc)
                 .HasColumnName("EndOfExhibitionPeriodOnUtc")
                 .HasConversion(
                     endPeriod => endPeriod.Value,
-                    value => EndOfPeriod.Create(DateTime.SpecifyKind(value, DateTimeKind.Utc)));
+                    value => EndOfPeriod.Create(value));
             }).Navigation(movie => movie.ExhibitionPeriod).IsRequired();
         }
     }

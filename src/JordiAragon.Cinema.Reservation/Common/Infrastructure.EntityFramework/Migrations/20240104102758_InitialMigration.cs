@@ -31,8 +31,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    StartingExhibitionPeriodOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndOfExhibitionPeriodOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,10 +44,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateOccurredOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOccurredOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateProcessedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateProcessedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     Error = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -61,7 +61,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    SessionDateOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -135,7 +135,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedTimeOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     IsPurchased = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

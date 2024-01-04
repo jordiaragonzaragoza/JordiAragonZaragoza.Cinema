@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20240103221432_InitialMigration")]
+    [Migration("20240104102758_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -68,8 +68,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("SessionDateOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("SessionDateOnUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -84,11 +84,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOccurredOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("DateOccurredOnUtc")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime?>("DateProcessedOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DateProcessedOnUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");
@@ -158,17 +158,17 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Movie.Domain.Movie", b =>
                 {
-                    b.OwnsOne("JordiAragon.Cinema.Reservation.Movie.Domain.ExhibitionPeriod", "ExhibitionPeriodOnUtc", b1 =>
+                    b.OwnsOne("JordiAragon.Cinema.Reservation.Movie.Domain.ExhibitionPeriod", "ExhibitionPeriod", b1 =>
                         {
                             b1.Property<Guid>("MovieId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<DateTime?>("EndOfPeriodOnUtc")
-                                .HasColumnType("datetime2")
+                            b1.Property<DateTimeOffset?>("EndOfPeriodOnUtc")
+                                .HasColumnType("datetimeoffset")
                                 .HasColumnName("EndOfExhibitionPeriodOnUtc");
 
-                            b1.Property<DateTime?>("StartingPeriodOnUtc")
-                                .HasColumnType("datetime2")
+                            b1.Property<DateTimeOffset?>("StartingPeriodOnUtc")
+                                .HasColumnType("datetimeoffset")
                                 .HasColumnName("StartingExhibitionPeriodOnUtc");
 
                             b1.HasKey("MovieId");
@@ -202,7 +202,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                                 .HasForeignKey("MovieId");
                         });
 
-                    b.Navigation("ExhibitionPeriodOnUtc")
+                    b.Navigation("ExhibitionPeriod")
                         .IsRequired();
 
                     b.Navigation("Showtimes");
@@ -219,8 +219,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<Guid>("ShowtimeId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<DateTime>("CreatedTimeOnUtc")
-                                .HasColumnType("datetime2");
+                            b1.Property<DateTimeOffset>("CreatedTimeOnUtc")
+                                .HasColumnType("datetimeoffset");
 
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("bit");

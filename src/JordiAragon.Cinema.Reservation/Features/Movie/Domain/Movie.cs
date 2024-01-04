@@ -84,8 +84,8 @@
             this.Title = @event.Title;
             this.Runtime = @event.Runtime;
             this.ExhibitionPeriod = ExhibitionPeriod.Create(
-                StartingPeriod.Create(DateTime.SpecifyKind(@event.StartingExhibitionPeriodOnUtc, DateTimeKind.Utc)),
-                EndOfPeriod.Create(DateTime.SpecifyKind(@event.EndOfExhibitionPeriodOnUtc, DateTimeKind.Utc)));
+                StartingPeriod.Create(@event.StartingExhibitionPeriodOnUtc),
+                EndOfPeriod.Create(@event.StartingExhibitionPeriodOnUtc));
         }
     }
 }

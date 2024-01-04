@@ -24,7 +24,7 @@
 
             var showtimeIdValues = new object[] { null, showtimeId };
             var movieIdValues = new object[] { null, movieId };
-            var sessionDateOnUtcValues = new object[] { default(DateTime), sessionDateOnUtc };
+            var sessionDateOnUtcValues = new object[] { default(DateTimeOffset), sessionDateOnUtc };
             var auditoriumIdValues = new object[] { null, auditoriumId };
 
             foreach (var showtimeIdValue in showtimeIdValues)
@@ -58,7 +58,7 @@
 
             var ticketIdValues = new object[] { null, ticketId };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
-            var createdTimeOnUtcValues = new object[] { default(DateTime), createdTimeOnUtc };
+            var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var ticketIdValue in ticketIdValues)
             {
@@ -110,7 +110,7 @@
         public void CreateShowtime_WhenHavingInvalidArguments_ShouldThrowException(
             ShowtimeId id,
             MovieId movieId,
-            DateTime sessionDateOnUtc,
+            DateTimeOffset sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
             // Act
@@ -161,7 +161,7 @@
         public void ReserveSeats_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             TicketId tickedId,
             IEnumerable<SeatId> seatIds,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
         {
             // Arrange
             var showtime = CreateShowtimeUtils.Create();

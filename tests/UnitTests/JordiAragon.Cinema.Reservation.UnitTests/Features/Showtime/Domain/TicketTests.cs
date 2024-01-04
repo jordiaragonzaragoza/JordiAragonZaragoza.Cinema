@@ -19,7 +19,7 @@
 
             var idValues = new object[] { null, Constants.Ticket.Id };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
-            var createdTimeOnUtcValues = new object[] { default(DateTime), createdTimeOnUtc };
+            var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var idValue in idValues)
             {
@@ -45,7 +45,7 @@
         public void CreateTicket_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             TicketId id,
             IEnumerable<SeatId> seatIds,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
         {
             // Act
             Func<Ticket> createTicket = () => Ticket.Create(id, seatIds, createdTimeOnUtc);
