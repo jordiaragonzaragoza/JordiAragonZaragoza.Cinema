@@ -60,6 +60,9 @@
             // Assert
             movie.Should().NotBeNull();
             movie.Id.Should().Be(id);
+            movie.Title.Should().Be(title);
+            movie.Runtime.Should().Be(runtime);
+            movie.ExhibitionPeriod.Should().Be(exhibitionPeriod);
 
             movie.Events.Should()
                               .ContainSingle(x => x is MovieCreatedEvent)
@@ -67,28 +70,14 @@
                               .Which.Should().Match<MovieCreatedEvent>(e =>
                                                                             e.MovieId == id &&
                                                                             e.Title == title &&
-                                                                            e.Runtime == runtime);
-        }
-
-        [Fact]
-        public void CreateMovie_WhenHavingInCorrectMovieIdArgument_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            MovieId id = null;
-            var title = Constants.Movie.Title;
-            var runtime = Constants.Movie.Runtime;
-            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
-
-            // Act
-            Func<Movie> movie = () => Movie.Create(id, title, runtime, exhibitionPeriod);
-
-            // Assert
-            movie.Should().Throw<ArgumentNullException>();
+                                                                            e.Runtime == runtime &&
+                                                                            e.StartingExhibitionPeriodOnUtc == exhibitionPeriod.StartingPeriodOnUtc &&
+                                                                            e.EndOfExhibitionPeriodOnUtc == exhibitionPeriod.EndOfPeriodOnUtc);
         }
 
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateMovie))]
-        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowInvalidAggregateStateException(
+        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowException(
             MovieId id,
             string title,
             TimeSpan runtime,
