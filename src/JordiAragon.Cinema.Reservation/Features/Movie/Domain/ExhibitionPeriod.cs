@@ -13,11 +13,11 @@
             Guard.Against.Null(startingPeriod, nameof(startingPeriod));
             Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
             Guard.Against.Default(runtime, nameof(runtime));
-            Guard.Against.OutOfRange(startingPeriod.Value, nameof(startingPeriod), startingPeriod.Value, endOfPeriod.Value);
 
             this.StartingPeriodOnUtc = startingPeriod;
             this.EndOfPeriodOnUtc = endOfPeriod;
 
+            ExhibitionPeriod.CheckRule(new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(this));
             ExhibitionPeriod.CheckRule(new ExhibitionPeriodMustExceedOrEqualRuntimeRule(this, runtime));
         }
 

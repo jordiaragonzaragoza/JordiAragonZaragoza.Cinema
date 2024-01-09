@@ -5,6 +5,7 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public class ExhibitionPeriodTests
@@ -16,7 +17,7 @@
             var runtime = Constants.Movie.Runtime;
 
             var startingPeriodValues = new object[] { null, default(StartingPeriod), startingPeriod };
-            var endOfPeriodValues = new object[] { null, default(EndOfPeriod), startingPeriod, endOfPeriod };
+            var endOfPeriodValues = new object[] { null, default(EndOfPeriod), endOfPeriod };
             var runtimeValues = new object[] { default(TimeSpan), runtime };
 
             foreach (var startingPeriodValue in startingPeriodValues)
@@ -38,7 +39,6 @@
             }
         }
 
-        /*
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateExhibitionPeriod))]
         public void CreateExhibitionPeriod_WhenHavingInvalidArguments_ShouldThrowException(
@@ -51,7 +51,49 @@
 
             // Assert
             exhibitionPeriod.Should().Throw<Exception>();
-        }*/
+        }
+
+        [Fact]
+        public void CreateExhibitionPeriod_WhenHavingSameStartingPeriodEndOfPeriod_ShouldThrowArgumentException()
+        {
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var runtime = Constants.Movie.Runtime;
+
+            // Act
+            Func<ExhibitionPeriod> exhibitionPeriod = () => ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);
+
+            // Assert
+            exhibitionPeriod.Should().Throw<BusinessRuleValidationException>();
+        }
+
+        [Fact]
+        public void CreateExhibitionPeriod_WhenHavingStartingPeriodBiggerThanEndOfPeriod_ShouldThrowArgumentOutOfRangeException()
+        {
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2024, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var runtime = Constants.Movie.Runtime;
+
+            // Act
+            Func<ExhibitionPeriod> exhibitionPeriod = () => ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);
+
+            // Assert
+            exhibitionPeriod.Should().Throw<BusinessRuleValidationException>();
+        }
+
+        [Fact]
+        public void CreateExhibitionPeriod_WhenPeriodIsMinorThanRuntime_ShouldThrowBusinessRuleValidationException()
+        {
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 2, 1, 1, 1, TimeSpan.Zero));
+            var runtime = Constants.Movie.Runtime;
+
+            // Act
+            Func<ExhibitionPeriod> exhibitionPeriod = () => ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);
+
+            // Assert
+            exhibitionPeriod.Should().Throw<BusinessRuleValidationException>();
+        }
 
         [Fact]
         public void CreateExhibitionPeriod_WhenHavingValidArguments_ShouldCreateExhibitionPeriod()
