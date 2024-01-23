@@ -21,16 +21,16 @@
     {
         private readonly CreateShowtimeCommandHandler handler;
 
-        private readonly IReadRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
-        private readonly IReadRepository<Movie, MovieId> mockMovieRepository;
+        private readonly IRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
+        private readonly IRepository<Movie, MovieId> mockMovieRepository;
         private readonly IRepository<Showtime, ShowtimeId> mockShowtimeRepository;
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> mockShowtimeReadRepository;
         private readonly IGuidGenerator mockGuidGenerator;
 
         public CreateShowtimeCommandHandlerTests()
         {
-            this.mockAuditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
-            this.mockMovieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
+            this.mockAuditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
+            this.mockMovieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
             this.mockShowtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             this.mockGuidGenerator = Substitute.For<IGuidGenerator>();
@@ -45,8 +45,8 @@
 
         public static IEnumerable<object[]> InvalidArgumentsCreateHandleCreateShowtimeCommand()
         {
-            var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
-            var movieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
+            var auditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
+            var movieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
             var showtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             var guidGenerator = Substitute.For<IGuidGenerator>();
@@ -87,8 +87,8 @@
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateHandleCreateShowtimeCommand))]
         public void CreateHandleCreateShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Movie, MovieId> movieRepository,
+            IRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IGuidGenerator guidGenerator)

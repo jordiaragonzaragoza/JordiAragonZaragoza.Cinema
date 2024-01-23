@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Domain
 {
     using System;
-    using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public sealed class AuditoriumId : BaseAggregateRootId<Guid>
@@ -12,10 +11,6 @@
         }
 
         public static AuditoriumId Create(Guid id)
-        {
-            Guard.Against.NullOrEmpty(id, nameof(id));
-
-            return new AuditoriumId(id);
-        }
+            => new(id);
     }
 }

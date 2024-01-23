@@ -4,12 +4,13 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Domain.Entities;
     using Xunit;
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
     public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId> : IAsyncLifetime
-        where TAggregate : class, IAggregateRoot<TId>
+        where TAggregate : BaseAggregateRoot<TId>
         where TId : class, IEntityId
     {
         protected BaseEntityFrameworkIntegrationTests(

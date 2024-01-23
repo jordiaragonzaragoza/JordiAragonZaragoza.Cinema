@@ -56,20 +56,30 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - Outbox pattern to handle the domain event out side the source transaction.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
+- REPR Pattern using FastEndpoints
 - Application cache request with invalidation.
 - Generic cache repository with invalidation.
-- MediatR Pipelines (Decorator pattern)
+- MediatR Pipelines Behaviours (Decorator pattern)
  - LoggerBehaviour to track all requests.
  - UnitOfWorkBehaviour as a main exception handler to commit or rollback the transaction.
  - ValidationBehaviour to add custom validation per each query or command.
  - CachingBehavior and InvalidateCachingBehavior to apply/remove requests to the cache.
- - DomainEventsDispatcherBehaviour to dispatch domain events before complete the transation.
+ - DomainEventsDispatcherBehaviour. Deferred approach to raise and dispatch events before complete the transation.
  - PerformanceBehaviour to track the execution time performance.
+
+## Testing
+
+- Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
+- Unit Tests: Domain and Application
+- Functional Tests with Testcontainers: Presentation.WebApi
+- Integration Tests with Testcontainers: Infrastructure.EntityFramework
+- GitHub workflow CI with SonarCloud integration
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
 
 ## Reservation Bounded Context - Commands and queries.
 
-- Create showtime
-    Create showtime for a given movie data.
+- Create/Cancel showtime
     
 - Reserve seats
     - Reserving the seat response will contain a GUID of the reservation, also the number of seats, the auditorium used and the movie that will be played.
@@ -82,17 +92,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
     - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
     - It is not possible to purchase ticket reservation two times.
 
-## Testing
-
-- Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
-- Unit Tests: Domain and Application
-- Functional Tests with Testcontainers: Presentation.WebApi
-- Integration Tests with Testcontainers: Infrastructure.EntityFramework
-- GitHub workflow CI with SonarCloud integration
-
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
-
-## Model and Data Diagram:
+## Reservation Bounded Context Diagram:
 
 ![JordiAragon.Cinema - Model graph](./docs/Model.jpg)  
 
@@ -115,7 +115,6 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
 - <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
 - <a href="https://www.youtube.com/watch?v=26xrX113KZc" target="_blank">Explore DDD: Mauro Servienti - Talk Session: Welcome to the (State) Machine</a>
-
 
 ## About:
 

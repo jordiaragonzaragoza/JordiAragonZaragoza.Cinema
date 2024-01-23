@@ -8,6 +8,6 @@
         Guid ShowtimeId,
         Guid TicketId,
         IEnumerable<Guid> SeatIds,
-        DateTime CreatedTimeOnUtc)
+        DateTimeOffset CreatedTimeOnUtc)
         : BaseDomainEvent(ShowtimeId);
 }

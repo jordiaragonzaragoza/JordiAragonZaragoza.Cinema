@@ -12,7 +12,7 @@ namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
         {
             public static readonly TicketId Id = TicketId.Create(Guid.NewGuid());
             public static readonly IEnumerable<SeatId> SeatIds = CreateAuditoriumUtils.Create().Seats.Select(seat => seat.Id);
-            public static readonly DateTime CreatedTimeOnUtc = new(2010, 01, 14, 0, 0, 0, DateTimeKind.Utc);
+            public static readonly DateTimeOffset CreatedTimeOnUtc = new(2010, 01, 14, 0, 0, 0, TimeSpan.Zero);
         }
     }
 }

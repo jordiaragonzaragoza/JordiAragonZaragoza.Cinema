@@ -21,7 +21,7 @@
         {
             this.logger.LogInformation("Handled Notification: {Event}", notification.GetType().Name);
 
-            // TODO: Use some service to notify the admin.
+            // TODO: Use event bus to notify showtime creation integration event out side from source transaction.
             return Task.CompletedTask;
         }
     }

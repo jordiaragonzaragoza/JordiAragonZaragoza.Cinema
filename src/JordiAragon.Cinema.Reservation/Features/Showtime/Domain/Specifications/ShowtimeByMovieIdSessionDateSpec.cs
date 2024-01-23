@@ -8,7 +8,7 @@
 
     public class ShowtimeByMovieIdSessionDateSpec : SingleResultSpecification<Showtime>
     {
-        public ShowtimeByMovieIdSessionDateSpec(MovieId movieId, DateTime sessionDateOnUtc)
+        public ShowtimeByMovieIdSessionDateSpec(MovieId movieId, DateTimeOffset sessionDateOnUtc)
         {
             Guard.Against.Null(movieId);
             Guard.Against.Default(sessionDateOnUtc);

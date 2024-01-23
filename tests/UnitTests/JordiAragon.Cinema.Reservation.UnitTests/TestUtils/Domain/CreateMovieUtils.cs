@@ -8,8 +8,7 @@
             => Movie.Create(
                 Constants.Movie.Id,
                 Constants.Movie.Title,
-                Constants.Movie.ImdbId,
-                Constants.Movie.ReleaseDateOnUtc,
-                Constants.Movie.Stars);
+                Constants.Movie.Runtime,
+                Constants.Movie.ExhibitionPeriod);
     }
 }

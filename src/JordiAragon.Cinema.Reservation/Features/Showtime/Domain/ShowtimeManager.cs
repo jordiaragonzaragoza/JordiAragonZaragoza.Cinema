@@ -27,7 +27,7 @@
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId ticketId,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
         {
             Guard.Against.Null(auditorium);
             Guard.Against.Null(showtime);
