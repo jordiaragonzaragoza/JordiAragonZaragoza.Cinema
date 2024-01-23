@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class MovieResponse(Guid Id, string Title, string ImdbId, string Stars, DateTime ReleaseDateOnUtc);
+    public record class MovieResponse(Guid Id, string Title, TimeSpan Runtime);
 }

@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework
 {
+    using System;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
@@ -41,6 +42,21 @@
             builder.Property(movie => movie.Id)
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => MovieId.Create(value));
+
+            builder.OwnsOne(movie => movie.ExhibitionPeriod, exhibitionBuilder =>
+            {
+                exhibitionBuilder.Property(x => x.StartingPeriodOnUtc)
+                .HasColumnName("StartingExhibitionPeriodOnUtc")
+                .HasConversion(
+                    startingPeriod => startingPeriod.Value,
+                    value => StartingPeriod.Create(value));
+
+                exhibitionBuilder.Property(x => x.EndOfPeriodOnUtc)
+                .HasColumnName("EndOfExhibitionPeriodOnUtc")
+                .HasConversion(
+                    endPeriod => endPeriod.Value,
+                    value => EndOfPeriod.Create(value));
+            }).Navigation(movie => movie.ExhibitionPeriod).IsRequired();
         }
     }
 }

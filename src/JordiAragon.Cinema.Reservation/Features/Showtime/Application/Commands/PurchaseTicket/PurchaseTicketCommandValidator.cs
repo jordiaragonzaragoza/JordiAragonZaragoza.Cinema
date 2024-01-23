@@ -2,8 +2,9 @@
 {
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Validators;
 
-    public class PurchaseTicketCommandValidator : AbstractValidator<PurchaseTicketCommand>
+    public class PurchaseTicketCommandValidator : BaseValidator<PurchaseTicketCommand>
     {
         public PurchaseTicketCommandValidator()
         {

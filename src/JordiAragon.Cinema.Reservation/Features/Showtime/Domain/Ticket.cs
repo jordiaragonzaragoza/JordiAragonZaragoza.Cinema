@@ -14,7 +14,7 @@
         private Ticket(
             TicketId id,
             IEnumerable<SeatId> seatIds,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
             : base(id)
         {
             this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
@@ -28,14 +28,14 @@
 
         public IEnumerable<SeatId> Seats => this.seats.AsReadOnly();
 
-        public DateTime CreatedTimeOnUtc { get; private set; }
+        public DateTimeOffset CreatedTimeOnUtc { get; private set; }
 
         public bool IsPurchased { get; private set; }
 
         internal static Ticket Create(
             TicketId id,
             IEnumerable<SeatId> seatIds,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
         {
             return new Ticket(id, seatIds, createdTimeOnUtc);
         }

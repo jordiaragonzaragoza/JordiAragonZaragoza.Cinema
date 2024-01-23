@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Queries.GetAuditoriums
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -15,11 +14,11 @@
 
     public class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, IEnumerable<AuditoriumOutputDto>>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadListRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IMapper mapper;
 
         public GetAuditoriumsQueryHandler(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadListRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IMapper mapper)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));

@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class ShowtimeOutputDto(Guid Id, string MovieTitle, DateTime SessionDateOnUtc, Guid AuditoriumId);
+    public record class ShowtimeOutputDto(Guid Id, string MovieTitle, DateTimeOffset SessionDateOnUtc, Guid AuditoriumId);
 }

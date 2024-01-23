@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Domain
 {
     using System;
-    using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
     public sealed class ShowtimeId : BaseAggregateRootId<Guid>
@@ -12,10 +11,6 @@
         }
 
         public static ShowtimeId Create(Guid id)
-        {
-            Guard.Against.NullOrEmpty(id, nameof(id));
-
-            return new ShowtimeId(id);
-        }
+            => new(id);
     }
 }

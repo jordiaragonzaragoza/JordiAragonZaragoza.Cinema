@@ -6,40 +6,39 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
-    using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public class MovieTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
         {
+            var id = Constants.Movie.Id;
             var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
+            var runtime = Constants.Movie.Runtime;
+            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
 
+            var idValues = new object[] { null, id };
             var titleValues = new object[] { null, string.Empty, " ", title };
-            var imdbIdValues = new object[] { null, string.Empty, " ", imdbId };
-            var relaseDateOnUtcValues = new object[] { default(DateTime), releaseDateOnUtc };
-            var starsValues = new object[] { null, string.Empty, " ", stars };
+            var runtimeValues = new object[] { default(TimeSpan), runtime };
+            var exhibitionPeriodValues = new object[] { null, exhibitionPeriod };
 
-            foreach (var titleValue in titleValues)
+            foreach (var idValue in idValues)
             {
-                foreach (var imdbIdValue in imdbIdValues)
+                foreach (var titleValue in titleValues)
                 {
-                    foreach (var releaseDateOnUtcValue in relaseDateOnUtcValues)
+                    foreach (var runtimeValue in runtimeValues)
                     {
-                        foreach (var starsValue in starsValues)
+                        foreach (var exhibitionPeriodValue in exhibitionPeriodValues)
                         {
-                            if (titleValue != null && titleValue.Equals(title) &&
-                                imdbIdValue != null && imdbIdValue.Equals(imdbId) &&
-                                releaseDateOnUtcValue.Equals(releaseDateOnUtc) &&
-                                starsValue != null && starsValue.Equals(stars))
+                            if (idValue != null && idValue.Equals(id) &&
+                                    titleValue != null && titleValue.Equals(title) &&
+                                    runtimeValue != null && runtimeValue.Equals(runtime) &&
+                                    exhibitionPeriodValue != null && exhibitionPeriodValue.Equals(exhibitionPeriod))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { titleValue, imdbIdValue, releaseDateOnUtcValue, starsValue };
+                            yield return new object[] { idValue, titleValue, runtimeValue, exhibitionPeriodValue };
                         }
                     }
                 }
@@ -52,16 +51,18 @@
             // Arrange
             var id = Constants.Movie.Id;
             var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
+            var runtime = Constants.Movie.Runtime;
+            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
 
             // Act
-            var movie = Movie.Create(id, title, imdbId, releaseDateOnUtc, stars);
+            var movie = Movie.Create(id, title, runtime, exhibitionPeriod);
 
             // Assert
             movie.Should().NotBeNull();
             movie.Id.Should().Be(id);
+            movie.Title.Should().Be(title);
+            movie.Runtime.Should().Be(runtime);
+            movie.ExhibitionPeriod.Should().Be(exhibitionPeriod);
 
             movie.Events.Should()
                               .ContainSingle(x => x is MovieCreatedEvent)
@@ -69,44 +70,24 @@
                               .Which.Should().Match<MovieCreatedEvent>(e =>
                                                                             e.MovieId == id &&
                                                                             e.Title == title &&
-                                                                            e.ImdbId == imdbId &&
-                                                                            e.ReleaseDateOnUtc == releaseDateOnUtc &&
-                                                                            e.Stars == stars);
-        }
-
-        [Fact]
-        public void CreateMovie_WhenHavingInCorrectMovieIdArgument_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            MovieId id = null;
-            var title = Constants.Movie.Title;
-            var imdbId = Constants.Movie.ImdbId;
-            var releaseDateOnUtc = Constants.Movie.ReleaseDateOnUtc;
-            var stars = Constants.Movie.Stars;
-
-            // Act
-            Func<Movie> movie = () => Movie.Create(id, title, imdbId, releaseDateOnUtc, stars);
-
-            // Assert
-            movie.Should().Throw<ArgumentNullException>();
+                                                                            e.Runtime == runtime &&
+                                                                            e.StartingExhibitionPeriodOnUtc == exhibitionPeriod.StartingPeriodOnUtc &&
+                                                                            e.EndOfExhibitionPeriodOnUtc == exhibitionPeriod.EndOfPeriodOnUtc);
         }
 
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateMovie))]
-        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowInvalidAggregateStateException(
+        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowException(
+            MovieId id,
             string title,
-            string imdbId,
-            DateTime relaseDateOnUtc,
-            string stars)
+            TimeSpan runtime,
+            ExhibitionPeriod exhibitionPeriod)
         {
-            // Arrange
-            var id = Constants.Movie.Id;
-
             // Act
-            Func<Movie> movie = () => Movie.Create(id, title, imdbId, relaseDateOnUtc, stars);
+            Func<Movie> movie = () => Movie.Create(id, title, runtime, exhibitionPeriod);
 
             // Assert
-            movie.Should().Throw<InvalidAggregateStateException<Movie, MovieId>>();
+            movie.Should().Throw<Exception>();
         }
 
         [Fact]

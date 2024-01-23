@@ -7,7 +7,7 @@
 
     public class GetExpiredReserveSeatsSpec : Specification<Showtime>
     {
-        public GetExpiredReserveSeatsSpec(DateTime currentDateTimeOnUtc)
+        public GetExpiredReserveSeatsSpec(DateTimeOffset currentDateTimeOnUtc)
         {
             this.Query
                 .Where(showtime => currentDateTimeOnUtc < showtime.SessionDateOnUtc

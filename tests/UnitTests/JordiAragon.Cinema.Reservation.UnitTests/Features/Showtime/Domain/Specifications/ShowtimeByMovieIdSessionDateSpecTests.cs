@@ -13,8 +13,8 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsFindShowtimeByMovieIdSessionDateSpec()
         {
-            yield return new object[] { null, default(DateTime) };
-            yield return new object[] { Constants.Movie.Id, default(DateTime) };
+            yield return new object[] { null, default(DateTimeOffset) };
+            yield return new object[] { Constants.Movie.Id, default(DateTimeOffset) };
             yield return new object[] { null, DateTime.UtcNow };
         }
 
@@ -72,7 +72,7 @@
         [MemberData(nameof(InvalidArgumentsFindShowtimeByMovieIdSessionDateSpec))]
         public void FindShowtimeByMovieIdSessionDateSpec_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
             MovieId movieId,
-            DateTime sessionDateOnUtc)
+            DateTimeOffset sessionDateOnUtc)
         {
             // Act
             Func<ShowtimeByMovieIdSessionDateSpec> showtime = () => new ShowtimeByMovieIdSessionDateSpec(movieId, sessionDateOnUtc);
