@@ -7,7 +7,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
-		<UseProjectReference>true</UseProjectReference>
+		<UseProjectReference>false</UseProjectReference>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\..\GlobalSuppressions.cs">
@@ -15,18 +15,18 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="3.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="3.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="4.0.0" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
