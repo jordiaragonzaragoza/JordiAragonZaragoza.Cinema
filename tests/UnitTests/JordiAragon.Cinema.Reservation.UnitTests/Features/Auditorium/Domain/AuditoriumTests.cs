@@ -14,8 +14,8 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateAuditorium()
         {
-            var argument1Values = new object[] { 10, -1, 0 };
-            var argument2Values = new object[] { 10, -1, 0 };
+            var argument1Values = new object[] { 0, 10 };
+            var argument2Values = new object[] { 0, 10 };
 
             foreach (var arg1 in argument1Values)
             {
@@ -37,8 +37,8 @@
         {
             // Arrange
             var id = Constants.Auditorium.Id;
-            short rows = Constants.Auditorium.Rows;
-            short seatsPerRow = Constants.Auditorium.SeatsPerRow;
+            ushort rows = Constants.Auditorium.Rows;
+            ushort seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             // Act
             var auditorium = Auditorium.Create(id, rows, seatsPerRow);
@@ -61,7 +61,9 @@
 
         [Theory]
         [MemberData(nameof(InvalidArgumentsCreateAuditorium))]
-        public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(short rows, short seatsPerRow)
+        public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(
+            ushort rows,
+            ushort seatsPerRow)
         {
             // Arrange
             var id = Constants.Auditorium.Id;
@@ -78,8 +80,8 @@
         {
             // Arrange
             AuditoriumId id = null;
-            short rows = Constants.Auditorium.Rows;
-            short seatsPerRow = Constants.Auditorium.SeatsPerRow;
+            ushort rows = Constants.Auditorium.Rows;
+            ushort seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             // Act
             Func<Auditorium> auditorium = () => Auditorium.Create(id, rows, seatsPerRow);

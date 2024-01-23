@@ -2,7 +2,10 @@
 {
     using System.Reflection;
     using Autofac;
+    using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
+    using JordiAragon.Cinema.Reservation.Movie.Domain;
+    using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
@@ -14,10 +17,21 @@
         {
             base.Load(builder);
 
-            builder.RegisterGeneric(typeof(ReservationRepository<,>))
-                .As(typeof(IRepository<,>))
-                .InstancePerLifetimeScope();
+            // TODO: Temporal registration.
+            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
+                    .As<IRepository<Showtime, ShowtimeId>>()
+                    .InstancePerLifetimeScope();
 
+            // Write Repositories
+            builder.RegisterType<ReservationRepository<Movie, MovieId>>()
+                    .As<IRepository<Movie, MovieId>>()
+                    .InstancePerLifetimeScope();
+
+            builder.RegisterType<ReservationRepository<Auditorium, AuditoriumId>>()
+                    .As<IRepository<Auditorium, AuditoriumId>>()
+                    .InstancePerLifetimeScope();
+
+            // Read Repositories
             builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
@@ -30,6 +44,7 @@
                 .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
 
+            // TODO: Review. Check which entities are using cache repository.
             builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
                 .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();

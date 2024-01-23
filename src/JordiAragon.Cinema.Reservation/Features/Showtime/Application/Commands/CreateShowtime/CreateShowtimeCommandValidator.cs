@@ -4,9 +4,10 @@
     using Ardalis.GuardClauses;
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Validators;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class CreateShowtimeCommandValidator : AbstractValidator<CreateShowtimeCommand>
+    public class CreateShowtimeCommandValidator : BaseValidator<CreateShowtimeCommand>
     {
         private readonly IDateTime dateTime;
 
@@ -24,7 +25,7 @@
                 .Must(this.ValidateExpirationDateOnUtc).WithMessage("Session Date must be a future date.");
         }
 
-        private bool ValidateExpirationDateOnUtc(DateTime sessionDateOnUtc)
+        private bool ValidateExpirationDateOnUtc(DateTimeOffset sessionDateOnUtc)
         {
             if (sessionDateOnUtc < this.dateTime.UtcNow)
             {

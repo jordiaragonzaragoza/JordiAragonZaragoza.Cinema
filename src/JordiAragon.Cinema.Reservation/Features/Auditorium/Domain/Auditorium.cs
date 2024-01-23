@@ -21,9 +21,9 @@
         {
         }
 
-        public short Rows { get; private set; }
+        public ushort Rows { get; private set; }
 
-        public short SeatsPerRow { get; private set; }
+        public ushort SeatsPerRow { get; private set; }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
@@ -31,8 +31,8 @@
 
         public static Auditorium Create(
             AuditoriumId id,
-            short rows,
-            short seatsPerRow)
+            ushort rows,
+            ushort seatsPerRow)
         {
             var auditorium = new Auditorium();
 
@@ -79,7 +79,7 @@
             }
         }
 
-        private static List<Seat> GenerateSeats(short rows, short seatsPerRow)
+        private static List<Seat> GenerateSeats(ushort rows, ushort seatsPerRow)
         {
             var generatedSeats = new List<Seat>();
             for (short row = 1; row <= rows; row++)

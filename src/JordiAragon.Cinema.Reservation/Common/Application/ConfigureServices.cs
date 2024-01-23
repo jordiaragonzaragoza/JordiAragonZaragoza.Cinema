@@ -3,6 +3,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using FluentValidation;
     using Quartz;
 
     public static class ConfigureServices
@@ -10,6 +11,7 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.AddAutoMapper(AssemblyReference.Assembly);
+            serviceCollection.AddValidatorsFromAssembly(AssemblyReference.Assembly, ServiceLifetime.Singleton);
 
             serviceCollection.AddQuartz(configure =>
             {

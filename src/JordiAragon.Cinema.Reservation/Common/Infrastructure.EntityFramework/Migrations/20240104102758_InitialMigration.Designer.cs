@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20231128194709_InitialMigration")]
+    [Migration("20240104102758_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -30,11 +30,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<short>("Rows")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Rows")
+                        .HasColumnType("int");
 
-                    b.Property<short>("SeatsPerRow")
-                        .HasColumnType("smallint");
+                    b.Property<int>("SeatsPerRow")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -46,14 +46,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImdbId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReleaseDateOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Stars")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("Runtime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -74,8 +68,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("SessionDateOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("SessionDateOnUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -90,11 +84,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOccurredOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("DateOccurredOnUtc")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime?>("DateProcessedOnUtc")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DateProcessedOnUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");
@@ -164,6 +158,27 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Movie.Domain.Movie", b =>
                 {
+                    b.OwnsOne("JordiAragon.Cinema.Reservation.Movie.Domain.ExhibitionPeriod", "ExhibitionPeriod", b1 =>
+                        {
+                            b1.Property<Guid>("MovieId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTimeOffset?>("EndOfPeriodOnUtc")
+                                .HasColumnType("datetimeoffset")
+                                .HasColumnName("EndOfExhibitionPeriodOnUtc");
+
+                            b1.Property<DateTimeOffset?>("StartingPeriodOnUtc")
+                                .HasColumnType("datetimeoffset")
+                                .HasColumnName("StartingExhibitionPeriodOnUtc");
+
+                            b1.HasKey("MovieId");
+
+                            b1.ToTable("Movies");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MovieId");
+                        });
+
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
                         {
                             b1.Property<Guid>("MovieId")
@@ -187,6 +202,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                                 .HasForeignKey("MovieId");
                         });
 
+                    b.Navigation("ExhibitionPeriod")
+                        .IsRequired();
+
                     b.Navigation("Showtimes");
                 });
 
@@ -201,8 +219,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<Guid>("ShowtimeId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<DateTime>("CreatedTimeOnUtc")
-                                .HasColumnType("datetime2");
+                            b1.Property<DateTimeOffset>("CreatedTimeOnUtc")
+                                .HasColumnType("datetimeoffset");
 
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("bit");

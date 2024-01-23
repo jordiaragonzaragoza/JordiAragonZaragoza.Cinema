@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
     using System.Text;
-    using Microsoft.Extensions.Primitives;
 
     public class AzureSqlDatabaseOptions
     {

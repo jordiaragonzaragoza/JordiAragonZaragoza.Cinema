@@ -2,10 +2,10 @@
 {
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
 
-    public class ReservationUnitOfWork : BaseUnitOfWork
+    // NOTE: This class is required due to ReservationContext registration on DI.
+    public class ReservationWriteStore : BaseWriteStore
     {
-        public ReservationUnitOfWork(
-            ReservationContext context)
+        public ReservationWriteStore(ReservationContext context)
             : base(context)
         {
         }

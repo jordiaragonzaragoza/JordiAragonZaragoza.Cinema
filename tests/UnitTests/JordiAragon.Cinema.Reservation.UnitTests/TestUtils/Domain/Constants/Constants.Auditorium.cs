@@ -8,8 +8,8 @@ namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
         public static class Auditorium
         {
             public static readonly AuditoriumId Id = AuditoriumId.Create(Guid.NewGuid());
-            public static readonly short Rows = 10;
-            public static readonly short SeatsPerRow = 10;
+            public static readonly ushort Rows = 10;
+            public static readonly ushort SeatsPerRow = 10;
         }
     }
 }

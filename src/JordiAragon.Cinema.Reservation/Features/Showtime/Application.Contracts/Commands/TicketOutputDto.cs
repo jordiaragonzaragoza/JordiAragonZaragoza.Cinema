@@ -6,7 +6,7 @@
 
     public record class TicketOutputDto(
         Guid TicketId,
-        DateTime SessionDateOnUtc,
+        DateTimeOffset SessionDateOnUtc,
         Guid Auditorium,
         string MovieName,
         IEnumerable<SeatOutputDto> Seats,

@@ -17,9 +17,11 @@
             Movie.Create(
                 id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
-                imdbId: "tt1375666",
-                releaseDateOnUtc: new DateTime(2010, 01, 14, 1, 1, 1, 1, DateTimeKind.Utc),
-                stars: "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Ken Watanabe");
+                runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
+                exhibitionPeriod: ExhibitionPeriod.Create(
+                    StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, TimeSpan.Zero)),
+                    EndOfPeriod.Create(DateTime.UtcNow.AddYears(1)),
+                    TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)));
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(

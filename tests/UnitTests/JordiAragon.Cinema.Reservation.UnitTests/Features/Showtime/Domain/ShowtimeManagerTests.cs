@@ -37,7 +37,7 @@
             var showtimeValues = new object[] { null, showtime };
             var desiredSeatIdsValues = new object[] { null, new List<SeatId>(), desiredSeatIds };
             var ticketIdValues = new object[] { null, ticketId };
-            var createdTimeOnUtcValues = new object[] { default(DateTime), createdTimeOnUtc };
+            var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var auditoriumValue in auditoriumValues)
             {
@@ -126,7 +126,7 @@
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId ticketId,
-            DateTime createdTimeOnUtc)
+            DateTimeOffset createdTimeOnUtc)
         {
             FluentActions.Invoking(() => ShowtimeManager.ReserveSeats(auditorium, showtime, desiredSeatIds, ticketId, createdTimeOnUtc))
             .Should().Throw<ArgumentException>();

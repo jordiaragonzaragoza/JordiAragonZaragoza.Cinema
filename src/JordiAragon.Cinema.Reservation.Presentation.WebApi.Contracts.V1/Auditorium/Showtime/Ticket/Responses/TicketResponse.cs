@@ -6,7 +6,7 @@
 
     public record class TicketResponse(
         Guid TicketId,
-        DateTime SessionDateOnUtc,
+        DateTimeOffset SessionDateOnUtc,
         Guid Auditorium,
         string MovieName,
         IEnumerable<SeatResponse> Seats,

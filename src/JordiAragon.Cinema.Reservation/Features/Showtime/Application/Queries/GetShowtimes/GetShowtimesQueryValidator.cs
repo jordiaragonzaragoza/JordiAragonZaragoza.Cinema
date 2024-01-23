@@ -2,8 +2,9 @@
 {
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
+    using JordiAragon.SharedKernel.Application.Validators;
 
-    public class GetShowtimesQueryValidator : AbstractValidator<GetShowtimesQuery>
+    public class GetShowtimesQueryValidator : BaseValidator<GetShowtimesQuery>
     {
         public GetShowtimesQueryValidator()
         {
