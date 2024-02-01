@@ -34,8 +34,8 @@
             builder.ConfigureTestServices(services =>
             {
                 services
-                    .RemoveAll<DbContextOptions<ReservationContext>>()
-                    .AddDbContext<ReservationContext>((options) =>
+                    .RemoveAll<DbContextOptions<ReservationWriteContext>>()
+                    .AddDbContext<ReservationWriteContext>((options) =>
                     {
                         options.UseSqlServer(this.connection);
                     });

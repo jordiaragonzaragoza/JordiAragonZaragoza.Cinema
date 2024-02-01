@@ -7,7 +7,7 @@
         where TEntity : class, IEntity<TId>
         where TId : class, IEntityId
     {
-        public ReservationReadRepository(ReservationContext dbContext)
+        public ReservationReadRepository(ReservationReadContext dbContext)
             : base(dbContext)
         {
         }

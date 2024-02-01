@@ -10,7 +10,8 @@
     {
         protected override Assembly CurrentAssembly => AssemblyReference.Assembly;
 
-        /*protected override void Load(ContainerBuilder builder)
+        /*
+        protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
 

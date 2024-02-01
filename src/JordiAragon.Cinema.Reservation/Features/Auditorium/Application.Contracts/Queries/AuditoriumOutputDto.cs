@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class AuditoriumOutputDto(Guid Id);
+    public record class AuditoriumOutputDto(Guid Id, string Name);
 }

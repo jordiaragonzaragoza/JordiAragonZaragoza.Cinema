@@ -32,19 +32,19 @@
                     .InstancePerLifetimeScope();
 
             // Read Repositories
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IReadListRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            // TODO: Review. Check which entities are using cache repository.
+            // TODO: Move to SharedKernel. Used only for OutboxMessage.
             builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
                 .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();

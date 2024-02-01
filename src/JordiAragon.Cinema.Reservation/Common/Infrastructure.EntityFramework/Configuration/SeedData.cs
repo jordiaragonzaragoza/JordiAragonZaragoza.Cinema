@@ -26,6 +26,7 @@
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
                 id: AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
+                name: "Auditorium One",
                 rows: 28,
                 seatsPerRow: 22);
 
@@ -38,11 +39,16 @@
 
         public static void Initialize(WebApplication app)
         {
-            using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<ReservationContext>();
+            using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationWriteContext>();
+            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadContext>();
+
             try
             {
-                PopulateTestData(context);
+                PopulateWriteTestData(writeContext);
+                PopulateReadTestData(readContext);
             }
             catch (Exception exception)
             {
@@ -50,23 +56,40 @@
             }
         }
 
-        public static void PopulateTestData(ReservationContext context)
+        public static void PopulateWriteTestData(ReservationWriteContext context)
         {
-            if (context.Database.IsSqlServer())
-            {
-                context.Database.Migrate();
-                context.Database.EnsureCreated();
-            }
+            MigrateAndEnsureSqlServerDatabase(context);
 
             if (HasAnyData(context))
             {
                 return;
             }
 
-            SetPreconfiguredData(context);
+            SetPreconfiguredWriteData(context);
         }
 
-        private static bool HasAnyData(ReservationContext context)
+        public static void PopulateReadTestData(ReservationReadContext context)
+        {
+            MigrateAndEnsureSqlServerDatabase(context);
+
+            if (HasAnyData(context))
+            {
+                return;
+            }
+
+            SetPreconfiguredReadData(context);
+        }
+
+        private static void MigrateAndEnsureSqlServerDatabase(DbContext context)
+        {
+            if (context.Database.IsSqlServer())
+            {
+                context.Database.Migrate();
+                context.Database.EnsureCreated();
+            }
+        }
+
+        private static bool HasAnyData(DbContext context)
         {
             var dbSets = context.GetType().GetProperties()
                                            .Where(p => p.PropertyType.IsGenericType
@@ -85,7 +108,7 @@
             return false;
         }
 
-        private static void SetPreconfiguredData(ReservationContext context)
+        private static void SetPreconfiguredWriteData(ReservationWriteContext context)
         {
             context.Movies.Add(ExampleMovie);
 
@@ -98,6 +121,11 @@
             ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
             context.SaveChanges();
+        }
+
+        private static void SetPreconfiguredReadData(ReservationReadContext context)
+        {
+            ////context.Showtimes.Add(ExampleShowtime); // TODO: Recheck
         }
     }
 }

@@ -21,6 +21,8 @@
         {
         }
 
+        public string Name { get; private set; }
+
         public ushort Rows { get; private set; }
 
         public ushort SeatsPerRow { get; private set; }
@@ -31,12 +33,13 @@
 
         public static Auditorium Create(
             AuditoriumId id,
+            string name,
             ushort rows,
             ushort seatsPerRow)
         {
             var auditorium = new Auditorium();
 
-            auditorium.Apply(new AuditoriumCreatedEvent(id, rows, seatsPerRow));
+            auditorium.Apply(new AuditoriumCreatedEvent(id, name, rows, seatsPerRow));
 
             return auditorium;
         }
@@ -70,6 +73,7 @@
             try
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
+                Guard.Against.NullOrWhiteSpace(this.Name, nameof(this.Name));
                 Guard.Against.NegativeOrZero(this.Rows, nameof(this.Rows));
                 Guard.Against.NegativeOrZero(this.SeatsPerRow, nameof(this.SeatsPerRow));
             }
@@ -96,6 +100,7 @@
         private void Applier(AuditoriumCreatedEvent @event)
         {
             this.Id = AuditoriumId.Create(@event.AggregateId);
+            this.Name = @event.Name;
             this.Rows = @event.Rows;
             this.SeatsPerRow = @event.SeatsPerRow;
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);

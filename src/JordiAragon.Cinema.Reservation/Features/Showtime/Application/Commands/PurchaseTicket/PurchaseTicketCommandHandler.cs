@@ -1,13 +1,11 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Commands.PurchaseTicket
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
@@ -21,18 +19,15 @@
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IMapper mapper;
 
         public PurchaseTicketCommandHandler(
             IRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
             IRepository<Movie, MovieId> movieReadRepository,
-            IRepository<Showtime, ShowtimeId> showtimeRepository,
-            IMapper mapper)
+            IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumReadRepository, nameof(auditoriumReadRepository));
             this.movieRepository = Guard.Against.Null(movieReadRepository, nameof(movieReadRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public override async Task<Result<TicketOutputDto>> Handle(PurchaseTicketCommand request, CancellationToken cancellationToken)
@@ -62,12 +57,15 @@
 
             var seats = existingAuditorium.Seats.Where(seat => existingTicket.Seats.Contains(seat.Id));
 
+            var seatsOutputDto = seats.Select(seat
+                => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber, existingAuditorium.Id, existingAuditorium.Name));
+
             var ticketOutputDto = new TicketOutputDto(
                 existingTicket.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Id,
                 existingmovie.Title,
-                this.mapper.Map<IEnumerable<SeatOutputDto>>(seats),
+                seatsOutputDto,
                 existingTicket.IsPurchased);
 
             return Result.Success(ticketOutputDto);

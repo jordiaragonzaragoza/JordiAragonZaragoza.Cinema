@@ -7,6 +7,7 @@ namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
     {
         public static class Auditorium
         {
+            public const string Name = "Auditorium One";
             public static readonly AuditoriumId Id = AuditoriumId.Create(Guid.NewGuid());
             public static readonly ushort Rows = 10;
             public static readonly ushort SeatsPerRow = 10;

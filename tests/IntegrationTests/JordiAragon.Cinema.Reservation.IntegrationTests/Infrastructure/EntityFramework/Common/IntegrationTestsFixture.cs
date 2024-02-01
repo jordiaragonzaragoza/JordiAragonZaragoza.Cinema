@@ -26,7 +26,7 @@
         private SqlConnection connection;
         private Respawner respawner;
 
-        public ReservationContext Context { get; private set; }
+        public ReservationWriteContext Context { get; private set; }
 
         public async Task InitializeAsync()
         {
@@ -50,9 +50,9 @@
 
             var auditableEntitySaveChangesInterceptor = new AuditableEntitySaveChangesInterceptor(mockCurrentUserService, mockDateTimeService);
 
-            this.Context = new ReservationContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
+            this.Context = new ReservationWriteContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
-            SeedData.PopulateTestData(this.Context);
+            SeedData.PopulateWriteTestData(this.Context);
         }
 
         public async Task ResetDatabaseAsync()
@@ -66,10 +66,10 @@
             await this.container.DisposeAsync();
         }
 
-        private DbContextOptions<ReservationContext> CreateNewContextOptions()
+        private DbContextOptions<ReservationWriteContext> CreateNewContextOptions()
         {
             // Create a new options instance telling the context to use an
-            var builder = new DbContextOptionsBuilder<ReservationContext>();
+            var builder = new DbContextOptionsBuilder<ReservationWriteContext>();
             builder.UseSqlServer(this.connection);
 
             return builder.Options;

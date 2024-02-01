@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class SeatOutputDto(Guid Id, short Row, short SeatNumber);
+    public record class SeatOutputDto(Guid Id, short Row, short SeatNumber, Guid AuditoriumId, string AuditoriumName);
 }

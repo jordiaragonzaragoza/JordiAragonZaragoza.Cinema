@@ -4,7 +4,9 @@
 
     public class AzureSqlDatabaseOptions
     {
-        public const string Section = "AzureSqlDatabase";
+        public const string WriteSection = "AzureSqlDatabaseWriteStore";
+
+        public const string ReadSection = "AzureSqlDatabaseReadStore";
 
         public string ApplicationName { get; set; }
 

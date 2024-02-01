@@ -54,12 +54,12 @@
         public void InitDatabase()
         {
             using var scope = this.scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ReservationContext>();
+            var context = scope.ServiceProvider.GetRequiredService<ReservationWriteContext>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
 
             try
             {
-                SeedData.PopulateTestData(context);
+                SeedData.PopulateWriteTestData(context);
             }
             catch (Exception exception)
             {

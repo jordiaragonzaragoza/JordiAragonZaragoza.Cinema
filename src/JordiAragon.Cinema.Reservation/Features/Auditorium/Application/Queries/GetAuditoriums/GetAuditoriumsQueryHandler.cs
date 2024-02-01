@@ -12,6 +12,7 @@
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
+    // TODO: Temporal. Move. This query is part of other bounded context. (Cinema Manager)
     public class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, IEnumerable<AuditoriumOutputDto>>
     {
         private readonly IReadListRepository<Auditorium, AuditoriumId> auditoriumRepository;

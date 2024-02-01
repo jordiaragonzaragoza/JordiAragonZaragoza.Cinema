@@ -1,12 +1,11 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Queries.GetAvailableSeats
 {
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
@@ -18,16 +17,13 @@
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
-        private readonly IMapper mapper;
 
         public GetAvailableSeatsQueryHandler(
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Showtime, ShowtimeId> showtimeRepository,
-            IMapper mapper)
+            IReadRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public async Task<Result<IEnumerable<SeatOutputDto>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
@@ -46,7 +42,11 @@
 
             var availableSeats = ShowtimeManager.AvailableSeats(existingAuditorium, existingShowtime);
 
-            return Result.Success(this.mapper.Map<IEnumerable<SeatOutputDto>>(availableSeats));
+            // TODO: Prepare OutputDto: Replace with correct projections on EventSourcing.
+            var seatsOutputDto = availableSeats.Select(seat
+                => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber, existingAuditorium.Id, existingAuditorium.Name));
+
+            return Result.Success(seatsOutputDto);
         }
     }
 }

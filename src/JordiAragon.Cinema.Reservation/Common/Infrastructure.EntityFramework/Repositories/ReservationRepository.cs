@@ -8,7 +8,7 @@
         where TAggregate : BaseAggregateRoot<TId>
         where TId : class, IEntityId
     {
-        public ReservationRepository(ReservationContext dbContext)
+        public ReservationRepository(ReservationWriteContext dbContext)
             : base(dbContext)
         {
         }

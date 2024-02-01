@@ -4,16 +4,28 @@
         <name>JordiAragon.Cinema.Reservation</name>
     </assembly>
     <members>
-        <member name="T:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration">
+        <member name="T:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadStore.InitialReadStoreMigration">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadStore.InitialReadStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadStore.InitialReadStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadStore.InitialReadStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore.InitialWriteStoreMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore.InitialWriteStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore.InitialWriteStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore.InitialWriteStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">

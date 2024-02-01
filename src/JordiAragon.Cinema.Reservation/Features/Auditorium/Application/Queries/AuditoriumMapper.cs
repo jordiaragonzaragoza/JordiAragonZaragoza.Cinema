@@ -17,9 +17,6 @@
 
             this.CreateMap<SeatId, Guid>()
                 .ConvertUsing(src => src.Value);
-
-            this.CreateMap<Seat, SeatOutputDto>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value));
         }
     }
 }

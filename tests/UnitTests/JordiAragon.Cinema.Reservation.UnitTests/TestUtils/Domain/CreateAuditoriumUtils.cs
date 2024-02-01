@@ -7,6 +7,7 @@
         public static Auditorium Create()
             => Auditorium.Create(
                 Constants.Auditorium.Id,
+                Constants.Auditorium.Name,
                 Constants.Auditorium.Rows,
                 Constants.Auditorium.SeatsPerRow);
     }

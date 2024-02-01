@@ -19,28 +19,51 @@
                 options.DefaultSequentialGuidType = SequentialGuidType.SequentialAtEnd;
             });
 
-            var azureSqlDatabaseOptions = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.Section, azureSqlDatabaseOptions);
-            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptions));
+            var azureSqlDatabaseOptionsWrite = new AzureSqlDatabaseOptions();
+            configuration.Bind(AzureSqlDatabaseOptions.WriteSection, azureSqlDatabaseOptionsWrite);
+            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsWrite));
 
-            serviceCollection.AddDbContext<ReservationContext>(optionsBuilder =>
+            serviceCollection.AddDbContext<ReservationWriteContext>(optionsBuilder =>
             {
                 if (isDevelopment)
                 {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.CinemaDb")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.WriteStore")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"))
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("WriteStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
                 }
                 else
                 {
-                    optionsBuilder.UseSqlServer(azureSqlDatabaseOptions.BuildConnectionString());
+                    optionsBuilder.UseSqlServer(azureSqlDatabaseOptionsWrite.BuildConnectionString());
                 }
             });
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationContext>();
+            var azureSqlDatabaseOptionsRead = new AzureSqlDatabaseOptions();
+            configuration.Bind(AzureSqlDatabaseOptions.ReadSection, azureSqlDatabaseOptionsRead);
+            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsRead));
+
+            serviceCollection.AddDbContext<ReservationReadContext>(optionsBuilder =>
+            {
+                if (isDevelopment)
+                {
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.ReadStore")
+                                  .EnableSensitiveDataLogging()
+                                  .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
+
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("ReadStore"))
+                                  .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
+                }
+                else
+                {
+                    optionsBuilder.UseSqlServer(azureSqlDatabaseOptionsRead.BuildConnectionString());
+                }
+            });
+
+            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationWriteContext>();
+
+            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationReadContext>();
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
 
