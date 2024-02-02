@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
     public class ShowtimesMapper : Profile
     {
@@ -19,8 +19,8 @@
             this.CreateMap<TicketOutputDto, TicketResponse>();
             this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
 
-            this.CreateMap<ShowtimeOutputDto, ShowtimeResponse>();
-            this.CreateMap<Result<IEnumerable<ShowtimeOutputDto>>, Result<IEnumerable<ShowtimeResponse>>>();
+            this.CreateMap<ShowtimeReadModel, ShowtimeResponse>();
+            this.CreateMap<Result<IEnumerable<ShowtimeReadModel>>, Result<IEnumerable<ShowtimeResponse>>>();
         }
     }
 }

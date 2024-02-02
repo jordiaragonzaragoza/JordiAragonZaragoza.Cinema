@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.Queries;
+    using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Movie.Responses;
 
     public class MoviesMapper : Profile
@@ -13,8 +13,8 @@
             // Requests to queries or commands.
 
             // OutputDtos to responses.
-            this.CreateMap<MovieOutputDto, MovieResponse>();
-            this.CreateMap<Result<IEnumerable<MovieOutputDto>>, Result<IEnumerable<MovieResponse>>>();
+            this.CreateMap<MovieReadModel, MovieResponse>();
+            this.CreateMap<Result<IEnumerable<MovieReadModel>>, Result<IEnumerable<MovieResponse>>>();
         }
     }
 }

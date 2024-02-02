@@ -4,7 +4,7 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Commands.CreateShowtime;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;

@@ -59,6 +59,8 @@
                 {
                     optionsBuilder.UseSqlServer(azureSqlDatabaseOptionsRead.BuildConnectionString());
                 }
+
+                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationWriteContext>();
