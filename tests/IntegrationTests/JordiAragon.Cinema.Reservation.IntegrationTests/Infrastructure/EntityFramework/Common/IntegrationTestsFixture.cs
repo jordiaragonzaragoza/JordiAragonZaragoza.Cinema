@@ -17,32 +17,32 @@
 
     public class IntegrationTestsFixture : IAsyncLifetime
     {
-        private readonly SqlEdgeContainer container =
+        private readonly SqlEdgeContainer writeStoreContainer =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.integrationtests.infrastructure.entityframework")
+            .WithName("azuresqledge.cinema.reservation.writestore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
-        private SqlConnection connection;
-        private Respawner respawner;
+        private SqlConnection writeStoreConnection;
+        private Respawner writeStoreRespawner;
 
-        public ReservationWriteContext Context { get; private set; }
+        public ReservationWriteContext WriteContext { get; private set; }
 
         public async Task InitializeAsync()
         {
-            await this.container.StartAsync();
+            await this.writeStoreContainer.StartAsync();
 
-            this.connection = new SqlConnection(this.container.GetConnectionString());
+            this.writeStoreConnection = new SqlConnection(this.writeStoreContainer.GetConnectionString());
 
-            this.respawner = await Respawner.CreateAsync(this.container.GetConnectionString(), new RespawnerOptions
+            this.writeStoreRespawner = await Respawner.CreateAsync(this.writeStoreContainer.GetConnectionString(), new RespawnerOptions
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
         }
 
-        public void InitDatabase()
+        public void InitDatabases()
         {
-            var options = this.CreateNewContextOptions();
+            var options = this.CreateNewWriteContextOptions();
             var mockLoggerFactory = Substitute.For<ILoggerFactory>();
             var mockHostEnvironment = Substitute.For<IHostEnvironment>();
             var mockCurrentUserService = Substitute.For<ICurrentUserService>();
@@ -50,27 +50,27 @@
 
             var auditableEntitySaveChangesInterceptor = new AuditableEntitySaveChangesInterceptor(mockCurrentUserService, mockDateTimeService);
 
-            this.Context = new ReservationWriteContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
+            this.WriteContext = new ReservationWriteContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
-            SeedData.PopulateWriteTestData(this.Context);
+            SeedData.PopulateWriteTestData(this.WriteContext);
         }
 
-        public async Task ResetDatabaseAsync()
+        public async Task ResetDatabasesAsync()
         {
-            await this.respawner.ResetAsync(this.container.GetConnectionString());
+            await this.writeStoreRespawner.ResetAsync(this.writeStoreContainer.GetConnectionString());
         }
 
         public async Task DisposeAsync()
         {
-            await this.connection.DisposeAsync();
-            await this.container.DisposeAsync();
+            await this.writeStoreConnection.DisposeAsync();
+            await this.writeStoreContainer.DisposeAsync();
         }
 
-        private DbContextOptions<ReservationWriteContext> CreateNewContextOptions()
+        private DbContextOptions<ReservationWriteContext> CreateNewWriteContextOptions()
         {
             // Create a new options instance telling the context to use an
             var builder = new DbContextOptionsBuilder<ReservationWriteContext>();
-            builder.UseSqlServer(this.connection);
+            builder.UseSqlServer(this.writeStoreConnection);
 
             return builder.Options;
         }

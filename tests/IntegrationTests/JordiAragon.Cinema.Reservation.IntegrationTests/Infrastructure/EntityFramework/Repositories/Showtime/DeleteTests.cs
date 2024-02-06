@@ -27,7 +27,7 @@
             // Arrange
             var existingShowtime = SeedData.ExampleShowtime;
 
-            var repository = this.GetRepository();
+            var repository = this.GetBusinessModelRepository();
 
             // Act
             await repository.DeleteAsync(existingShowtime);
@@ -49,7 +49,7 @@
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
-            var repository = this.GetRepository();
+            var repository = this.GetBusinessModelRepository();
 
             // Act
             Func<Task> deleteAsync = async () => await repository.DeleteAsync(newShowtime);

@@ -13,11 +13,15 @@
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
     {
-        private readonly DbConnection connection;
+        private readonly DbConnection writeStoreConnection;
+        private readonly DbConnection readStoreConnection;
 
-        public CustomWebApplicationFactory(DbConnection connection)
+        public CustomWebApplicationFactory(
+            DbConnection writeStoreConnection,
+            DbConnection readStoreConnection)
         {
-            this.connection = connection;
+            this.writeStoreConnection = writeStoreConnection;
+            this.readStoreConnection = readStoreConnection;
         }
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -37,7 +41,14 @@
                     .RemoveAll<DbContextOptions<ReservationWriteContext>>()
                     .AddDbContext<ReservationWriteContext>((options) =>
                     {
-                        options.UseSqlServer(this.connection);
+                        options.UseSqlServer(this.writeStoreConnection);
+                    });
+
+                services
+                    .RemoveAll<DbContextOptions<ReservationReadContext>>()
+                    .AddDbContext<ReservationReadContext>((options) =>
+                    {
+                        options.UseSqlServer(this.readStoreConnection);
                     });
             });
         }

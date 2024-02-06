@@ -31,7 +31,7 @@
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
-            var repository = this.GetRepository();
+            var repository = this.GetBusinessModelRepository();
 
             // Act
             await repository.AddAsync(newShowtime);
@@ -51,7 +51,7 @@
             // Arrange
             var existingShowtime = SeedData.ExampleShowtime;
 
-            var repository = this.GetRepository();
+            var repository = this.GetBusinessModelRepository();
 
             // Act
             Func<Task> addAsync = async () => await repository.AddAsync(existingShowtime);
