@@ -1,13 +1,12 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.EventHandlers
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 

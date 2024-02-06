@@ -6,6 +6,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using MediatR;
     using Microsoft.Extensions.Logging;

@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 

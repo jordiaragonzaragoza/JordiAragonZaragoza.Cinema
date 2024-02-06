@@ -8,10 +8,10 @@
     {
         public ShowtimeMapper()
         {
-            this.CreateMap<ShowtimeId, Guid>()
+            this.CreateMap<ShowtimeId, Guid>() // TODO: Remove.
                 .ConvertUsing(src => src.Value);
 
-            this.CreateMap<TicketId, Guid>()
+            this.CreateMap<TicketId, Guid>() // TODO: Remove.
                 .ConvertUsing(src => src.Value);
         }
     }

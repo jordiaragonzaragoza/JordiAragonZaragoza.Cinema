@@ -7,6 +7,10 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+    /// <summary>
+    /// This configuration is obsolete when using showtime as event sourced aggregate.
+    /// Its conserved as future reference.
+    /// </summary>
     public class ShowtimeConfiguration : BaseEntityTypeConfiguration<Showtime, ShowtimeId>
     {
         public override void Configure(EntityTypeBuilder<Showtime> builder)

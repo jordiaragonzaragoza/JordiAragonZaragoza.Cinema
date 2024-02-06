@@ -12,7 +12,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.SharedKernel.Application.Commands;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using Volo.Abp.Guids;
 
     public class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>

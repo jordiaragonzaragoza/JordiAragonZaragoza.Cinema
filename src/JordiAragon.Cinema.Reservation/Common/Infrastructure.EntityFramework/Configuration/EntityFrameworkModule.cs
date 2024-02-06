@@ -1,13 +1,16 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
+    using System;
     using System.Reflection;
     using Autofac;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     public class EntityFrameworkModule : AssemblyModule
     {
@@ -17,12 +20,18 @@
         {
             base.Load(builder);
 
-            // TODO: Temporal registration.
+            RegisterBusinessModelRepositories(builder);
+            RegisterReadModelsRepositories(builder);
+        }
+
+        private static void RegisterBusinessModelRepositories(ContainerBuilder builder)
+        {
+            // TODO: Temporal registration. Remove on event sourcing.
             builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
                     .As<IRepository<Showtime, ShowtimeId>>()
                     .InstancePerLifetimeScope();
 
-            // Write Repositories
+            // Write Aggregate Repositories
             builder.RegisterType<ReservationRepository<Movie, MovieId>>()
                     .As<IRepository<Movie, MovieId>>()
                     .InstancePerLifetimeScope();
@@ -31,7 +40,7 @@
                     .As<IRepository<Auditorium, AuditoriumId>>()
                     .InstancePerLifetimeScope();
 
-            // Read Repositories
+            // Read Aggregate Repositories
             builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
@@ -44,8 +53,34 @@
                 .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            // TODO: Move to SharedKernel. Used only for OutboxMessage.
+            // TODO: Move to SharedKernel?. Used only for OutboxMessage?
             builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
+                .As(typeof(ICachedSpecificationRepository<,>))
+                .InstancePerLifetimeScope();
+        }
+
+        private static void RegisterReadModelsRepositories(ContainerBuilder builder)
+        {
+            // Write Models Repositories
+            builder.RegisterType<ReservationReadModelRepository<ShowtimeReadModel>>()
+                    .As<IRepository<ShowtimeReadModel, Guid>>()
+                    .InstancePerLifetimeScope();
+
+            // Read Models Repositories
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IReadListRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(ISpecificationReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            // TODO: Move to check.
+            builder.RegisterGeneric(typeof(ReservationReadModelCachedSpecificationRepository<>))
                 .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
         }

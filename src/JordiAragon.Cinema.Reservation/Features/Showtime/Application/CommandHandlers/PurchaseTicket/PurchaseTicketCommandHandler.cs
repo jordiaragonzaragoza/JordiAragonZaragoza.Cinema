@@ -6,14 +6,13 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     public class PurchaseTicketCommandHandler : BaseCommandHandler<PurchaseTicketCommand, TicketOutputDto>
     {

@@ -5,6 +5,7 @@
     using System.Linq;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
@@ -125,7 +126,16 @@
 
         private static void SetPreconfiguredReadData(ReservationReadContext context)
         {
-            ////context.Showtimes.Add(ExampleShowtime); // TODO: Recheck
+            var showtimeReadModel = new ShowtimeReadModel(
+                ExampleShowtime.Id,
+                ExampleMovie.Title,
+                ExampleShowtime.SessionDateOnUtc,
+                ExampleShowtime.AuditoriumId,
+                ExampleAuditorium.Name);
+
+            context.Showtimes.Add(showtimeReadModel);
+
+            context.SaveChanges();
         }
     }
 }

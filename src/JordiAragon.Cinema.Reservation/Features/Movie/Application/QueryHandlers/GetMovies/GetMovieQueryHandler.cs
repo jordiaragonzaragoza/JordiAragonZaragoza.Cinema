@@ -10,7 +10,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     // TODO: Temporal. Move. This query is part of other bounded context. (Catalog)
     public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieReadModel>>

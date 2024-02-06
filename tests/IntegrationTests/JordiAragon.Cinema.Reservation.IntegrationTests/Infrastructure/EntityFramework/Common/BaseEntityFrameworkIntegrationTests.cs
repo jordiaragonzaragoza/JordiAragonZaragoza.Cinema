@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using Xunit;

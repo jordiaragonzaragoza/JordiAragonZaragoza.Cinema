@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     public class ExpireReservedSeatsCommandHandler : BaseCommandHandler<ExpireReservedSeatsCommand>
     {

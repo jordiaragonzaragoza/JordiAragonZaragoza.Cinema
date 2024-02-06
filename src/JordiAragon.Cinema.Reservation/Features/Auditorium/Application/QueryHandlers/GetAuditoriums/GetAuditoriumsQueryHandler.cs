@@ -11,7 +11,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     // TODO: Temporal. Move. This query is part of other bounded context. (Cinema Manager)
     public class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, IEnumerable<AuditoriumOutputDto>>

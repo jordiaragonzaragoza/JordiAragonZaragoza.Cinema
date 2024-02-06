@@ -8,13 +8,13 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 

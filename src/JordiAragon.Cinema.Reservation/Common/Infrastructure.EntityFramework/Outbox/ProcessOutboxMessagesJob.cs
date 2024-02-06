@@ -1,8 +1,8 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Outbox;
     using MediatR;
