@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore
+namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
-    [DbContext(typeof(ReservationWriteContext))]
+    [DbContext(typeof(ReservationBusinessModelContext))]
     partial class ReservationWriteContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

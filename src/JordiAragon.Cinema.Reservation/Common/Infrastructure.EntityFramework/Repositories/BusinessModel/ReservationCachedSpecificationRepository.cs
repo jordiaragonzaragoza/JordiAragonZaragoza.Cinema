@@ -10,7 +10,7 @@
         where TId : class, IEntityId
     {
         public ReservationCachedSpecificationRepository(
-            ReservationWriteContext dbContext,
+            ReservationBusinessModelContext dbContext,
             ILogger<ReservationCachedSpecificationRepository<TAggregate, TId>> logger,
             ICacheService cacheService)
             : base(dbContext, logger, cacheService)

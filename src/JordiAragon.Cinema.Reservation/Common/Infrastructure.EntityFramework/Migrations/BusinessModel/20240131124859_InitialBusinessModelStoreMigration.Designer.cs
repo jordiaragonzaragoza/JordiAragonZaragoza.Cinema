@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore
+namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
-    [DbContext(typeof(ReservationWriteContext))]
-    [Migration("20240131124859_InitialWriteStoreMigration")]
-    partial class InitialWriteStoreMigration
+    [DbContext(typeof(ReservationBusinessModelContext))]
+    [Migration("20240131124859_InitialBusinessModelStoreMigration")]
+    partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

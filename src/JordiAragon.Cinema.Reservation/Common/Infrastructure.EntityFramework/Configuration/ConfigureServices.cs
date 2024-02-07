@@ -20,18 +20,18 @@
             });
 
             var azureSqlDatabaseOptionsWrite = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.WriteSection, azureSqlDatabaseOptionsWrite);
+            configuration.Bind(AzureSqlDatabaseOptions.BusinessModelSection, azureSqlDatabaseOptionsWrite);
             serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsWrite));
 
-            serviceCollection.AddDbContext<ReservationWriteContext>(optionsBuilder =>
+            serviceCollection.AddDbContext<ReservationBusinessModelContext>(optionsBuilder =>
             {
                 if (isDevelopment)
                 {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.WriteStore")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.BusinessModelStore")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("WriteStore"))
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("BusinessModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
                 }
                 else
@@ -41,18 +41,18 @@
             });
 
             var azureSqlDatabaseOptionsRead = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.ReadSection, azureSqlDatabaseOptionsRead);
+            configuration.Bind(AzureSqlDatabaseOptions.ReadModelSection, azureSqlDatabaseOptionsRead);
             serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsRead));
 
-            serviceCollection.AddDbContext<ReservationReadContext>(optionsBuilder =>
+            serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 if (isDevelopment)
                 {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.ReadStore")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.ReadModelStore")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("ReadStore"))
+                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("ReadModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
                 }
                 else
@@ -63,9 +63,9 @@
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationWriteContext>();
+            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationBusinessModelContext>();
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationReadContext>();
+            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationReadModelContext>();
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
 

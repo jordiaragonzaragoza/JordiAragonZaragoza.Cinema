@@ -36,6 +36,6 @@
             => await this.Fixture.ResetDatabasesAsync();
 
         protected ReservationRepository<TAggregate, TId> GetBusinessModelRepository()
-            => new(this.Fixture.WriteContext);
+            => new(this.Fixture.BusinessModelContext);
     }
 }

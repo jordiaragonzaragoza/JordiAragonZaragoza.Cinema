@@ -13,15 +13,15 @@
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
     {
-        private readonly DbConnection writeStoreConnection;
-        private readonly DbConnection readStoreConnection;
+        private readonly DbConnection businessModelStoreConnection;
+        private readonly DbConnection readModelStoreConnection;
 
         public CustomWebApplicationFactory(
-            DbConnection writeStoreConnection,
-            DbConnection readStoreConnection)
+            DbConnection businessModelStoreConnection,
+            DbConnection readModelStoreConnection)
         {
-            this.writeStoreConnection = writeStoreConnection;
-            this.readStoreConnection = readStoreConnection;
+            this.businessModelStoreConnection = businessModelStoreConnection;
+            this.readModelStoreConnection = readModelStoreConnection;
         }
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -38,17 +38,17 @@
             builder.ConfigureTestServices(services =>
             {
                 services
-                    .RemoveAll<DbContextOptions<ReservationWriteContext>>()
-                    .AddDbContext<ReservationWriteContext>((options) =>
+                    .RemoveAll<DbContextOptions<ReservationBusinessModelContext>>()
+                    .AddDbContext<ReservationBusinessModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.writeStoreConnection);
+                        options.UseSqlServer(this.businessModelStoreConnection);
                     });
 
                 services
-                    .RemoveAll<DbContextOptions<ReservationReadContext>>()
-                    .AddDbContext<ReservationReadContext>((options) =>
+                    .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
+                    .AddDbContext<ReservationReadModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.readStoreConnection);
+                        options.UseSqlServer(this.readModelStoreConnection);
                     });
             });
         }

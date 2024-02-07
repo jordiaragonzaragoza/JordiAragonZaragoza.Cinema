@@ -7,10 +7,10 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class ReservationReadContext : BaseReadContext
+    public class ReservationReadModelContext : BaseReadModelContext
     {
-        public ReservationReadContext(
-            DbContextOptions<ReservationReadContext> options,
+        public ReservationReadModelContext(
+            DbContextOptions<ReservationReadModelContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment)
             : base(options, loggerFactory, hostEnvironment)

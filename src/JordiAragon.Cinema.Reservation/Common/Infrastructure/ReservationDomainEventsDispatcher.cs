@@ -7,10 +7,10 @@
     public class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
     {
         public ReservationDomainEventsDispatcher(
-            IWriteStore writeStore,
+            IBusinessModelStore businessModelStore,
             IEventStore eventStore,
             IEventsDispatcherService domainEventDispatcherService)
-             : base(writeStore, eventStore, domainEventDispatcherService)
+             : base(businessModelStore, eventStore, domainEventDispatcherService)
         {
         }
     }

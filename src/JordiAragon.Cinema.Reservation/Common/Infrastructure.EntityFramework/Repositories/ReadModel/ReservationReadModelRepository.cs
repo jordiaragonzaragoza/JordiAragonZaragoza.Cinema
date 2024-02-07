@@ -6,7 +6,7 @@
     public class ReservationReadModelRepository<TReadModel> : BaseRepository<TReadModel>
         where TReadModel : class, IReadModel
     {
-        public ReservationReadModelRepository(ReservationReadContext dbContext)
+        public ReservationReadModelRepository(ReservationReadModelContext dbContext)
             : base(dbContext)
         {
         }

@@ -12,10 +12,10 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class ReservationWriteContext : BaseWriteContext
+    public class ReservationBusinessModelContext : BaseBusinessModelContext
     {
-        public ReservationWriteContext(
-            DbContextOptions<ReservationWriteContext> options,
+        public ReservationBusinessModelContext(
+            DbContextOptions<ReservationBusinessModelContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment,
             AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

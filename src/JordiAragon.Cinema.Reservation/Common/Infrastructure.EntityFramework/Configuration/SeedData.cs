@@ -43,13 +43,13 @@
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationWriteContext>();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadContext>();
+            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                PopulateWriteTestData(writeContext);
-                PopulateReadTestData(readContext);
+                PopulateBusinessModelTestData(writeContext);
+                PopulateReadModelTestData(readContext);
             }
             catch (Exception exception)
             {
@@ -57,7 +57,7 @@
             }
         }
 
-        public static void PopulateWriteTestData(ReservationWriteContext context)
+        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
         {
             MigrateAndEnsureSqlServerDatabase(context);
 
@@ -69,7 +69,7 @@
             SetPreconfiguredWriteData(context);
         }
 
-        public static void PopulateReadTestData(ReservationReadContext context)
+        public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
             MigrateAndEnsureSqlServerDatabase(context);
 
@@ -109,7 +109,7 @@
             return false;
         }
 
-        private static void SetPreconfiguredWriteData(ReservationWriteContext context)
+        private static void SetPreconfiguredWriteData(ReservationBusinessModelContext context)
         {
             context.Movies.Add(ExampleMovie);
 
@@ -124,7 +124,7 @@
             context.SaveChanges();
         }
 
-        private static void SetPreconfiguredReadData(ReservationReadContext context)
+        private static void SetPreconfiguredReadData(ReservationReadModelContext context)
         {
             var showtimeReadModel = new ShowtimeReadModel(
                 ExampleShowtime.Id,

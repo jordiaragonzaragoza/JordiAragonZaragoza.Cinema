@@ -16,24 +16,24 @@
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
-        private readonly SqlEdgeContainer writeStoreContainer =
+        private readonly SqlEdgeContainer businessModelStoreContainer =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.writestore.functionaltests.presentation.webapi")
+            .WithName("azuresqledge.cinema.reservation.businessmodelstore.functionaltests.presentation.webapi")
             .WithAutoRemove(true).Build();
 
-        private readonly SqlEdgeContainer readStoreContainer =
+        private readonly SqlEdgeContainer readModelStoreContainer =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.readstore.functionaltests.presentation.webapi")
+            .WithName("azuresqledge.cinema.reservation.readmodelstore.functionaltests.presentation.webapi")
             .WithAutoRemove(true).Build();
 
-        private SqlConnection writeStoreConnection;
-        private SqlConnection readStoreConnection;
+        private SqlConnection businessModelStoreConnection;
+        private SqlConnection readModelStoreConnection;
         private CustomWebApplicationFactory<TProgram> customApplicationFactory;
         private IServiceScopeFactory scopeFactory;
-        private Respawner writeStoreRespawner;
-        private Respawner readStoreRespawner;
+        private Respawner businessModelStoreRespawner;
+        private Respawner readModelStoreRespawner;
         private bool disposedValue;
 
         public HttpClient HttpClient { get; private set; }
@@ -42,7 +42,7 @@
         {
             await this.StartDbsConnectionsAsync();
 
-            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.writeStoreConnection, this.readStoreConnection);
+            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.businessModelStoreConnection, this.readModelStoreConnection);
 
             this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -51,12 +51,12 @@
 
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
 
-            this.writeStoreRespawner = await Respawner.CreateAsync(this.writeStoreContainer.GetConnectionString(), new RespawnerOptions
+            this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreContainer.GetConnectionString(), new RespawnerOptions
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
 
-            this.readStoreRespawner = await Respawner.CreateAsync(this.readStoreContainer.GetConnectionString(), new RespawnerOptions
+            this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreContainer.GetConnectionString(), new RespawnerOptions
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
@@ -64,29 +64,29 @@
 
         public void InitDatabases()
         {
-            this.InitWriteStoreDatabase();
-            this.InitReadStoreDatabase();
+            this.InitBusinessModelStoreDatabase();
+            this.InitReadModelStoreDatabase();
         }
 
         public async Task ResetDatabasesAsync()
         {
-            var resetWriteStoreTask = this.writeStoreRespawner.ResetAsync(this.writeStoreContainer.GetConnectionString());
-            var resetReadStoreTask = this.readStoreRespawner.ResetAsync(this.readStoreContainer.GetConnectionString());
+            var resetBusinessModelStoreTask = this.businessModelStoreRespawner.ResetAsync(this.businessModelStoreContainer.GetConnectionString());
+            var resetReadModelStoreTask = this.readModelStoreRespawner.ResetAsync(this.readModelStoreContainer.GetConnectionString());
 
-            await Task.WhenAll(resetWriteStoreTask, resetReadStoreTask);
+            await Task.WhenAll(resetBusinessModelStoreTask, resetReadModelStoreTask);
         }
 
         public async Task DisposeAsync()
         {
-            var disposeWriteConnectionTask = this.writeStoreConnection.DisposeAsync();
-            var disposeReadConnectionTask = this.readStoreConnection.DisposeAsync();
+            var disposeBusinessModelConnectionTask = this.businessModelStoreConnection.DisposeAsync();
+            var disposeReadModelConnectionTask = this.readModelStoreConnection.DisposeAsync();
 
-            await Task.WhenAll(disposeWriteConnectionTask.AsTask(), disposeReadConnectionTask.AsTask());
+            await Task.WhenAll(disposeBusinessModelConnectionTask.AsTask(), disposeReadModelConnectionTask.AsTask());
 
-            var disposeWriteContainerTask = this.writeStoreContainer.DisposeAsync();
-            var disposeReadContainerTask = this.readStoreContainer.DisposeAsync();
+            var disposeBusinessModelContainerTask = this.businessModelStoreContainer.DisposeAsync();
+            var disposeReadModelContainerTask = this.readModelStoreContainer.DisposeAsync();
 
-            await Task.WhenAll(disposeWriteContainerTask.AsTask(), disposeReadContainerTask.AsTask());
+            await Task.WhenAll(disposeBusinessModelContainerTask.AsTask(), disposeReadModelContainerTask.AsTask());
         }
 
         public void Dispose()
@@ -112,44 +112,44 @@
 
         private async Task StartDbsConnectionsAsync()
         {
-            var startWriteContainerTask = this.writeStoreContainer.StartAsync();
-            var startReadContainerTask = this.readStoreContainer.StartAsync();
+            var startBusinessModelContainerTask = this.businessModelStoreContainer.StartAsync();
+            var startReadModelContainerTask = this.readModelStoreContainer.StartAsync();
 
-            await Task.WhenAll(startWriteContainerTask, startReadContainerTask);
+            await Task.WhenAll(startBusinessModelContainerTask, startReadModelContainerTask);
 
-            this.writeStoreConnection = new SqlConnection(this.writeStoreContainer.GetConnectionString());
-            this.readStoreConnection = new SqlConnection(this.readStoreContainer.GetConnectionString());
+            this.businessModelStoreConnection = new SqlConnection(this.businessModelStoreContainer.GetConnectionString());
+            this.readModelStoreConnection = new SqlConnection(this.readModelStoreContainer.GetConnectionString());
         }
 
-        private void InitWriteStoreDatabase()
+        private void InitBusinessModelStoreDatabase()
         {
-            using var writeScope = this.scopeFactory.CreateScope();
-            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationWriteContext>();
-            var logger = writeScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
+            using var businessModelScope = this.scopeFactory.CreateScope();
+            var writeContext = businessModelScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            var logger = businessModelScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
 
             try
             {
-                SeedData.PopulateWriteTestData(writeContext);
+                SeedData.PopulateBusinessModelTestData(writeContext);
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "An error occurred seeding the write database with test data. Error: {exceptionMessage}", exception.Message);
+                logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {exceptionMessage}", exception.Message);
             }
         }
 
-        private void InitReadStoreDatabase()
+        private void InitReadModelStoreDatabase()
         {
             using var readScope = this.scopeFactory.CreateScope();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadContext>();
+            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
             var logger = readScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
 
             try
             {
-                SeedData.PopulateReadTestData(readContext);
+                SeedData.PopulateReadModelTestData(readContext);
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "An error occurred seeding the read database with test data. Error: {exceptionMessage}", exception.Message);
+                logger.LogError(exception, "An error occurred seeding the read model database with test data. Error: {exceptionMessage}", exception.Message);
             }
         }
     }

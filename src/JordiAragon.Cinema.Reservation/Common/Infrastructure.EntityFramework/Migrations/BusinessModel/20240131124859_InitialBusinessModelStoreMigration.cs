@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.WriteStore
+namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     /// <inheritdoc />
-    public partial class InitialWriteStoreMigration : Migration
+    public partial class InitialBusinessModelStoreMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
