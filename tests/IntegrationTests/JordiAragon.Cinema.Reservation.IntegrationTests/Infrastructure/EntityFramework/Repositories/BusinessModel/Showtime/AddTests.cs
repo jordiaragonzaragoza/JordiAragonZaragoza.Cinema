@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Repositories.Showtime
+﻿namespace JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Repositories.BusinessModel.Showtime
 {
     using System;
     using System.Threading.Tasks;
@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class AddTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId>
+    public class AddTests : BaseEntityFrameworkIntegrationTests
     {
         public AddTests(
             IntegrationTestsFixture fixture,
@@ -31,7 +31,7 @@
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
-            var repository = this.GetBusinessModelRepository();
+            var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
             // Act
             await repository.AddAsync(newShowtime);
@@ -51,7 +51,7 @@
             // Arrange
             var existingShowtime = SeedData.ExampleShowtime;
 
-            var repository = this.GetBusinessModelRepository();
+            var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
             // Act
             Func<Task> addAsync = async () => await repository.AddAsync(existingShowtime);

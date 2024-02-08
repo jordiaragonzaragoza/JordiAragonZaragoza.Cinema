@@ -3,15 +3,15 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using Xunit;
     using Xunit.Abstractions;
 
     [Collection(nameof(SharedTestCollection))]
-    public abstract class BaseEntityFrameworkIntegrationTests<TAggregate, TId> : IAsyncLifetime
-        where TAggregate : BaseAggregateRoot<TId>
-        where TId : class, IEntityId
+    public abstract class BaseEntityFrameworkIntegrationTests : IAsyncLifetime
     {
         protected BaseEntityFrameworkIntegrationTests(
             IntegrationTestsFixture fixture,
@@ -35,7 +35,13 @@
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabasesAsync();
 
-        protected ReservationRepository<TAggregate, TId> GetBusinessModelRepository()
+        protected ReservationRepository<TAggregate, TId> GetBusinessModelRepository<TAggregate, TId>()
+            where TAggregate : BaseAggregateRoot<TId>
+            where TId : class, IEntityId
             => new(this.Fixture.BusinessModelContext);
+
+        protected ReservationReadModelRepository<TReadModel> GetReadModelRepository<TReadModel>()
+            where TReadModel : class, IReadModel
+            => new(this.Fixture.ReadModelContext);
     }
 }

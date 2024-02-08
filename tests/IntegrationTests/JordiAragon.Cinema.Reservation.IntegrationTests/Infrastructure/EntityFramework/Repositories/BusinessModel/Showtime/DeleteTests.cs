@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Repositories.Showtime
+﻿namespace JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Repositories.BusinessModel.Showtime
 {
     using System;
     using System.Threading.Tasks;
@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class DeleteTests : BaseEntityFrameworkIntegrationTests<Showtime, ShowtimeId>
+    public class DeleteTests : BaseEntityFrameworkIntegrationTests
     {
         public DeleteTests(
             IntegrationTestsFixture fixture,
@@ -25,18 +25,24 @@
         public async Task DeleteAsync_WhenHavingAnExistingShowtime_ShouldDeleteTheShowtime()
         {
             // Arrange
-            var existingShowtime = SeedData.ExampleShowtime;
+            var newShowtime = Showtime.Create(
+                ShowtimeId.Create(Guid.NewGuid()),
+                MovieId.Create(SeedData.ExampleMovie.Id),
+                DateTime.UtcNow.AddDays(1),
+                AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
-            var repository = this.GetBusinessModelRepository();
+            var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
+
+            await repository.AddAsync(newShowtime);
 
             // Act
-            await repository.DeleteAsync(existingShowtime);
+            await repository.DeleteAsync(newShowtime);
 
             // Assert
             var result = await repository.ListAsync();
 
             result.Should()
-                .NotContain(existingShowtime);
+                .NotContain(newShowtime);
         }
 
         [Fact]
@@ -49,7 +55,7 @@
                 DateTime.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
-            var repository = this.GetBusinessModelRepository();
+            var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
             // Act
             Func<Task> deleteAsync = async () => await repository.DeleteAsync(newShowtime);
