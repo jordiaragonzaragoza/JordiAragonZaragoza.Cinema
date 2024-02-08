@@ -130,7 +130,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
+            SeedData.PopulateReadModelTestData(this.ReadModelContext);
         }
 
         private DbContextOptions<ReservationReadModelContext> CreateNewReadModelContextOptions()

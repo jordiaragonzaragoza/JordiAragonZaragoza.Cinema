@@ -38,6 +38,14 @@
                 sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
+        public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
+            new(
+                ExampleShowtime.Id,
+                ExampleMovie.Title,
+                ExampleShowtime.SessionDateOnUtc,
+                ExampleShowtime.AuditoriumId,
+                ExampleAuditorium.Name);
+
         public static void Initialize(WebApplication app)
         {
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -126,14 +134,7 @@
 
         private static void SetPreconfiguredReadData(ReservationReadModelContext context)
         {
-            var showtimeReadModel = new ShowtimeReadModel(
-                ExampleShowtime.Id,
-                ExampleMovie.Title,
-                ExampleShowtime.SessionDateOnUtc,
-                ExampleShowtime.AuditoriumId,
-                ExampleAuditorium.Name);
-
-            context.Showtimes.Add(showtimeReadModel);
+            context.Showtimes.Add(ExampleShowtimeReadModel);
 
             context.SaveChanges();
         }
