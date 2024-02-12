@@ -1,7 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimes
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -9,28 +7,28 @@
     using Ardalis.Result;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, IEnumerable<ShowtimeReadModel>>
+    public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, PaginatedCollectionOutputDto<ShowtimeReadModel>>
     {
-        private readonly ISpecificationReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
+        private readonly IPaginatedSpecificationReadRepository<ShowtimeReadModel> showtimeReadModelRepository;
 
-        public GetShowtimesQueryHandler(ISpecificationReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository)
+        public GetShowtimesQueryHandler(IPaginatedSpecificationReadRepository<ShowtimeReadModel> showtimeReadModelRepository)
         {
             this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
         }
 
-        public async Task<Result<IEnumerable<ShowtimeReadModel>>> Handle(GetShowtimesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedCollectionOutputDto<ShowtimeReadModel>>> Handle(GetShowtimesQuery request, CancellationToken cancellationToken)
         {
             var specification = new GetShowtimesSpec(request);
-            var showtimes = await this.showtimeReadModelRepository.ListAsync(specification, cancellationToken);
-            if (!showtimes.Any())
+            var result = await this.showtimeReadModelRepository.PaginatedListAsync(specification, cancellationToken);
+            if (!result.Items.Any())
             {
-                return Result.NotFound($"{nameof(Showtime)}/s not found.");
+                return Result.NotFound($"{nameof(ShowtimeReadModel)}/s not found.");
             }
 
-            return Result.Success(showtimes.AsEnumerable());
+            return Result.Success(result);
         }
     }
 }

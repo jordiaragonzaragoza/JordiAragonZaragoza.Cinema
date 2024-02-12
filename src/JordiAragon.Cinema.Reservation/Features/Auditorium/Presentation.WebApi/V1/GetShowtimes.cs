@@ -38,7 +38,7 @@
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetShowtimesQuery(req.AuditoriumId, MovieId: null, StartTimeOnUtc: null, EndTimeOnUtc: null), ct);
+            var resultOutputDto = await this.sender.Send(new GetShowtimesQuery(req.AuditoriumId, MovieId: null, StartTimeOnUtc: null, EndTimeOnUtc: null, PageNumber: 1, PageSize: 0), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<ShowtimeResponse>>>(resultOutputDto);
 

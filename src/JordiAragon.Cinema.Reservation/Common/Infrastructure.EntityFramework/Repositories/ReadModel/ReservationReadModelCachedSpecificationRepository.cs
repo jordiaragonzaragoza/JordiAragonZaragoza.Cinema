@@ -8,7 +8,7 @@
         where TReadModel : class, IReadModel
     {
         public ReservationReadModelCachedSpecificationRepository(
-            ReservationBusinessModelContext dbContext,
+            ReservationReadModelContext dbContext,
             ILogger<ReservationReadModelCachedSpecificationRepository<TReadModel>> logger,
             ICacheService cacheService)
             : base(dbContext, logger, cacheService)

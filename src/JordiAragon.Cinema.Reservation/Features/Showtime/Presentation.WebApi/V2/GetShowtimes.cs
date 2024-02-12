@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Presentation.WebApi.V2
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -9,11 +8,12 @@
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Contracts;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetShowtimes : Endpoint<GetShowtimesRequest, IEnumerable<ShowtimeResponse>>
+    public class GetShowtimes : Endpoint<GetShowtimesRequest, PaginatedCollectionResponse<ShowtimeResponse>>
     {
         public const string Route = "showtimes";
 
@@ -40,9 +40,9 @@
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetShowtimesQuery(req.AuditoriumId, req.MovieId, req.StartTimeOnUtc, req.EndTimeOnUtc), ct);
+            var resultOutputDto = await this.sender.Send(this.mapper.Map<GetShowtimesQuery>(req), ct);
 
-            var resultResponse = this.mapper.Map<Result<IEnumerable<ShowtimeResponse>>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<PaginatedCollectionResponse<ShowtimeResponse>>>(resultOutputDto);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

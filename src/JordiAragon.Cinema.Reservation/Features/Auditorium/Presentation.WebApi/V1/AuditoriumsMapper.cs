@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;

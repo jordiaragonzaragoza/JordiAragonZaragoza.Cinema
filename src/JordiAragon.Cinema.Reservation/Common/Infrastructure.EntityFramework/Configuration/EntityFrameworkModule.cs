@@ -10,6 +10,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
     public class EntityFrameworkModule : AssemblyModule
@@ -77,6 +78,10 @@
 
             builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
                 .As(typeof(ISpecificationReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IPaginatedSpecificationReadRepository<>))
                 .InstancePerLifetimeScope();
 
             // TODO: Move to check.
