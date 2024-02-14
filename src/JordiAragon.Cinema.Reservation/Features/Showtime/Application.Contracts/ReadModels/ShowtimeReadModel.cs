@@ -3,5 +3,12 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class ShowtimeReadModel(Guid Id, string MovieTitle, DateTimeOffset SessionDateOnUtc, Guid AuditoriumId, string AuditoriumName) : IReadModel; // TODO: Add MovieId, MovieDuration.
+    public record class ShowtimeReadModel(
+        Guid Id,
+        DateTimeOffset SessionDateOnUtc,
+        Guid MovieId,
+        string MovieTitle,
+        TimeSpan MovieRuntime,
+        Guid AuditoriumId,
+        string AuditoriumName) : IReadModel;
 }

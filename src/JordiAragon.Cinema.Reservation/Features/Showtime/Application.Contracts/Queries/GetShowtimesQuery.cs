@@ -7,7 +7,9 @@
 
     public sealed record class GetShowtimesQuery(
         Guid? AuditoriumId,
+        string AuditoriumName,
         Guid? MovieId,
+        string MovieTitle,
         DateTime? StartTimeOnUtc,
         DateTime? EndTimeOnUtc,
         int PageNumber,
@@ -15,7 +17,7 @@
         : IPaginatedQuery, IQuery<PaginatedCollectionOutputDto<ShowtimeReadModel>>, ICacheRequest
     {
         public string CacheKey
-            => $"{ShowtimeConstants.CachePrefix}_{this.AuditoriumId}_{this.MovieId}_{this.StartTimeOnUtc}_{this.EndTimeOnUtc}_{this.PageNumber}_{this.PageSize}";
+            => $"{ShowtimeConstants.CachePrefix}_{this.AuditoriumId}_{this.AuditoriumName}_{this.MovieId}_{this.MovieTitle}_{this.StartTimeOnUtc}_{this.EndTimeOnUtc}_{this.PageNumber}_{this.PageSize}";
 
         public TimeSpan? AbsoluteExpirationInSeconds { get; }
     }

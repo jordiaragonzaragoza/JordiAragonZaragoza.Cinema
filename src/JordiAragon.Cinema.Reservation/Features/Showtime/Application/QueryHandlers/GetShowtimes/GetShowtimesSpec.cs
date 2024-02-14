@@ -17,6 +17,11 @@
 
             this.Query
                 .Where(s => s.AuditoriumId == request.AuditoriumId, request.AuditoriumId is not null)
+                .Where(s => s.MovieId == request.MovieId, request.MovieId is not null)
+                .Where(s => s.AuditoriumName.Contains(request.AuditoriumName), !string.IsNullOrWhiteSpace(request.AuditoriumName))
+                .Where(s => s.MovieTitle.Contains(request.MovieTitle), !string.IsNullOrWhiteSpace(request.MovieTitle))
+                .Where(s => s.SessionDateOnUtc >= request.StartTimeOnUtc, request.StartTimeOnUtc is not null)
+                .Where(s => s.SessionDateOnUtc <= request.EndTimeOnUtc, request.EndTimeOnUtc is not null)
                 .AsNoTracking()
                 .OrderByDescending(x => x.SessionDateOnUtc);
         }

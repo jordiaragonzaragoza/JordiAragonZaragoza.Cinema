@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    partial class ReservationReadContextModelSnapshot : ModelSnapshot
+    partial class ReservationReadModelContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,12 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.Property<string>("AuditoriumName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeSpan>("MovieRuntime")
+                        .HasColumnType("time");
 
                     b.Property<string>("MovieTitle")
                         .HasColumnType("nvarchar(max)");

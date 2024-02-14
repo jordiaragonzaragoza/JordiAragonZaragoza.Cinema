@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
@@ -9,6 +8,7 @@
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.Common;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Presentation.WebApi.V2;
+    using JordiAragon.SharedKernel.Presentation.WebApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -95,13 +95,11 @@
                 (nameof(endTimeOnUtc), endTimeOnUtc));
 
             // Act
-            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
 
             // Assert
-            response.Should()
-                .NotBeNullOrEmpty()
-                .And
-            .HaveCount(1);
+            response.Should().NotBeNull();
+            response.Items.Should().HaveCount(1);
         }
     }
 }

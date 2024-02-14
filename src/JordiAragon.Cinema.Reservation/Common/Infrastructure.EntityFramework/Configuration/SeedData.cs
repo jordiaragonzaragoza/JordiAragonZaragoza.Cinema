@@ -41,8 +41,10 @@
         public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
             new(
                 ExampleShowtime.Id,
-                ExampleMovie.Title,
                 ExampleShowtime.SessionDateOnUtc,
+                ExampleMovie.Id,
+                ExampleMovie.Title,
+                ExampleMovie.Runtime,
                 ExampleShowtime.AuditoriumId,
                 ExampleAuditorium.Name);
 

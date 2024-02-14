@@ -45,8 +45,10 @@
 
             var showtimeReadModel = new ShowtimeReadModel(
                 @event.ShowtimeId,
-                existingMovie.Title,
                 @event.SessionDateOnUtc,
+                existingMovie.Id,
+                existingMovie.Title,
+                existingMovie.Runtime,
                 @event.AuditoriumId,
                 existingAuditorium.Name);
 

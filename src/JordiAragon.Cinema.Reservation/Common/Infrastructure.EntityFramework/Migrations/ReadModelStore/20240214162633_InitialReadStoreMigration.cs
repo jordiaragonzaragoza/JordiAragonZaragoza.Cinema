@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     /// <inheritdoc />
-    public partial class InitialReadModelStoreMigration : Migration
+    public partial class InitialReadStoreMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +16,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MovieRuntime = table.Column<TimeSpan>(type: "time", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AuditoriumName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

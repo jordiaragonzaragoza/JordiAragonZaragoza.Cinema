@@ -25,8 +25,10 @@
             // Arrange
             var newShowtime = new ShowtimeReadModel(
                 Guid.NewGuid(),
-                "Some title",
                 DateTimeOffset.Now,
+                Guid.NewGuid(),
+                "Some title",
+                TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
                 Guid.NewGuid(),
                 "Some auditorium");
 
