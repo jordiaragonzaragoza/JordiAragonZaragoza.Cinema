@@ -3,7 +3,7 @@
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Repositories.ReadModel;
 
-    public class ReservationReadModelRepository<TReadModel> : BaseRepository<TReadModel>
+    public sealed class ReservationReadModelRepository<TReadModel> : BaseRepository<TReadModel>
         where TReadModel : class, IReadModel
     {
         public ReservationReadModelRepository(ReservationReadModelContext dbContext)

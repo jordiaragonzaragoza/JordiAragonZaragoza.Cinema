@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using JordiAragon.SharedKernel.Contracts.Repositories;
@@ -15,11 +16,12 @@
             IDateTime dateTime,
             IPublisher mediator,
             ILogger<ProcessOutboxMessagesJob> logger,
-            ICachedSpecificationRepository<OutboxMessage, OutboxMessageId> repositoryOutboxMessages)
+            ICachedSpecificationRepository<OutboxMessage, Guid> repositoryOutboxMessages)
             : base(dateTime, mediator, logger, repositoryOutboxMessages)
         {
         }
 
+        // This property is required due to a OutboxMessage deserialization.
         protected override IEnumerable<Assembly> CurrentAssemblies
             => new List<Assembly>() { AssemblyReference.Assembly };
     }

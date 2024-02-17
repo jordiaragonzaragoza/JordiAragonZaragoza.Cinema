@@ -4,7 +4,7 @@
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Repositories.BusinessModel;
 
-    public class ReservationRepository<TAggregate, TId> : BaseRepository<TAggregate, TId>
+    public sealed class ReservationRepository<TAggregate, TId> : BaseRepository<TAggregate, TId>
         where TAggregate : BaseAggregateRoot<TId>
         where TId : class, IEntityId
     {

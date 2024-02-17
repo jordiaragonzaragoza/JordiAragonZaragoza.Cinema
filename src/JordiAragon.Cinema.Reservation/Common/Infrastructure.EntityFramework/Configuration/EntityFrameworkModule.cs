@@ -5,6 +5,7 @@
     using Autofac;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.DataModel;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -23,6 +24,7 @@
 
             RegisterBusinessModelRepositories(builder);
             RegisterReadModelsRepositories(builder);
+            RegisterDataModelsRepositories(builder);
         }
 
         private static void RegisterBusinessModelRepositories(ContainerBuilder builder)
@@ -53,11 +55,6 @@
             builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
-
-            // TODO: Move to SharedKernel?. Used only for OutboxMessage?
-            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
-                .As(typeof(ICachedSpecificationRepository<,>))
-                .InstancePerLifetimeScope();
         }
 
         private static void RegisterReadModelsRepositories(ContainerBuilder builder)
@@ -83,9 +80,11 @@
             builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
                 .As(typeof(IPaginatedSpecificationReadRepository<>))
                 .InstancePerLifetimeScope();
+        }
 
-            // TODO: Move to check.
-            builder.RegisterGeneric(typeof(ReservationReadModelCachedSpecificationRepository<>))
+        private static void RegisterDataModelsRepositories(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(ReservationDataModelCachedSpecificationRepository<>))
                 .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
         }
