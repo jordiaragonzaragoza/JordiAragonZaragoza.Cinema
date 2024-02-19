@@ -26,6 +26,19 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdempotentConsumers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConsumerFullName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdempotentConsumers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -190,6 +203,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             migrationBuilder.DropTable(
                 name: "AuditoriumsShowtimeIds");
+
+            migrationBuilder.DropTable(
+                name: "IdempotentConsumers");
 
             migrationBuilder.DropTable(
                 name: "MoviesShowtimeIds");

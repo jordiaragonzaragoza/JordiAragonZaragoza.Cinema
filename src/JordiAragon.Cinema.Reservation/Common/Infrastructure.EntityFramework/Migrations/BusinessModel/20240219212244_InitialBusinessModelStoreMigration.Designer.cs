@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20240131124859_InitialBusinessModelStoreMigration")]
+    [Migration("20240219212244_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -79,9 +79,27 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.ToTable("Showtimes", (string)null);
                 });
 
+            modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.EntityFramework.Idempotency.IdempotentConsumer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConsumerFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdempotentConsumers");
+                });
+
             modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.EntityFramework.Outbox.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
