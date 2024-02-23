@@ -3,11 +3,11 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using JordiAragon.Cinema.Reservation.Common.Application;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Presentation.WebApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
+    using JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
@@ -28,6 +28,9 @@
             var configuration = builder.Configuration;
 
             configuration
+                .AddSharedKernelInfrastructureDefaultConfiguration(builder.Environment.EnvironmentName);
+
+            configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
@@ -36,7 +39,7 @@
             builder.Services.AddApplicationServices(configuration);
             builder.Services.AddSharedKernelApplicationServices();
             builder.Services.AddWebApiServices(configuration);
-            builder.Services.AddInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
+            builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEventStoreServices(configuration, builder.Environment.ApplicationName);
 

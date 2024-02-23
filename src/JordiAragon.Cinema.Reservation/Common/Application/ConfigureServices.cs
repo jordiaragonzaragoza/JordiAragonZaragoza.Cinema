@@ -29,6 +29,11 @@
                                                                                       .RepeatForever()));
             });
 
+            serviceCollection.AddQuartzHostedService(opt =>
+            {
+                opt.WaitForJobsToComplete = true;
+            });
+
             return serviceCollection;
         }
     }

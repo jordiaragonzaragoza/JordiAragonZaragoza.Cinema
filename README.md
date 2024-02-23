@@ -17,7 +17,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - Domain Driven-Design 
 - Rich Domain Model with Aggregates and Strong Ids
 - Domain/Application Events
-- Outbox Pattern
+- Outbox Pattern with idempotent consumers
 - CQRS with MediatR and FluentValidation
 - Unit of Work
 - Repository & Specification
@@ -53,7 +53,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 ## Cross-cutting concerns
 
-- Outbox pattern to handle the domain event out side the source transaction.
+- Outbox pattern to handle the domain event out side the source transaction with idempotent consumers and clustering support.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
 - REPR Pattern using FastEndpoints

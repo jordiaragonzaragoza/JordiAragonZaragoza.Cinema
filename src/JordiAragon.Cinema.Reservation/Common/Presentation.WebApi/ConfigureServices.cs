@@ -4,7 +4,6 @@
     using FastEndpoints.Swagger;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Quartz;
 
     public static class ConfigureServices
     {
@@ -52,8 +51,6 @@
 
                 documentOptions.ShortSchemaNames = true;
             });
-
-            serviceCollection.AddQuartzHostedService();
 
             serviceCollection.AddHttpContextAccessor();
 
