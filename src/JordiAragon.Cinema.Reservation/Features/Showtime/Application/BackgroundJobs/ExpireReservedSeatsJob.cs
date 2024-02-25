@@ -6,6 +6,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.SharedKernel.Application.Helpers;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using MediatR;
@@ -47,7 +48,12 @@
                         var result = await this.sender.Send(new ExpireReservedSeatsCommand(showtime.Id, ticketId), context.CancellationToken);
                         if (!result.IsSuccess)
                         {
-                            // TODO: Complete log the error from result.
+                            var errorDetails = result.ResultDetails();
+
+                            this.logger.LogError(
+                                   "Error sending: {@Name} Job Command. {@Details}",
+                                   nameof(ExpireReservedSeatsCommand),
+                                   errorDetails);
                         }
                     }
                 }
