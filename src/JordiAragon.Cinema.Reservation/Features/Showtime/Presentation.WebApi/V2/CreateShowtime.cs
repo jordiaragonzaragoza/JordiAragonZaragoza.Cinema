@@ -15,12 +15,12 @@
     {
         public const string Route = "showtimes";
 
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public CreateShowtime(ISender sender, IMapper mapper)
+        public CreateShowtime(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -40,7 +40,7 @@
         {
             var command = this.mapper.Map<CreateShowtimeCommand>(req);
 
-            var resultResponse = await this.sender.Send(command, ct);
+            var resultResponse = await this.internalBus.Send(command, ct);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

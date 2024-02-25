@@ -16,12 +16,12 @@
     {
         public const string Route = "auditoriums";
 
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public GetAuditoriums(ISender sender, IMapper mapper)
+        public GetAuditoriums(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -39,7 +39,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetAuditoriumsQuery(), ct);
+            var resultOutputDto = await this.internalBus.Send(new GetAuditoriumsQuery(), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<AuditoriumResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

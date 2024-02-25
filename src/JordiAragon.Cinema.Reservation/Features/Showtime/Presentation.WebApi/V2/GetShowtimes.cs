@@ -17,12 +17,12 @@
     {
         public const string Route = "showtimes";
 
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public GetShowtimes(ISender sender, IMapper mapper)
+        public GetShowtimes(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -40,7 +40,7 @@
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(this.mapper.Map<GetShowtimesQuery>(req), ct);
+            var resultOutputDto = await this.internalBus.Send(this.mapper.Map<GetShowtimesQuery>(req), ct);
 
             var resultResponse = this.mapper.Map<Result<PaginatedCollectionResponse<ShowtimeResponse>>>(resultOutputDto);
 

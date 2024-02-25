@@ -17,11 +17,11 @@
 
     public class GetShowtimes : Endpoint<GetShowtimesRequest, IEnumerable<ShowtimeResponse>>
     {
-        private readonly ISender sender;
+        private readonly ISender internalBus;
 
-        public GetShowtimes(ISender sender)
+        public GetShowtimes(ISender internalBus)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
         }
 
         public override void Configure()
@@ -48,7 +48,7 @@
                 PageNumber: 1,
                 PageSize: 0);
 
-            var resultOutputDto = await this.sender.Send(query, ct);
+            var resultOutputDto = await this.internalBus.Send(query, ct);
 
             var resultResponse = MapToResultResponse(resultOutputDto);
 

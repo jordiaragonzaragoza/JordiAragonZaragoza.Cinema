@@ -18,18 +18,18 @@
     {
         private readonly IDateTime dateTime;
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository;
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
             ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
-            ISender sender,
+            ISender internalBus,
             ILogger<ExpireReservedSeatsJob> logger)
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
             this.showtimeReadRepository = Guard.Against.Null(showtimeReadRepository, nameof(showtimeReadRepository));
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.logger = Guard.Against.Null(logger, nameof(logger));
         }
 
@@ -45,7 +45,7 @@
 
                     foreach (var ticketId in ticketIds)
                     {
-                        var result = await this.sender.Send(new ExpireReservedSeatsCommand(showtime.Id, ticketId), context.CancellationToken);
+                        var result = await this.internalBus.Send(new ExpireReservedSeatsCommand(showtime.Id, ticketId), context.CancellationToken);
                         if (!result.IsSuccess)
                         {
                             var errorDetails = result.ResultDetails();

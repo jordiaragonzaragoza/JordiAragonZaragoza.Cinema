@@ -15,12 +15,12 @@
 
     public class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
     {
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public GetAvailableSeats(ISender sender, IMapper mapper)
+        public GetAvailableSeats(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -38,7 +38,7 @@
 
         public async override Task HandleAsync(GetAvailableSeatsRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
+            var resultOutputDto = await this.internalBus.Send(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<SeatResponse>>>(resultOutputDto);
 

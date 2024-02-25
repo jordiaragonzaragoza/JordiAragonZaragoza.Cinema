@@ -14,10 +14,10 @@
     {
         public ProcessOutboxMessagesJob(
             IDateTime dateTime,
-            IPublisher mediator,
+            IPublisher internalBus,
             ILogger<ProcessOutboxMessagesJob> logger,
             ICachedSpecificationRepository<OutboxMessage, Guid> repositoryOutboxMessages)
-            : base(dateTime, mediator, logger, repositoryOutboxMessages)
+            : base(dateTime, internalBus, logger, repositoryOutboxMessages)
         {
         }
 
