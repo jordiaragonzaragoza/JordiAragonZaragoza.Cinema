@@ -110,7 +110,7 @@
 
             this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
-            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
+            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext, true);
         }
 
         private DbContextOptions<ReservationBusinessModelContext> CreateNewBusinessModelContextOptions()
@@ -130,7 +130,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            SeedData.PopulateReadModelTestData(this.ReadModelContext);
+            SeedData.PopulateReadModelTestData(this.ReadModelContext, true);
         }
 
         private DbContextOptions<ReservationReadModelContext> CreateNewReadModelContextOptions()

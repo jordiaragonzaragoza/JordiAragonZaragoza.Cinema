@@ -64,10 +64,7 @@
 
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            if (builder.Environment.EnvironmentName == "Development")
-            {
-                SeedData.Initialize(app);
-            }
+            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

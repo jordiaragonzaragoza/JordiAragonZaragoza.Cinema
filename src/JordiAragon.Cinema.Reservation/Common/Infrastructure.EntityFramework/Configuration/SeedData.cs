@@ -48,7 +48,7 @@
                 ExampleShowtime.AuditoriumId,
                 ExampleAuditorium.Name);
 
-        public static void Initialize(WebApplication app)
+        public static void Initialize(WebApplication app, bool isDevelopment)
         {
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -58,8 +58,8 @@
 
             try
             {
-                PopulateBusinessModelTestData(writeContext);
-                PopulateReadModelTestData(readContext);
+                PopulateBusinessModelTestData(writeContext, isDevelopment);
+                PopulateReadModelTestData(readContext, isDevelopment);
             }
             catch (Exception exception)
             {
@@ -67,11 +67,11 @@
             }
         }
 
-        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
+        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context, bool isDevelopment)
         {
             MigrateAndEnsureSqlServerDatabase(context);
 
-            if (HasAnyData(context))
+            if (!isDevelopment || HasAnyData(context))
             {
                 return;
             }
@@ -79,11 +79,11 @@
             SetPreconfiguredWriteData(context);
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context)
+        public static void PopulateReadModelTestData(ReservationReadModelContext context, bool isDevelopment)
         {
             MigrateAndEnsureSqlServerDatabase(context);
 
-            if (HasAnyData(context))
+            if (!isDevelopment || HasAnyData(context))
             {
                 return;
             }

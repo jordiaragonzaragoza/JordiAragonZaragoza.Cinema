@@ -129,7 +129,7 @@
 
             try
             {
-                SeedData.PopulateBusinessModelTestData(writeContext);
+                SeedData.PopulateBusinessModelTestData(writeContext, true);
             }
             catch (Exception exception)
             {
@@ -145,7 +145,7 @@
 
             try
             {
-                SeedData.PopulateReadModelTestData(readContext);
+                SeedData.PopulateReadModelTestData(readContext, true);
             }
             catch (Exception exception)
             {
