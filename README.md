@@ -45,6 +45,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - FluentValidator
 - Serilog
 - Quartz
+- Polly
 - Swagger UI with JWT support
 - EasyCaching
 - Volo.Abp.Guids
@@ -53,7 +54,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 ## Cross-cutting concerns
 
-- Outbox pattern to handle the domain event out side the source transaction with idempotent consumers and clustering support.
+- Outbox pattern to handle the domain event out side the source transaction with resilence idempotent consumers support.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
 - REPR Pattern using FastEndpoints

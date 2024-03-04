@@ -78,6 +78,10 @@
             builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
                 .As(typeof(IPaginatedSpecificationReadRepository<>))
                 .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IRangeableRepository<,>))
+                .InstancePerLifetimeScope();
         }
 
         private static void RegisterDataModelsRepositories(ContainerBuilder builder)

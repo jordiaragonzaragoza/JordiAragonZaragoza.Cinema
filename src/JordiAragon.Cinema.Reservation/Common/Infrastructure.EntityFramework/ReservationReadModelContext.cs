@@ -19,9 +19,12 @@
 
         public DbSet<ShowtimeReadModel> Showtimes => this.Set<ShowtimeReadModel>();
 
+        public DbSet<AvailableSeatReadModel> AvailableSeats => this.Set<AvailableSeatReadModel>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration());
+            modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
