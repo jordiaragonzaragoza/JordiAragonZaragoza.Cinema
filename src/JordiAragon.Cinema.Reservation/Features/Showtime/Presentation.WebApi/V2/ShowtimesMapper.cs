@@ -1,7 +1,9 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Presentation.WebApi.V2
 {
+    using System.Collections.Generic;
     using Ardalis.Result;
     using AutoMapper;
+    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
@@ -25,6 +27,11 @@
             this.CreateMap<ShowtimeReadModel, ShowtimeResponse>();
             this.CreateMap<PaginatedCollectionOutputDto<ShowtimeReadModel>, PaginatedCollectionResponse<ShowtimeResponse>>();
             this.CreateMap<Result<PaginatedCollectionOutputDto<ShowtimeReadModel>>, Result<PaginatedCollectionResponse<ShowtimeResponse>>>();
+
+            this.CreateMap<AvailableSeatReadModel, SeatResponse>()
+                .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));
+
+            this.CreateMap<Result<IEnumerable<AvailableSeatReadModel>>, Result<IEnumerable<SeatResponse>>>();
         }
     }
 }

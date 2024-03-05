@@ -48,6 +48,24 @@
                 ExampleShowtime.AuditoriumId,
                 ExampleAuditorium.Name);
 
+        public static IList<AvailableSeatReadModel> ExampleShowtimeAvailableSeatsReadModel()
+        {
+            var availableSeats = new List<AvailableSeatReadModel>();
+            foreach (var seat in ExampleAuditorium.Seats)
+            {
+                availableSeats.Add(new AvailableSeatReadModel(
+                    Guid.NewGuid(),
+                    seat.Id,
+                    seat.Row,
+                    seat.SeatNumber,
+                    ExampleShowtime.Id,
+                    ExampleAuditorium.Id,
+                    ExampleAuditorium.Name));
+            }
+
+            return availableSeats;
+        }
+
         public static void Initialize(WebApplication app, bool isDevelopment)
         {
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -137,6 +155,8 @@
         private static void SetPreconfiguredReadData(ReservationReadModelContext context)
         {
             context.Showtimes.Add(ExampleShowtimeReadModel);
+
+            context.AvailableSeats.AddRange(ExampleShowtimeAvailableSeatsReadModel());
 
             context.SaveChanges();
         }

@@ -1,52 +1,35 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.QueryHandlers.GetAvailableSeats
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
-    using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<SeatOutputDto>>
+    public class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<AvailableSeatReadModel>>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
+        private readonly IReadListRepository<AvailableSeatReadModel, Guid> readListRepository;
 
-        public GetAvailableSeatsQueryHandler(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Showtime, ShowtimeId> showtimeRepository)
+        public GetAvailableSeatsQueryHandler(IReadListRepository<AvailableSeatReadModel, Guid> readListRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.readListRepository = Guard.Against.Null(readListRepository, nameof(readListRepository));
         }
 
-        public async Task<Result<IEnumerable<SeatOutputDto>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<AvailableSeatReadModel>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
         {
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
-            if (existingShowtime is null)
+            var result = await this.readListRepository.ListAsync(cancellationToken);
+            if (!result.Any())
             {
-                return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
+                return Result.NotFound($"{nameof(AvailableSeatReadModel)}/s not found.");
             }
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(existingShowtime.AuditoriumId, cancellationToken);
-            if (existingAuditorium is null)
-            {
-                return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
-            }
-
-            var availableSeats = ShowtimeManager.AvailableSeats(existingAuditorium, existingShowtime);
-
-            // TODO: Prepare OutputDto: Replace with correct projections on EventSourcing.
-            var seatsOutputDto = availableSeats.Select(seat
-                => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber, existingAuditorium.Id, existingAuditorium.Name));
-
-            return Result.Success(seatsOutputDto);
+            return Result.Success(result.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber).AsEnumerable());
         }
     }
 }

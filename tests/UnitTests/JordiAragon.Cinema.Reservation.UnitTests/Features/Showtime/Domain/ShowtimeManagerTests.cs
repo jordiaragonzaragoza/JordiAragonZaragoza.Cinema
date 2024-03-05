@@ -11,18 +11,10 @@
     using Xunit;
 
     using Auditorium = JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium;
-    using Seat = JordiAragon.Cinema.Reservation.Auditorium.Domain.Seat;
     using Showtime = JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime;
 
     public class ShowtimeManagerTests
     {
-        public static IEnumerable<object[]> InvalidArgumentsAvailableSeats()
-        {
-            yield return new object[] { null, null };
-            yield return new object[] { CreateAuditoriumUtils.Create(), null };
-            yield return new object[] { null, CreateShowtimeUtils.Create() };
-        }
-
         public static IEnumerable<object[]> InvalidArgumentsReserveSeats()
         {
             var auditorium = CreateAuditoriumUtils.Create();
@@ -64,34 +56,6 @@
                     }
                 }
             }
-        }
-
-        [Fact]
-        public void AvailableSeats_WhenHavingValidArguments_ShouldReturnAvailableSeats()
-        {
-            // Arrange
-            var auditorium = CreateAuditoriumUtils.Create();
-
-            var showtime = CreateShowtimeUtils.Create();
-
-            // Act
-            var availableSeats = ShowtimeManager.AvailableSeats(auditorium, showtime);
-
-            // Assert
-            availableSeats.Count().Should().Be(Constants.Auditorium.Rows * Constants.Auditorium.SeatsPerRow);
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidArgumentsAvailableSeats))]
-        public void AvailableSeats_WhenHavingInvalidArguments_ShouldThrowArgumentException(
-            Auditorium auditorium,
-            Showtime showtime)
-        {
-            // Act
-            Func<IEnumerable<Seat>> seats = () => ShowtimeManager.AvailableSeats(auditorium, showtime);
-
-            // Assert
-            seats.Should().Throw<ArgumentException>();
         }
 
         [Fact]

@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
     public class AuditoriumsMapper : Profile
     {
@@ -25,6 +26,11 @@
             this.CreateMap<Result<IEnumerable<AuditoriumOutputDto>>, Result<IEnumerable<AuditoriumResponse>>>();
             this.CreateMap<TicketOutputDto, TicketResponse>();
             this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
+
+            this.CreateMap<AvailableSeatReadModel, SeatResponse>()
+                .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));
+
+            this.CreateMap<Result<IEnumerable<AvailableSeatReadModel>>, Result<IEnumerable<SeatResponse>>>();
         }
     }
 }

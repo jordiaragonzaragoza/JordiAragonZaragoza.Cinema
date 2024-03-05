@@ -18,7 +18,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - Rich Domain Model with Aggregates and Strong Ids
 - Domain/Application Events
 - Outbox Pattern with idempotent consumers
-- CQRS with MediatR and FluentValidation
+- CQRS with DB physical separation using domain events. 
 - Unit of Work
 - Repository & Specification
 - Custom API Error Handling with Problems Details

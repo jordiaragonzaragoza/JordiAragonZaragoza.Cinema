@@ -10,18 +10,6 @@
 
     public class ShowtimeManager : BaseDomainService
     {
-        public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
-        {
-            Guard.Against.Null(auditorium);
-            Guard.Against.Null(showtime);
-
-            var reservedSeats = ReservedSeats(auditorium, showtime);
-
-            return auditorium.Seats.Except(reservedSeats)
-                                        .OrderBy(s => s.Row)
-                                        .ThenBy(s => s.SeatNumber);
-        }
-
         public static Ticket ReserveSeats(
             Auditorium auditorium,
             Showtime showtime,
@@ -44,6 +32,18 @@
             CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
 
             return showtime.ReserveSeats(ticketId, desiredSeatIds, createdTimeOnUtc);
+        }
+
+        private static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
+        {
+            Guard.Against.Null(auditorium);
+            Guard.Against.Null(showtime);
+
+            var reservedSeats = ReservedSeats(auditorium, showtime);
+
+            return auditorium.Seats.Except(reservedSeats)
+                                        .OrderBy(s => s.Row)
+                                        .ThenBy(s => s.SeatNumber);
         }
 
         private static IEnumerable<Seat> ReservedSeats(Auditorium auditorium, Showtime showtime)
