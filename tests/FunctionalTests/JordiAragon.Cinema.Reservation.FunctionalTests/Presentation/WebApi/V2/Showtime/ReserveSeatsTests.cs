@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -38,14 +39,18 @@
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
 
-            var request = new ReserveSeatsRequest(showtimeId, seatsIds);
-            var content = StringContentHelpers.FromModelAsJson(request);
+            var reserveSeatsRequest = new ReserveSeatsRequest(showtimeId, seatsIds);
+            var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
-            var route = $"api/v2/{ReserveSeats.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
+            reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString());
 
             // Act
-            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(route, content, this.OutputHelper);
+            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+
+            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency.
+
+            var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
             // Assert
             ticketResponse.SessionDateOnUtc.Should()
@@ -61,6 +66,8 @@
                 .Contain(seatsIds);
 
             ticketResponse.IsPurchased.Should().BeFalse();
+
+            availableSeatsAfterReservation.Should().NotContain(ticketResponse.Seats);
         }
     }
 }
