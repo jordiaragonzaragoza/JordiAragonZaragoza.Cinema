@@ -57,12 +57,19 @@
                 return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
             }
 
+            var existingMovie = await this.movieReadRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
+            if (existingMovie is null)
+            {
+                return Result.NotFound($"{nameof(Movie)}: {existingShowtime.MovieId} not found.");
+            }
+
             // Make the reserve.
             var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
 
             var newticket = ShowtimeManager.ReserveSeats(
                 existingAuditorium,
                 existingShowtime,
+                existingMovie,
                 desiredSeatsIds,
                 TicketId.Create(this.guidGenerator.Create()),
                 this.dateTime.UtcNow);
@@ -70,12 +77,6 @@
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
             // Prepare command response.
-            var existingmovie = await this.movieReadRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
-            if (existingmovie is null)
-            {
-                return Result.NotFound($"{nameof(Movie)}: {existingShowtime.MovieId} not found.");
-            }
-
             var seats = existingAuditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
 
             var seatsOutputDto = seats.Select(seat
@@ -85,7 +86,7 @@
                 newticket.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Id,
-                existingmovie.Title,
+                existingMovie.Title,
                 seatsOutputDto,
                 newticket.IsPurchased);
 

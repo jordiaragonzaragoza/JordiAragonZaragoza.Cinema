@@ -88,18 +88,15 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
     - It shouldn't be possible to reserve an already sold seat.
     - All the seats, when doing a reservation, need to be contiguous.
     - Reservation will expire in 1 minute unless marked as purchased.
+    - No reservations are allowed after showtime ended.
 
 - Purchase ticket reservation
     - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
     - It is not possible to purchase ticket reservation two times.
-
-## Reservation Bounded Context Diagram:
-
-![JordiAragon.Cinema - Model graph](./docs/Model.jpg)  
-
-![JordiAragon.Cinema - Data graph](./docs/DataModel.jpg)  
-
+ 
 ## Resources and Inspiration
+
+Special thanks to all these authors for sharing their knowledge and expertise:
 
 - <a href="https://github.com/ardalis/CleanArchitecture" target="_blank">Ardalis: Clean Architecture</a>
 - <a href="https://www.youtube.com/watch?v=SUiWfhAhgQw" target="_blank">Jimmy Bogard: Vertical Slice Architecture</a>

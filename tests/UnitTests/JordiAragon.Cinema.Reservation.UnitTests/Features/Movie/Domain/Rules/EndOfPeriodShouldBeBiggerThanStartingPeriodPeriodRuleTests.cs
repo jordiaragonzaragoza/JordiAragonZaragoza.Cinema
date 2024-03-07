@@ -39,8 +39,8 @@
         public void IsBroken_WhenHavingBiggerEndOfPeriodThanStartingPeriod_ShouldBeFalse()
         {
             // Arrange
-            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
-            var endOfPeriod = EndOfPeriod.Create(DateTime.UtcNow.AddYears(1));
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTime.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(DateTime.UtcNow.AddYears(2));
             var runtime = Constants.Movie.Runtime;
 
             var exhibitionPeriod = ExhibitionPeriod.Create(

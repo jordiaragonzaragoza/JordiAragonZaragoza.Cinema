@@ -5,6 +5,7 @@
     using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Rules;
     using JordiAragon.SharedKernel.Domain.Services;
 
@@ -13,15 +14,19 @@
         public static Ticket ReserveSeats(
             Auditorium auditorium,
             Showtime showtime,
+            Movie movie,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId ticketId,
             DateTimeOffset createdTimeOnUtc)
         {
             Guard.Against.Null(auditorium);
             Guard.Against.Null(showtime);
+            Guard.Against.Null(movie);
             Guard.Against.NullOrEmpty(desiredSeatIds);
             Guard.Against.Null(ticketId);
             Guard.Against.Default(createdTimeOnUtc);
+
+            CheckRule(new NoReservationsAllowedAfterShowtimeEndedRule(showtime, movie, createdTimeOnUtc));
 
             var desiredSeats = auditorium.Seats.Where(seat => desiredSeatIds.Contains(seat.Id));
 
