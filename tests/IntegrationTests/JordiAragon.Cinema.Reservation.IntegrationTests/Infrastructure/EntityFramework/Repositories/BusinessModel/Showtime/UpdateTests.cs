@@ -37,7 +37,7 @@
                 SeatId.Create(Guid.NewGuid()),
             };
 
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var ticket = existingShowtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
@@ -58,7 +58,7 @@
             var newShowtime = Showtime.Create(
                 ShowtimeId.Create(Guid.NewGuid()),
                 MovieId.Create(SeedData.ExampleMovie.Id),
-                DateTime.UtcNow.AddDays(1),
+                DateTimeOffset.UtcNow.AddDays(1),
                 AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();

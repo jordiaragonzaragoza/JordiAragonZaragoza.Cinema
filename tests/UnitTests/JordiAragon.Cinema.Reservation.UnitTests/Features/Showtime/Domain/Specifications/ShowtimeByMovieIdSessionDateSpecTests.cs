@@ -15,7 +15,7 @@
         {
             yield return new object[] { null, default(DateTimeOffset) };
             yield return new object[] { Constants.Movie.Id, default(DateTimeOffset) };
-            yield return new object[] { null, DateTime.UtcNow };
+            yield return new object[] { null, DateTimeOffset.UtcNow };
         }
 
         [Fact]

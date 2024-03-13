@@ -76,7 +76,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsEnded = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

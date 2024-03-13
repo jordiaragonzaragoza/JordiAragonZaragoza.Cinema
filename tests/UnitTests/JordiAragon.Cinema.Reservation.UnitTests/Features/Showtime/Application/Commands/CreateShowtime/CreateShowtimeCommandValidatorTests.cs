@@ -35,7 +35,7 @@
             // Arrange.
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -52,9 +52,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId: AuditoriumId.Create(Guid.NewGuid()),
                 MovieId: Guid.Empty,
-                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
+                SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -72,9 +72,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId: Guid.Empty,
                 MovieId: MovieId.Create(Guid.NewGuid()),
-                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
+                SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -92,9 +92,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId.Create(Guid.NewGuid()),
                 MovieId.Create(Guid.NewGuid()),
-                DateTime.UtcNow.AddYears(-1));
+                DateTimeOffset.UtcNow.AddYears(-1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);

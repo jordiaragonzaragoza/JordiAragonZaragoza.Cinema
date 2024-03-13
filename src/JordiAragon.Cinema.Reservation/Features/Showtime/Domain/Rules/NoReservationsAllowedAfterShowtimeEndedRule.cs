@@ -8,25 +8,25 @@
     public class NoReservationsAllowedAfterShowtimeEndedRule : IBusinessRule
     {
         private readonly Showtime showtime;
-        private readonly DateTimeOffset createdTimeOnUtc;
         private readonly Movie movie;
+        private readonly DateTimeOffset currentDateTimeOnUtc;
 
         public NoReservationsAllowedAfterShowtimeEndedRule(
             Showtime showtime,
             Movie movie,
-            DateTimeOffset createdTimeOnUtc)
+            DateTimeOffset currentDateTimeOnUtc)
         {
             this.showtime = Guard.Against.Null(showtime, nameof(showtime));
             this.movie = Guard.Against.Null(movie, nameof(movie));
-            this.createdTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
+            this.currentDateTimeOnUtc = Guard.Against.Default(currentDateTimeOnUtc, nameof(currentDateTimeOnUtc));
         }
 
-        public string Message => "No reservations are allowed after showtime ended";
+        public string Message => "No reservations are allowed after showtime ended.";
 
         public bool IsBroken()
         {
             var showtimeEndedOnUtc = this.showtime.SessionDateOnUtc + this.movie.Runtime;
-            if (this.createdTimeOnUtc > showtimeEndedOnUtc)
+            if (this.currentDateTimeOnUtc > showtimeEndedOnUtc)
             {
                 return true;
             }

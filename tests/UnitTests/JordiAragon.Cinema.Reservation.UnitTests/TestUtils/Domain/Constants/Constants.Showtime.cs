@@ -11,7 +11,7 @@ namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
         {
             public static readonly ShowtimeId Id = ShowtimeId.Create(Guid.NewGuid());
             public static readonly MovieId MovieId = MovieId.Create(Guid.NewGuid());
-            public static readonly DateTimeOffset SessionDateOnUtc = DateTime.UtcNow.AddYears(1);
+            public static readonly DateTimeOffset SessionDateOnUtc = DateTimeOffset.UtcNow.AddYears(1);
             public static readonly AuditoriumId AuditoriumId = AuditoriumId.Create(Guid.NewGuid());
         }
     }

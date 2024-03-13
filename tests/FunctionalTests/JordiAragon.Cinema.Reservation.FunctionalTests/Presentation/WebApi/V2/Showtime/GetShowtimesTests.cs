@@ -28,7 +28,7 @@
             var movieId = SeedData.ExampleMovie.Id.ToString();
             var auditoriumId = SeedData.ExampleAuditorium.Id.ToString();
             var startTimeOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc.ToString("O");
-            var endTimeOnUtc = DateTime.UtcNow.AddYears(2).ToString("O");
+            var endTimeOnUtc = DateTimeOffset.UtcNow.AddYears(2).ToString("O");
 
             var route = $"api/v2/{GetShowtimes.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(

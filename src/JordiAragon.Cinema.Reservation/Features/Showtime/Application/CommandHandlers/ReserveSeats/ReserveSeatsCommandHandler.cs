@@ -20,27 +20,30 @@
 
     public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository;
-        private readonly IReadRepository<Movie, MovieId> movieReadRepository;
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
+        private readonly IShowtimeManager showtimeManager;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public ReserveSeatsCommandHandler(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
-            IReadRepository<Movie, MovieId> movieReadRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
+            IShowtimeManager showtimeManager,
             IMapper mapper,
             IGuidGenerator guidGenerator,
-            IDateTime dateTime)
+            IDateTime dateTime,
+            IReadRepository<Movie, MovieId> movieRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
-            this.auditoriumReadRepository = Guard.Against.Null(auditoriumReadRepository, nameof(auditoriumReadRepository));
-            this.movieReadRepository = Guard.Against.Null(movieReadRepository, nameof(movieReadRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.showtimeManager = Guard.Against.Null(showtimeManager, nameof(showtimeManager));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
+            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
+            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
         public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
@@ -51,32 +54,31 @@
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
-            var existingAuditorium = await this.auditoriumReadRepository.GetByIdAsync(existingShowtime.AuditoriumId, cancellationToken);
-            if (existingAuditorium is null)
-            {
-                return Result.NotFound($"{nameof(Auditorium)}: {existingShowtime.AuditoriumId} not found.");
-            }
-
-            var existingMovie = await this.movieReadRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
-            if (existingMovie is null)
-            {
-                return Result.NotFound($"{nameof(Movie)}: {existingShowtime.MovieId} not found.");
-            }
-
-            // Make the reserve.
             var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
 
-            var newticket = ShowtimeManager.ReserveSeats(
-                existingAuditorium,
+            // Make the reserve.
+            var newticket = await this.showtimeManager.ReserveSeatsAsync(
                 existingShowtime,
-                existingMovie,
                 desiredSeatsIds,
                 TicketId.Create(this.guidGenerator.Create()),
-                this.dateTime.UtcNow);
+                this.dateTime.UtcNow,
+                cancellationToken);
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
-            // Prepare command response.
+            // Prepare command response. TODO: Change on EventSourcing.
+            var existingMovie = await this.movieRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
+            if (existingMovie is null)
+            {
+                throw new NotFoundException(nameof(Movie), existingShowtime.MovieId.ToString());
+            }
+
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(existingShowtime.AuditoriumId, cancellationToken);
+            if (existingAuditorium is null)
+            {
+                throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString());
+            }
+
             var seats = existingAuditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
 
             var seatsOutputDto = seats.Select(seat

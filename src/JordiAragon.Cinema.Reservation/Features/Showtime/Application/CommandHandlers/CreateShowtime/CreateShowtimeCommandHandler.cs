@@ -17,15 +17,15 @@
 
     public class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
     {
-        private readonly IRepository<Movie, MovieId> movieRepository;
-        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository;
         private readonly IGuidGenerator guidGenerator;
 
         public CreateShowtimeCommandHandler(
-            IRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IRepository<Movie, MovieId> movieRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IGuidGenerator guidGenerator)
@@ -39,7 +39,7 @@
 
         public override async Task<Result<Guid>> Handle(CreateShowtimeCommand request, CancellationToken cancellationToken)
         {
-            // TODO: Remove. This should be also in a domain rule.
+            // TODO: Remove. This should be also in a domain rule on ShowtimeManager.
             var existingShowtime = await this.showtimeReadRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
             if (existingShowtime is not null)
             {

@@ -62,7 +62,7 @@
                 .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            // Read  Repositories
+            // Read Repositories
             builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
@@ -91,7 +91,7 @@
                 .As(typeof(IRepository<,>))
                 .InstancePerLifetimeScope();
 
-            // Read  Repositories
+            // Read Repositories
             builder.RegisterGeneric(typeof(ReservationDataModelRepository<>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();

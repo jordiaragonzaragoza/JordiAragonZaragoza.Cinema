@@ -7,6 +7,6 @@
     public static class CreateShowtimeCommandUtils
     {
         public static CreateShowtimeCommand CreateCommand()
-            => new(Constants.Auditorium.Id, Constants.Movie.Id, DateTime.UtcNow.AddYears(1));
+            => new(Constants.Auditorium.Id, Constants.Movie.Id, DateTimeOffset.UtcNow.AddYears(1));
     }
 }

@@ -24,7 +24,7 @@
         public void CreateStartingPeriod_WhenHavingAValidDateTimeOffset_ShouldReturnStartingPeriod()
         {
             // Arrange
-            var value = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value = DateTimeOffset.UtcNow;
 
             // Act
             var startingPeriod = StartingPeriod.Create(value);
@@ -37,7 +37,7 @@
         public void ImplicitConversion_WhenHavingAStartingPeriod_ShouldReturnDateTimeOffset()
         {
             // Arrange
-            var startingPeriodValue = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var startingPeriodValue = DateTimeOffset.UtcNow;
             var startingPeriod = StartingPeriod.Create(startingPeriodValue);
 
             // Act
@@ -51,7 +51,7 @@
         public void ExplicitConversion_WhenHavingADateTimeOffset_ShouldReturnStartingPeriod()
         {
             // Arrange
-            var dateTimeOffsetValue = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var dateTimeOffsetValue = DateTimeOffset.UtcNow;
 
             // Act
             StartingPeriod startingPeriod = (StartingPeriod)dateTimeOffsetValue;
@@ -65,7 +65,7 @@
         public void ToString_ShouldReturnStringRepresentationOfStartingPeriod()
         {
             // Arrange
-            var value = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value = DateTimeOffset.UtcNow;
             var startingPeriod = StartingPeriod.Create(value);
 
             // Act
@@ -79,7 +79,7 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value1 = DateTimeOffset.UtcNow;
             var value2 = value1.AddMinutes(1);
 
             var startingPeriod1 = StartingPeriod.Create(value1);

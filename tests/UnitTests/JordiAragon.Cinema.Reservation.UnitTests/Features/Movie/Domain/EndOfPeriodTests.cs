@@ -24,7 +24,7 @@
         public void CreateEndOfPeriod_WhenHavingAValidDateTimeOffset_ShouldReturnEndOfPeriod()
         {
             // Arrange
-            var value = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value = DateTimeOffset.UtcNow;
 
             // Act
             var endOfPeriod = EndOfPeriod.Create(value);
@@ -37,7 +37,7 @@
         public void ImplicitConversion_WhenHavingAEndOfPeriod_ShouldReturnDateTimeOffset()
         {
             // Arrange
-            var endOfPeriodValue = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var endOfPeriodValue = DateTimeOffset.UtcNow;
             var endOfPeriod = EndOfPeriod.Create(endOfPeriodValue);
 
             // Act
@@ -51,7 +51,7 @@
         public void ExplicitConversion_WhenHavingADateTimeOffset_ShouldReturnEndOfPeriod()
         {
             // Arrange
-            var dateTimeOffsetValue = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var dateTimeOffsetValue = DateTimeOffset.UtcNow;
 
             // Act
             EndOfPeriod endOfPeriod = (EndOfPeriod)dateTimeOffsetValue;
@@ -65,7 +65,7 @@
         public void ToString_ShouldReturnStringRepresentationOfEndOfPeriod()
         {
             // Arrange
-            var value = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value = DateTimeOffset.UtcNow;
             var endOfPeriod = EndOfPeriod.Create(value);
 
             // Act
@@ -79,7 +79,7 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
+            var value1 = DateTimeOffset.UtcNow;
             var value2 = value1.AddMinutes(1);
 
             var endOfPeriod1 = EndOfPeriod.Create(value1);

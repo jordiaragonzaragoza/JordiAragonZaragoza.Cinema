@@ -15,7 +15,7 @@
         {
             var auditorium = CreateAuditoriumUtils.Create();
             var seatIds = auditorium.Seats.Select(seat => seat.Id);
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var idValues = new object[] { null, Constants.Ticket.Id };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };

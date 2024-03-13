@@ -21,6 +21,7 @@
         {
         }
 
+        // TODO: It belongs to the cinema manager bounded context.
         public string Name { get; private set; }
 
         public ushort Rows { get; private set; }

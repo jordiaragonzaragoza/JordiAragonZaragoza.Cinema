@@ -13,7 +13,6 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using NSubstitute;
     using Volo.Abp.Guids;
     using Xunit;

@@ -20,8 +20,8 @@
                 title: "Inception",
                 runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
                 exhibitionPeriod: ExhibitionPeriod.Create(
-                    StartingPeriod.Create(new DateTimeOffset(DateTime.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
-                    EndOfPeriod.Create(DateTime.UtcNow.AddYears(2)),
+                    StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
+                    EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2)),
                     TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)));
 
         public static readonly Auditorium ExampleAuditorium =
@@ -35,7 +35,7 @@
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
                 movieId: MovieId.Create(ExampleMovie.Id),
-                sessionDateOnUtc: new DateTime(DateTime.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
+                sessionDateOnUtc: new DateTime(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
         public static readonly ShowtimeReadModel ExampleShowtimeReadModel =

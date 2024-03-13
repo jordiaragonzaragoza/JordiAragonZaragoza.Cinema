@@ -30,7 +30,7 @@
             var request = new CreateShowtimeRequest(
                 SeedData.ExampleAuditorium.Id,
                 SeedData.ExampleMovie.Id,
-                DateTime.UtcNow.AddDays(1));
+                DateTimeOffset.UtcNow.AddDays(1));
 
             var content = StringContentHelpers.FromModelAsJson(request);
 

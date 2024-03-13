@@ -65,6 +65,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid?>("AuditoriumId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsEnded")
+                        .HasColumnType("bit");
+
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 

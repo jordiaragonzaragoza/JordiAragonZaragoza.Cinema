@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20240219212244_InitialBusinessModelStoreMigration")]
+    [Migration("20240313202419_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -67,6 +67,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.Property<Guid?>("AuditoriumId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsEnded")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");

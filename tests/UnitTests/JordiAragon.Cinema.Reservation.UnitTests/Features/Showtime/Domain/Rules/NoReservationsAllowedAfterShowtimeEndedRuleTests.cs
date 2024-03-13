@@ -15,7 +15,7 @@
         {
             var showtime = CreateShowtimeUtils.Create();
             var movie = CreateMovieUtils.Create();
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var showtimeValues = new object[] { null, showtime };
             var movieValues = new object[] { null, movie };
@@ -61,11 +61,11 @@
             var showtime = Showtime.Create(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 Constants.Showtime.AuditoriumId);
 
             var movie = CreateMovieUtils.Create();
-            var createdTimeOnUtc = DateTime.UtcNow.AddYears(1);
+            var createdTimeOnUtc = DateTimeOffset.UtcNow.AddYears(1);
 
             // Act
             var rule = new NoReservationsAllowedAfterShowtimeEndedRule(showtime, movie, createdTimeOnUtc);
@@ -80,7 +80,7 @@
             // Arrange
             var showtime = CreateShowtimeUtils.Create();
             var movie = CreateMovieUtils.Create();
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             // Act
             var rule = new NoReservationsAllowedAfterShowtimeEndedRule(showtime, movie, createdTimeOnUtc);

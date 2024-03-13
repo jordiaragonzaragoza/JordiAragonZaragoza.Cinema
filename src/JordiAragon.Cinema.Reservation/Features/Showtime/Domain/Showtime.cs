@@ -11,6 +11,7 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
+
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public sealed class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
@@ -28,6 +29,8 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
+        public bool IsEnded { get; private set; }
+
         public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
         public static Showtime Create(
@@ -42,6 +45,9 @@
 
             return showtime;
         }
+
+        public void End()
+            => this.Apply(new ShowtimeEndedEvent(this.Id));
 
         public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {
@@ -67,6 +73,10 @@
             {
                 case ShowtimeCreatedEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case ShowtimeEndedEvent:
+                    this.Applier();
                     break;
 
                 case ReservedSeatsEvent @event:
@@ -105,6 +115,9 @@
             this.SessionDateOnUtc = @event.SessionDateOnUtc;
             this.AuditoriumId = AuditoriumId.Create(@event.AuditoriumId);
         }
+
+        private void Applier()
+            => this.IsEnded = true;
 
         private void Applier(ReservedSeatsEvent @event)
         {

@@ -54,7 +54,7 @@
         {
             var ticketId = Constants.Ticket.Id;
             var seatIds = new List<SeatId> { Constants.Seat.Id };
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var ticketIdValues = new object[] { null, ticketId };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
@@ -132,7 +132,7 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             // Act
             var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
@@ -191,7 +191,7 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
@@ -258,7 +258,7 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
@@ -284,7 +284,7 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTime.UtcNow;
+            var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
 
