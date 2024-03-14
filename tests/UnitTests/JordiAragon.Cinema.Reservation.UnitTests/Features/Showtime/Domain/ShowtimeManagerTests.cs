@@ -93,6 +93,39 @@
             }
         }
 
+        public static IEnumerable<object[]> InvalidArgumentsHasShowtimeEndedAsync()
+        {
+            var showtime = CreateShowtimeUtils.Create();
+            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+
+            var showtimeValues = new object[] { null, showtime };
+            var currentDateTimeOnUtcValues = new object[] { default(DateTimeOffset), currentDateTimeOnUtc };
+
+            foreach (var showtimeValue in showtimeValues)
+            {
+                foreach (var currentDateTimeOnUtcValue in currentDateTimeOnUtcValues)
+                {
+                    if (showtimeValue != null && showtimeValue.Equals(showtime) &&
+                        currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                    {
+                        continue;
+                    }
+
+                    yield return new object[] { showtimeValue, currentDateTimeOnUtcValue };
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsShowtimeManagerConstructor))]
+        public void ConstructorShowtimeManager_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Movie, MovieId> movieRepository)
+        {
+            FluentActions.Invoking(() => new ShowtimeManager(movieRepository, auditoriumRepository))
+            .Should().Throw<ArgumentException>();
+        }
+
         [Theory]
         [MemberData(nameof(InvalidArgumentsReserveSeatsAsync))]
         public void ReserveSeats_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
@@ -108,16 +141,6 @@
                 currentDateTimeOnUtc,
                 CancellationToken.None))
             .Should().ThrowAsync<ArgumentException>();
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidArgumentsShowtimeManagerConstructor))]
-        public void ConstructorShowtimeManager_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Movie, MovieId> movieRepository)
-        {
-            FluentActions.Invoking(() => new ShowtimeManager(movieRepository, auditoriumRepository))
-            .Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -341,6 +364,44 @@
 
             // Assert
             await sut.Should().ThrowAsync<BusinessRuleValidationException>().Where(e => e.Message.Contains("Only available seats can be reserved"));
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsHasShowtimeEndedAsync))]
+        public void HasShowtimeEndedAsync_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+            Showtime showtime,
+            DateTimeOffset currentDateTimeOnUtc)
+        {
+            FluentActions.Invoking(async () => await this.showtimeManager.HasShowtimeEndedAsync(
+                showtime,
+                currentDateTimeOnUtc,
+                CancellationToken.None))
+            .Should().ThrowAsync<ArgumentException>();
+        }
+
+        [Fact]
+        public void HasShowtimeEndedAsync_WhenHavingUnExistingShowtime_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var showtime = Showtime.Create(
+                Constants.Showtime.Id,
+                Constants.Showtime.MovieId,
+                DateTimeOffset.UtcNow.AddDays(-1),
+                Constants.Showtime.AuditoriumId);
+
+            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+
+            this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
+                .Returns((Movie)null);
+
+            // Act
+            Func<Task> sut = async () => await this.showtimeManager.HasShowtimeEndedAsync(
+                showtime,
+                currentDateTimeOnUtc,
+                CancellationToken.None);
+
+            // Assert
+            sut.Should().ThrowAsync<NotFoundException>();
         }
 
         [Fact]

@@ -88,9 +88,6 @@
 
         private static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
         {
-            Guard.Against.Null(auditorium);
-            Guard.Against.Null(showtime);
-
             var reservedSeats = ReservedSeats(auditorium, showtime);
 
             return auditorium.Seats.Except(reservedSeats)
