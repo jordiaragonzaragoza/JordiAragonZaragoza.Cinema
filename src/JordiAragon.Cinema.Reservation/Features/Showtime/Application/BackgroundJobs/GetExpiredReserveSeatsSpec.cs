@@ -10,7 +10,7 @@
         public GetExpiredReserveSeatsSpec(DateTimeOffset currentDateTimeOnUtc)
         {
             this.Query
-                .Where(showtime => currentDateTimeOnUtc < showtime.SessionDateOnUtc
+                .Where(showtime => currentDateTimeOnUtc < showtime.SessionDateOnUtc // TODO: Review. Not SessionDate. SessionEndDateTime.
                                     && showtime.Tickets.Any(ticket => !ticket.IsPurchased && currentDateTimeOnUtc > ticket.CreatedTimeOnUtc.AddMinutes(1)));
 
             this.Query.Include(showtime => showtime.Tickets);
