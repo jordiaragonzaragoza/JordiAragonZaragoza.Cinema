@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20240313202419_InitialBusinessModelStoreMigration")]
+    [Migration("20240321074310_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -80,6 +80,16 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.HasKey("Id");
 
                     b.ToTable("Showtimes", (string)null);
+                });
+
+            modelBuilder.Entity("JordiAragon.Cinema.Reservation.User.Domain.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.EntityFramework.Idempotency.IdempotentConsumer", b =>
@@ -248,6 +258,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("bit");
+
+                            b1.Property<Guid?>("UserId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("UserId");
 
                             b1.HasKey("Id", "ShowtimeId");
 

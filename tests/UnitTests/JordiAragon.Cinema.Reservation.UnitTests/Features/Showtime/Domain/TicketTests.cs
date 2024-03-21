@@ -7,6 +7,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using Xunit;
 
     public class TicketTests
@@ -18,23 +19,28 @@
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var idValues = new object[] { null, Constants.Ticket.Id };
+            var userIdValues = new object[] { null, Constants.Ticket.UserId };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
             var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var idValue in idValues)
             {
-                foreach (var seatIdsValue in seatIdsValues)
+                foreach (var userIdValue in userIdValues)
                 {
-                    foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
+                    foreach (var seatIdsValue in seatIdsValues)
                     {
-                        if (idValue != null && idValue.Equals(Constants.Ticket.Id) &&
-                            seatIdsValue == seatIds &&
-                            createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                        foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
                         {
-                            continue;
-                        }
+                            if (idValue != null && idValue.Equals(Constants.Ticket.Id) &&
+                                userIdValue != null && userIdValue.Equals(Constants.Ticket.UserId) &&
+                                seatIdsValue == seatIds &&
+                                createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                            {
+                                continue;
+                            }
 
-                        yield return new object[] { idValue, seatIdsValue, createdTimeOnUtcValue };
+                            yield return new object[] { idValue, userIdValue, seatIdsValue, createdTimeOnUtcValue };
+                        }
                     }
                 }
             }
@@ -44,11 +50,12 @@
         [MemberData(nameof(InvalidArgumentsCreateTicket))]
         public void CreateTicket_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             TicketId id,
+            UserId userId,
             IEnumerable<SeatId> seatIds,
             DateTimeOffset createdTimeOnUtc)
         {
             // Act
-            Func<Ticket> createTicket = () => Ticket.Create(id, seatIds, createdTimeOnUtc);
+            Func<Ticket> createTicket = () => Ticket.Create(id, userId, seatIds, createdTimeOnUtc);
 
             // Assert
             createTicket.Should().Throw<ArgumentException>();

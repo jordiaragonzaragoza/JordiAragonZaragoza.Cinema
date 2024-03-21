@@ -10,6 +10,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using NSubstitute;
@@ -63,11 +64,13 @@
             var showtime = CreateShowtimeUtils.Create();
             var desiredSeatIds = new List<SeatId> { Constants.Seat.Id };
             var newTicketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
             var showtimeValues = new object[] { null, showtime };
             var desiredSeatIdsValues = new object[] { null, new List<SeatId>(), desiredSeatIds };
             var newTicketIdValues = new object[] { null, newTicketId };
+            var userIdValues = new object[] { null, userId };
             var currentDateTimeOnUtcValues = new object[] { default(DateTimeOffset), currentDateTimeOnUtc };
 
             foreach (var showtimeValue in showtimeValues)
@@ -76,17 +79,21 @@
                 {
                     foreach (var newTicketIdValue in newTicketIdValues)
                     {
-                        foreach (var currentDateTimeOnUtcValue in currentDateTimeOnUtcValues)
+                        foreach (var userIdValue in userIdValues)
                         {
-                            if (showtimeValue != null && showtimeValue.Equals(showtime) &&
-                                desiredSeatIdsValue != null && desiredSeatIdsValue.Equals(desiredSeatIds) &&
-                                newTicketIdValue != null && newTicketIdValue.Equals(newTicketId) &&
-                                currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                            foreach (var currentDateTimeOnUtcValue in currentDateTimeOnUtcValues)
                             {
-                                continue;
-                            }
+                                if (showtimeValue != null && showtimeValue.Equals(showtime) &&
+                                    desiredSeatIdsValue != null && desiredSeatIdsValue.Equals(desiredSeatIds) &&
+                                    newTicketIdValue != null && newTicketIdValue.Equals(newTicketId) &&
+                                    userIdValue != null && userIdValue.Equals(userId) &&
+                                    currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                                {
+                                    continue;
+                                }
 
-                            yield return new object[] { showtimeValue, desiredSeatIdsValue, newTicketIdValue, currentDateTimeOnUtcValue };
+                                yield return new object[] { showtimeValue, desiredSeatIdsValue, newTicketIdValue, userIdValue, currentDateTimeOnUtcValue };
+                            }
                         }
                     }
                 }
@@ -132,12 +139,14 @@
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
+            UserId userId,
             DateTimeOffset currentDateTimeOnUtc)
         {
             FluentActions.Invoking(async () => await this.showtimeManager.ReserveSeatsAsync(
                 showtime,
                 desiredSeatIds,
                 newTicketId,
+                userId,
                 currentDateTimeOnUtc,
                 CancellationToken.None))
             .Should().ThrowAsync<ArgumentException>();
@@ -156,6 +165,7 @@
                                                  .Select(seat => seat.Id);
 
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
@@ -169,6 +179,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 createdTimeOnUtc,
                 CancellationToken.None);
 
@@ -197,6 +208,7 @@
             desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
@@ -208,6 +220,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 currentDateTimeOnUtc,
                 CancellationToken.None);
 
@@ -233,6 +246,7 @@
             desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
@@ -244,6 +258,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 currentDateTimeOnUtc,
                 CancellationToken.None);
 
@@ -270,7 +285,7 @@
             desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
-
+            var userId = Constants.Ticket.UserId;
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
@@ -284,6 +299,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 currentDateTimeOnUtc,
                 CancellationToken.None);
 
@@ -305,7 +321,7 @@
             desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
-
+            var userId = Constants.Ticket.UserId;
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
@@ -319,6 +335,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 createdTimeOnUtc,
                 CancellationToken.None);
 
@@ -339,6 +356,7 @@
                                                  .Select(seat => seat.Id);
 
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
@@ -351,6 +369,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 createdTimeOnUtc,
                 CancellationToken.None);
 
@@ -359,6 +378,7 @@
                 showtime,
                 desiredSeatIds,
                 ticketId,
+                userId,
                 createdTimeOnUtc,
                 CancellationToken.None);
 

@@ -13,6 +13,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
@@ -21,6 +22,7 @@
     public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
+        private readonly IReadRepository<User, UserId> userRepository;
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
@@ -30,6 +32,7 @@
 
         public ReserveSeatsCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository,
+            IReadRepository<User, UserId> userRepository,
             IShowtimeManager showtimeManager,
             IMapper mapper,
             IGuidGenerator guidGenerator,
@@ -38,6 +41,7 @@
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
             this.showtimeManager = Guard.Against.Null(showtimeManager, nameof(showtimeManager));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
@@ -48,6 +52,12 @@
 
         public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
+            var existingUser = await this.userRepository.GetByIdAsync(UserId.Create(request.UserId), cancellationToken);
+            if (existingUser is null)
+            {
+                return Result.NotFound($"{nameof(User)}: {request.UserId} not found.");
+            }
+
             var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
@@ -61,6 +71,7 @@
                 existingShowtime,
                 desiredSeatsIds,
                 TicketId.Create(this.guidGenerator.Create()),
+                UserId.Create(request.UserId),
                 this.dateTime.UtcNow,
                 cancellationToken);
 

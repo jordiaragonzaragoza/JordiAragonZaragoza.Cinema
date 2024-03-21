@@ -7,6 +7,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,10 @@
                 movieId: MovieId.Create(ExampleMovie.Id),
                 sessionDateOnUtc: new DateTime(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
+
+        public static readonly User ExampleUser =
+            User.Create(
+                id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
         public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
             new(
@@ -144,6 +149,8 @@
             context.Auditoriums.Add(ExampleAuditorium);
 
             context.Showtimes.Add(ExampleShowtime);
+
+            context.Users.Add(ExampleUser);
 
             ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 

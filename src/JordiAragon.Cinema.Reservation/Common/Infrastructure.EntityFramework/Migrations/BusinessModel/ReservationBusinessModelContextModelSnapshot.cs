@@ -79,6 +79,16 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.ToTable("Showtimes", (string)null);
                 });
 
+            modelBuilder.Entity("JordiAragon.Cinema.Reservation.User.Domain.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
             modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.EntityFramework.Idempotency.IdempotentConsumer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -245,6 +255,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("bit");
+
+                            b1.Property<Guid?>("UserId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("UserId");
 
                             b1.HasKey("Id", "ShowtimeId");
 

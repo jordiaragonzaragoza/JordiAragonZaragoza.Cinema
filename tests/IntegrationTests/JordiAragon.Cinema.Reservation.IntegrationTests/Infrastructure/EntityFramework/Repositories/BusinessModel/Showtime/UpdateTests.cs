@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using Xunit.Abstractions;
@@ -32,6 +33,8 @@
 
             var ticketId = TicketId.Create(Guid.NewGuid());
 
+            var userId = UserId.Create(Guid.NewGuid());
+
             var seatIds = new List<SeatId>
             {
                 SeatId.Create(Guid.NewGuid()),
@@ -39,7 +42,7 @@
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var ticket = existingShowtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+            var ticket = existingShowtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
 
             // Act
             await repository.UpdateAsync(existingShowtime);

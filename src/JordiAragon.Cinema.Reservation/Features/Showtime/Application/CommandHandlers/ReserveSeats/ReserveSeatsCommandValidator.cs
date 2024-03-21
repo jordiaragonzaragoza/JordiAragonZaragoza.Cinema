@@ -11,6 +11,9 @@
             this.RuleFor(x => x.ShowtimeId)
                 .NotEmpty().WithMessage("ShowtimeId is required.");
 
+            this.RuleFor(x => x.UserId)
+                .NotEmpty().WithMessage("UserId is required.");
+
             this.RuleFor(x => x.SeatsIds)
                 .NotEmpty().WithMessage("SeatsIds is required.");
         }

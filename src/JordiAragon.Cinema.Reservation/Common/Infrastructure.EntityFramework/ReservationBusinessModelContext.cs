@@ -6,6 +6,8 @@
     using JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.User.Domain;
+    using JordiAragon.Cinema.Reservation.User.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,8 @@
         {
         }
 
+        public DbSet<User> Users => this.Set<User>();
+
         public DbSet<Auditorium> Auditoriums => this.Set<Auditorium>();
 
         public DbSet<Movie> Movies => this.Set<Movie>();
@@ -31,6 +35,7 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new AuditoriumConfiguration());
             modelBuilder.ApplyConfiguration(new MovieConfiguration());
             modelBuilder.ApplyConfiguration(new ShowtimeConfiguration());

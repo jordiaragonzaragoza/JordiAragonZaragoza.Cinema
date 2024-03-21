@@ -8,6 +8,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Rules;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
@@ -49,9 +50,9 @@
         public void End()
             => this.Apply(new ShowtimeEndedEvent(this.Id));
 
-        public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
+        public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {
-            this.Apply(new ReservedSeatsEvent(this.Id, id, seatIds.Select(x => x.Value), createdTimeOnUtc));
+            this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), createdTimeOnUtc));
 
             return this.tickets[this.tickets.Count - 1];
         }
@@ -125,6 +126,7 @@
 
             var newTicket = Ticket.Create(
                  TicketId.Create(@event.TicketId),
+                 UserId.Create(@event.UserId),
                  seatIds,
                  @event.CreatedTimeOnUtc);
 

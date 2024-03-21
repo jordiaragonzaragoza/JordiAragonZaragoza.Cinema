@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
 
     public interface IShowtimeManager
     {
@@ -12,6 +13,7 @@
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
+            UserId userId,
             DateTimeOffset currentDateTimeOnUtc,
             CancellationToken cancellationToken);
 

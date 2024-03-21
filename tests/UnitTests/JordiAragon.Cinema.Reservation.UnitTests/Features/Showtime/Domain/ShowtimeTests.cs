@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
     using Showtime = JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime;
@@ -53,27 +54,33 @@
         public static IEnumerable<object[]> InvalidArgumentsReserveSeats()
         {
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
             var seatIds = new List<SeatId> { Constants.Seat.Id };
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             var ticketIdValues = new object[] { null, ticketId };
+            var userIdValues = new object[] { null, userId };
             var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
             var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var ticketIdValue in ticketIdValues)
             {
-                foreach (var seatIdsValue in seatIdsValues)
+                foreach (var userIdValue in userIdValues)
                 {
-                    foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
+                    foreach (var seatIdsValue in seatIdsValues)
                     {
-                        if (ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
-                                    seatIdsValue != null && seatIdsValue.Equals(seatIds) &&
-                                    createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                        foreach (var createdTimeOnUtcValue in createdTimeOnUtcValues)
                         {
-                            continue;
-                        }
+                            if (ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
+                                userIdValue != null && userIdValue.Equals(userId) &&
+                                seatIdsValue != null && seatIdsValue.Equals(seatIds) &&
+                                createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                            {
+                                continue;
+                            }
 
-                        yield return new object[] { ticketIdValue, seatIdsValue, createdTimeOnUtcValue };
+                            yield return new object[] { ticketIdValue, userIdValue, seatIdsValue, createdTimeOnUtcValue };
+                        }
                     }
                 }
             }
@@ -126,6 +133,7 @@
             // Arrange
             var showtime = CreateShowtimeUtils.Create();
             var ticketId = Constants.Ticket.Id;
+            var userId = Constants.Ticket.UserId;
 
             var seatIds = new List<SeatId>
             {
@@ -135,7 +143,7 @@
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
             // Act
-            var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
 
             // Assert
             ticketCreated.Should().NotBeNull();
@@ -160,6 +168,7 @@
         [MemberData(nameof(InvalidArgumentsReserveSeats))]
         public void ReserveSeats_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             TicketId tickedId,
+            UserId userId,
             IEnumerable<SeatId> seatIds,
             DateTimeOffset createdTimeOnUtc)
         {
@@ -167,7 +176,7 @@
             var showtime = CreateShowtimeUtils.Create();
 
             // Act
-            Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, seatIds, createdTimeOnUtc);
+            Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, userId, seatIds, createdTimeOnUtc);
 
             // Assert
             ticketCreated.Should().Throw<ArgumentException>();
@@ -184,6 +193,8 @@
             // Arrange
             var ticketId = Constants.Ticket.Id;
 
+            var userId = Constants.Ticket.UserId;
+
             var showtime = CreateShowtimeUtils.Create();
 
             var seatIds = new List<SeatId>
@@ -193,7 +204,7 @@
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var ticketCreated = showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
 
             // Act
             showtime.PurchaseTicket(ticketId);
@@ -251,6 +262,8 @@
             // Arrange
             var ticketId = Constants.Ticket.Id;
 
+            var userId = Constants.Ticket.UserId;
+
             var showtime = CreateShowtimeUtils.Create();
 
             var seatIds = new List<SeatId>
@@ -260,7 +273,7 @@
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+            showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
 
             showtime.PurchaseTicket(ticketId);
 
@@ -277,6 +290,8 @@
             // Arrange
             var ticketId = Constants.Ticket.Id;
 
+            var userId = Constants.Ticket.UserId;
+
             var showtime = CreateShowtimeUtils.Create();
 
             var seatIds = new List<SeatId>
@@ -286,7 +301,7 @@
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            showtime.ReserveSeats(ticketId, seatIds, createdTimeOnUtc);
+            showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
 
             // Act
             showtime.ExpireReservedSeats(ticketId);

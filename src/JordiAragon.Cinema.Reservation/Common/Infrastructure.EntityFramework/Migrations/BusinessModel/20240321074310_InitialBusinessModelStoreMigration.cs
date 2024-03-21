@@ -85,6 +85,17 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AuditoriumsSeats",
                 columns: table => new
                 {
@@ -150,6 +161,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     IsPurchased = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -216,6 +228,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             migrationBuilder.DropTable(
                 name: "ShowtimeTicketSeatIds");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Auditoriums");

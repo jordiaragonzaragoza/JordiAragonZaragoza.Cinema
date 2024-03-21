@@ -9,6 +9,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Rules;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Services;
 
@@ -33,12 +34,14 @@
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
+            UserId userId,
             DateTimeOffset currentDateTimeOnUtc,
             CancellationToken cancellationToken)
         {
             Guard.Against.Null(showtime);
             Guard.Against.NullOrEmpty(desiredSeatIds);
             Guard.Against.Null(newTicketId);
+            Guard.Against.Null(userId);
             Guard.Against.Default(currentDateTimeOnUtc);
 
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
@@ -63,7 +66,7 @@
 
             CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
 
-            return showtime.ReserveSeats(newTicketId, desiredSeatIds, currentDateTimeOnUtc);
+            return showtime.ReserveSeats(newTicketId, userId, desiredSeatIds, currentDateTimeOnUtc);
         }
 
         public async Task<bool> HasShowtimeEndedAsync(Showtime showtime, DateTimeOffset currentDateTimeOnUtc, CancellationToken cancellationToken)
