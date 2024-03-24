@@ -12,6 +12,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
+    // TODO: It belongs to the management bounded context.
     public class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";
@@ -32,7 +33,7 @@
             this.Version(2);
             this.Summary(summary =>
             {
-                summary.Summary = "Gets a list of all Auditoriums";
+                summary.Summary = "Gets a list of all Auditoriums. Temporal: It belongs to the management bounded context";
                 summary.Description = "Gets a list of all Auditoriums";
             });
         }

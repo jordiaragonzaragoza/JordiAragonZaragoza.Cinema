@@ -12,7 +12,7 @@
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<AvailableSeatReadModel>>
+    public sealed class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<AvailableSeatReadModel>>
     {
         private readonly IReadListRepository<AvailableSeatReadModel, Guid> readListRepository;
 

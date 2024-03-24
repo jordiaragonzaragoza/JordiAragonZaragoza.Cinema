@@ -99,7 +99,7 @@
                 newticket.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Id,
-                existingMovie.Title,
+                existingMovie.Id,
                 seatsOutputDto,
                 newticket.IsPurchased);
 

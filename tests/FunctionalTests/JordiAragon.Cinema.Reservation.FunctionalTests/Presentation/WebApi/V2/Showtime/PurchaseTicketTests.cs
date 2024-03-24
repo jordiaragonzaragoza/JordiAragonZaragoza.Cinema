@@ -46,13 +46,13 @@
 
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(routeCreateTicket, reserveSeatsContent, this.OutputHelper);
 
-            var ticketId = ticketResponse.TicketId.ToString();
+            var ticketId = ticketResponse.Id.ToString();
 
             var route = $"api/v2/{PurchaseTicket.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString());
             route = route.Replace("{ticketId}", ticketId);
 
-            var purchaseTicketRequest = new PurchaseTicketRequest(showtimeId, ticketResponse.TicketId, true);
+            var purchaseTicketRequest = new PurchaseTicketRequest(showtimeId, ticketResponse.Id, true);
             var purchaseTicketContent = StringContentHelpers.FromModelAsJson(purchaseTicketRequest);
 
             // Act

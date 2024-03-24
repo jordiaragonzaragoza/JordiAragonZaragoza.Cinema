@@ -12,6 +12,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
+    // TODO: It belongs to the cinema manager bounded context.
     public class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";

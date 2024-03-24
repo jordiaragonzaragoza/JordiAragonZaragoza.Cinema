@@ -4,5 +4,5 @@
     using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class GetMoviesQuery : IQuery<IEnumerable<MovieReadModel>>;
+    public record class GetMoviesQuery : IQuery<IEnumerable<MovieOutputDto>>;
 }

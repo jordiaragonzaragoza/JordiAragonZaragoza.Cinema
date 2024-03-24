@@ -13,7 +13,7 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
     // TODO: Temporal. Move. This query is part of other bounded context. (Catalog)
-    public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieReadModel>>
+    public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieOutputDto>>
     {
         private readonly IReadListRepository<Movie, MovieId> movieRepository;
         private readonly IMapper mapper;
@@ -26,7 +26,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<Result<IEnumerable<MovieReadModel>>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<MovieOutputDto>>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
         {
             var projects = await this.movieRepository.ListAsync(cancellationToken);
             if (!projects.Any())
@@ -34,7 +34,7 @@
                 return Result.NotFound($"{nameof(Movie)}/s not found.");
             }
 
-            return Result.Success(this.mapper.Map<IEnumerable<MovieReadModel>>(projects));
+            return Result.Success(this.mapper.Map<IEnumerable<MovieOutputDto>>(projects));
         }
     }
 }

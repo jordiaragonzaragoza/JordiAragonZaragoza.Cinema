@@ -5,10 +5,10 @@
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
 
     public record class TicketResponse(
-        Guid TicketId,
+        Guid Id,
         DateTimeOffset SessionDateOnUtc,
-        Guid Auditorium,
-        string MovieName,
+        Guid AuditoriumId,
+        Guid MovieId,
         IEnumerable<SeatResponse> Seats,
         bool IsPurchased);
 }

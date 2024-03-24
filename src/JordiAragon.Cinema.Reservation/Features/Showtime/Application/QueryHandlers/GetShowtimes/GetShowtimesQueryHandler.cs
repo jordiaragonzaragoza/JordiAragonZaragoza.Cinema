@@ -10,7 +10,7 @@
     using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, PaginatedCollectionOutputDto<ShowtimeReadModel>>
+    public sealed class GetShowtimesQueryHandler : IQueryHandler<GetShowtimesQuery, PaginatedCollectionOutputDto<ShowtimeReadModel>>
     {
         private readonly IPaginatedSpecificationReadRepository<ShowtimeReadModel> showtimeReadModelRepository;
 

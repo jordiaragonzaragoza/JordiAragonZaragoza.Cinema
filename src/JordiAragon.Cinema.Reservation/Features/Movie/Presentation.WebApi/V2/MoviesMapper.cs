@@ -13,8 +13,8 @@
             // Requests to queries or commands.
 
             // OutputDtos to responses.
-            this.CreateMap<MovieReadModel, MovieResponse>();
-            this.CreateMap<Result<IEnumerable<MovieReadModel>>, Result<IEnumerable<MovieResponse>>>();
+            this.CreateMap<MovieOutputDto, MovieResponse>();
+            this.CreateMap<Result<IEnumerable<MovieOutputDto>>, Result<IEnumerable<MovieResponse>>>();
         }
     }
 }

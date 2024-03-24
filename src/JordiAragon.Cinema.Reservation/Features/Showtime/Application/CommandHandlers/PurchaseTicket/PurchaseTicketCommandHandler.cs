@@ -64,7 +64,7 @@
                 existingTicket.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Id,
-                existingmovie.Title,
+                existingmovie.Id,
                 seatsOutputDto,
                 existingTicket.IsPurchased);
 

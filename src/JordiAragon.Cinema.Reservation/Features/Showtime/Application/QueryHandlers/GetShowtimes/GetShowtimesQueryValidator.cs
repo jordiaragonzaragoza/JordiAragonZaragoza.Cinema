@@ -3,7 +3,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.SharedKernel.Application.Validators;
 
-    public class GetShowtimesQueryValidator : BasePaginatedQueryValidator<GetShowtimesQuery>
+    public sealed class GetShowtimesQueryValidator : BasePaginatedQueryValidator<GetShowtimesQuery>
     {
     }
 }

@@ -56,11 +56,11 @@
             ticketResponse.SessionDateOnUtc.Should()
                 .Be(SeedData.ExampleShowtime.SessionDateOnUtc);
 
-            ticketResponse.Auditorium.Should()
+            ticketResponse.AuditoriumId.Should()
                 .Be(SeedData.ExampleShowtime.AuditoriumId);
 
-            ticketResponse.MovieName.Should()
-                .Be(SeedData.ExampleMovie.Title);
+            ticketResponse.MovieId.Should()
+                .Be(SeedData.ExampleMovie.Id);
 
             ticketResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(seatsIds);

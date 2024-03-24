@@ -12,7 +12,7 @@
             this.CreateMap<MovieId, Guid>()
                 .ConvertUsing(src => src.Value);
 
-            this.CreateMap<Movie, MovieReadModel>()
+            this.CreateMap<Movie, MovieOutputDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value));
         }
     }
