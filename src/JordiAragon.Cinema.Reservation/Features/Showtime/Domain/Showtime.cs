@@ -57,12 +57,9 @@
             return this.tickets[this.tickets.Count - 1];
         }
 
-        public Ticket PurchaseTicket(TicketId ticketId)
+        public void PurchaseTicket(TicketId ticketId)
         {
             this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
-
-            return this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
-                ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
         }
 
         public void ExpireReservedSeats(TicketId ticketToRemove)

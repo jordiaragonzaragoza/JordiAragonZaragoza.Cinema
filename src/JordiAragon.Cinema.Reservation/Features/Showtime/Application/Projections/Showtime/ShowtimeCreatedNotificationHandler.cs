@@ -15,13 +15,13 @@
 
     public class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
     {
-        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IRepository<Movie, MovieId> movieRepository;
+        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
 
         public ShowtimeCreatedNotificationHandler(
-            IRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IRepository<Movie, MovieId> movieRepository,
+            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<Movie, MovieId> movieRepository,
             IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));

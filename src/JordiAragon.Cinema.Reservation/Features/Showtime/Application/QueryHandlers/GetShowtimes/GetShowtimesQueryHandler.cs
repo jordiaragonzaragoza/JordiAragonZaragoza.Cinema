@@ -25,7 +25,7 @@
             var result = await this.showtimeReadModelRepository.PaginatedListAsync(specification, cancellationToken);
             if (!result.Items.Any())
             {
-                return Result.NotFound($"{nameof(ShowtimeReadModel)}/s not found.");
+                return Result.NotFound("Showtime/s not found.");
             }
 
             return Result.Success(result);

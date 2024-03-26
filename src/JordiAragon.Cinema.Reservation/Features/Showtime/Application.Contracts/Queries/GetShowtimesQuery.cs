@@ -10,8 +10,8 @@
         string AuditoriumName,
         Guid? MovieId,
         string MovieTitle,
-        DateTime? StartTimeOnUtc,
-        DateTime? EndTimeOnUtc,
+        DateTimeOffset? StartTimeOnUtc,
+        DateTimeOffset? EndTimeOnUtc,
         int PageNumber,
         int PageSize)
         : IPaginatedQuery, IQuery<PaginatedCollectionOutputDto<ShowtimeReadModel>>, ICacheRequest

@@ -6,14 +6,14 @@
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.User.Application.Contracts.Queries;
-    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.User.Responses;
+    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.User.Requests;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
 
     using IMapper = AutoMapper.IMapper;
 
-    public class GetUserTicket : Endpoint<UserTicketRequest, UserTicketResponse>
+    public class GetUserTicket : Endpoint<UserTicketRequest, TicketResponse>
     {
         public const string Route = "users/{userId}/showtimes/{showtimeId}/tickets/{ticketId}";
 
@@ -44,7 +44,7 @@
 
             var resultOutputDto = await this.internalBus.Send(query, ct);
 
-            var resultResponse = this.mapper.Map<Result<UserTicketResponse>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<TicketResponse>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);
         }
     }

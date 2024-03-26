@@ -36,7 +36,7 @@
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
                 movieId: MovieId.Create(ExampleMovie.Id),
-                sessionDateOnUtc: new DateTime(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
+                sessionDateOnUtc: new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
         public static readonly User ExampleUser =

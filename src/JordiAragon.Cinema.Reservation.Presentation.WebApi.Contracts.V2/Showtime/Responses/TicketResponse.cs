@@ -6,9 +6,11 @@
 
     public record class TicketResponse(
         Guid Id,
+        Guid UserId,
+        Guid ShowtimeId,
         DateTimeOffset SessionDateOnUtc,
-        Guid AuditoriumId,
-        Guid MovieId,
+        string AuditoriumName,
+        string MovieTitle,
         IEnumerable<SeatResponse> Seats,
         bool IsPurchased);
 }

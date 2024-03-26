@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels
 {
     using System;
     using System.Collections.Generic;

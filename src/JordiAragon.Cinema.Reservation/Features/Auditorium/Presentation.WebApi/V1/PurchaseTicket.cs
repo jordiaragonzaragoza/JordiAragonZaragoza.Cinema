@@ -30,7 +30,7 @@
             this.Version(1, 2);
             this.Summary(summary =>
             {
-                summary.Summary = "Purchase a reservation for an existing Showtime";
+                summary.Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration. ";
                 summary.Description = "Purchase a reservation for an existing Showtime";
             });
         }
