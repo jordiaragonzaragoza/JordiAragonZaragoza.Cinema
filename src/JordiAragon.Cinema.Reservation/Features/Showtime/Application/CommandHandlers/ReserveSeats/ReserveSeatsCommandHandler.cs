@@ -8,11 +8,11 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using AutoMapper;
-    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
+    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
@@ -78,7 +78,8 @@
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
-            // Prepare command response. TODO: Change on EventSourcing.
+            // Prepare command response to avoid delays on eventual consistency.
+            // This may change if asynchronous commands are used.
             var existingMovie = await this.movieRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
             if (existingMovie is null)
             {
@@ -94,13 +95,15 @@
             var seats = existingAuditorium.Seats.Where(seat => desiredSeatsIds.Contains(seat.Id));
 
             var seatsOutputDto = seats.Select(seat
-                => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber, existingAuditorium.Id, existingAuditorium.Name));
+                => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber));
 
             var ticketOutputDto = new TicketOutputDto(
                 newticket.Id,
+                request.UserId,
+                existingShowtime.Id,
                 existingShowtime.SessionDateOnUtc,
-                existingAuditorium.Id,
-                existingMovie.Id,
+                existingAuditorium.Name,
+                existingMovie.Title,
                 seatsOutputDto,
                 newticket.IsPurchased);
 

@@ -2,5 +2,6 @@
 {
     using System;
 
-    public record class AuditoriumOutputDto(Guid Id, string Name);
+    // TODO: This output dto will be a read model on moving to management bounded context.
+    public sealed record class AuditoriumOutputDto(Guid Id, string Name);
 }
