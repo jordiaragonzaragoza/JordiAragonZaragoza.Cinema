@@ -12,7 +12,9 @@
             Guard.Against.Null(request);
 
             this.Query
-                .Where(t => t.UserId == request.UserId && t.Id == request.TicketId);
+                .Where(t => t.UserId == request.UserId && t.Id == request.TicketId)
+                .Include(t => t.Seats)
+                .AsNoTracking();
         }
     }
 }

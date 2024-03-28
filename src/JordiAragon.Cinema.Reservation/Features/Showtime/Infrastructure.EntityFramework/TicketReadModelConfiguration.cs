@@ -21,6 +21,8 @@
         {
             builder.OwnsMany(ticket => ticket.Seats, sb =>
             {
+                sb.ToTable("TicketsSeats");
+
                 sb.WithOwner().HasForeignKey(nameof(TicketId));
 
                 sb.HasKey(nameof(SeatReadModel.Id), nameof(TicketId));

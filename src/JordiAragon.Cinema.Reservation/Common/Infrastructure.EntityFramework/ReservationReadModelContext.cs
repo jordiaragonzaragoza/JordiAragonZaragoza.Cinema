@@ -28,6 +28,7 @@
         {
             modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration());
             modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketReadModelConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

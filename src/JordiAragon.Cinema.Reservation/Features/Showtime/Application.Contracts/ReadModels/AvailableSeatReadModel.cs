@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class AvailableSeatReadModel(
+    public sealed record class AvailableSeatReadModel(
         Guid Id,
         Guid SeatId,
         short Row,

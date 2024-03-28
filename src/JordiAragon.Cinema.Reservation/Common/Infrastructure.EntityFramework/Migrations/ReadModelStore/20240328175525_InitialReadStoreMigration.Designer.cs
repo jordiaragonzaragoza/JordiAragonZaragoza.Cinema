@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20240326172030_InitialReadStoreMigration")]
+    [Migration("20240328175525_InitialReadStoreMigration")]
     partial class InitialReadStoreMigration
     {
         /// <inheritdoc />
@@ -24,28 +24,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<short>("Row")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("SeatNumber")
-                        .HasColumnType("smallint");
-
-                    b.Property<Guid?>("TicketReadModelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TicketReadModelId");
-
-                    b.ToTable("TicketSeats");
-                });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.AvailableSeatReadModel", b =>
                 {
@@ -131,18 +109,36 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", b =>
-                {
-                    b.HasOne("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", null)
-                        .WithMany("Seats")
-                        .HasForeignKey("TicketReadModelId");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
                 {
+                    b.OwnsMany("JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("TicketId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<short>("Row")
+                                .HasColumnType("smallint");
+
+                            b1.Property<short>("SeatNumber")
+                                .HasColumnType("smallint");
+
+                            b1.HasKey("Id", "TicketId");
+
+                            b1.HasIndex("TicketId");
+
+                            b1.ToTable("TicketsSeats", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("TicketId");
+                        });
+
                     b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618

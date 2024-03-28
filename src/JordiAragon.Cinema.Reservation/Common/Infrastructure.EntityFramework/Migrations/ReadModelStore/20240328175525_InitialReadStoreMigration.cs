@@ -63,28 +63,29 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketSeats",
+                name: "TicketsSeats",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Row = table.Column<short>(type: "smallint", nullable: false),
-                    SeatNumber = table.Column<short>(type: "smallint", nullable: false),
-                    TicketReadModelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    SeatNumber = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketSeats", x => x.Id);
+                    table.PrimaryKey("PK_TicketsSeats", x => new { x.Id, x.TicketId });
                     table.ForeignKey(
-                        name: "FK_TicketSeats_Tickets_TicketReadModelId",
-                        column: x => x.TicketReadModelId,
+                        name: "FK_TicketsSeats_Tickets_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "Tickets",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketSeats_TicketReadModelId",
-                table: "TicketSeats",
-                column: "TicketReadModelId");
+                name: "IX_TicketsSeats_TicketId",
+                table: "TicketsSeats",
+                column: "TicketId");
         }
 
         /// <inheritdoc />
@@ -97,7 +98,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "Showtimes");
 
             migrationBuilder.DropTable(
-                name: "TicketSeats");
+                name: "TicketsSeats");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
