@@ -58,7 +58,7 @@
             }
 
             var seats = existingAuditorium.Seats.Where(seat => @event.SeatIds.Contains(seat.Id))
-                .Select(x => new SeatReadModel(x.Id, x.Row, x.SeatNumber));
+                .Select(x => new SeatReadModel(x.Id, x.Row, x.SeatNumber)).ToList();
 
             var ticketReadModel = new TicketReadModel(
                 @event.TicketId,
