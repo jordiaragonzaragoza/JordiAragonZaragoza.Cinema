@@ -30,6 +30,15 @@
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
+        public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
+        {
+            var reservedSeats = ReservedSeats(auditorium, showtime);
+
+            return auditorium.Seats.Except(reservedSeats)
+                                        .OrderBy(s => s.Row)
+                                        .ThenBy(s => s.SeatNumber);
+        }
+
         public async Task<Ticket> ReserveSeatsAsync(
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
@@ -87,15 +96,6 @@
             }
 
             return false;
-        }
-
-        private static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
-        {
-            var reservedSeats = ReservedSeats(auditorium, showtime);
-
-            return auditorium.Seats.Except(reservedSeats)
-                                        .OrderBy(s => s.Row)
-                                        .ThenBy(s => s.SeatNumber);
         }
 
         private static IEnumerable<Seat> ReservedSeats(Auditorium auditorium, Showtime showtime)
