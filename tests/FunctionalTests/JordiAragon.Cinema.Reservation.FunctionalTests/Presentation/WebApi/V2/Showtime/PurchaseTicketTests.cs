@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
@@ -56,10 +57,12 @@
             var purchaseTicketContent = StringContentHelpers.FromModelAsJson(purchaseTicketRequest);
 
             // Act
-            var response = await this.Fixture.HttpClient.PatchAndDeserializeAsync<TicketResponse>(route, purchaseTicketContent, this.OutputHelper);
+            this.OutputHelper.WriteLine($"Requesting with PATCH {route}");
+            var response = await this.Fixture.HttpClient.PatchAsync(route, purchaseTicketContent);
 
             // Assert
-            response.IsPurchased.Should().BeTrue();
+            response.StatusCode.Should()
+               .Be(HttpStatusCode.NoContent);
         }
     }
 }

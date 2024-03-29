@@ -33,7 +33,7 @@
 
             // Assert
             response.StatusCode.Should()
-                .Be(System.Net.HttpStatusCode.OK);
+                .Be(System.Net.HttpStatusCode.NoContent);
         }
     }
 }

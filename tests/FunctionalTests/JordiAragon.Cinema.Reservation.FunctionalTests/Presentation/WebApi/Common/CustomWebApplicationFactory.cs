@@ -49,6 +49,7 @@
                     .AddDbContext<ReservationReadModelContext>((options) =>
                     {
                         options.UseSqlServer(this.readModelStoreConnection);
+                        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
             });
         }
