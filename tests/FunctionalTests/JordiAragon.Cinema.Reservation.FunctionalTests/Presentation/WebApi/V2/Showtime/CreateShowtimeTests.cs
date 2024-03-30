@@ -28,7 +28,7 @@
         [Fact]
         public async Task CreateShowtime_WhenHavingValidArguments_ShouldCreateRequiredShowtime()
         {
-            // Arrange Showtime Creation
+            // Arrange
             var url = $"api/v2/{CreateShowtime.Route}";
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
@@ -40,39 +40,54 @@
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            // Act Showtime Creation
+            // Act
             var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
 
-            // Assert Showtime Creation
+            // Assert
             showtimeId.Should()
                 .NotBeEmpty();
 
+            await this.TestProjectionsAsync(sessionDateOnUtc, showtimeId);
+        }
+
+        private async Task TestProjectionsAsync(DateTimeOffset sessionDateOnUtc, Guid showtimeId)
+        {
             await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency on projections.
 
-            // Arrange Showtime Projection
+            await this.GetShowtime_WhenShowtimeCreated_ShouldReturnShowtimeCreated(sessionDateOnUtc, showtimeId);
+
+            await this.GetAvailableSeats_WhenShowtimeCreated_ShouldReturnAvailableSeats(showtimeId);
+        }
+
+        private async Task GetShowtime_WhenShowtimeCreated_ShouldReturnShowtimeCreated(DateTimeOffset sessionDateOnUtc, Guid showtimeId)
+        {
+            // Arrange
             var getShowtimeRoute = $"api/v2/{GetShowtime.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 getShowtimeRoute,
                 (nameof(showtimeId), showtimeId.ToString()));
 
-            // Act Showtime Projection
+            // Act
             var showtimeResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(pathAndQuery, this.OutputHelper);
 
-            // Assert Showtime Projection
+            // Assert
             showtimeResponse.Should().NotBeNull();
             showtimeResponse.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
             showtimeResponse.SessionDateOnUtc.Should().Be(sessionDateOnUtc);
             showtimeResponse.AuditoriumId.Should().Be(SeedData.ExampleAuditorium.Id);
             showtimeResponse.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
+        }
 
-            // Arrange AvailableSeats Projection
+        private async Task GetAvailableSeats_WhenShowtimeCreated_ShouldReturnAvailableSeats(Guid showtimeId)
+        {
+            // Arrange
             var route = $"api/v2/{GetAvailableSeats.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString());
 
-            // Act AvailableSeats Projection
+            // Act
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);
 
-            // Assert AvailableSeats Projection
+            // Assert
             availableSeatsResponse.Should().NotBeNullOrEmpty();
             availableSeatsResponse.Count().Should().Be(SeedData.ExampleAuditorium.Rows * SeedData.ExampleAuditorium.SeatsPerRow);
         }
