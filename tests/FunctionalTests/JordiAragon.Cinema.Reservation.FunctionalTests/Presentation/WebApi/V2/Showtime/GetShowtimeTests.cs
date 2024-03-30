@@ -20,7 +20,7 @@
         }
 
         [Fact]
-        public async Task GetAllShowtimes_WhenHavingValidArguments_ShouldReturnOneShowtime()
+        public async Task GetShowtime_WhenHavingValidArguments_ShouldReturnOneShowtime()
         {
             // Arrange
             var showtimeId = SeedData.ExampleShowtime.Id.ToString();
@@ -35,10 +35,10 @@
 
             // Assert
             response.Should().NotBeNull();
-            response.MovieTitle.Should().Be(SeedData.ExampleShowtimeReadModel.MovieTitle);
-            response.SessionDateOnUtc.Should().Be(SeedData.ExampleShowtimeReadModel.SessionDateOnUtc);
-            response.AuditoriumId.Should().Be(SeedData.ExampleShowtimeReadModel.AuditoriumId);
-            response.AuditoriumName.Should().Be(SeedData.ExampleShowtimeReadModel.AuditoriumName);
+            response.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
+            response.SessionDateOnUtc.Should().Be(SeedData.ExampleShowtime.SessionDateOnUtc);
+            response.AuditoriumId.Should().Be(SeedData.ExampleAuditorium.Id);
+            response.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
         }
     }
 }

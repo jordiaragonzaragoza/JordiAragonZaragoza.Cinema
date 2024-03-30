@@ -14,16 +14,17 @@
 
     public sealed class GetAvailableSeatsQueryHandler : IQueryHandler<GetAvailableSeatsQuery, IEnumerable<AvailableSeatReadModel>>
     {
-        private readonly IReadListRepository<AvailableSeatReadModel, Guid> readListRepository;
+        private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> readListRepository;
 
-        public GetAvailableSeatsQueryHandler(IReadListRepository<AvailableSeatReadModel, Guid> readListRepository)
+        public GetAvailableSeatsQueryHandler(ISpecificationReadRepository<AvailableSeatReadModel, Guid> readListRepository)
         {
             this.readListRepository = Guard.Against.Null(readListRepository, nameof(readListRepository));
         }
 
         public async Task<Result<IEnumerable<AvailableSeatReadModel>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
         {
-            var result = await this.readListRepository.ListAsync(cancellationToken);
+            var specification = new GetAvailableSeatsByShowtimeIdSpec(request.ShowtimeId);
+            var result = await this.readListRepository.ListAsync(specification, cancellationToken);
             if (!result.Any())
             {
                 return Result.NotFound($"{nameof(AvailableSeatReadModel)}/s not found.");

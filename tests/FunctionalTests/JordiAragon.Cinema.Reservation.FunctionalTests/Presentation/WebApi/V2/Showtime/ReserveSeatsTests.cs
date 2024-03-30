@@ -48,7 +48,7 @@
             // Act
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
-            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency.
+            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency on projections.
 
             var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
