@@ -40,6 +40,10 @@
             // Assert
             response.Should()
                 .NotBeEmpty();
+
+            // Assert Showtime Projection
+
+            // Assert AvailableSeats
         }
     }
 }

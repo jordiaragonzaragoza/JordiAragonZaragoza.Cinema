@@ -7,7 +7,7 @@
     using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public class GetShowtimesSpec : Specification<ShowtimeReadModel>, IPaginatedSpecification<ShowtimeReadModel>
+    public sealed class GetShowtimesSpec : Specification<ShowtimeReadModel>, IPaginatedSpecification<ShowtimeReadModel>
     {
         private readonly GetShowtimesQuery request;
 

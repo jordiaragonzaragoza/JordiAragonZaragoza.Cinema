@@ -2,8 +2,9 @@
 {
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.User.Application.Contracts.Queries;
+    using JordiAragon.SharedKernel.Application.Validators;
 
-    public sealed class GetUserTicketQueryValidator : AbstractValidator<GetUserTicketQuery>
+    public sealed class GetUserTicketQueryValidator : BaseValidator<GetUserTicketQuery>
     {
         public GetUserTicketQueryValidator()
         {

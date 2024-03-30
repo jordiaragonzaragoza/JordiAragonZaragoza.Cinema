@@ -19,12 +19,15 @@
             // Requests to queries or commands.
             this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
             this.CreateMap<GetShowtimesRequest, GetShowtimesQuery>();
+            this.CreateMap<GetShowtimeRequest, GetShowtimeQuery>();
 
             // OutputDtos to responses.
             this.CreateMap<TicketOutputDto, TicketResponse>();
             this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
 
             this.CreateMap<ShowtimeReadModel, ShowtimeResponse>();
+            this.CreateMap<Result<ShowtimeReadModel>, Result<ShowtimeResponse>>();
+
             this.CreateMap<PaginatedCollectionOutputDto<ShowtimeReadModel>, PaginatedCollectionResponse<ShowtimeResponse>>();
             this.CreateMap<Result<PaginatedCollectionOutputDto<ShowtimeReadModel>>, Result<PaginatedCollectionResponse<ShowtimeResponse>>>();
 

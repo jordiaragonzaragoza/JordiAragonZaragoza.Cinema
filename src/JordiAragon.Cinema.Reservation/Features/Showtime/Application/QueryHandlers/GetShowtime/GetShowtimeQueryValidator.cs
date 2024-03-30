@@ -1,12 +1,12 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.QueryHandlers.GetAvailableSeats
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtime
 {
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.SharedKernel.Application.Validators;
 
-    public sealed class GetAvailableSeatsQueryValidator : BaseValidator<GetAvailableSeatsQuery>
+    public sealed class GetShowtimeQueryValidator : BaseValidator<GetShowtimeQuery>
     {
-        public GetAvailableSeatsQueryValidator()
+        public GetShowtimeQueryValidator()
         {
             this.RuleFor(x => x.ShowtimeId)
               .NotEmpty().WithMessage("ShowtimeId is required.");
