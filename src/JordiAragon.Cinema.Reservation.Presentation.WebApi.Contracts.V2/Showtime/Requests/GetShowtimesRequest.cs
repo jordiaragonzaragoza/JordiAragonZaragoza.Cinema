@@ -4,7 +4,7 @@ namespace JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showti
     using System;
     using JordiAragon.SharedKernel.Presentation.WebApi.Contracts;
 
-    public record class GetShowtimesRequest(
+    public sealed record class GetShowtimesRequest(
         Guid? AuditoriumId,
         Guid? MovieId,
         DateTime? StartTimeOnUtc,

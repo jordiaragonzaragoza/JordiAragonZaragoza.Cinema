@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Application
 {
-    using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.EndShowtimes;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.ExpireReservedSeats;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using FluentValidation;

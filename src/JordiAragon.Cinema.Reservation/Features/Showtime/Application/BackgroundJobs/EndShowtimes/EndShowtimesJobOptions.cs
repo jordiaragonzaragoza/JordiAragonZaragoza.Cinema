@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.EndShowtimes
 {
     public class EndShowtimesJobOptions
     {
