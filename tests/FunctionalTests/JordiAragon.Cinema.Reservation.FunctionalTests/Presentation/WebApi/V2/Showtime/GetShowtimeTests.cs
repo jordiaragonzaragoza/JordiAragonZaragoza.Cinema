@@ -23,12 +23,12 @@
         public async Task GetShowtime_WhenHavingValidArguments_ShouldReturnOneShowtime()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id.ToString();
+            var showtimeId = SeedData.ExampleShowtime.Id;
 
             var route = $"api/v2/{GetShowtime.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
-                (nameof(showtimeId), showtimeId));
+                (nameof(showtimeId), showtimeId.ToString()));
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(pathAndQuery, this.OutputHelper);

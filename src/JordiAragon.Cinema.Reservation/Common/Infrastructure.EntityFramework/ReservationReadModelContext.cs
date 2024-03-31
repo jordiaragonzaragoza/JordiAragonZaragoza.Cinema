@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework
 {
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
@@ -18,11 +17,11 @@
         {
         }
 
-        public DbSet<TicketReadModel> Tickets => this.Set<TicketReadModel>();
-
         public DbSet<ShowtimeReadModel> Showtimes => this.Set<ShowtimeReadModel>();
 
         public DbSet<AvailableSeatReadModel> AvailableSeats => this.Set<AvailableSeatReadModel>();
+
+        public DbSet<TicketReadModel> Tickets => this.Set<TicketReadModel>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

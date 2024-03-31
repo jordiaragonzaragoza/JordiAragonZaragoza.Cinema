@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -53,10 +54,27 @@
                 ExampleShowtime.AuditoriumId,
                 ExampleAuditorium.Name);
 
+        public static readonly TicketReadModel ExampleTicketReadModel =
+            new(
+                new Guid("2cf03b8a-3160-4b0d-b164-806171676701"),
+                ExampleUser.Id,
+                ExampleShowtime.Id,
+                ExampleShowtime.SessionDateOnUtc,
+                ExampleAuditorium.Name,
+                ExampleMovie.Title,
+                new List<SeatReadModel>
+                {
+                    new SeatReadModel(
+                        ExampleAuditorium.Seats.First().Id,
+                        ExampleAuditorium.Seats.First().Row,
+                        ExampleAuditorium.Seats.First().SeatNumber),
+                },
+                true);
+
         public static IList<AvailableSeatReadModel> ExampleShowtimeAvailableSeatsReadModel()
         {
             var availableSeats = new List<AvailableSeatReadModel>();
-            foreach (var seat in ExampleAuditorium.Seats)
+            foreach (var seat in ExampleAuditorium.Seats.Skip(1))
             {
                 availableSeats.Add(new AvailableSeatReadModel(
                     Guid.NewGuid(),
@@ -156,6 +174,14 @@
 
             ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
+            var ticket = ExampleShowtime.ReserveSeats(
+                TicketId.Create(new Guid("2cf03b8a-3160-4b0d-b164-806171676701")),
+                UserId.Create(ExampleUser.Id),
+                new List<SeatId> { ExampleAuditorium.Seats.First().Id },
+                DateTimeOffset.UtcNow);
+
+            ExampleShowtime.PurchaseTicket(ticket.Id);
+
             context.SaveChanges();
         }
 
@@ -164,6 +190,8 @@
             context.Showtimes.Add(ExampleShowtimeReadModel);
 
             context.AvailableSeats.AddRange(ExampleShowtimeAvailableSeatsReadModel());
+
+            context.Tickets.Add(ExampleTicketReadModel);
 
             context.SaveChanges();
         }
