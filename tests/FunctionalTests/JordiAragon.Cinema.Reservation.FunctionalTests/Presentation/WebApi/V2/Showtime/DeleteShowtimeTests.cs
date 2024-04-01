@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
