@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class GetShowtimeRequest(Guid ShowtimeId);
+    public sealed record class GetShowtimeRequest(Guid ShowtimeId);
 }

@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
 
-    public class DeleteShowtime : Endpoint<DeleteShowtimeRequest>
+    public sealed class DeleteShowtime : Endpoint<DeleteShowtimeRequest>
     {
         public const string Route = "showtimes/{showtimeId}";
 

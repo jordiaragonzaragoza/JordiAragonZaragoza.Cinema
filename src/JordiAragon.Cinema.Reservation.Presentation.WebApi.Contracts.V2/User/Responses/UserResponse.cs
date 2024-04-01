@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class UserResponse(Guid Id);
+    public sealed record class UserResponse(Guid Id);
 }

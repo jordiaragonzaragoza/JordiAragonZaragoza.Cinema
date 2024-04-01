@@ -13,7 +13,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
+    public sealed class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
     {
         public const string Route = "showtimes/{showtimeId}/seats/available";
 

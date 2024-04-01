@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox
 {
-    public class ProcessOutboxMessagesJobOptions
+    public sealed class ProcessOutboxMessagesJobOptions
     {
         public const string Section = "BackgroundJobs:ProcessOutboxMessagesJob";
 

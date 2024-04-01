@@ -11,7 +11,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ExpiredReservedSeatsNotificationHandler : INotificationHandler<ExpiredReservedSeatsNotification>
+    public sealed class ExpiredReservedSeatsNotificationHandler : INotificationHandler<ExpiredReservedSeatsNotification>
     {
         private readonly IRepository<TicketReadModel, Guid> ticketReadModelRepository;
 

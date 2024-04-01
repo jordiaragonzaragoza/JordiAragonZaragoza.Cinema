@@ -10,7 +10,7 @@
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class DeleteShowtimeCommandHandler : BaseCommandHandler<DeleteShowtimeCommand>
+    public sealed class DeleteShowtimeCommandHandler : BaseCommandHandler<DeleteShowtimeCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 

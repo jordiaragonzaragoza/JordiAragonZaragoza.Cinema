@@ -5,5 +5,5 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class GetAvailableSeatsQuery(Guid ShowtimeId) : IQuery<IEnumerable<AvailableSeatReadModel>>;
+    public sealed record class GetAvailableSeatsQuery(Guid ShowtimeId) : IQuery<IEnumerable<AvailableSeatReadModel>>;
 }

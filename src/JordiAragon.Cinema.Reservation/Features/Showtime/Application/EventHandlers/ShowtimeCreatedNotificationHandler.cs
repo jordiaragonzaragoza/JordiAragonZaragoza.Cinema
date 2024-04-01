@@ -7,7 +7,7 @@
     using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
+    public sealed class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
     {
         private readonly ILogger<ShowtimeCreatedNotificationHandler> logger;
 

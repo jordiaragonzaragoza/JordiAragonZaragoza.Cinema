@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class EndShowtimeCommandHandler : BaseCommandHandler<EndShowtimeCommand>
+    public sealed class EndShowtimeCommandHandler : BaseCommandHandler<EndShowtimeCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 

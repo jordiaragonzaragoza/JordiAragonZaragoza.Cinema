@@ -20,7 +20,7 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using Volo.Abp.Guids;
 
-    public class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
+    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;

@@ -4,7 +4,7 @@
     using JordiAragon.SharedKernel.Infrastructure;
     using JordiAragon.SharedKernel.Infrastructure.Interfaces;
 
-    public class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
+    public sealed class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
     {
         public ReservationDomainEventsDispatcher(
             IBusinessModelStore businessModelStore,

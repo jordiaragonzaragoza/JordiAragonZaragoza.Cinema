@@ -16,7 +16,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetUserTicketTests : BaseWebApiFunctionalTests
+    public sealed class GetUserTicketTests : BaseWebApiFunctionalTests
     {
         public GetUserTicketTests(
             FunctionalTestsFixture<Program> fixture,

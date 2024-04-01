@@ -4,7 +4,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class ExhibitionPeriodMustExceedOrEqualRuntimeRule : IBusinessRule
+    public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRule : IBusinessRule
     {
         private readonly ExhibitionPeriod exhibitionPeriod;
         private readonly TimeSpan runtime;

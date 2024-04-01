@@ -4,7 +4,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.SharedKernel.Application.Validators;
 
-    public class ExpireReservedSeatsCommandValidator : BaseValidator<ExpireReservedSeatsCommand>
+    public sealed class ExpireReservedSeatsCommandValidator : BaseValidator<ExpireReservedSeatsCommand>
     {
         public ExpireReservedSeatsCommandValidator()
         {

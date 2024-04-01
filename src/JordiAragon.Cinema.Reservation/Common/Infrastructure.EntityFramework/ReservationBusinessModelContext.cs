@@ -14,7 +14,7 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class ReservationBusinessModelContext : BaseBusinessModelContext
+    public sealed class ReservationBusinessModelContext : BaseBusinessModelContext
     {
         public ReservationBusinessModelContext(
             DbContextOptions<ReservationBusinessModelContext> options,

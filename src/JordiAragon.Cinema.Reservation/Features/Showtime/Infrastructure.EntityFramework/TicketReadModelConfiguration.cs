@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class TicketReadModelConfiguration : IEntityTypeConfiguration<TicketReadModel>
+    public sealed class TicketReadModelConfiguration : IEntityTypeConfiguration<TicketReadModel>
     {
         public void Configure(EntityTypeBuilder<TicketReadModel> builder)
         {

@@ -11,7 +11,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class CreateShowtime : Endpoint<CreateShowtimeRequest, Guid>
+    public sealed class CreateShowtime : Endpoint<CreateShowtimeRequest, Guid>
     {
         public const string Route = "showtimes";
 

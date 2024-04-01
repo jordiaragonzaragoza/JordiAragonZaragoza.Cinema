@@ -7,7 +7,7 @@
     using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public class GetUserTicketsSpecification : Specification<TicketReadModel>, IPaginatedSpecification<TicketReadModel>
+    public sealed class GetUserTicketsSpecification : Specification<TicketReadModel>, IPaginatedSpecification<TicketReadModel>
     {
         private readonly GetUserTicketsQuery request;
 

@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class GetAvailableSeatsRequest(Guid ShowtimeId);
+    public sealed record class GetAvailableSeatsRequest(Guid ShowtimeId);
 }

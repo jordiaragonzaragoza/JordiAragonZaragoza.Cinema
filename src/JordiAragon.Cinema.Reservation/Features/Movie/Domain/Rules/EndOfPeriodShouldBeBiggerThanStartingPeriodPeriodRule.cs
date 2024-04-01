@@ -3,7 +3,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule : IBusinessRule
+    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule : IBusinessRule
     {
         private readonly ExhibitionPeriod exhibitionPeriod;
 

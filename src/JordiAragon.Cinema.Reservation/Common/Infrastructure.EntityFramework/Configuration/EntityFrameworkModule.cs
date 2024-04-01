@@ -12,7 +12,7 @@
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class EntityFrameworkModule : AssemblyModule
+    public sealed class EntityFrameworkModule : AssemblyModule
     {
         protected override Assembly CurrentAssembly => AssemblyReference.Assembly;
 

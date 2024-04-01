@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.ExpireReservedSeats
 {
-    public class ExpireReservedSeatsJobOptions
+    public sealed class ExpireReservedSeatsJobOptions
     {
         public const string Section = "BackgroundJobs:ExpireReservedSeatsJob";
 

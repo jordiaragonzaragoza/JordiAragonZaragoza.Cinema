@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration
 {
-    public class EventStoreDbOptions
+    public sealed class EventStoreDbOptions
     {
         public const string Section = "EventStore";
 

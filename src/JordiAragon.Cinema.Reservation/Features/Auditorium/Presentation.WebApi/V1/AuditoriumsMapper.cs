@@ -13,7 +13,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
-    public class AuditoriumsMapper : Profile
+    public sealed class AuditoriumsMapper : Profile
     {
         public AuditoriumsMapper()
         {

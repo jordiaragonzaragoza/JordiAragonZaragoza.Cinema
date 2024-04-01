@@ -6,7 +6,7 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class EventsTests
+    public sealed class EventsTests
     {
         private readonly Assembly assembly;
 

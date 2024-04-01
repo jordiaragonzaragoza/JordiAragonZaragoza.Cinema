@@ -7,7 +7,7 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    public class ReservationReadModelContext : BaseReadModelContext
+    public sealed class ReservationReadModelContext : BaseReadModelContext
     {
         public ReservationReadModelContext(
             DbContextOptions<ReservationReadModelContext> options,

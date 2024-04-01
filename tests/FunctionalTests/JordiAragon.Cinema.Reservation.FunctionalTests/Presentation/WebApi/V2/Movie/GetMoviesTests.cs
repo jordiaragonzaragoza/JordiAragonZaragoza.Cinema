@@ -10,7 +10,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class GetMoviesTests : BaseWebApiFunctionalTests
+    public sealed class GetMoviesTests : BaseWebApiFunctionalTests
     {
         public GetMoviesTests(
             FunctionalTestsFixture<Program> fixture,

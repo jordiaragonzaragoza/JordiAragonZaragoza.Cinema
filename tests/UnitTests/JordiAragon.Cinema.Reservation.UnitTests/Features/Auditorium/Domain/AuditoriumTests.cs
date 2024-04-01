@@ -10,7 +10,7 @@
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
-    public class AuditoriumTests
+    public sealed class AuditoriumTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateAuditorium()
         {

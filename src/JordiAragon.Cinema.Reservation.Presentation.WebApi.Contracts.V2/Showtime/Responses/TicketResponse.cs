@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
 
-    public record class TicketResponse(
+    public sealed record class TicketResponse(
         Guid Id,
         Guid UserId,
         Guid ShowtimeId,

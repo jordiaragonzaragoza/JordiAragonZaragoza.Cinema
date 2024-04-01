@@ -12,7 +12,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetShowtime : Endpoint<GetShowtimeRequest, ShowtimeResponse>
+    public sealed class GetShowtime : Endpoint<GetShowtimeRequest, ShowtimeResponse>
     {
         public const string Route = "showtimes/{showtimeId}";
 

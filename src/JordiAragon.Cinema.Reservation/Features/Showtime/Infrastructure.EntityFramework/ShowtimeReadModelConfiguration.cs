@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class ShowtimeReadModelConfiguration : IEntityTypeConfiguration<ShowtimeReadModel>
+    public sealed class ShowtimeReadModelConfiguration : IEntityTypeConfiguration<ShowtimeReadModel>
     {
         public void Configure(EntityTypeBuilder<ShowtimeReadModel> builder)
         {

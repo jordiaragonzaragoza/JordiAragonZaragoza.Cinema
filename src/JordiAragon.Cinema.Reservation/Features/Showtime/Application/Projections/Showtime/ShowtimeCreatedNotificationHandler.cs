@@ -13,7 +13,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
+    public sealed class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;

@@ -10,7 +10,7 @@
     using JordiAragon.Cinema.Reservation.User.Domain;
     using Xunit;
 
-    public class TicketTests
+    public sealed class TicketTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateTicket()
         {

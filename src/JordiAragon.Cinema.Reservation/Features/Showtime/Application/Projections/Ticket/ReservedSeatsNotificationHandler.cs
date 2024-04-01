@@ -16,7 +16,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ReservedSeatsNotificationHandler : INotificationHandler<ReservedSeatsNotification>
+    public sealed class ReservedSeatsNotificationHandler : INotificationHandler<ReservedSeatsNotification>
     {
         private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;

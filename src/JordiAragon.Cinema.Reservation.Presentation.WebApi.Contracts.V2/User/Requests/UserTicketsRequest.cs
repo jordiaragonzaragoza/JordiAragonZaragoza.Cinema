@@ -4,7 +4,7 @@ namespace JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.User.R
     using System;
     using JordiAragon.SharedKernel.Presentation.WebApi.Contracts;
 
-    public record class UserTicketsRequest(
+    public sealed record class UserTicketsRequest(
         Guid UserId,
         Guid? ShowtimeId,
         DateTimeOffset? StartIntervalTimeOnUtc,

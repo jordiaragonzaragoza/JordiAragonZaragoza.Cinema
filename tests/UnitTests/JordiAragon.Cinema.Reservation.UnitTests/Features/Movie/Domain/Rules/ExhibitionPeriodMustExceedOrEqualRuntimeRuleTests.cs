@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class ExhibitionPeriodMustExceedOrEqualRuntimeRuleTests
+    public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRuleTests
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule()
         {

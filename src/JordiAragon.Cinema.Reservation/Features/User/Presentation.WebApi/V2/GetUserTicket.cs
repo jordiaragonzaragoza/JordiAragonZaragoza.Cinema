@@ -13,7 +13,7 @@
 
     using IMapper = AutoMapper.IMapper;
 
-    public class GetUserTicket : Endpoint<UserTicketRequest, TicketResponse>
+    public sealed class GetUserTicket : Endpoint<UserTicketRequest, TicketResponse>
     {
         public const string Route = "users/{userId}/showtimes/{showtimeId}/tickets/{ticketId}";
 

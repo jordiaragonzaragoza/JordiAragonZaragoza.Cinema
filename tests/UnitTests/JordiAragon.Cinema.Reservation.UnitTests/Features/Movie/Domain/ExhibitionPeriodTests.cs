@@ -8,7 +8,7 @@
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
-    public class ExhibitionPeriodTests
+    public sealed class ExhibitionPeriodTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateExhibitionPeriod()
         {

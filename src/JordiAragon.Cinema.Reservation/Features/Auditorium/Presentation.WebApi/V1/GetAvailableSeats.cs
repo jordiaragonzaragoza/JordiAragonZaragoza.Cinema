@@ -13,7 +13,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
+    public sealed class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
     {
         private readonly ISender internalBus;
         private readonly IMapper mapper;

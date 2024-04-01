@@ -9,7 +9,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class NoReservationsAllowedAfterShowtimeEndedRuleTests
+    public sealed class NoReservationsAllowedAfterShowtimeEndedRuleTests
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorNoReservationsAllowedAfterShowtimeEndedRule()
         {

@@ -13,7 +13,7 @@
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the catalog bounded context.
-    public class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
+    public sealed class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
     {
         private readonly ISender internalBus;
         private readonly IMapper mapper;

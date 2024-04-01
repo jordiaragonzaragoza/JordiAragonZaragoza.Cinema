@@ -10,7 +10,7 @@
     using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
+    public sealed class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
     {
         private readonly IRepository<Movie, MovieId> movieRepository;
 

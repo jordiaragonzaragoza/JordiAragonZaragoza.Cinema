@@ -4,7 +4,7 @@
     using Ardalis.Specification;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
-    public class GetTicketsByShowtimeIdSpec : Specification<TicketReadModel>
+    public sealed class GetTicketsByShowtimeIdSpec : Specification<TicketReadModel>
     {
         public GetTicketsByShowtimeIdSpec(Guid showtimeId)
         {

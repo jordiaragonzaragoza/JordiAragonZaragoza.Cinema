@@ -10,7 +10,7 @@
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
 
-    public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
+    public sealed class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
     {
         private readonly DbConnection businessModelStoreConnection;

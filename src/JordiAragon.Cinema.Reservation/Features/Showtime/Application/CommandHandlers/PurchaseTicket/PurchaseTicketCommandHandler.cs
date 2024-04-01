@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class PurchaseTicketCommandHandler : BaseCommandHandler<PurchaseTicketCommand>
+    public sealed class PurchaseTicketCommandHandler : BaseCommandHandler<PurchaseTicketCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 

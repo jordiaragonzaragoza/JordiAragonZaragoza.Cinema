@@ -10,7 +10,7 @@
     using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Presentation.WebApi.Contracts;
 
-    public class ShowtimesMapper : Profile
+    public sealed class ShowtimesMapper : Profile
     {
         public ShowtimesMapper()
         {

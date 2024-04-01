@@ -4,7 +4,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
 
-    public class MovieMapper : Profile
+    public sealed class MovieMapper : Profile
     {
         public MovieMapper()
         {

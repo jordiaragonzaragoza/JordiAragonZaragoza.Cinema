@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Movie.Responses;
 
-    public class MoviesMapper : Profile
+    public sealed class MoviesMapper : Profile
     {
         public MoviesMapper()
         {

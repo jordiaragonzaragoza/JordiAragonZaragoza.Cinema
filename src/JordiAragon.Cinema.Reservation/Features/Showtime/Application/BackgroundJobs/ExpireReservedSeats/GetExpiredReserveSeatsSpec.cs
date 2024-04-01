@@ -5,7 +5,7 @@
     using Ardalis.Specification;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
 
-    public class GetExpiredReserveSeatsSpec : Specification<Showtime>
+    public sealed class GetExpiredReserveSeatsSpec : Specification<Showtime>
     {
         public GetExpiredReserveSeatsSpec(DateTimeOffset currentDateTimeOnUtc)
         {

@@ -10,7 +10,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class AddTests : BaseEntityFrameworkIntegrationTests
+    public sealed class AddTests : BaseEntityFrameworkIntegrationTests
     {
         public AddTests(
             IntegrationTestsFixture fixture,

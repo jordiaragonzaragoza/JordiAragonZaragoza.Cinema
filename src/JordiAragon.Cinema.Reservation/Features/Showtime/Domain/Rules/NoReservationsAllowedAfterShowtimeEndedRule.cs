@@ -5,7 +5,7 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
 
-    public class NoReservationsAllowedAfterShowtimeEndedRule : IBusinessRule
+    public sealed class NoReservationsAllowedAfterShowtimeEndedRule : IBusinessRule
     {
         private readonly Showtime showtime;
         private readonly Movie movie;

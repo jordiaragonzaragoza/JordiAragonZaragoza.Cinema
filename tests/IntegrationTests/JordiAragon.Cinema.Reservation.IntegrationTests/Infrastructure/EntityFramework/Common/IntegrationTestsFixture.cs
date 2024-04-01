@@ -15,7 +15,7 @@
     using Testcontainers.SqlEdge;
     using Xunit;
 
-    public class IntegrationTestsFixture : IAsyncLifetime
+    public sealed class IntegrationTestsFixture : IAsyncLifetime
     {
         private readonly SqlEdgeContainer businessModelStoreContainer =
             new SqlEdgeBuilder()

@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
-    public class AuditoriumsMapper : Profile
+    public sealed class AuditoriumsMapper : Profile
     {
         public AuditoriumsMapper()
         {

@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class ExpireReservedSeatsCommandHandler : BaseCommandHandler<ExpireReservedSeatsCommand>
+    public sealed class ExpireReservedSeatsCommandHandler : BaseCommandHandler<ExpireReservedSeatsCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 

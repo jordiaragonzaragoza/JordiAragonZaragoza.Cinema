@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.User.Application.Contracts.Queries;
 
-    public class GetUserTicketSpecification : SingleResultSpecification<TicketReadModel>
+    public sealed class GetUserTicketSpecification : SingleResultSpecification<TicketReadModel>
     {
         public GetUserTicketSpecification(GetUserTicketQuery request)
         {

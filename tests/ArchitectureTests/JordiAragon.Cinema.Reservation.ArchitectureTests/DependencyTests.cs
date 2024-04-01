@@ -9,7 +9,7 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class DependencyTests
+    public sealed class DependencyTests
     {
         private readonly Assembly assembly;
         private readonly IEnumerable<string> domainNamespaces;

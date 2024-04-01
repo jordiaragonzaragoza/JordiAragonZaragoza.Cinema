@@ -17,7 +17,7 @@
     using Volo.Abp.Guids;
     using Xunit;
 
-    public class CreateShowtimeCommandHandlerTests
+    public sealed class CreateShowtimeCommandHandlerTests
     {
         private readonly CreateShowtimeCommandHandler handler;
 

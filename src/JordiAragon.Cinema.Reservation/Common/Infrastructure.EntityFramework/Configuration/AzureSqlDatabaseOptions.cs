@@ -2,7 +2,7 @@
 {
     using System.Text;
 
-    public class AzureSqlDatabaseOptions
+    public sealed class AzureSqlDatabaseOptions
     {
         public const string BusinessModelSection = "AzureSqlDatabaseBusinessModelStore";
 

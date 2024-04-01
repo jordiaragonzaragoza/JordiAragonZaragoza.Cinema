@@ -5,7 +5,7 @@
     using JordiAragon.SharedKernel.Application.Contracts;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class GetUserTicketsQuery(
+    public sealed record class GetUserTicketsQuery(
         Guid UserId,
         Guid? ShowtimeId,
         DateTimeOffset? StartIntervalTimeOnUtc,

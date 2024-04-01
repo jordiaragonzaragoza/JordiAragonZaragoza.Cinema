@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class OnlyAvailableSeatsCanBeReservedRule : IBusinessRule
+    public sealed class OnlyAvailableSeatsCanBeReservedRule : IBusinessRule
     {
         private readonly IEnumerable<Seat> desiredSeats;
         private readonly IEnumerable<Seat> availableSeats;

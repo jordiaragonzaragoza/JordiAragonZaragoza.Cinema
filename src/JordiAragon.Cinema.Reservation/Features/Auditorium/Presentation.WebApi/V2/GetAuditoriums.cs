@@ -13,7 +13,7 @@
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the management bounded context.
-    public class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
+    public sealed class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";
 

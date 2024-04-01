@@ -12,7 +12,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class ReserveSeats : Endpoint<ReserveSeatsRequest, TicketResponse>
+    public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, TicketResponse>
     {
         private readonly ISender internalBus;
         private readonly IMapper mapper;

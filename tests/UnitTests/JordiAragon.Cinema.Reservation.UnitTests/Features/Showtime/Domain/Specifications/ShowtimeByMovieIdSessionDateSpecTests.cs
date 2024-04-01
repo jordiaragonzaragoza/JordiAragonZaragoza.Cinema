@@ -9,7 +9,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class ShowtimeByMovieIdSessionDateSpecTests
+    public sealed class ShowtimeByMovieIdSessionDateSpecTests
     {
         public static IEnumerable<object[]> InvalidArgumentsFindShowtimeByMovieIdSessionDateSpec()
         {

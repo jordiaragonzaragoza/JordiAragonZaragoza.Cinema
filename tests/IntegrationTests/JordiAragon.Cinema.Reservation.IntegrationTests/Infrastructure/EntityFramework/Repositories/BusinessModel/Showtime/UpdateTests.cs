@@ -14,7 +14,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class UpdateTests : BaseEntityFrameworkIntegrationTests
+    public sealed class UpdateTests : BaseEntityFrameworkIntegrationTests
     {
         public UpdateTests(
             IntegrationTestsFixture fixture,

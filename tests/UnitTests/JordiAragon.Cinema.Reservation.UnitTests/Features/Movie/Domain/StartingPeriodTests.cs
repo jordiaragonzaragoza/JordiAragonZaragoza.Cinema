@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using Xunit;
 
-    public class StartingPeriodTests
+    public sealed class StartingPeriodTests
     {
         [Fact]
         public void CreateStartingPeriod_WhenHavingADefaultDateTimeOffset_ShouldThrowArgumentException()

@@ -15,7 +15,7 @@
     using Quartz;
 
     [DisallowConcurrentExecution]
-    public class EndShowtimesJob : IJob
+    public sealed class EndShowtimesJob : IJob
     {
         private readonly IDateTime dateTime;
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository;

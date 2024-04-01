@@ -7,7 +7,7 @@
     using JordiAragon.SharedKernel.Application.Validators;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class CreateShowtimeCommandValidator : BaseValidator<CreateShowtimeCommand>
+    public sealed class CreateShowtimeCommandValidator : BaseValidator<CreateShowtimeCommand>
     {
         private readonly IDateTime dateTime;
 

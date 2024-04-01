@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class UserTicketRequest(Guid UserId, Guid ShowtimeId, Guid TicketId);
+    public sealed record class UserTicketRequest(Guid UserId, Guid ShowtimeId, Guid TicketId);
 }

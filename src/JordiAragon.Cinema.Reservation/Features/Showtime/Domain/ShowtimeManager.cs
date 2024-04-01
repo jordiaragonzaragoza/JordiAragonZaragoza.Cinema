@@ -15,7 +15,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeManager : BaseDomainService, IShowtimeManager
+    public sealed class ShowtimeManager : BaseDomainService, IShowtimeManager
     {
         public static readonly TimeSpan CleaningAndAccessTimeSpan = TimeSpan.FromMinutes(30);
 

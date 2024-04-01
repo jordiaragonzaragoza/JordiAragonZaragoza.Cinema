@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class MovieTests
+    public sealed class MovieTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
         {

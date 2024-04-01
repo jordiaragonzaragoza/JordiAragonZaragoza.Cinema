@@ -13,7 +13,7 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
     // TODO: Temporal. Move. This query is part of other bounded context. (Catalog)
-    public class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieOutputDto>>
+    public sealed class GetMovieQueryHandler : IQueryHandler<GetMoviesQuery, IEnumerable<MovieOutputDto>>
     {
         private readonly IReadListRepository<Movie, MovieId> movieRepository;
         private readonly IMapper mapper;

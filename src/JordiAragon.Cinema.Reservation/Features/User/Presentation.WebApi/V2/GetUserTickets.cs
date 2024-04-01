@@ -14,7 +14,7 @@
 
     using IMapper = AutoMapper.IMapper;
 
-    public class GetUserTickets : Endpoint<UserTicketsRequest, PaginatedCollectionResponse<TicketResponse>>
+    public sealed class GetUserTickets : Endpoint<UserTicketsRequest, PaginatedCollectionResponse<TicketResponse>>
     {
         public const string Route = "users/{userId}/tickets";
 

@@ -9,7 +9,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public class DeleteTests : BaseEntityFrameworkIntegrationTests
+    public sealed class DeleteTests : BaseEntityFrameworkIntegrationTests
     {
         public DeleteTests(
             IntegrationTestsFixture fixture,

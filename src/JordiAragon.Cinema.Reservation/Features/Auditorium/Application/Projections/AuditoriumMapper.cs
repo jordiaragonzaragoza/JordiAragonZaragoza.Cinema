@@ -4,7 +4,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
 
-    public class AuditoriumMapper : Profile
+    public sealed class AuditoriumMapper : Profile
     {
         public AuditoriumMapper()
         {

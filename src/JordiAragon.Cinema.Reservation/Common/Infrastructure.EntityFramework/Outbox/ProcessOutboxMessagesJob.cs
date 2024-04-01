@@ -10,7 +10,7 @@
     using Microsoft.Extensions.Logging;
     using SharedKernelProcessOutboxMessagesJob = JordiAragon.SharedKernel.Infrastructure.EntityFramework.Outbox.ProcessOutboxMessagesJob;
 
-    public class ProcessOutboxMessagesJob : SharedKernelProcessOutboxMessagesJob
+    public sealed class ProcessOutboxMessagesJob : SharedKernelProcessOutboxMessagesJob
     {
         public ProcessOutboxMessagesJob(
             IDateTime dateTime,

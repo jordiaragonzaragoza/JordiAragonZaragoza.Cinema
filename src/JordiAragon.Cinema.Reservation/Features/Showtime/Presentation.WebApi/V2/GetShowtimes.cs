@@ -13,7 +13,7 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetShowtimes : Endpoint<GetShowtimesRequest, PaginatedCollectionResponse<ShowtimeResponse>>
+    public sealed class GetShowtimes : Endpoint<GetShowtimesRequest, PaginatedCollectionResponse<ShowtimeResponse>>
     {
         public const string Route = "showtimes";
 

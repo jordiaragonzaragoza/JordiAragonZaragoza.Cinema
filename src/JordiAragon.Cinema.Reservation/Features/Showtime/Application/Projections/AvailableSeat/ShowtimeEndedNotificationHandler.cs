@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
 
-    public class ShowtimeEndedNotificationHandler : INotificationHandler<ShowtimeEndedNotification>
+    public sealed class ShowtimeEndedNotificationHandler : INotificationHandler<ShowtimeEndedNotification>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;

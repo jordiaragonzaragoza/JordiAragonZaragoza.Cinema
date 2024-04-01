@@ -6,7 +6,7 @@
     using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class AuditoriumShowtimeAddedEventHandler : INotificationHandler<ShowtimeAddedEvent>
+    public sealed class AuditoriumShowtimeAddedEventHandler : INotificationHandler<ShowtimeAddedEvent>
     {
         private readonly ILogger<AuditoriumShowtimeAddedEventHandler> logger;
 

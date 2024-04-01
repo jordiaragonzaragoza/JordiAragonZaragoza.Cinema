@@ -14,7 +14,7 @@
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the management bounded context.
-    public class GetUsers : EndpointWithoutRequest<IEnumerable<UserResponse>>
+    public sealed class GetUsers : EndpointWithoutRequest<IEnumerable<UserResponse>>
     {
         public const string Route = "users";
 

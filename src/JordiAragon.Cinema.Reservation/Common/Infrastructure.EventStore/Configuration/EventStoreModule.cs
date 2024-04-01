@@ -6,7 +6,7 @@
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class EventStoreModule : AssemblyModule
+    public sealed class EventStoreModule : AssemblyModule
     {
         protected override Assembly CurrentAssembly => AssemblyReference.Assembly;
 

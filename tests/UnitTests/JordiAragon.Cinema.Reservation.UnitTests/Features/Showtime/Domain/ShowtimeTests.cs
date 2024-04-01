@@ -14,7 +14,7 @@
     using Xunit;
     using Showtime = JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime;
 
-    public class ShowtimeTests
+    public sealed class ShowtimeTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateShowtime()
         {

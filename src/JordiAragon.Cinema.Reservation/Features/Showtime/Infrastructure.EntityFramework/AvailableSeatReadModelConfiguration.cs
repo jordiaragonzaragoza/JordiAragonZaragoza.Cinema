@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class AvailableSeatReadModelConfiguration : IEntityTypeConfiguration<AvailableSeatReadModel>
+    public sealed class AvailableSeatReadModelConfiguration : IEntityTypeConfiguration<AvailableSeatReadModel>
     {
         public void Configure(EntityTypeBuilder<AvailableSeatReadModel> builder)
         {

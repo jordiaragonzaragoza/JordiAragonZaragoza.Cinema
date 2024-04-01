@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.EndShowtimes
 {
-    public class EndShowtimesJobOptions
+    public sealed class EndShowtimesJobOptions
     {
         public const string Section = "BackgroundJobs:EndShowtimesJob";
 

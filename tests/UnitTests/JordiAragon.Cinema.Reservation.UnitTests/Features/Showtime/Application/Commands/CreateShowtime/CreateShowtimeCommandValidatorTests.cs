@@ -11,7 +11,7 @@
     using NSubstitute;
     using Xunit;
 
-    public class CreateShowtimeCommandValidatorTests
+    public sealed class CreateShowtimeCommandValidatorTests
     {
         private readonly IDateTime mockDatetime;
         private readonly CreateShowtimeCommandValidator validator;

@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRuleTests
+    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRuleTests
     {
         [Fact]
         public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingANullExhibitionPeriod_ShouldThrowArgumentNullException()

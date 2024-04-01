@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class ShowtimeReadModel(
+    public sealed record class ShowtimeReadModel(
         Guid Id,
         DateTimeOffset SessionDateOnUtc,
         Guid MovieId,

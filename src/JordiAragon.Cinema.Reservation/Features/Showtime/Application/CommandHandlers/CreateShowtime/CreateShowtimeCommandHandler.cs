@@ -15,7 +15,7 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using Volo.Abp.Guids;
 
-    public class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
+    public sealed class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;

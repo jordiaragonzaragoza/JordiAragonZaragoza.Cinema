@@ -15,7 +15,7 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
 
-    public class GetShowtimes : Endpoint<GetShowtimesRequest, IEnumerable<ShowtimeResponse>>
+    public sealed class GetShowtimes : Endpoint<GetShowtimesRequest, IEnumerable<ShowtimeResponse>>
     {
         private readonly ISender internalBus;
 

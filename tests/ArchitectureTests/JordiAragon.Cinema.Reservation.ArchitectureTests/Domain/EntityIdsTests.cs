@@ -6,7 +6,7 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class EntityIdsTests
+    public sealed class EntityIdsTests
     {
         private readonly Assembly assembly;
 

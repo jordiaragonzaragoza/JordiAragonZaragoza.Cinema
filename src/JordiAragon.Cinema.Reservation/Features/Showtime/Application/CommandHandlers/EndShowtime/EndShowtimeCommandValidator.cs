@@ -4,7 +4,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.SharedKernel.Application.Validators;
 
-    public class EndShowtimeCommandValidator : BaseValidator<EndShowtimeCommand>
+    public sealed class EndShowtimeCommandValidator : BaseValidator<EndShowtimeCommand>
     {
         public EndShowtimeCommandValidator()
         {

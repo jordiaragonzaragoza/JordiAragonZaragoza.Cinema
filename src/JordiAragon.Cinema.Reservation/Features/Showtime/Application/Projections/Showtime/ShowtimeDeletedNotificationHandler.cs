@@ -11,7 +11,7 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public class ShowtimeDeletedNotificationHandler : INotificationHandler<ShowtimeDeletedNotification>
+    public sealed class ShowtimeDeletedNotificationHandler : INotificationHandler<ShowtimeDeletedNotification>
     {
         private readonly IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
 

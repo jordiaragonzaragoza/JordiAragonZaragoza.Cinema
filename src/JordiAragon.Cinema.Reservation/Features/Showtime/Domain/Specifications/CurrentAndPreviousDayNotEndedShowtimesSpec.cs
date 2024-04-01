@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
 
-    public class CurrentAndPreviousDayNotEndedShowtimesSpec : Specification<Showtime>
+    public sealed class CurrentAndPreviousDayNotEndedShowtimesSpec : Specification<Showtime>
     {
         public CurrentAndPreviousDayNotEndedShowtimesSpec(
             DateTimeOffset currentDateTimeOnUtc,

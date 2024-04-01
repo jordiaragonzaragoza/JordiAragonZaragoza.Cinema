@@ -14,7 +14,7 @@
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the catalog bounded context.
-    public class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
+    public sealed class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
     {
         public const string Route = "movies";
 

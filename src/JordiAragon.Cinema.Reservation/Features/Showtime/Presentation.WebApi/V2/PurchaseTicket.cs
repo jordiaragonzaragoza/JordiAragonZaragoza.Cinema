@@ -9,7 +9,7 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
 
-    public class PurchaseTicket : Endpoint<PurchaseTicketRequest>
+    public sealed class PurchaseTicket : Endpoint<PurchaseTicketRequest>
     {
         public const string Route = "showtimes/{showtimeId}/tickets/{ticketId}/purchase";
 

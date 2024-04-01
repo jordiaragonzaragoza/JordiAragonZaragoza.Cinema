@@ -3,5 +3,5 @@
     using System;
     using System.Collections.Generic;
 
-    public record class ReserveSeatsRequest(Guid ShowtimeId, IEnumerable<Guid> SeatsIds);
+    public sealed record class ReserveSeatsRequest(Guid ShowtimeId, IEnumerable<Guid> SeatsIds);
 }

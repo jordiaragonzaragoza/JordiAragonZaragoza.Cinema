@@ -19,7 +19,7 @@
     using Auditorium = JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium;
     using Showtime = JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime;
 
-    public class ShowtimeManagerTests
+    public sealed class ShowtimeManagerTests
     {
         private readonly ShowtimeManager showtimeManager;
 
