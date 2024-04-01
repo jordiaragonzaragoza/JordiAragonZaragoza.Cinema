@@ -1,12 +1,14 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.V2.Showtime
 {
     using System;
+    using System.Diagnostics;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.WebApi.Common;
+    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Showtime.Presentation.WebApi.V2;
     using Xunit;
     using Xunit.Abstractions;
@@ -24,7 +26,7 @@
         public async Task DeleteShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = await this.CreateNewShowtimeAsync();
 
             var route = $"api/v2/{DeleteShowtime.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString());
@@ -42,7 +44,8 @@
 
         private async Task TestProjectionsAsync(Guid showtimeId)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency on projections.
+            // Required to satisfy eventual consistency on projections.
+            await Task.Delay(TimeSpan.FromSeconds(2));
 
             await this.GetShowtime_WhenShowtimeDeleted_ShouldReturnNotFound(showtimeId);
 
@@ -93,6 +96,28 @@
             // Assert
             showtimeTicketsResponse.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        private async Task<Guid> CreateNewShowtimeAsync()
+        {
+            var url = $"api/v2/{CreateShowtime.Route}";
+
+            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            var request = new CreateShowtimeRequest(
+                SeedData.ExampleAuditorium.Id,
+                SeedData.ExampleMovie.Id,
+                sessionDateOnUtc);
+
+            var content = StringContentHelpers.FromModelAsJson(request);
+
+            // Act
+            var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+
+            // Required to satisfy eventual consistency on projections.
+            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            return showtimeId;
         }
     }
 }

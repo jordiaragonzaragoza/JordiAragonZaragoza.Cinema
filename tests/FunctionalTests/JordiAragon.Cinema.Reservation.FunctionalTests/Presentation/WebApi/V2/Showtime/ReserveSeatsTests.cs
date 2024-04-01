@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
@@ -48,7 +49,8 @@
             // Act
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
-            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency on projections.
+            // Required to satisfy eventual consistency on projections.
+            await Task.Delay(TimeSpan.FromSeconds(2));
 
             var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 

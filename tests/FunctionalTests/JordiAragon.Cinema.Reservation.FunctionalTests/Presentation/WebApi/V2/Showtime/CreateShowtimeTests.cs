@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
@@ -52,7 +53,8 @@
 
         private async Task TestProjectionsAsync(DateTimeOffset sessionDateOnUtc, Guid showtimeId)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2)); // Required to satisfy eventual consistency on projections.
+            // Required to satisfy eventual consistency on projections.
+            await Task.Delay(TimeSpan.FromSeconds(2));
 
             await this.GetShowtime_WhenShowtimeCreated_ShouldReturnShowtimeCreated(sessionDateOnUtc, showtimeId);
 
