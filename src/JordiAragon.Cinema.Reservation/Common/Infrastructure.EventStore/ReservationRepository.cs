@@ -5,7 +5,7 @@
     using JordiAragon.SharedKernel.Infrastructure;
     using JordiAragon.SharedKernel.Infrastructure.EventStore;
 
-    public class ReservationRepository<TAggregate, TId> : BaseRepository<TAggregate, TId>
+    public sealed class ReservationRepository<TAggregate, TId> : BaseRepository<TAggregate, TId>
         where TAggregate : BaseEventSourcedAggregateRoot<TId>
         where TId : class, IEntityId
     {

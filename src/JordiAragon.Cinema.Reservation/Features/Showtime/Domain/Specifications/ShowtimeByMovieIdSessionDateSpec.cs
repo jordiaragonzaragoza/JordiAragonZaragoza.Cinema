@@ -6,7 +6,7 @@
     using Ardalis.Specification;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
 
-    public class ShowtimeByMovieIdSessionDateSpec : SingleResultSpecification<Showtime>
+    public sealed class ShowtimeByMovieIdSessionDateSpec : SingleResultSpecification<Showtime>
     {
         public ShowtimeByMovieIdSessionDateSpec(MovieId movieId, DateTimeOffset sessionDateOnUtc)
         {

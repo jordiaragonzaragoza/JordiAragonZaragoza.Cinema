@@ -6,7 +6,7 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class NotificationsTests
+    public sealed class NotificationsTests
     {
         private readonly Assembly assembly;
 

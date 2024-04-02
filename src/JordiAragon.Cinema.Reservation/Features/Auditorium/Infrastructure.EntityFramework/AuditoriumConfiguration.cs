@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class AuditoriumConfiguration : BaseEntityTypeConfiguration<Auditorium, AuditoriumId>
+    public sealed class AuditoriumConfiguration : BaseEntityTypeConfiguration<Auditorium, AuditoriumId>
     {
         public override void Configure(EntityTypeBuilder<Auditorium> builder)
         {

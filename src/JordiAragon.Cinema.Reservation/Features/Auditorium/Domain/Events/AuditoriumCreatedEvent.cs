@@ -3,5 +3,5 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public sealed record class AuditoriumCreatedEvent(Guid AuditoriumId, ushort Rows, ushort SeatsPerRow) : BaseDomainEvent(AuditoriumId);
+    public sealed record class AuditoriumCreatedEvent(Guid AuditoriumId, string Name, ushort Rows, ushort SeatsPerRow) : BaseDomainEvent(AuditoriumId);
 }

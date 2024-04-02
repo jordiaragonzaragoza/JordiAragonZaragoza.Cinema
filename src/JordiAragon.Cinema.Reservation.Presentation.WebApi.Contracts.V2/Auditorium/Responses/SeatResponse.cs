@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class SeatResponse(Guid Id, int Row, int SeatNumber);
+    public sealed record class SeatResponse(Guid Id, int Row, int SeatNumber);
 }

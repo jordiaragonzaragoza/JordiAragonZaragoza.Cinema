@@ -9,7 +9,7 @@
     using NetArchTest.Rules;
     using Xunit;
 
-    public class EntityTests
+    public sealed class EntityTests
     {
         private readonly Assembly assembly;
 

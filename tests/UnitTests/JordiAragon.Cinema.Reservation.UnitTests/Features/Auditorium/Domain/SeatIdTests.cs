@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using Xunit;
 
-    public class SeatIdTests
+    public sealed class SeatIdTests
     {
         [Fact]
         public void CreateSeatId_WhenHavingAnEmptyGuid_ShouldThrowArgumentException()

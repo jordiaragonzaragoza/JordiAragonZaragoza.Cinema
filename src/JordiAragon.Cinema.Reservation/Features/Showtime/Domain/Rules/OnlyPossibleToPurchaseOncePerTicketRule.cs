@@ -3,7 +3,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public class OnlyPossibleToPurchaseOncePerTicketRule : IBusinessRule
+    public sealed class OnlyPossibleToPurchaseOncePerTicketRule : IBusinessRule
     {
         private readonly Ticket ticket;
 

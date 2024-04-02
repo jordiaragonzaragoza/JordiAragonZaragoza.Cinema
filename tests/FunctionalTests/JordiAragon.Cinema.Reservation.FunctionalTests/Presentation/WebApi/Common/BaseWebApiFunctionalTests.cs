@@ -22,12 +22,12 @@
 
         public virtual Task InitializeAsync()
         {
-            this.Fixture.InitDatabase();
+            this.Fixture.InitDatabases();
 
             return Task.CompletedTask;
         }
 
         public virtual async Task DisposeAsync()
-            => await this.Fixture.ResetDatabaseAsync();
+            => await this.Fixture.ResetDatabasesAsync();
     }
 }

@@ -5,7 +5,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
-    public class EndOfPeriod : BaseValueObject
+    public sealed class EndOfPeriod : BaseValueObject
     {
         private EndOfPeriod(DateTimeOffset value)
         {

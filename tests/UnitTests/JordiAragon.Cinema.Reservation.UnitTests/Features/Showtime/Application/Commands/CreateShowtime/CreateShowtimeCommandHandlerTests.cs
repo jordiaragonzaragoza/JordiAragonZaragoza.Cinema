@@ -7,17 +7,17 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Commands.CreateShowtime;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
     using NSubstitute;
     using Volo.Abp.Guids;
     using Xunit;
 
-    public class CreateShowtimeCommandHandlerTests
+    public sealed class CreateShowtimeCommandHandlerTests
     {
         private readonly CreateShowtimeCommandHandler handler;
 

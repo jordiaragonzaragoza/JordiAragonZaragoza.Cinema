@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public record class DeleteShowtimeCommand(Guid ShowtimeId) : ICommand, IInvalidateCacheRequest
+    public sealed record class DeleteShowtimeCommand(Guid ShowtimeId) : ICommand, IInvalidateCacheRequest
     {
         public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
     }
