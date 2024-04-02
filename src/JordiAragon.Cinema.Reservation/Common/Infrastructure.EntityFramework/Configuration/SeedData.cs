@@ -5,7 +5,9 @@
     using System.Linq;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,30 +21,68 @@
                 title: "Inception",
                 runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
                 exhibitionPeriod: ExhibitionPeriod.Create(
-                    StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, TimeSpan.Zero)),
-                    EndOfPeriod.Create(DateTime.UtcNow.AddYears(1)),
+                    StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
+                    EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2)),
                     TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)));
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
                 id: AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
-                rows: 28,
-                seatsPerRow: 22);
+                name: "Auditorium One",
+                rows: 10,
+                seatsPerRow: 10);
 
         public static readonly Showtime ExampleShowtime =
             Showtime.Create(
                 id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
                 movieId: MovieId.Create(ExampleMovie.Id),
-                sessionDateOnUtc: new DateTime(2023, 1, 1, 1, 1, 1, 1, DateTimeKind.Utc),
+                sessionDateOnUtc: new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero),
                 auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
 
-        public static void Initialize(WebApplication app)
+        public static readonly User ExampleUser =
+            User.Create(
+                id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
+
+        public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
+            new(
+                ExampleShowtime.Id,
+                ExampleShowtime.SessionDateOnUtc,
+                ExampleMovie.Id,
+                ExampleMovie.Title,
+                ExampleMovie.Runtime,
+                ExampleShowtime.AuditoriumId,
+                ExampleAuditorium.Name);
+
+        public static IList<AvailableSeatReadModel> ExampleShowtimeAvailableSeatsReadModel()
         {
-            using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<ReservationContext>();
+            var availableSeats = new List<AvailableSeatReadModel>();
+            foreach (var seat in ExampleAuditorium.Seats)
+            {
+                availableSeats.Add(new AvailableSeatReadModel(
+                    Guid.NewGuid(),
+                    seat.Id,
+                    seat.Row,
+                    seat.SeatNumber,
+                    ExampleShowtime.Id,
+                    ExampleAuditorium.Id,
+                    ExampleAuditorium.Name));
+            }
+
+            return availableSeats;
+        }
+
+        public static void Initialize(WebApplication app, bool isDevelopment)
+        {
+            using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+
             try
             {
-                PopulateTestData(context);
+                PopulateBusinessModelTestData(writeContext, isDevelopment);
+                PopulateReadModelTestData(readContext, isDevelopment);
             }
             catch (Exception exception)
             {
@@ -50,23 +90,40 @@
             }
         }
 
-        public static void PopulateTestData(ReservationContext context)
+        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context, bool isDevelopment)
+        {
+            MigrateAndEnsureSqlServerDatabase(context);
+
+            if (!isDevelopment || HasAnyData(context))
+            {
+                return;
+            }
+
+            SetPreconfiguredWriteData(context);
+        }
+
+        public static void PopulateReadModelTestData(ReservationReadModelContext context, bool isDevelopment)
+        {
+            MigrateAndEnsureSqlServerDatabase(context);
+
+            if (!isDevelopment || HasAnyData(context))
+            {
+                return;
+            }
+
+            SetPreconfiguredReadData(context);
+        }
+
+        private static void MigrateAndEnsureSqlServerDatabase(DbContext context)
         {
             if (context.Database.IsSqlServer())
             {
                 context.Database.Migrate();
                 context.Database.EnsureCreated();
             }
-
-            if (HasAnyData(context))
-            {
-                return;
-            }
-
-            SetPreconfiguredData(context);
         }
 
-        private static bool HasAnyData(ReservationContext context)
+        private static bool HasAnyData(DbContext context)
         {
             var dbSets = context.GetType().GetProperties()
                                            .Where(p => p.PropertyType.IsGenericType
@@ -85,7 +142,7 @@
             return false;
         }
 
-        private static void SetPreconfiguredData(ReservationContext context)
+        private static void SetPreconfiguredWriteData(ReservationBusinessModelContext context)
         {
             context.Movies.Add(ExampleMovie);
 
@@ -93,9 +150,20 @@
 
             context.Showtimes.Add(ExampleShowtime);
 
+            context.Users.Add(ExampleUser);
+
             ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
 
             ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
+
+            context.SaveChanges();
+        }
+
+        private static void SetPreconfiguredReadData(ReservationReadModelContext context)
+        {
+            context.Showtimes.Add(ExampleShowtimeReadModel);
+
+            context.AvailableSeats.AddRange(ExampleShowtimeAvailableSeatsReadModel());
 
             context.SaveChanges();
         }

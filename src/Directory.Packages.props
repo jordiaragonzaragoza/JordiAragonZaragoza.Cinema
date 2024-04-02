@@ -15,25 +15,23 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="4.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="4.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="5.0.0" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageVersion Include="CsvHelper" Version="30.0.1" />
-		<PackageVersion Include="EasyCaching.Core" Version="1.9.2" />
-		<PackageVersion Include="EasyCaching.InMemory" Version="1.9.2" />
 		<PackageVersion Include="FastEndpoints.Swagger" Version="5.21.2" />
 		<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
 		<PackageVersion Include="MassTransit" Version="8.1.3" />

@@ -2,7 +2,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.WebApi
 {
     using Serilog.Events;
 
-    public class SerilogGraylogOptions
+    public sealed class SerilogGraylogOptions
     {
         public const string Section = "Serilog:Graylog";
 

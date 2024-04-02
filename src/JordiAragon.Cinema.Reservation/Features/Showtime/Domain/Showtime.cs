@@ -8,9 +8,11 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Rules;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
     using JordiAragon.SharedKernel.Domain.Exceptions;
+
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public sealed class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
@@ -28,6 +30,8 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
+        public bool IsEnded { get; private set; }
+
         public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
         public static Showtime Create(
@@ -43,19 +47,19 @@
             return showtime;
         }
 
-        public Ticket ReserveSeats(TicketId id, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
+        public void End()
+            => this.Apply(new ShowtimeEndedEvent(this.Id));
+
+        public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {
-            this.Apply(new ReservedSeatsEvent(this.Id, id, seatIds.Select(x => x.Value), createdTimeOnUtc));
+            this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), createdTimeOnUtc));
 
             return this.tickets[this.tickets.Count - 1];
         }
 
-        public Ticket PurchaseTicket(TicketId ticketId)
+        public void PurchaseTicket(TicketId ticketId)
         {
             this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
-
-            return this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
-                ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
         }
 
         public void ExpireReservedSeats(TicketId ticketToRemove)
@@ -67,6 +71,10 @@
             {
                 case ShowtimeCreatedEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case ShowtimeEndedEvent:
+                    this.Applier();
                     break;
 
                 case ReservedSeatsEvent @event:
@@ -106,12 +114,16 @@
             this.AuditoriumId = AuditoriumId.Create(@event.AuditoriumId);
         }
 
+        private void Applier()
+            => this.IsEnded = true;
+
         private void Applier(ReservedSeatsEvent @event)
         {
             var seatIds = @event.SeatIds.Select(SeatId.Create);
 
             var newTicket = Ticket.Create(
                  TicketId.Create(@event.TicketId),
+                 UserId.Create(@event.UserId),
                  seatIds,
                  @event.CreatedTimeOnUtc);
 

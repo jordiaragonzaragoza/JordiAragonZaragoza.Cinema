@@ -12,14 +12,14 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class PurchaseTicket : Endpoint<PurchaseTicketRequest, TicketResponse>
+    public sealed class PurchaseTicket : Endpoint<PurchaseTicketRequest, TicketResponse>
     {
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public PurchaseTicket(ISender sender, IMapper mapper)
+        public PurchaseTicket(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -30,14 +30,14 @@
             this.Version(1, 2);
             this.Summary(summary =>
             {
-                summary.Summary = "Purchase a reservation for an existing Showtime";
+                summary.Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration. ";
                 summary.Description = "Purchase a reservation for an existing Showtime";
             });
         }
 
         public async override Task HandleAsync(PurchaseTicketRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
+            var resultOutputDto = await this.internalBus.Send(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
 
             var resultResponse = this.mapper.Map<Result<TicketResponse>>(resultOutputDto);
 

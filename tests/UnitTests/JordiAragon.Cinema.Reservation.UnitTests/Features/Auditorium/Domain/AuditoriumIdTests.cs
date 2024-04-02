@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using Xunit;
 
-    public class AuditoriumIdTests
+    public sealed class AuditoriumIdTests
     {
         [Fact]
         public void CreateAuditoriumId_WhenHavingAnEmptyGuid_ShouldThrowArgumentException()

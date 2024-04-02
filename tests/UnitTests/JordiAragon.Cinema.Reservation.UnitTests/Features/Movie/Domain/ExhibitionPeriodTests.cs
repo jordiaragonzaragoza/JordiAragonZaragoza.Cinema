@@ -8,7 +8,7 @@
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
-    public class ExhibitionPeriodTests
+    public sealed class ExhibitionPeriodTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateExhibitionPeriod()
         {
@@ -56,8 +56,8 @@
         [Fact]
         public void CreateExhibitionPeriod_WhenHavingSameStartingPeriodEndOfPeriod_ShouldThrowArgumentException()
         {
-            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
-            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
             var runtime = Constants.Movie.Runtime;
 
             // Act
@@ -70,8 +70,8 @@
         [Fact]
         public void CreateExhibitionPeriod_WhenHavingStartingPeriodBiggerThanEndOfPeriod_ShouldThrowArgumentOutOfRangeException()
         {
-            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2024, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
-            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(2).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
             var runtime = Constants.Movie.Runtime;
 
             // Act
@@ -84,8 +84,8 @@
         [Fact]
         public void CreateExhibitionPeriod_WhenPeriodIsMinorThanRuntime_ShouldThrowBusinessRuleValidationException()
         {
-            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
-            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(2023, 1, 1, 2, 1, 1, 1, TimeSpan.Zero));
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 2, 1, 1, 1, TimeSpan.Zero));
             var runtime = Constants.Movie.Runtime;
 
             // Act

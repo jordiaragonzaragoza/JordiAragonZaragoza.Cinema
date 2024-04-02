@@ -9,13 +9,13 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class ShowtimeByMovieIdSessionDateSpecTests
+    public sealed class ShowtimeByMovieIdSessionDateSpecTests
     {
         public static IEnumerable<object[]> InvalidArgumentsFindShowtimeByMovieIdSessionDateSpec()
         {
             yield return new object[] { null, default(DateTimeOffset) };
             yield return new object[] { Constants.Movie.Id, default(DateTimeOffset) };
-            yield return new object[] { null, DateTime.UtcNow };
+            yield return new object[] { null, DateTimeOffset.UtcNow };
         }
 
         [Fact]

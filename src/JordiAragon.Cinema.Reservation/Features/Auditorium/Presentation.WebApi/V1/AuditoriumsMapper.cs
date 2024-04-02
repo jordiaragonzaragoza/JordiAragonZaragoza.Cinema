@@ -4,15 +4,16 @@
     using Ardalis.Result;
     using AutoMapper;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
+    using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Requests;
-    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
 
-    public class AuditoriumsMapper : Profile
+    public sealed class AuditoriumsMapper : Profile
     {
         public AuditoriumsMapper()
         {
@@ -28,8 +29,10 @@
             this.CreateMap<TicketOutputDto, TicketResponse>();
             this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
 
-            this.CreateMap<ShowtimeOutputDto, ShowtimeResponse>();
-            this.CreateMap<Result<IEnumerable<ShowtimeOutputDto>>, Result<IEnumerable<ShowtimeResponse>>>();
+            this.CreateMap<AvailableSeatReadModel, SeatResponse>()
+                .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));
+
+            this.CreateMap<Result<IEnumerable<AvailableSeatReadModel>>, Result<IEnumerable<SeatResponse>>>();
         }
     }
 }

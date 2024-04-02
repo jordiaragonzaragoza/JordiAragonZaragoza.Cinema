@@ -5,6 +5,7 @@
     using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Domain.Entities;
 
     public sealed class Ticket : BaseEntity<TicketId>
@@ -13,10 +14,12 @@
 
         private Ticket(
             TicketId id,
+            UserId userId,
             IEnumerable<SeatId> seatIds,
             DateTimeOffset createdTimeOnUtc)
             : base(id)
         {
+            this.UserId = Guard.Against.Null(userId, nameof(userId));
             this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
             this.CreatedTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
         }
@@ -26,6 +29,8 @@
         {
         }
 
+        public UserId UserId { get; private set; }
+
         public IEnumerable<SeatId> Seats => this.seats.AsReadOnly();
 
         public DateTimeOffset CreatedTimeOnUtc { get; private set; }
@@ -34,10 +39,11 @@
 
         internal static Ticket Create(
             TicketId id,
+            UserId userId,
             IEnumerable<SeatId> seatIds,
             DateTimeOffset createdTimeOnUtc)
         {
-            return new Ticket(id, seatIds, createdTimeOnUtc);
+            return new Ticket(id, userId, seatIds, createdTimeOnUtc);
         }
 
         internal void MarkAsPurchased()

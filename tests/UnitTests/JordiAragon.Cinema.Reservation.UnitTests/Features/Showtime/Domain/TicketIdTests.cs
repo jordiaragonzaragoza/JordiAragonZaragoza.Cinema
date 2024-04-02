@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using Xunit;
 
-    public class TicketIdTests
+    public sealed class TicketIdTests
     {
         [Fact]
         public void CreateTicketId_WhenHavingAnEmptyGuid_ShouldThrowArgumentException()

@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class DeleteShowtimeRequest(Guid ShowtimeId);
+    public sealed record class DeleteShowtimeRequest(Guid ShowtimeId);
 }

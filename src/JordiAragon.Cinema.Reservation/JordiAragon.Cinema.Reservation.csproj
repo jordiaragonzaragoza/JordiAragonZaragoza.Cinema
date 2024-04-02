@@ -41,7 +41,6 @@
 		<PackageReference Include="FastEndpoints.Swagger" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 		<PackageReference Include="Volo.Abp.Guids" />
-		<PackageReference Include="EasyCaching.InMemory" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />

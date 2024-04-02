@@ -4,14 +4,14 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Commands.CreateShowtime;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using NSubstitute;
     using Xunit;
 
-    public class CreateShowtimeCommandValidatorTests
+    public sealed class CreateShowtimeCommandValidatorTests
     {
         private readonly IDateTime mockDatetime;
         private readonly CreateShowtimeCommandValidator validator;
@@ -35,7 +35,7 @@
             // Arrange.
             var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -52,9 +52,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId: AuditoriumId.Create(Guid.NewGuid()),
                 MovieId: Guid.Empty,
-                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
+                SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -72,9 +72,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId: Guid.Empty,
                 MovieId: MovieId.Create(Guid.NewGuid()),
-                SessionDateOnUtc: DateTime.UtcNow.AddYears(1));
+                SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);
@@ -92,9 +92,9 @@
             var createShowtimeCommand = new CreateShowtimeCommand(
                 AuditoriumId.Create(Guid.NewGuid()),
                 MovieId.Create(Guid.NewGuid()),
-                DateTime.UtcNow.AddYears(-1));
+                DateTimeOffset.UtcNow.AddYears(-1));
 
-            this.mockDatetime.UtcNow.Returns(DateTime.UtcNow);
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
             // Act.
             var validationResult = this.validator.Validate(createShowtimeCommand);

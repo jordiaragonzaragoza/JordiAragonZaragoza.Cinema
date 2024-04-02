@@ -12,14 +12,15 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
+    // TODO: It belongs to the catalog bounded context.
+    public sealed class GetMovies : EndpointWithoutRequest<IEnumerable<MovieResponse>>
     {
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public GetMovies(ISender sender, IMapper mapper)
+        public GetMovies(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -37,7 +38,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetMoviesQuery(), ct);
+            var resultOutputDto = await this.internalBus.Send(new GetMoviesQuery(), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<MovieResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain.Rules;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
-    public class ExhibitionPeriod : BaseValueObject
+    public sealed class ExhibitionPeriod : BaseValueObject
     {
         private ExhibitionPeriod(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, TimeSpan runtime)
         {

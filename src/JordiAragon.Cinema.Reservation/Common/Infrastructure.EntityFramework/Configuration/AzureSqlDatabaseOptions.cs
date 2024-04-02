@@ -2,9 +2,11 @@
 {
     using System.Text;
 
-    public class AzureSqlDatabaseOptions
+    public sealed class AzureSqlDatabaseOptions
     {
-        public const string Section = "AzureSqlDatabase";
+        public const string BusinessModelSection = "AzureSqlDatabaseBusinessModelStore";
+
+        public const string ReadModelSection = "AzureSqlDatabaseReadModelStore";
 
         public string ApplicationName { get; set; }
 

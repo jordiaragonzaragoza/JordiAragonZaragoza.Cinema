@@ -2,5 +2,5 @@
 {
     using System;
 
-    public record class MovieResponse(Guid Id, string Title, TimeSpan Runtime);
+    public sealed record class MovieResponse(Guid Id, string Title, TimeSpan Runtime);
 }
