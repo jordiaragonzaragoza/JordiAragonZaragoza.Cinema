@@ -9,15 +9,15 @@
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
 
-    public class DeleteShowtime : Endpoint<DeleteShowtimeRequest>
+    public sealed class DeleteShowtime : Endpoint<DeleteShowtimeRequest>
     {
         public const string Route = "showtimes/{showtimeId}";
 
-        private readonly ISender sender;
+        private readonly ISender internalBus;
 
-        public DeleteShowtime(ISender sender)
+        public DeleteShowtime(ISender internalBus)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
         }
 
         public override void Configure()
@@ -34,7 +34,7 @@
 
         public async override Task HandleAsync(DeleteShowtimeRequest req, CancellationToken ct)
         {
-            var resultResponse = await this.sender.Send(new DeleteShowtimeCommand(req.ShowtimeId), ct);
+            var resultResponse = await this.internalBus.Send(new DeleteShowtimeCommand(req.ShowtimeId), ct);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

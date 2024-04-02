@@ -3,11 +3,11 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using JordiAragon.Cinema.Reservation.Common.Application;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Presentation.WebApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
+    using JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
@@ -20,12 +20,15 @@
     using SharedKernelWebApiModule = JordiAragon.SharedKernel.Presentation.WebApi.AssemblyConfiguration.WebApiModule;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Program class should not have a protected constructor or the static keyword because is used in WebApplicationFactory for functional and integration test.")]
-    public class Program
+    public sealed class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
+
+            configuration
+                .AddSharedKernelInfrastructureDefaultConfiguration(builder.Environment.EnvironmentName);
 
             configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -36,7 +39,7 @@
             builder.Services.AddApplicationServices(configuration);
             builder.Services.AddSharedKernelApplicationServices();
             builder.Services.AddWebApiServices(configuration);
-            builder.Services.AddInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
+            builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEventStoreServices(configuration, builder.Environment.ApplicationName);
 
@@ -61,10 +64,7 @@
 
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            if (builder.Environment.EnvironmentName == "Development")
-            {
-                SeedData.Initialize(app);
-            }
+            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

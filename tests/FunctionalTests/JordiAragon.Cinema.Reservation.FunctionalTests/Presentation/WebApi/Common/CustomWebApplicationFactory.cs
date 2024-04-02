@@ -10,14 +10,18 @@
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
 
-    public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
+    public sealed class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
     {
-        private readonly DbConnection connection;
+        private readonly DbConnection businessModelStoreConnection;
+        private readonly DbConnection readModelStoreConnection;
 
-        public CustomWebApplicationFactory(DbConnection connection)
+        public CustomWebApplicationFactory(
+            DbConnection businessModelStoreConnection,
+            DbConnection readModelStoreConnection)
         {
-            this.connection = connection;
+            this.businessModelStoreConnection = businessModelStoreConnection;
+            this.readModelStoreConnection = readModelStoreConnection;
         }
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -34,10 +38,18 @@
             builder.ConfigureTestServices(services =>
             {
                 services
-                    .RemoveAll<DbContextOptions<ReservationContext>>()
-                    .AddDbContext<ReservationContext>((options) =>
+                    .RemoveAll<DbContextOptions<ReservationBusinessModelContext>>()
+                    .AddDbContext<ReservationBusinessModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.connection);
+                        options.UseSqlServer(this.businessModelStoreConnection);
+                    });
+
+                services
+                    .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
+                    .AddDbContext<ReservationReadModelContext>((options) =>
+                    {
+                        options.UseSqlServer(this.readModelStoreConnection);
+                        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
             });
         }

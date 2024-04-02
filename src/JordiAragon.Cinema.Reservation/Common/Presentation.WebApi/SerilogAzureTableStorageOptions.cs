@@ -3,7 +3,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.WebApi
     using System.Text;
     using Serilog.Events;
 
-    public class SerilogAzureTableStorageOptions
+    public sealed class SerilogAzureTableStorageOptions
     {
         public const string Section = "Serilog:AzureTableStorage";
 

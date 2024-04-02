@@ -2,7 +2,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.WebApi
 {
     using Serilog.Events;
 
-    public class SerilogConsoleOptions
+    public sealed class SerilogConsoleOptions
     {
         public const string Section = "Serilog:Console";
 

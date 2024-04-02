@@ -4,13 +4,13 @@
     using JordiAragon.SharedKernel.Infrastructure;
     using JordiAragon.SharedKernel.Infrastructure.Interfaces;
 
-    public class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
+    public sealed class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
     {
         public ReservationDomainEventsDispatcher(
-            IWriteStore writeStore,
+            IBusinessModelStore businessModelStore,
             IEventStore eventStore,
             IEventsDispatcherService domainEventDispatcherService)
-             : base(writeStore, eventStore, domainEventDispatcherService)
+             : base(businessModelStore, eventStore, domainEventDispatcherService)
         {
         }
     }

@@ -18,6 +18,7 @@
         {
         }
 
+        // TODO: It belongs to the catalog bounded context.
         public string Title { get; private set; }
 
         public TimeSpan Runtime { get; private set; }

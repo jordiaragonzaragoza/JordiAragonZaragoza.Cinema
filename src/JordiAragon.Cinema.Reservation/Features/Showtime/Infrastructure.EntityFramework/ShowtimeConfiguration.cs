@@ -3,11 +3,16 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class ShowtimeConfiguration : BaseEntityTypeConfiguration<Showtime, ShowtimeId>
+    /// <summary>
+    /// This configuration is obsolete when using showtime as event sourced aggregate.
+    /// Its conserved as future reference.
+    /// </summary>
+    public sealed class ShowtimeConfiguration : BaseEntityTypeConfiguration<Showtime, ShowtimeId>
     {
         public override void Configure(EntityTypeBuilder<Showtime> builder)
         {
@@ -29,6 +34,10 @@
                   .HasColumnName(nameof(Ticket.Id))
                   .ValueGeneratedNever()
                   .HasConversion(ticketId => ticketId.Value, guidValue => TicketId.Create(guidValue));
+
+                tb.Property(ticket => ticket.UserId)
+                .HasConversion(id => id.Value, value => UserId.Create(value))
+                .HasColumnName(nameof(UserId));
 
                 tb.OwnsMany(ticket => ticket.Seats, ticketSeatBuilder =>
                 {

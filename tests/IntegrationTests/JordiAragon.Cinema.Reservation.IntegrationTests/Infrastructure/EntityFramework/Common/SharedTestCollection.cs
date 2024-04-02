@@ -3,7 +3,7 @@
     using Xunit;
 
     [CollectionDefinition(nameof(SharedTestCollection))]
-    public class SharedTestCollection : ICollectionFixture<IntegrationTestsFixture>
+    public sealed class SharedTestCollection : ICollectionFixture<IntegrationTestsFixture>
     {
     }
 }

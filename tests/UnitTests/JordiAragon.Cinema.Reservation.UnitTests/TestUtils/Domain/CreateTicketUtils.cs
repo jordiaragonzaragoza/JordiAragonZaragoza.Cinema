@@ -7,6 +7,7 @@
         public static Ticket Create()
             => Ticket.Create(
                 Constants.Ticket.Id,
+                Constants.Ticket.UserId,
                 Constants.Ticket.SeatIds,
                 Constants.Ticket.CreatedTimeOnUtc);
     }

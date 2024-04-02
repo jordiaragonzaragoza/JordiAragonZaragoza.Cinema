@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class OnlyPossibleToPurchaseOncePerTicketRuleTests
+    public sealed class OnlyPossibleToPurchaseOncePerTicketRuleTests
     {
         [Fact]
         public void ConstructorOnlyPossibleToPayOncePerTicketRule_WhenHavingInvalidArgument_ShouldThrowArgumentException()

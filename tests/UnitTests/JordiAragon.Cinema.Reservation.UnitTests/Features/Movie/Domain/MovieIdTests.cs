@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using Xunit;
 
-    public class MovieIdTests
+    public sealed class MovieIdTests
     {
         [Fact]
         public void CreateMovieId_WhenHavingAnEmptyGuid_ShouldThrowArgumentException()

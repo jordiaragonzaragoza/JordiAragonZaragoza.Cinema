@@ -3,13 +3,16 @@
     using System.Reflection;
     using Autofac;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.DataModel;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public class EntityFrameworkModule : AssemblyModule
+    public sealed class EntityFrameworkModule : AssemblyModule
     {
         protected override Assembly CurrentAssembly => AssemblyReference.Assembly;
 
@@ -17,7 +20,14 @@
         {
             base.Load(builder);
 
-            // TODO: Temporal registration.
+            RegisterBusinessModelRepositories(builder);
+            RegisterReadModelsRepositories(builder);
+            RegisterDataModelsRepositories(builder);
+        }
+
+        private static void RegisterBusinessModelRepositories(ContainerBuilder builder)
+        {
+            // TODO: Temporal registration. Remove on event sourcing.
             builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
                     .As<IRepository<Showtime, ShowtimeId>>()
                     .InstancePerLifetimeScope();
@@ -32,20 +42,69 @@
                     .InstancePerLifetimeScope();
 
             // Read Repositories
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
                 .As(typeof(IReadListRepository<,>))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(ReservationReadRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationRepository<,>))
+                .As(typeof(ISpecificationReadRepository<,>))
+                .InstancePerLifetimeScope();
+        }
+
+        private static void RegisterReadModelsRepositories(ContainerBuilder builder)
+        {
+            // Write Repositories
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IRepository<,>))
+                .InstancePerLifetimeScope();
+
+            // Read Repositories
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IReadListRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
                 .As(typeof(ISpecificationReadRepository<,>))
                 .InstancePerLifetimeScope();
 
-            // TODO: Review. Check which entities are using cache repository.
-            builder.RegisterGeneric(typeof(ReservationCachedSpecificationRepository<,>))
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IPaginatedSpecificationReadRepository<>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationReadModelRepository<>))
+                .As(typeof(IRangeableRepository<,>))
+                .InstancePerLifetimeScope();
+        }
+
+        private static void RegisterDataModelsRepositories(ContainerBuilder builder)
+        {
+            // Write Repositories
+            builder.RegisterGeneric(typeof(ReservationDataModelRepository<>))
+                .As(typeof(IRepository<,>))
+                .InstancePerLifetimeScope();
+
+            // Read Repositories
+            builder.RegisterGeneric(typeof(ReservationDataModelRepository<>))
+                .As(typeof(IReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationDataModelRepository<>))
+                .As(typeof(IReadListRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationDataModelRepository<>))
+                .As(typeof(ISpecificationReadRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(ReservationDataModelCachedSpecificationRepository<>))
                 .As(typeof(ICachedSpecificationRepository<,>))
                 .InstancePerLifetimeScope();
         }

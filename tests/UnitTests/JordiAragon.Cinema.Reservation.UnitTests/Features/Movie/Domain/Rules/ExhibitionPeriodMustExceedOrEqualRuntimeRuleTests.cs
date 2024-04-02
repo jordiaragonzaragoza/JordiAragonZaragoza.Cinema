@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class ExhibitionPeriodMustExceedOrEqualRuntimeRuleTests
+    public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRuleTests
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule()
         {
@@ -64,8 +64,8 @@
         public void IsBroken_WhenHavingBiggerEndOfPeriodThanStartingPeriod_ShouldBeFalse()
         {
             // Arrange
-            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(2023, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
-            var endOfPeriod = EndOfPeriod.Create(DateTime.UtcNow.AddYears(1));
+            var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
+            var endOfPeriod = EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2));
             var runtime = TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28);
 
             var exhibitionPeriod = ExhibitionPeriod.Create(

@@ -7,7 +7,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class SeatTests
+    public sealed class SeatTests
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateSeat()
         {

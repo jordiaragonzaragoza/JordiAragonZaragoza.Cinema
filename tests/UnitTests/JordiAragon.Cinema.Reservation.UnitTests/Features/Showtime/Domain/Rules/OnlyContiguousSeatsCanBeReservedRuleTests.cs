@@ -9,7 +9,7 @@
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
     using Xunit;
 
-    public class OnlyContiguousSeatsCanBeReservedRuleTests
+    public sealed class OnlyContiguousSeatsCanBeReservedRuleTests
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorOnlyContiguousSeatsCanBeReservedRule()
         {

@@ -8,22 +8,21 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Requests;
-    using JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.SharedKernel.Presentation.WebApi.Helpers;
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<ShowtimeResponse>>
+    public sealed class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
     {
         public const string Route = "showtimes/{showtimeId}/seats/available";
 
-        private readonly ISender sender;
+        private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public GetAvailableSeats(ISender sender, IMapper mapper)
+        public GetAvailableSeats(ISender internalBus, IMapper mapper)
         {
-            this.sender = Guard.Against.Null(sender, nameof(sender));
+            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -41,9 +40,9 @@
 
         public async override Task HandleAsync(GetAvailableSeatsRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.sender.Send(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
+            var resultReadModels = await this.internalBus.Send(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
 
-            var resultResponse = this.mapper.Map<Result<IEnumerable<SeatResponse>>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<IEnumerable<SeatResponse>>>(resultReadModels);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

@@ -5,7 +5,7 @@
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
-    public class StartingPeriod : BaseValueObject
+    public sealed class StartingPeriod : BaseValueObject
     {
         private StartingPeriod(DateTimeOffset value)
         {

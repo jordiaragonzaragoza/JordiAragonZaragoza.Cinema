@@ -7,7 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class MovieConfiguration : BaseEntityTypeConfiguration<Movie, MovieId>
+    public sealed class MovieConfiguration : BaseEntityTypeConfiguration<Movie, MovieId>
     {
         public override void Configure(EntityTypeBuilder<Movie> builder)
         {

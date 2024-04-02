@@ -15,34 +15,92 @@
     using Testcontainers.SqlEdge;
     using Xunit;
 
-    public class IntegrationTestsFixture : IAsyncLifetime
+    public sealed class IntegrationTestsFixture : IAsyncLifetime
     {
-        private readonly SqlEdgeContainer container =
+        private readonly SqlEdgeContainer businessModelStoreContainer =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.integrationtests.infrastructure.entityframework")
+            .WithName("azuresqledge.cinema.reservation.businessmodelstore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
-        private SqlConnection connection;
-        private Respawner respawner;
+        private readonly SqlEdgeContainer readModelStoreContainer =
+            new SqlEdgeBuilder()
+            .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
+            .WithName("azuresqledge.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework")
+            .WithAutoRemove(true).Build();
 
-        public ReservationContext Context { get; private set; }
+        private SqlConnection businessModelStoreConnection;
+        private Respawner businessModelStoreRespawner;
+
+        private SqlConnection readModelStoreConnection;
+        private Respawner readModelStoreRespawner;
+
+        public ReservationBusinessModelContext BusinessModelContext { get; private set; }
+
+        public ReservationReadModelContext ReadModelContext { get; private set; }
 
         public async Task InitializeAsync()
         {
-            await this.container.StartAsync();
+            var initializeBusinessModelStoreTask = this.InitializeBusinessModelStoreConnectionAsync();
+            var initializeReadModelStoreTask = this.InitializeReadModelStoreConnectionAsync();
 
-            this.connection = new SqlConnection(this.container.GetConnectionString());
+            await Task.WhenAll(initializeBusinessModelStoreTask, initializeReadModelStoreTask);
+        }
 
-            this.respawner = await Respawner.CreateAsync(this.container.GetConnectionString(), new RespawnerOptions
+        public void InitDatabases()
+        {
+            this.InitBusinessModelStoreDatabase();
+            this.InitReadModelStoreDatabase();
+        }
+
+        public async Task ResetDatabasesAsync()
+        {
+            var resetBusinessModelStoreTask = this.businessModelStoreRespawner.ResetAsync(this.businessModelStoreContainer.GetConnectionString());
+            var resetReadModelStoreTask = this.readModelStoreRespawner.ResetAsync(this.readModelStoreContainer.GetConnectionString());
+
+            await Task.WhenAll(resetBusinessModelStoreTask, resetReadModelStoreTask);
+        }
+
+        public async Task DisposeAsync()
+        {
+            var disposeBusinessModelConnectionTask = this.businessModelStoreConnection.DisposeAsync();
+            var disposeReadModelConnectionTask = this.readModelStoreConnection.DisposeAsync();
+
+            await Task.WhenAll(disposeBusinessModelConnectionTask.AsTask(), disposeReadModelConnectionTask.AsTask());
+
+            var disposeBusinessModelContainerTask = this.businessModelStoreContainer.DisposeAsync();
+            var disposeReadModelContainerTask = this.readModelStoreContainer.DisposeAsync();
+
+            await Task.WhenAll(disposeBusinessModelContainerTask.AsTask(), disposeReadModelContainerTask.AsTask());
+        }
+
+        private async Task InitializeBusinessModelStoreConnectionAsync()
+        {
+            await this.businessModelStoreContainer.StartAsync();
+
+            this.businessModelStoreConnection = new SqlConnection(this.businessModelStoreContainer.GetConnectionString());
+
+            this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreContainer.GetConnectionString(), new RespawnerOptions
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
         }
 
-        public void InitDatabase()
+        private async Task InitializeReadModelStoreConnectionAsync()
         {
-            var options = this.CreateNewContextOptions();
+            await this.readModelStoreContainer.StartAsync();
+
+            this.readModelStoreConnection = new SqlConnection(this.readModelStoreContainer.GetConnectionString());
+
+            this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreContainer.GetConnectionString(), new RespawnerOptions
+            {
+                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+            });
+        }
+
+        private void InitBusinessModelStoreDatabase()
+        {
+            var options = this.CreateNewBusinessModelContextOptions();
             var mockLoggerFactory = Substitute.For<ILoggerFactory>();
             var mockHostEnvironment = Substitute.For<IHostEnvironment>();
             var mockCurrentUserService = Substitute.For<ICurrentUserService>();
@@ -50,27 +108,36 @@
 
             var auditableEntitySaveChangesInterceptor = new AuditableEntitySaveChangesInterceptor(mockCurrentUserService, mockDateTimeService);
 
-            this.Context = new ReservationContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
+            this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
-            SeedData.PopulateTestData(this.Context);
+            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext, true);
         }
 
-        public async Task ResetDatabaseAsync()
-        {
-            await this.respawner.ResetAsync(this.container.GetConnectionString());
-        }
-
-        public async Task DisposeAsync()
-        {
-            await this.connection.DisposeAsync();
-            await this.container.DisposeAsync();
-        }
-
-        private DbContextOptions<ReservationContext> CreateNewContextOptions()
+        private DbContextOptions<ReservationBusinessModelContext> CreateNewBusinessModelContextOptions()
         {
             // Create a new options instance telling the context to use an
-            var builder = new DbContextOptionsBuilder<ReservationContext>();
-            builder.UseSqlServer(this.connection);
+            var builder = new DbContextOptionsBuilder<ReservationBusinessModelContext>();
+            builder.UseSqlServer(this.businessModelStoreConnection);
+
+            return builder.Options;
+        }
+
+        private void InitReadModelStoreDatabase()
+        {
+            var options = this.CreateNewReadModelContextOptions();
+            var mockLoggerFactory = Substitute.For<ILoggerFactory>();
+            var mockHostEnvironment = Substitute.For<IHostEnvironment>();
+
+            this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
+
+            SeedData.PopulateReadModelTestData(this.ReadModelContext, true);
+        }
+
+        private DbContextOptions<ReservationReadModelContext> CreateNewReadModelContextOptions()
+        {
+            // Create a new options instance telling the context to use an
+            var builder = new DbContextOptionsBuilder<ReservationReadModelContext>();
+            builder.UseSqlServer(this.readModelStoreConnection);
 
             return builder.Options;
         }

@@ -7,6 +7,7 @@
     public sealed record class ReservedSeatsEvent(
         Guid ShowtimeId,
         Guid TicketId,
+        Guid UserId,
         IEnumerable<Guid> SeatIds,
         DateTimeOffset CreatedTimeOnUtc)
         : BaseDomainEvent(ShowtimeId);
