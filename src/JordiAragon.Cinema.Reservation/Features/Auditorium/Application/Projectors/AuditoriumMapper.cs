@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Projections
+﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Application.Projectors
 {
     using AutoMapper;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;

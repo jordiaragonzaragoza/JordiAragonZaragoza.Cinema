@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projections.Ticket
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projectors.Ticket
 {
     using System;
     using Ardalis.Specification;

@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projections.AvailableSeat
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projectors.AvailableSeat
 {
     using System;
     using System.Linq;

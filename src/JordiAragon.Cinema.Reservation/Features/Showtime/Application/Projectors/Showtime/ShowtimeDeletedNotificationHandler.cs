@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projections.Showtime
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.Projectors.Showtime
 {
     using System;
     using System.Threading;
