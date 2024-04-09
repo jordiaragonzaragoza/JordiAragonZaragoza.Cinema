@@ -5,7 +5,7 @@
     using JordiAragon.Cinema.Reservation.Common.Application;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration;
-    using JordiAragon.Cinema.Reservation.Common.Presentation.WebApi;
+    using JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
@@ -16,8 +16,8 @@
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
     using SharedKernelEntityFrameworkModule = JordiAragon.SharedKernel.Infrastructure.EntityFramework.AssemblyConfiguration.EntityFrameworkModule;
     using SharedKernelEventStoreModule = JordiAragon.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration.EventStoreModule;
+    using SharedKernelHttpRestfulApiModule = JordiAragon.SharedKernel.Presentation.HttpRestfulApi.AssemblyConfiguration.HttpRestfulApiModule;
     using SharedKernelInfrastructureModule = JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration.InfrastructureModule;
-    using SharedKernelWebApiModule = JordiAragon.SharedKernel.Presentation.WebApi.AssemblyConfiguration.WebApiModule;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Program class should not have a protected constructor or the static keyword because is used in WebApplicationFactory for functional and integration test.")]
     public sealed class Program
@@ -38,7 +38,7 @@
             // Add services to the container.
             builder.Services.AddApplicationServices(configuration);
             builder.Services.AddSharedKernelApplicationServices();
-            builder.Services.AddWebApiServices(configuration);
+            builder.Services.AddHttpRestfulApiServices(configuration);
             builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEventStoreServices(configuration, builder.Environment.ApplicationName);
@@ -53,10 +53,10 @@
                 containerBuilder.RegisterModule(new EntityFrameworkModule());
                 containerBuilder.RegisterModule(new SharedKernelEventStoreModule());
                 containerBuilder.RegisterModule(new EventStoreModule());
-                containerBuilder.RegisterModule(new SharedKernelWebApiModule());
+                containerBuilder.RegisterModule(new SharedKernelHttpRestfulApiModule());
             });
 
-            builder.Host.AddWebApiHostBuilderConfigurations();
+            builder.Host.AddHttpRestfulApiHostBuilderConfigurations();
 
             var app = builder.Build();
 

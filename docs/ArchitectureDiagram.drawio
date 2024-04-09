@@ -55,7 +55,7 @@
         <mxCell id="xHMOhwIqoWVoK6ZrsONU-1" value="WebHooks" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="300" y="500" width="128.5" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="xHMOhwIqoWVoK6ZrsONU-2" value="WebApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
+        <mxCell id="xHMOhwIqoWVoK6ZrsONU-2" value="HttpRestfulApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="300" y="550" width="128.5" height="44" as="geometry" />
         </mxCell>
         <mxCell id="xHMOhwIqoWVoK6ZrsONU-3" value="Integration Events Consumers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
@@ -144,10 +144,10 @@
             <mxPoint x="210" y="304" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="T1_D9YDXICz4o3n0c1NQ-10" value="Presentation.WebApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
+        <mxCell id="T1_D9YDXICz4o3n0c1NQ-10" value="Presentation.HttpRestfulApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
           <mxGeometry x="460" y="484" width="245" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="T1_D9YDXICz4o3n0c1NQ-12" value="Presentation.WebApi.Contracts" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
+        <mxCell id="T1_D9YDXICz4o3n0c1NQ-12" value="Presentation.HttpRestfulApi.Contracts" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
           <mxGeometry x="190" y="484" width="235" height="70" as="geometry" />
         </mxCell>
         <mxCell id="T1_D9YDXICz4o3n0c1NQ-14" value="" style="endArrow=classic;html=1;rounded=0;fontSize=16;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="zmgnAT0viagxxQuJm_vw-1" source="T1_D9YDXICz4o3n0c1NQ-10" target="T1_D9YDXICz4o3n0c1NQ-4" edge="1">

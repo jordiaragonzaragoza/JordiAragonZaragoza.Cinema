@@ -1,6 +1,6 @@
 What is the Cinema Project?
 =====================
-The Cinema Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
+The Cinema Project is a HttpRestfulApi project written in .NET 7 following DDD and Clean Architecture.
 The reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## How to use:
@@ -72,7 +72,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 - Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
 - Unit Tests: Domain and Application
-- Functional Tests with Testcontainers: Presentation.WebApi
+- Functional Tests with Testcontainers: Presentation.HttpRestfulApi
 - Integration Tests with Testcontainers: Infrastructure.EntityFramework
 - GitHub workflow CI with SonarCloud integration
 

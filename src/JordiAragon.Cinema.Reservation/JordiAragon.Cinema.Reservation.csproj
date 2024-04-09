@@ -14,7 +14,7 @@
 		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure\JordiAragon.SharedKernel.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EntityFramework\JordiAragon.SharedKernel.Infrastructure.EntityFramework.csproj" />
 		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EventStore\JordiAragon.SharedKernel.Infrastructure.EventStore.csproj" />
-		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.WebApi\JordiAragon.SharedKernel.Presentation.WebApi.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.HttpRestfulApi\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
 		<PackageReference Include="JordiAragon.SharedKernel.Domain" />
@@ -25,7 +25,7 @@
 		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure" />
 		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" />
 		<PackageReference Include="JordiAragon.SharedKernel.Infrastructure.EventStore" />
-		<PackageReference Include="JordiAragon.SharedKernel.Presentation.WebApi" />
+		<PackageReference Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.UnitTests" />
@@ -60,7 +60,7 @@
 		<PackageReference Include="Serilog.Sinks.Graylog" />
     </ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.csproj" />
-	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.csproj" />
+	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
 	</ItemGroup>
 </Project>
