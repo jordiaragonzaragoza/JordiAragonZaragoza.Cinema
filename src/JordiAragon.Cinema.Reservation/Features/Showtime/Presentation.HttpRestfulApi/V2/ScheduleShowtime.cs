@@ -31,8 +31,8 @@
             this.Version(2);
             this.Summary(summary =>
             {
-                summary.Summary = "Creates a new Showtime";
-                summary.Description = "Creates a new Showtime";
+                summary.Summary = "Schedule a new Showtime";
+                summary.Description = "Schedule a new Showtime";
             });
         }
 
