@@ -9,12 +9,12 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
 
-    public sealed class ShowtimeDeletedNotificationHandler : INotificationHandler<ShowtimeDeletedNotification>
+    public sealed class ShowtimeCanceledNotificationHandler : INotificationHandler<ShowtimeCanceledNotification>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;
 
-        public ShowtimeDeletedNotificationHandler(
+        public ShowtimeCanceledNotificationHandler(
             ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository,
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository)
         {
@@ -22,7 +22,7 @@
             this.availableReadModelSpecificationRepository = Guard.Against.Null(availableReadModelSpecificationRepository, nameof(availableReadModelSpecificationRepository));
         }
 
-        public async Task Handle(ShowtimeDeletedNotification notification, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeCanceledNotification notification, CancellationToken cancellationToken)
         {
             var @event = notification.Event;
 

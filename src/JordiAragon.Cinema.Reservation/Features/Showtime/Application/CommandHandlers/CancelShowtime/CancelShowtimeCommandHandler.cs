@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.DeleteShowtime
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CancelShowtime
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -10,17 +10,17 @@
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
 
-    public sealed class DeleteShowtimeCommandHandler : BaseCommandHandler<DeleteShowtimeCommand>
+    public sealed class CancelShowtimeCommandHandler : BaseCommandHandler<CancelShowtimeCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
-        public DeleteShowtimeCommandHandler(
+        public CancelShowtimeCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
-        public override async Task<Result> Handle(DeleteShowtimeCommand request, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(CancelShowtimeCommand request, CancellationToken cancellationToken)
         {
             var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
@@ -30,7 +30,7 @@
 
             await this.showtimeRepository.DeleteAsync(existingShowtime, cancellationToken);
 
-            this.RegisterApplicationEvent(new ShowtimeDeletedEvent(existingShowtime.Id, existingShowtime.AuditoriumId, existingShowtime.MovieId));
+            this.RegisterApplicationEvent(new ShowtimeCanceledEvent(existingShowtime.Id, existingShowtime.AuditoriumId, existingShowtime.MovieId));
 
             return Result.Success();
         }

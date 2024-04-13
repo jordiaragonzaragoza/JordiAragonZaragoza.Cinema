@@ -3,5 +3,5 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Events;
 
-    public sealed record class ShowtimeDeletedEvent(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId) : BaseApplicationEvent;
+    public sealed record class ShowtimeCanceledEvent(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId) : BaseApplicationEvent;
 }

@@ -12,9 +12,9 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public sealed class DeleteShowtimeTests : BaseHttpRestfulApiFunctionalTests
+    public sealed class CancelShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
-        public DeleteShowtimeTests(
+        public CancelShowtimeTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -22,12 +22,12 @@
         }
 
         [Fact]
-        public async Task DeleteShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
+        public async Task CancelShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
         {
             // Arrange
             var showtimeId = await this.CreateNewShowtimeAsync();
 
-            var route = $"api/v2/{DeleteShowtime.Route}";
+            var route = $"api/v2/{CancelShowtime.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString());
 
             // Act
@@ -46,14 +46,14 @@
             // Required to satisfy eventual consistency on projections.
             await Task.Delay(TimeSpan.FromSeconds(2));
 
-            await this.GetShowtime_WhenShowtimeDeleted_ShouldReturnNotFound(showtimeId);
+            await this.GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
-            await this.GetAvailableSeats_WhenShowtimeDeleted_ShouldReturnNotFound(showtimeId);
+            await this.GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
-            await this.GetShowtimeTickets_WhenShowtimeDeleted_ShouldReturnNotFound(showtimeId);
+            await this.GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
         }
 
-        private async Task GetShowtime_WhenShowtimeDeleted_ShouldReturnNotFound(Guid showtimeId)
+        private async Task GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
             var getShowtimeRoute = $"api/v2/{GetShowtime.Route}";
@@ -69,7 +69,7 @@
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 
-        private async Task GetAvailableSeats_WhenShowtimeDeleted_ShouldReturnNotFound(Guid showtimeId)
+        private async Task GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
             var route = $"api/v2/{GetAvailableSeats.Route}";
@@ -83,7 +83,7 @@
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 
-        private async Task GetShowtimeTickets_WhenShowtimeDeleted_ShouldReturnNotFound(Guid showtimeId)
+        private async Task GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
             var route = $"api/v2/{GetShowtimeTickets.Route}";
