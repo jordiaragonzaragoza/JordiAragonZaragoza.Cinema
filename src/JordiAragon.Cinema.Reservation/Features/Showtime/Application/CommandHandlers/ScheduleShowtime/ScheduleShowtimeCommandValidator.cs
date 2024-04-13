@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime
 {
     using System;
     using Ardalis.GuardClauses;
@@ -7,11 +7,11 @@
     using JordiAragon.SharedKernel.Application.Validators;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class CreateShowtimeCommandValidator : BaseValidator<CreateShowtimeCommand>
+    public sealed class ScheduleShowtimeCommandValidator : BaseValidator<ScheduleShowtimeCommand>
     {
         private readonly IDateTime dateTime;
 
-        public CreateShowtimeCommandValidator(IDateTime dateTime)
+        public ScheduleShowtimeCommandValidator(IDateTime dateTime)
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
 

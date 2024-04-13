@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using Volo.Abp.Guids;
 
-    public sealed class CreateShowtimeCommandHandler : BaseCommandHandler<CreateShowtimeCommand, Guid>
+    public sealed class ScheduleShowtimeCommandHandler : BaseCommandHandler<ScheduleShowtimeCommand, Guid>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
@@ -23,7 +23,7 @@
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository;
         private readonly IGuidGenerator guidGenerator;
 
-        public CreateShowtimeCommandHandler(
+        public ScheduleShowtimeCommandHandler(
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IReadRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
@@ -37,7 +37,7 @@
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
-        public override async Task<Result<Guid>> Handle(CreateShowtimeCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<Guid>> Handle(ScheduleShowtimeCommand request, CancellationToken cancellationToken)
         {
             // TODO: Remove. This should be also in a domain rule on ShowtimeManager.
             var existingShowtime = await this.showtimeReadRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
@@ -58,7 +58,7 @@
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
             }
 
-            var newShowtime = Showtime.Create(
+            var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(this.guidGenerator.Create()),
                 MovieId.Create(existingMovie.Id),
                 request.SessionDateOnUtc,

@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.UnitTests.Showtime.Application.Commands.CreateShowtime
+﻿namespace JordiAragon.Cinema.Reservation.UnitTests.Showtime.Application.Commands.ScheduleShowtime
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
@@ -17,9 +17,9 @@
     using Volo.Abp.Guids;
     using Xunit;
 
-    public sealed class CreateShowtimeCommandHandlerTests
+    public sealed class ScheduleShowtimeCommandHandlerTests
     {
-        private readonly CreateShowtimeCommandHandler handler;
+        private readonly ScheduleShowtimeCommandHandler handler;
 
         private readonly IRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
         private readonly IRepository<Movie, MovieId> mockMovieRepository;
@@ -27,7 +27,7 @@
         private readonly ISpecificationReadRepository<Showtime, ShowtimeId> mockShowtimeReadRepository;
         private readonly IGuidGenerator mockGuidGenerator;
 
-        public CreateShowtimeCommandHandlerTests()
+        public ScheduleShowtimeCommandHandlerTests()
         {
             this.mockAuditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             this.mockMovieRepository = Substitute.For<IRepository<Movie, MovieId>>();
@@ -35,7 +35,7 @@
             this.mockShowtimeReadRepository = Substitute.For<ISpecificationReadRepository<Showtime, ShowtimeId>>();
             this.mockGuidGenerator = Substitute.For<IGuidGenerator>();
 
-            this.handler = new CreateShowtimeCommandHandler(
+            this.handler = new ScheduleShowtimeCommandHandler(
                 this.mockAuditoriumRepository,
                 this.mockMovieRepository,
                 this.mockShowtimeRepository,
@@ -43,7 +43,7 @@
                 this.mockGuidGenerator);
         }
 
-        public static IEnumerable<object[]> InvalidArgumentsCreateHandleCreateShowtimeCommand()
+        public static IEnumerable<object[]> InvalidArgumentsCreateHandleScheduleShowtimeCommand()
         {
             var auditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             var movieRepository = Substitute.For<IRepository<Movie, MovieId>>();
@@ -85,23 +85,23 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidArgumentsCreateHandleCreateShowtimeCommand))]
-        public void CreateHandleCreateShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
+        [MemberData(nameof(InvalidArgumentsCreateHandleScheduleShowtimeCommand))]
+        public void CreateHandleScheduleShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             IRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IGuidGenerator guidGenerator)
         {
-            FluentActions.Invoking(() => new CreateShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, showtimeReadRepository, guidGenerator))
+            FluentActions.Invoking(() => new ScheduleShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, showtimeReadRepository, guidGenerator))
             .Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
-        public async Task HandleCreateShowtimeCommand_WhenShowtimeIsValid_ShouldCreateAndReturnShowtimeGuid()
+        public async Task HandleScheduleShowtimeCommand_WhenShowtimeIsValid_ShouldCreateAndReturnShowtimeGuid()
         {
             // Arrange
-            var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
+            var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
 
             var existingMovie = CreateMovieUtils.Create();
             var existingAuditorium = CreateAuditoriumUtils.Create();
@@ -131,11 +131,11 @@
         }
 
         [Fact]
-        public async Task HandleCreateShowtimeCommand_WhenShowtimeExist_ShouldReturnAValidationError()
+        public async Task HandleScheduleShowtimeCommand_WhenShowtimeExist_ShouldReturnAValidationError()
         {
             // Arrange
-            var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
-            var existingShowtime = CreateShowtimeUtils.Create();
+            var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
+            var existingShowtime = ScheduleShowtimeUtils.Schedule();
 
             this.mockShowtimeReadRepository.FirstOrDefaultAsync(Arg.Any<ShowtimeByMovieIdSessionDateSpec>(), Arg.Any<CancellationToken>())
                 .Returns(existingShowtime);
@@ -153,10 +153,10 @@
         }
 
         [Fact]
-        public async Task HandleCreateShowtimeCommand_WhenAuditoriumNotExist_ShouldReturnAError()
+        public async Task HandleScheduleShowtimeCommand_WhenAuditoriumNotExist_ShouldReturnAError()
         {
             // Arrange
-            var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
+            var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
 
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
                 .Returns((Auditorium)null);
@@ -174,10 +174,10 @@
         }
 
         [Fact]
-        public async Task HandleCreateShowtimeCommand_WhenMovieNotExist_ShouldReturnAError()
+        public async Task HandleScheduleShowtimeCommand_WhenMovieNotExist_ShouldReturnAError()
         {
             // Arrange
-            var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
+            var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
 
             var existingAuditorium = CreateAuditoriumUtils.Create();
 

@@ -3,6 +3,6 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public sealed record class ShowtimeCreatedNotification(ShowtimeCreatedEvent Event)
-        : BaseDomainEventNotification<ShowtimeCreatedEvent>(Event);
+    public sealed record class ShowtimeScheduledNotification(ShowtimeScheduledEvent Event)
+        : BaseDomainEventNotification<ShowtimeScheduledEvent>(Event);
 }

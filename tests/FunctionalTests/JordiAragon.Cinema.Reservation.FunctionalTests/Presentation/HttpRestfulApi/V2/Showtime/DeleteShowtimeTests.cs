@@ -99,11 +99,11 @@
 
         private async Task<Guid> CreateNewShowtimeAsync()
         {
-            var url = $"api/v2/{CreateShowtime.Route}";
+            var url = $"api/v2/{ScheduleShowtime.Route}";
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
-            var request = new CreateShowtimeRequest(
+            var request = new ScheduleShowtimeRequest(
                 SeedData.ExampleAuditorium.Id,
                 SeedData.ExampleMovie.Id,
                 sessionDateOnUtc);

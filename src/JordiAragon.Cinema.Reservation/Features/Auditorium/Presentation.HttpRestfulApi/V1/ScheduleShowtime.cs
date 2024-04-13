@@ -11,12 +11,12 @@
     using MediatR;
     using IMapper = AutoMapper.IMapper;
 
-    public sealed class CreateShowtime : Endpoint<CreateShowtimeRequest, Guid>
+    public sealed class ScheduleShowtime : Endpoint<ScheduleShowtimeRequest, Guid>
     {
         private readonly ISender internalBus;
         private readonly IMapper mapper;
 
-        public CreateShowtime(ISender internalBus, IMapper mapper)
+        public ScheduleShowtime(ISender internalBus, IMapper mapper)
         {
             this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
@@ -29,14 +29,14 @@
             this.Version(1, 2);
             this.Summary(summary =>
             {
-                summary.Summary = "Creates a new Showtime";
-                summary.Description = "Creates a new Showtime";
+                summary.Summary = "Schedule a new Showtime";
+                summary.Description = "Schedule a new Showtime";
             });
         }
 
-        public async override Task HandleAsync(CreateShowtimeRequest req, CancellationToken ct)
+        public async override Task HandleAsync(ScheduleShowtimeRequest req, CancellationToken ct)
         {
-            var command = this.mapper.Map<CreateShowtimeCommand>(req);
+            var command = this.mapper.Map<ScheduleShowtimeCommand>(req);
 
             var resultResponse = await this.internalBus.Send(command, ct);
 

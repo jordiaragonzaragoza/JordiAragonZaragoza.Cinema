@@ -10,17 +10,17 @@
     using MediatR;
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeCreatedEventHandler : INotificationHandler<ShowtimeCreatedEvent>
+    public sealed class ShowtimeScheduledEventHandler : INotificationHandler<ShowtimeScheduledEvent>
     {
         private readonly IRepository<Movie, MovieId> movieRepository;
 
-        public ShowtimeCreatedEventHandler(
+        public ShowtimeScheduledEventHandler(
             IRepository<Movie, MovieId> movieRepository)
         {
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
         }
 
-        public async Task Handle(ShowtimeCreatedEvent @event, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeScheduledEvent @event, CancellationToken cancellationToken)
         {
             var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(@event.MovieId), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());

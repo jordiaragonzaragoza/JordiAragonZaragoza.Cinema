@@ -13,13 +13,13 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeCreatedNotificationHandler : INotificationHandler<ShowtimeCreatedNotification>
+    public sealed class ShowtimeScheduledNotificationHandler : INotificationHandler<ShowtimeScheduledNotification>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
 
-        public ShowtimeCreatedNotificationHandler(
+        public ShowtimeScheduledNotificationHandler(
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IReadRepository<Movie, MovieId> movieRepository,
             IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository)
@@ -29,7 +29,7 @@
             this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
         }
 
-        public async Task Handle(ShowtimeCreatedNotification notification, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeScheduledNotification notification, CancellationToken cancellationToken)
         {
             var @event = notification.Event;
 

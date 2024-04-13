@@ -2,10 +2,10 @@
 {
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
 
-    public static class CreateShowtimeUtils
+    public static class ScheduleShowtimeUtils
     {
-        public static Showtime Create()
-            => Showtime.Create(
+        public static Showtime Schedule()
+            => Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 Constants.Showtime.SessionDateOnUtc,

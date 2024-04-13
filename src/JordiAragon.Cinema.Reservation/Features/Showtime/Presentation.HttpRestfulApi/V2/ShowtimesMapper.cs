@@ -15,7 +15,7 @@
         public ShowtimesMapper()
         {
             // Requests to queries or commands.
-            this.CreateMap<CreateShowtimeRequest, CreateShowtimeCommand>();
+            this.CreateMap<ScheduleShowtimeRequest, ScheduleShowtimeCommand>();
             this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
             this.CreateMap<GetShowtimesRequest, GetShowtimesQuery>();
             this.CreateMap<GetShowtimeRequest, GetShowtimeQuery>();

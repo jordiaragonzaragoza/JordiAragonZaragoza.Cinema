@@ -16,9 +16,9 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    public sealed class CreateShowtimeTests : BaseHttpRestfulApiFunctionalTests
+    public sealed class ScheduleShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
-        public CreateShowtimeTests(
+        public ScheduleShowtimeTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -26,14 +26,14 @@
         }
 
         [Fact]
-        public async Task CreateShowtime_WhenHavingValidArguments_ShouldCreateRequiredShowtime()
+        public async Task ScheduleShowtime_WhenHavingValidArguments_ShouldCreateRequiredShowtime()
         {
             // Arrange
-            var url = $"api/v2/{CreateShowtime.Route}";
+            var url = $"api/v2/{ScheduleShowtime.Route}";
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
-            var request = new CreateShowtimeRequest(
+            var request = new ScheduleShowtimeRequest(
                 SeedData.ExampleAuditorium.Id,
                 SeedData.ExampleMovie.Id,
                 sessionDateOnUtc);

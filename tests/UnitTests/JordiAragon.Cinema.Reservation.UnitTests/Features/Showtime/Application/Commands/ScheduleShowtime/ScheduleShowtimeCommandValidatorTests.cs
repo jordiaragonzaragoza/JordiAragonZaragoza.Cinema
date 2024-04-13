@@ -1,39 +1,39 @@
-﻿namespace JordiAragon.Cinema.Reservation.UnitTests.Showtime.Application.Commands.CreateShowtime
+﻿namespace JordiAragon.Cinema.Reservation.UnitTests.Showtime.Application.Commands.ScheduleShowtime
 {
     using System;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime;
+    using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using NSubstitute;
     using Xunit;
 
-    public sealed class CreateShowtimeCommandValidatorTests
+    public sealed class ScheduleShowtimeCommandValidatorTests
     {
         private readonly IDateTime mockDatetime;
-        private readonly CreateShowtimeCommandValidator validator;
+        private readonly ScheduleShowtimeCommandValidator validator;
 
-        public CreateShowtimeCommandValidatorTests()
+        public ScheduleShowtimeCommandValidatorTests()
         {
             this.mockDatetime = Substitute.For<IDateTime>();
-            this.validator = new CreateShowtimeCommandValidator(this.mockDatetime);
+            this.validator = new ScheduleShowtimeCommandValidator(this.mockDatetime);
         }
 
         [Fact]
-        public void CreateShowtimeCommandValidator_WhenHavingInvalidArguments_ShouldThrowArgumentException()
+        public void ScheduleShowtimeCommandValidator_WhenHavingInvalidArguments_ShouldThrowArgumentException()
         {
-            FluentActions.Invoking(() => new CreateShowtimeCommandValidator(null))
+            FluentActions.Invoking(() => new ScheduleShowtimeCommandValidator(null))
             .Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
-        public void ValidateCreateShowtimeCommand_WhenCommandIsValid_ShouldNotHaveError()
+        public void ValidateScheduleShowtimeCommand_WhenCommandIsValid_ShouldNotHaveError()
         {
             // Arrange.
-            var createShowtimeCommand = CreateShowtimeCommandUtils.CreateCommand();
+            var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
 
             this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
 
@@ -46,10 +46,10 @@
         }
 
         [Fact]
-        public void ValidateCreateShowtimeCommand_WhenMovieIdIsEmpty_ShouldHaveAnError()
+        public void ValidateScheduleShowtimeCommand_WhenMovieIdIsEmpty_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand(
+            var createShowtimeCommand = new ScheduleShowtimeCommand(
                 AuditoriumId: AuditoriumId.Create(Guid.NewGuid()),
                 MovieId: Guid.Empty,
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
@@ -66,10 +66,10 @@
         }
 
         [Fact]
-        public void ValidateCreateShowtimeCommand_WhenAuditoriumIdIsEmpty_ShouldHaveAnError()
+        public void ValidateScheduleShowtimeCommand_WhenAuditoriumIdIsEmpty_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand(
+            var createShowtimeCommand = new ScheduleShowtimeCommand(
                 AuditoriumId: Guid.Empty,
                 MovieId: MovieId.Create(Guid.NewGuid()),
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
@@ -86,10 +86,10 @@
         }
 
         [Fact]
-        public void ValidateCreateShowtimeCommand_WhenSessionDateOnUtcExpired_ShouldHaveAnError()
+        public void ValidateScheduleShowtimeCommand_WhenSessionDateOnUtcExpired_ShouldHaveAnError()
         {
             // Arrange.
-            var createShowtimeCommand = new CreateShowtimeCommand(
+            var createShowtimeCommand = new ScheduleShowtimeCommand(
                 AuditoriumId.Create(Guid.NewGuid()),
                 MovieId.Create(Guid.NewGuid()),
                 DateTimeOffset.UtcNow.AddYears(-1));

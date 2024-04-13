@@ -22,13 +22,13 @@
         public void FindShowtimeByMovieIdSessionDateSpec_WhenHavingValidArguments_ShouldContainTheShowtime()
         {
             // Arrange
-            var showtime1 = Showtime.Create(
+            var showtime1 = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 Constants.Showtime.MovieId,
                 Constants.Showtime.SessionDateOnUtc,
                 Constants.Showtime.AuditoriumId);
 
-            var showtime2 = Showtime.Create(
+            var showtime2 = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 Constants.Showtime.MovieId,
                 Constants.Showtime.SessionDateOnUtc.AddYears(-1),
@@ -53,7 +53,7 @@
         public void FindShowtimeByMovieIdSessionDateSpec_WhenHavingAnInvalidMovieId_ShouldNotContainTheShowtime()
         {
             // Arrange
-            var showtime1 = CreateShowtimeUtils.Create();
+            var showtime1 = ScheduleShowtimeUtils.Schedule();
 
             var showtimes = new List<Showtime>() { showtime1 };
 

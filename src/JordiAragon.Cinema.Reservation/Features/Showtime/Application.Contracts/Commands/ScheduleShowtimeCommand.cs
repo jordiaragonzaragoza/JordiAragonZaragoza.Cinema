@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
-    public sealed record class CreateShowtimeCommand(Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc)
+    public sealed record class ScheduleShowtimeCommand(Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc)
         : ICommand<Guid>, IInvalidateCacheRequest
     {
         public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
