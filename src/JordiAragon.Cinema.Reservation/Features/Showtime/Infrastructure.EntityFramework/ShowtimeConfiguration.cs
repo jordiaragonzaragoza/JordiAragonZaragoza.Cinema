@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
+﻿/*namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
@@ -75,4 +75,4 @@
                 .HasConversion(id => id.Value, value => MovieId.Create(value));
         }
     }
-}
+}*/

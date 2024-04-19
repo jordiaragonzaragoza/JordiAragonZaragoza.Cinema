@@ -27,10 +27,10 @@
 
         private static void RegisterBusinessModelRepositories(ContainerBuilder builder)
         {
-            // TODO: Temporal registration. Remove on event sourcing.
-            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
+            // Removed on event sourcing.
+            /*builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
                     .As<IRepository<Showtime, ShowtimeId>>()
-                    .InstancePerLifetimeScope();
+                    .InstancePerLifetimeScope();*/
 
             // Write Repositories
             builder.RegisterType<ReservationRepository<Movie, MovieId>>()
