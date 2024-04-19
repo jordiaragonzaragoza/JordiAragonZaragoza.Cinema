@@ -78,6 +78,7 @@
             return showtime.ReserveSeats(newTicketId, userId, desiredSeatIds, currentDateTimeOnUtc);
         }
 
+        // TODO: This method will gone out on using sagas with timeout messages to mark showtimes as ended.
         public async Task<bool> HasShowtimeEndedAsync(Showtime showtime, DateTimeOffset currentDateTimeOnUtc, CancellationToken cancellationToken)
         {
             Guard.Against.Null(showtime);

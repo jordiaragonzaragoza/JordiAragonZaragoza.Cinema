@@ -1,7 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -10,7 +9,6 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using Volo.Abp.Guids;
@@ -20,32 +18,22 @@
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
-        private readonly ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository;
         private readonly IGuidGenerator guidGenerator;
 
         public ScheduleShowtimeCommandHandler(
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IReadRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
-            ISpecificationReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IGuidGenerator guidGenerator)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
-            this.showtimeReadRepository = Guard.Against.Null(showtimeReadRepository, nameof(showtimeReadRepository));
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
         public override async Task<Result<Guid>> Handle(ScheduleShowtimeCommand request, CancellationToken cancellationToken)
         {
-            // TODO: Remove. This should be also in a domain rule on ShowtimeManager.
-            var existingShowtime = await this.showtimeReadRepository.FirstOrDefaultAsync(new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(request.MovieId), request.SessionDateOnUtc), cancellationToken);
-            if (existingShowtime is not null)
-            {
-                return Result.Invalid(new List<ValidationError>() { new ValidationError() { ErrorMessage = $"{nameof(Showtime)} already exists for this {nameof(Movie)}: {request.MovieId}" } });
-            }
-
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
@@ -58,6 +46,7 @@
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
             }
 
+            // TODO: This is temporal. A scheduler manager with business rules is required.
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(this.guidGenerator.Create()),
                 MovieId.Create(existingMovie.Id),

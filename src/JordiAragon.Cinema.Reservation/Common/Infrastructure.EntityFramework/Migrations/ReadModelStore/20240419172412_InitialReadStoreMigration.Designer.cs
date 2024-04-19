@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20240328175525_InitialReadStoreMigration")]
+    [Migration("20240419172412_InitialReadStoreMigration")]
     partial class InitialReadStoreMigration
     {
         /// <inheritdoc />
@@ -91,6 +91,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.Property<string>("AuditoriumName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedTimeOnUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");

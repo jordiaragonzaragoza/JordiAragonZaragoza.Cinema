@@ -68,7 +68,8 @@
                 existingAuditorium.Name,
                 existingMovie.Title,
                 seats,
-                false);
+                false,
+                @event.CreatedTimeOnUtc);
 
             await this.ticketReadModelRepository.AddAsync(ticketReadModel, cancellationToken);
         }

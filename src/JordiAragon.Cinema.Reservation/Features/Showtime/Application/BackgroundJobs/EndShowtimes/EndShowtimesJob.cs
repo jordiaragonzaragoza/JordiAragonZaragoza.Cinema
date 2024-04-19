@@ -14,6 +14,7 @@
     using Microsoft.Extensions.Logging;
     using Quartz;
 
+    // TODO: Replace this batch job to a policy-saga with timeout message.
     [DisallowConcurrentExecution]
     public sealed class EndShowtimesJob : IJob
     {

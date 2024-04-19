@@ -55,7 +55,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AuditoriumName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsPurchased = table.Column<bool>(type: "bit", nullable: false)
+                    IsPurchased = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {

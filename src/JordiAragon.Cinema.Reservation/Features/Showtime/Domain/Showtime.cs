@@ -30,7 +30,7 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
-        public bool IsEnded { get; private set; }
+        public bool IsEnded { get; private set; } // TODO: Review. Probably this property is not required.
 
         public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
