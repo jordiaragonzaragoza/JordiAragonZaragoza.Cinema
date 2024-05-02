@@ -18,7 +18,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rows = table.Column<int>(type: "int", nullable: false),
-                    SeatsPerRow = table.Column<int>(type: "int", nullable: false)
+                    SeatsPerRow = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,7 +47,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
                     StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,7 +79,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsEnded = table.Column<bool>(type: "bit", nullable: false)
+                    IsEnded = table.Column<bool>(type: "bit", nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,7 +91,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {

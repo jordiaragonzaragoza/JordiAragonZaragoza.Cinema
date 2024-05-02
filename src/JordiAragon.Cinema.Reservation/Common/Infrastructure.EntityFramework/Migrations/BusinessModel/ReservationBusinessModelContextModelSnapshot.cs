@@ -36,6 +36,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<int>("SeatsPerRow")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.ToTable("Auditoriums", (string)null);
@@ -51,6 +56,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -74,6 +84,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<DateTimeOffset>("SessionDateOnUtc")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.ToTable("Showtimes", (string)null);
@@ -83,6 +98,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 

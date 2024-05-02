@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20240419172412_InitialReadStoreMigration")]
+    [Migration("20240502170330_InitialReadStoreMigration")]
     partial class InitialReadStoreMigration
     {
         /// <inheritdoc />
@@ -112,7 +112,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>

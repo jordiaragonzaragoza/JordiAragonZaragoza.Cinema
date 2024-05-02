@@ -1,14 +1,10 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
+    using System;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
 
-    public sealed class AvailableSeatReadModelConfiguration : IEntityTypeConfiguration<AvailableSeatReadModel>
+    public sealed class AvailableSeatReadModelConfiguration : BaseModelTypeConfiguration<AvailableSeatReadModel, Guid>
     {
-        public void Configure(EntityTypeBuilder<AvailableSeatReadModel> builder)
-        {
-            builder.HasKey(avaliableSeatReadModel => avaliableSeatReadModel.Id);
-        }
     }
 }
