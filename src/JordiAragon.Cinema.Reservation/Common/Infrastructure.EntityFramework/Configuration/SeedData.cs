@@ -148,7 +148,7 @@
 
             context.Auditoriums.Add(ExampleAuditorium);
 
-            ////context.Showtimes.Add(ExampleShowtime);
+            context.Showtimes.Add(ExampleShowtime);
 
             context.Users.Add(ExampleUser);
 
