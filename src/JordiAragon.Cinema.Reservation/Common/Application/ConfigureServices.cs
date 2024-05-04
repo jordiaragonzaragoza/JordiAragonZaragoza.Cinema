@@ -29,6 +29,8 @@
                                                                                       .RepeatForever()));
             });
 
+            serviceCollection.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
+
             serviceCollection.AddQuartzHostedService(opt =>
             {
                 opt.WaitForJobsToComplete = true;

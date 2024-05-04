@@ -49,6 +49,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
+		<PackageReference Include="Quartz.Serialization.Json" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
 		<PackageReference Include="Serilog.AspNetCore" />
@@ -62,5 +63,11 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
 	</ItemGroup>
 </Project>
