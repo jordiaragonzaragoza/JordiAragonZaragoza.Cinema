@@ -29,7 +29,7 @@
                                                                                       .RepeatForever()));
             });
 
-            serviceCollection.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
+            ////serviceCollection.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
 
             serviceCollection.AddQuartzHostedService(opt =>
             {
