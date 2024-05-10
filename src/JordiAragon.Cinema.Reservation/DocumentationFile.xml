@@ -48,11 +48,5 @@
             <param name="description">The description of the API version.</param>
             <returns>Information about the API.</returns>
         </member>
-        <member name="T:JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.ShowtimeConfiguration">
-            <summary>
-            This configuration is obsolete when using showtime as event sourced aggregate.
-            Its conserved as future reference.
-            </summary>
-        </member>
     </members>
 </doc>

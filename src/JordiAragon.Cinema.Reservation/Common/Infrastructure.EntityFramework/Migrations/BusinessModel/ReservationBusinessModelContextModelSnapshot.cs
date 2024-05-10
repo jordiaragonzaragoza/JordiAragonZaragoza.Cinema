@@ -67,33 +67,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.ToTable("Movies", (string)null);
                 });
 
-            modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AuditoriumId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsEnded")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("MovieId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("SessionDateOnUtc")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Showtimes", (string)null);
-                });
-
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.User.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,68 +235,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .IsRequired();
 
                     b.Navigation("Showtimes");
-                });
-
-            modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime", b =>
-                {
-                    b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.Ticket", "Tickets", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("Id");
-
-                            b1.Property<Guid>("ShowtimeId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTimeOffset>("CreatedTimeOnUtc")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.Property<bool>("IsPurchased")
-                                .HasColumnType("bit");
-
-                            b1.Property<Guid?>("UserId")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("UserId");
-
-                            b1.HasKey("Id", "ShowtimeId");
-
-                            b1.HasIndex("ShowtimeId");
-
-                            b1.ToTable("ShowtimesTickets", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("ShowtimeId");
-
-                            b1.OwnsMany("JordiAragon.Cinema.Reservation.Auditorium.Domain.SeatId", "Seats", b2 =>
-                                {
-                                    b2.Property<Guid>("TicketId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<Guid>("ShowtimeId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<Guid>("Value")
-                                        .HasColumnType("uniqueidentifier")
-                                        .HasColumnName("SeatId");
-
-                                    b2.HasKey("TicketId", "ShowtimeId", "Id");
-
-                                    b2.ToTable("ShowtimeTicketSeatIds", (string)null);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("TicketId", "ShowtimeId");
-                                });
-
-                            b1.Navigation("Seats");
-                        });
-
-                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,6 @@
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.DataModel;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
@@ -27,11 +26,6 @@
 
         private static void RegisterBusinessModelRepositories(ContainerBuilder builder)
         {
-            // TODO: Temporal registration. Remove on event sourcing.
-            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
-                    .As<IRepository<Showtime, ShowtimeId>>()
-                    .InstancePerLifetimeScope();
-
             // Write Repositories
             builder.RegisterType<ReservationRepository<Movie, MovieId>>()
                     .As<IRepository<Movie, MovieId>>()
