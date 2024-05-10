@@ -13,7 +13,7 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorNoReservationsAllowedAfterShowtimeEndedRule()
         {
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var movie = CreateMovieUtils.Create();
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
@@ -58,7 +58,7 @@
         public void IsBroken_WhenHavingCreatedTimeBiggerThanShowtimeEnded_ShouldBeTrue()
         {
             // Arrange
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow,
@@ -78,7 +78,7 @@
         public void IsBroken_WhenHavingCreatedTimeLessThanShowtimeEnded_ShouldBeFalse()
         {
             // Arrange
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var movie = CreateMovieUtils.Create();
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 

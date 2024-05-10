@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Application
 {
-    using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.EndShowtimes;
     using JordiAragon.Cinema.Reservation.Showtime.Application.BackgroundJobs.ExpireReservedSeats;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -28,20 +27,9 @@
                 .AddTrigger(trigger => trigger.ForJob(expireReservedSeatsJobKey)
                                               .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(expireReservedSeatsIntervalInSeconds)
                                                                                       .RepeatForever()));
-
-                var endShowtimesJobKey = new JobKey(nameof(EndShowtimesJob));
-
-                // This Bind is required because AddQuartz dont support IServiceProvider / option pattern.
-                var endShowtimesJobOptions = new EndShowtimesJobOptions();
-                configuration.GetSection(EndShowtimesJobOptions.Section).Bind(endShowtimesJobOptions);
-
-                var endShowtimesIntervalInSeconds = endShowtimesJobOptions.ScheduleIntervalInSeconds;
-
-                configure.AddJob<EndShowtimesJob>(endShowtimesJobKey)
-                .AddTrigger(trigger => trigger.ForJob(endShowtimesJobKey)
-                                              .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(endShowtimesIntervalInSeconds)
-                                                                                      .RepeatForever()));
             });
+
+            ////serviceCollection.Configure<QuartzOptions>(configuration.GetSection("Quartz"));
 
             serviceCollection.AddQuartzHostedService(opt =>
             {

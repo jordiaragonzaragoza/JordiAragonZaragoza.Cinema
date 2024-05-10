@@ -1,6 +1,6 @@
 What is the Cinema Project?
 =====================
-The Cinema Project is a WebApi project written in .NET 7 following DDD and Clean Architecture.
+The Cinema Project is a HttpRestfulApi project written in .NET 7 following DDD and Clean Architecture.
 The reservation bounded context manage the cinema showtimes and ticket reservation.
 
 ## How to use:
@@ -72,7 +72,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 - Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
 - Unit Tests: Domain and Application
-- Functional Tests with Testcontainers: Presentation.WebApi
+- Functional Tests with Testcontainers: Presentation.HttpRestfulApi
 - Integration Tests with Testcontainers: Infrastructure.EntityFramework
 - GitHub workflow CI with SonarCloud integration
 
@@ -108,9 +108,10 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 - <a href="https://github.com/kgrzybek/sample-dotnet-core-cqrs-api" target="_blank">Kamil Grzybek: Sample .NET Core REST API CQRS</a>
 - <a href="https://github.com/kgrzybek/modular-monolith-with-ddd" target="_blank">Kamil Grzybek: Modular Monolith With DDD</a>
 - <a href="https://github.com/oskardudycz/EventSourcing.NetCore" target="_blank">Oskar Dudycz: EventSourcing .NET</a>
+- <a href="https://www.youtube.com/watch?v=Lw04HRF8ies" target="_blank">NDC Oslo: Udi Dahan - Talk Session: CQRS pitfalls and patterns</a>
 - <a href="https://www.youtube.com/watch?v=26xrX113KZc" target="_blank">Explore DDD: Mauro Servienti - Talk Session: Welcome to the (State) Machine</a>
 - <a href="https://www.youtube.com/watch?v=KkzvQSuYd5I" target="_blank">Explore DDD: Mauro Servienti - Talk Session: All Our Aggregates Are Wrong</a>
-- <a href="https://www.youtube.com/watch?v=Lw04HRF8ies" target="_blank">NDC Oslo: Udi Dahan - Talk Session: CQRS pitfalls and patterns</a>
+- <a href="https://www.youtube.com/watch?v=tVnIUZbsxWI" target="_blank">NDC Oslo: Adam Ralph - Talk Session: Finding your service boundaries - a practical guide</a>
 - <a href="https://www.youtube.com/watch?v=kPV1SkdSnhE" target="_blank">Vladimir Khorikov: DDD in a nutshell</a>
 - <a href="https://odysee.com/@sunnyAtticSoftware:a?view=content" target="_blank">Diego Martin: SunnyAttic Software Videos</a>
 - <a href="https://www.youtube.com/watch?v=SUiWfhAhgQw" target="_blank">Jimmy Bogard: Vertical Slice Architecture</a>
@@ -121,3 +122,9 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 ## About:
 
 The Cinema Project was developed by <a href="https://www.linkedin.com/in/jordiaragonzaragoza/" target="_blank">Jordi Aragón Zaragoza</a>
+
+## License:
+
+[Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+[![Creative Commons License](https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)

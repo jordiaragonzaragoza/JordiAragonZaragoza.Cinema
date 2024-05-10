@@ -28,20 +28,20 @@
         <member name="M:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             Configure each API discovered for Swagger Documentation.
             </summary>
             <param name="options">The options instance to configure.</param>
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.Configure(System.String,Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.Configure(System.String,Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             Configure Swagger Options. Inherited from the Interface.
             </summary>
             <param name="name">The name of the options instance being configured.</param>
             <param name="options">The options instance to configure.</param>
         </member>
-        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.WebApi.ConfigureSwaggerOptions.CreateVersionInfo(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiVersionDescription)">
+        <member name="M:JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.CreateVersionInfo(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiVersionDescription)">
             <summary>
             Create information about the version of the API.
             </summary>

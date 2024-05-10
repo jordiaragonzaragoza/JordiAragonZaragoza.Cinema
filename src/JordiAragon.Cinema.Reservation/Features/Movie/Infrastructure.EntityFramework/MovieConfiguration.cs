@@ -1,13 +1,12 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework
 {
-    using System;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public sealed class MovieConfiguration : BaseEntityTypeConfiguration<Movie, MovieId>
+    public sealed class MovieConfiguration : BaseAggregateRootTypeConfiguration<Movie, MovieId>
     {
         public override void Configure(EntityTypeBuilder<Movie> builder)
         {

@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9F
 		src\Directory.Packages.props = src\Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2", "src\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation", "src\JordiAragon.Cinema.Reservation\JordiAragon.Cinema.Reservation.csproj", "{38FECB83-906F-4B6C-B721-AC515C6EA2E7}"
 EndProject

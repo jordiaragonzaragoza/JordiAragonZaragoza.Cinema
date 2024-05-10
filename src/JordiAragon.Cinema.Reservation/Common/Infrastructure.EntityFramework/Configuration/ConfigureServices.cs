@@ -27,7 +27,7 @@
             {
                 if (isDevelopment)
                 {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.BusinessModelStore")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragonCinemaReservationBusinessModelStore")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 
@@ -48,7 +48,7 @@
             {
                 if (isDevelopment)
                 {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragon.Cinema.Reservation.ReadModelStore")
+                    /*optionsBuilder.UseInMemoryDatabase("JordiAragonCinemaReservationReadModelStore")
                                   .EnableSensitiveDataLogging()
                                   .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
 

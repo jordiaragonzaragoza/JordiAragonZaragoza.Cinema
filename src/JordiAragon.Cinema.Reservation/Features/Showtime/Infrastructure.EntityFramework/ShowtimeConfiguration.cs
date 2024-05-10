@@ -12,7 +12,7 @@
     /// This configuration is obsolete when using showtime as event sourced aggregate.
     /// Its conserved as future reference.
     /// </summary>
-    public sealed class ShowtimeConfiguration : BaseEntityTypeConfiguration<Showtime, ShowtimeId>
+    public sealed class ShowtimeConfiguration : BaseAggregateRootTypeConfiguration<Showtime, ShowtimeId>
     {
         public override void Configure(EntityTypeBuilder<Showtime> builder)
         {

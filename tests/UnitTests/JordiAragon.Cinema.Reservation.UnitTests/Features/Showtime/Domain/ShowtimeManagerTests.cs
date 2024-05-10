@@ -61,7 +61,7 @@
 
         public static IEnumerable<object[]> InvalidArgumentsReserveSeatsAsync()
         {
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var desiredSeatIds = new List<SeatId> { Constants.Seat.Id };
             var newTicketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
@@ -102,7 +102,7 @@
 
         public static IEnumerable<object[]> InvalidArgumentsHasShowtimeEndedAsync()
         {
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
             var showtimeValues = new object[] { null, showtime };
@@ -159,7 +159,7 @@
             var auditorium = CreateAuditoriumUtils.Create();
             var movie = CreateMovieUtils.Create();
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id);
@@ -196,7 +196,7 @@
             var auditorium = CreateAuditoriumUtils.Create();
             Movie movie = null;
 
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow.AddDays(-1),
@@ -234,7 +234,7 @@
             // Arrange
             var auditorium = CreateAuditoriumUtils.Create();
 
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow.AddDays(-1),
@@ -273,7 +273,7 @@
             var auditorium = CreateAuditoriumUtils.Create();
             var movie = CreateMovieUtils.Create();
 
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow.AddDays(-1),
@@ -314,7 +314,7 @@
             var auditorium = CreateAuditoriumUtils.Create();
             var movie = CreateMovieUtils.Create();
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id).ToList();
@@ -350,7 +350,7 @@
             var auditorium = CreateAuditoriumUtils.Create();
             var movie = CreateMovieUtils.Create();
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id);
@@ -403,7 +403,7 @@
         public void HasShowtimeEndedAsync_WhenHavingUnExistingShowtime_ShouldThrowNotFoundException()
         {
             // Arrange
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow.AddDays(-1),
@@ -428,7 +428,7 @@
         public async Task HasShowtimeEndedAsync_WhenHavingAnEndedShowtime_ShouldReturnTrue()
         {
             // Arrange
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow.AddDays(-1),
@@ -452,7 +452,7 @@
         public async Task HasShowtimeEndedAsync_WhenHavingANotEndedShowtime_ShouldReturnFalse()
         {
             // Arrange
-            var showtime = Showtime.Create(
+            var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
                 DateTimeOffset.UtcNow,

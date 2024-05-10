@@ -1,16 +1,22 @@
 version: '3.4'
 
+networks:
+  cinema-network:
+    driver: bridge
+
 services:
   jordiaragon.cinema.reservation:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "7172:80"
-      - "7443:443"
+      - 7172:80
+      - 7443:443
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+    networks:
+      - cinema-network
 
   azuresqledge.cinema:
     environment:
@@ -20,12 +26,18 @@ services:
       - 1433:1433
     volumes:
       - ./containers/azuresqledge/:/var/opt/mssql
+    networks:
+      - cinema-network
 
   eventstore.cinema:
     environment:
-      - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
       - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
       - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
+      - EVENTSTORE_INSECURE=true # let eventstore run without certificate
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
     ports:
       - 2113:2113
@@ -33,6 +45,8 @@ services:
     volumes:
       - ./containers/eventstore/data/:/var/lib/eventstore
       - ./containers/eventstore/logs/:/var/log/eventstore
+    networks:
+      - cinema-network
 
   rabbitmq.cinema:
     ports:
@@ -41,3 +55,5 @@ services:
     #volumes: 
         #- ./containers/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
         #- ./containers/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+    networks:
+      - cinema-network
