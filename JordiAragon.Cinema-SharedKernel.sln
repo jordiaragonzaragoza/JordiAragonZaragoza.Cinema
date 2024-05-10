@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9F
 		src\Directory.Packages.props = src\Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKernel", "{CFFE2114-8356-49BA-B755-3427D19DB42A}"
 	ProjectSection(SolutionItems) = preProject
@@ -41,13 +41,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Infrastructure.EntityFramework", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EntityFramework\JordiAragon.SharedKernel.Infrastructure.EntityFramework.csproj", "{5AAB32CC-92E5-4975-91AD-BA21C904EF4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Presentation.WebApi", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.WebApi\JordiAragon.SharedKernel.Presentation.WebApi.csproj", "{7FF3771A-AE55-4D93-B7E9-71807F86716C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Presentation.HttpRestfulApi", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.HttpRestfulApi\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.csproj", "{7FF3771A-AE55-4D93-B7E9-71807F86716C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Presentation.WebApi.Contracts", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.WebApi.Contracts\JordiAragon.SharedKernel.Presentation.WebApi.Contracts.csproj", "{89047CF8-31C0-4F59-9253-8E47B82F3949}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts.csproj", "{89047CF8-31C0-4F59-9253-8E47B82F3949}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2", "src\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel.Infrastructure.EventStore", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Infrastructure.EventStore\JordiAragon.SharedKernel.Infrastructure.EventStore.csproj", "{F763E219-5B84-41A2-943A-4BDE80E94D0F}"
 EndProject

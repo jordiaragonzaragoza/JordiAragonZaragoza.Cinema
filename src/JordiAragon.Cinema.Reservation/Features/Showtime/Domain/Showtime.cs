@@ -30,11 +30,11 @@
 
         public AuditoriumId AuditoriumId { get; private set; }
 
-        public bool IsEnded { get; private set; }
+        public bool IsEnded { get; private set; } // TODO: Review. Probably this property is not required.
 
         public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
 
-        public static Showtime Create(
+        public static Showtime Schedule(
             ShowtimeId id,
             MovieId movieId,
             DateTimeOffset sessionDateOnUtc,
@@ -42,7 +42,7 @@
         {
             var showtime = new Showtime();
 
-            showtime.Apply(new ShowtimeCreatedEvent(id, movieId, sessionDateOnUtc, auditoriumId));
+            showtime.Apply(new ShowtimeScheduledEvent(id, movieId, sessionDateOnUtc, auditoriumId));
 
             return showtime;
         }
@@ -69,7 +69,7 @@
         {
             switch (domainEvent)
             {
-                case ShowtimeCreatedEvent @event:
+                case ShowtimeScheduledEvent @event:
                     this.Applier(@event);
                     break;
 
@@ -106,7 +106,7 @@
             }
         }
 
-        private void Applier(ShowtimeCreatedEvent @event)
+        private void Applier(ShowtimeScheduledEvent @event)
         {
             this.Id = ShowtimeId.Create(@event.AggregateId);
             this.MovieId = MovieId.Create(@event.MovieId);

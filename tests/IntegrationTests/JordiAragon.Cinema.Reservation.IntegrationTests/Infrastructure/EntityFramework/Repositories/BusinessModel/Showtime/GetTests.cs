@@ -24,7 +24,7 @@
         public async Task GetByIdAsync_WhenHavingAnExistingShowtime_ShouldReturnTheShowtime()
         {
             // Arrange
-            var newShowtime = Showtime.Create(
+            var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),

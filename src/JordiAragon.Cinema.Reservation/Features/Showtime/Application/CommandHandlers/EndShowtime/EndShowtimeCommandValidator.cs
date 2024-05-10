@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.CreateShowtime
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.EndShowtime
 {
     using FluentValidation;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;

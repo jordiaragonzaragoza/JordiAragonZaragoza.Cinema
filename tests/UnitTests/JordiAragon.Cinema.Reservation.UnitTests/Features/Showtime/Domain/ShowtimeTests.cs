@@ -16,7 +16,7 @@
 
     public sealed class ShowtimeTests
     {
-        public static IEnumerable<object[]> InvalidArgumentsCreateShowtime()
+        public static IEnumerable<object[]> InvalidArgumentsScheduleShowtime()
         {
             var showtimeId = Constants.Showtime.Id;
             var movieId = Constants.Movie.Id;
@@ -87,7 +87,7 @@
         }
 
         [Fact]
-        public void CreateShowtime_WhenHavingValidArguments_ShouldCreateShowtimeAndAddShowtimeCreatedEvent()
+        public void ScheduleShowtime_WhenHavingValidArguments_ShouldScheduleShowtimeAndAddShowtimeCreatedEvent()
         {
             // Arrange
             var id = Constants.Showtime.Id;
@@ -96,16 +96,16 @@
             var auditoriumId = Constants.Showtime.AuditoriumId;
 
             // Act
-            var showtime = Showtime.Create(id, movieId, sessionDateOnUtc, auditoriumId);
+            var showtime = Showtime.Schedule(id, movieId, sessionDateOnUtc, auditoriumId);
 
             // Assert
             showtime.Should().NotBeNull();
             showtime.Id.Should().Be(id);
 
             showtime.Events.Should()
-                              .ContainSingle(x => x is ShowtimeCreatedEvent)
-                              .Which.Should().BeOfType<ShowtimeCreatedEvent>()
-                              .Which.Should().Match<ShowtimeCreatedEvent>(e =>
+                              .ContainSingle(x => x is ShowtimeScheduledEvent)
+                              .Which.Should().BeOfType<ShowtimeScheduledEvent>()
+                              .Which.Should().Match<ShowtimeScheduledEvent>(e =>
                                                                             e.ShowtimeId == id &&
                                                                             e.MovieId == movieId &&
                                                                             e.SessionDateOnUtc == sessionDateOnUtc &&
@@ -113,15 +113,15 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidArgumentsCreateShowtime))]
-        public void CreateShowtime_WhenHavingInvalidArguments_ShouldThrowException(
+        [MemberData(nameof(InvalidArgumentsScheduleShowtime))]
+        public void ScheduleShowtime_WhenHavingInvalidArguments_ShouldThrowException(
             ShowtimeId id,
             MovieId movieId,
             DateTimeOffset sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
             // Act
-            Func<Showtime> showtime = () => Showtime.Create(id, movieId, sessionDateOnUtc, auditoriumId);
+            Func<Showtime> showtime = () => Showtime.Schedule(id, movieId, sessionDateOnUtc, auditoriumId);
 
             // Assert
             showtime.Should().Throw<Exception>();
@@ -131,7 +131,7 @@
         public void ReserveSeats_WhenHavingValidArguments_ShouldCreateTicketAddTheTickedAndAddReservedSeatsEvent()
         {
             // Arrange
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
 
@@ -173,7 +173,7 @@
             DateTimeOffset createdTimeOnUtc)
         {
             // Arrange
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
             Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, userId, seatIds, createdTimeOnUtc);
@@ -195,7 +195,7 @@
 
             var userId = Constants.Ticket.UserId;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             var seatIds = new List<SeatId>
             {
@@ -226,7 +226,7 @@
             // Arrange
             TicketId ticketId = null;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
             Action showtimePurchaseSeats = () => showtime.PurchaseTicket(ticketId);
@@ -244,7 +244,7 @@
             // Arrange
             var ticketId = Constants.Ticket.Id;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
             Action showtimePurchaseSeats = () => showtime.PurchaseTicket(ticketId);
@@ -264,7 +264,7 @@
 
             var userId = Constants.Ticket.UserId;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             var seatIds = new List<SeatId>
             {
@@ -292,7 +292,7 @@
 
             var userId = Constants.Ticket.UserId;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             var seatIds = new List<SeatId>
             {
@@ -323,7 +323,7 @@
             // Arrange
             TicketId ticketId = null;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
             Action showtimePurchaseSeats = () => showtime.ExpireReservedSeats(ticketId);
@@ -341,7 +341,7 @@
             // Arrange
             var ticketId = Constants.Ticket.Id;
 
-            var showtime = CreateShowtimeUtils.Create();
+            var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
             Action showtimePurchaseSeats = () => showtime.ExpireReservedSeats(ticketId);
