@@ -15,7 +15,8 @@
             string auditoriumName,
             string movieTitle,
             IEnumerable<SeatReadModel> seats,
-            bool isPurchased)
+            bool isPurchased,
+            DateTimeOffset createdTimeOnUtc)
         {
             this.Id = id;
             this.UserId = userId;
@@ -25,6 +26,7 @@
             this.MovieTitle = movieTitle;
             this.Seats = seats;
             this.IsPurchased = isPurchased;
+            this.CreatedTimeOnUtc = createdTimeOnUtc;
         }
 
         // Required by EF.
@@ -47,5 +49,7 @@
         public IEnumerable<SeatReadModel> Seats { get; private set; }
 
         public bool IsPurchased { get; set; }
+
+        public DateTimeOffset CreatedTimeOnUtc { get; private set; } // TODO: Review if its required.
     }
 }

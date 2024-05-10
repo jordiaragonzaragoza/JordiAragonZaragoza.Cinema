@@ -21,7 +21,7 @@ services:
     container_name: azuresqledge.cinema
 
   eventstore.cinema:
-    image: eventstore/eventstore:22.10.2-alpha-arm64v8
+    image: eventstore/eventstore:23.10.1-alpha-arm64v8
     container_name: eventstore.cinema
 
   rabbitmq.cinema:

@@ -5,6 +5,7 @@
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
 
+    // TODO: This class will change on using sagas with timeout messages to mark showtimes as ended.
     public sealed class NoReservationsAllowedAfterShowtimeEndedRule : IBusinessRule
     {
         private readonly Showtime showtime;

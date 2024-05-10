@@ -58,7 +58,7 @@
         public async Task UpdateAsync_WhenHavingAnUnexistingShowtime_ShouldThrowDbUpdateException()
         {
             // Arrange
-            var newShowtime = Showtime.Create(
+            var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),

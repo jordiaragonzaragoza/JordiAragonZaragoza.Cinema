@@ -1,18 +1,18 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
+    using System;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public sealed class TicketReadModelConfiguration : IEntityTypeConfiguration<TicketReadModel>
+    public sealed class TicketReadModelConfiguration : BaseModelTypeConfiguration<TicketReadModel, Guid>
     {
-        public void Configure(EntityTypeBuilder<TicketReadModel> builder)
+        public override void Configure(EntityTypeBuilder<TicketReadModel> builder)
         {
-            builder.ToTable("Tickets");
-
-            builder.HasKey(ticketReadModel => ticketReadModel.Id);
+            base.Configure(builder);
 
             ConfigureTicketsSeatsTable(builder);
         }

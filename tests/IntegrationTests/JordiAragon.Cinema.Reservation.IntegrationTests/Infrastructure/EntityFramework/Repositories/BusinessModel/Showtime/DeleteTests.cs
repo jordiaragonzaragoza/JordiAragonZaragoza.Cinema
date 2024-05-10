@@ -25,7 +25,7 @@
         public async Task DeleteAsync_WhenHavingAnExistingShowtime_ShouldDeleteTheShowtime()
         {
             // Arrange
-            var newShowtime = Showtime.Create(
+            var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
@@ -49,7 +49,7 @@
         public async Task DeleteAsync_WhenHavingAnUnexistingShowtime_ShouldThrowDbUpdateException()
         {
             // Arrange
-            var newShowtime = Showtime.Create(
+            var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
                 MovieId.Create(SeedData.ExampleMovie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),

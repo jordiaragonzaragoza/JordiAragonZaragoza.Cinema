@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-06-05T14:41:04.393Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="QWNcieE_PJ6kvHWi3n-Q" version="21.2.8" type="device" pages="4">
+<mxfile host="Electron" modified="2024-04-05T15:40:49.458Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="FqZJUt4rkjHiiYR45Nhu" version="24.1.0" type="device" pages="4">
   <diagram id="P-Ub2Zo7DyO1q1pQ69xT" name="General">
-    <mxGraphModel dx="1434" dy="854" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -34,37 +34,37 @@
         <mxCell id="yIa5ouiXyQNcb1I3Da2I-5" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Aggregate&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="797" y="532.5" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="yIa5ouiXyQNcb1I3Da2I-6" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Domain&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="yIa5ouiXyQNcb1I3Da2I-6" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Domain&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="797" y="460" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="yIa5ouiXyQNcb1I3Da2I-9" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Repositories&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="802.75" y="330" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="yIa5ouiXyQNcb1I3Da2I-10" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Application&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="yIa5ouiXyQNcb1I3Da2I-10" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Application&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="802.75" y="220" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="yIa5ouiXyQNcb1I3Da2I-11" value="Domain Events Handlers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-          <mxGeometry x="677.75" y="900" width="128.5" height="44" as="geometry" />
+          <mxGeometry x="450" y="578" width="128.5" height="44" as="geometry" />
         </mxCell>
         <mxCell id="yIa5ouiXyQNcb1I3Da2I-12" value="Queries" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-          <mxGeometry x="688.5" y="260" width="128.5" height="44" as="geometry" />
+          <mxGeometry x="850" y="260" width="128.5" height="44" as="geometry" />
         </mxCell>
         <mxCell id="yIa5ouiXyQNcb1I3Da2I-13" value="Commands" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-          <mxGeometry x="862.75" y="260" width="128.5" height="44" as="geometry" />
+          <mxGeometry x="677.75" y="260" width="128.5" height="44" as="geometry" />
         </mxCell>
         <mxCell id="xHMOhwIqoWVoK6ZrsONU-1" value="WebHooks" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="300" y="500" width="128.5" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="xHMOhwIqoWVoK6ZrsONU-2" value="WebApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
+        <mxCell id="xHMOhwIqoWVoK6ZrsONU-2" value="HttpRestfulApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="300" y="550" width="128.5" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="xHMOhwIqoWVoK6ZrsONU-3" value="Integration Events" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
-          <mxGeometry x="300" y="610" width="128.5" height="44" as="geometry" />
+        <mxCell id="xHMOhwIqoWVoK6ZrsONU-3" value="Integration Events Consumers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#97D077;strokeColor=#005700;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="300" y="610" width="140" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="xHMOhwIqoWVoK6ZrsONU-4" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Presentation&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="xHMOhwIqoWVoK6ZrsONU-4" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Presentation&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="339.25" y="454" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="BkcETpiSFPJ_p18Fw9qx-9" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Infraestructure&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="BkcETpiSFPJ_p18Fw9qx-9" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Infraestructure&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1250" y="460" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="BkcETpiSFPJ_p18Fw9qx-10" value="External APIs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FFCE9F;strokeColor=none;fontColor=#ffffff;" parent="1" vertex="1">
@@ -76,20 +76,29 @@
         <mxCell id="BkcETpiSFPJ_p18Fw9qx-12" value="Entity Framework" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FFCE9F;strokeColor=none;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="1224.5" y="605" width="143.5" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="BkcETpiSFPJ_p18Fw9qx-13" value="Dapper" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FFCE9F;strokeColor=none;fontColor=#ffffff;" parent="1" vertex="1">
+        <mxCell id="BkcETpiSFPJ_p18Fw9qx-13" value="EventStoreDB Client" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FFCE9F;strokeColor=none;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="1211.5" y="664" width="143.5" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="BkcETpiSFPJ_p18Fw9qx-14" value="Domain Events Notification Handlers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-          <mxGeometry x="834" y="900" width="186" height="44" as="geometry" />
+        <mxCell id="BkcETpiSFPJ_p18Fw9qx-14" value="Projectors" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
+          <mxGeometry x="701" y="910" width="116" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="F6b2XNlcuDER3qA4uwXU-1" value="Domain Exceptions" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FF6666;" parent="1" vertex="1">
-          <mxGeometry x="840" y="625.5" width="110" height="44" as="geometry" />
+        <mxCell id="F6b2XNlcuDER3qA4uwXU-1" value="BusinessRules" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FF6666;" parent="1" vertex="1">
+          <mxGeometry x="840" y="625.5" width="120" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="2izW_Twgga5-2CZFEnIe-1" value="ReadModels" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+          <mxGeometry x="840" y="910" width="116" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="2izW_Twgga5-2CZFEnIe-3" value="DomainService" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#FF6666;" vertex="1" parent="1">
+          <mxGeometry x="687" y="700" width="133" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="2izW_Twgga5-2CZFEnIe-4" value="Integration Event Publishers" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#66B2FF;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="566" width="141.5" height="44" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="Dependencies" id="zi6Ejhia7V-a2F5fpY6o">
-    <mxGraphModel dx="1434" dy="854" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1687" dy="1146" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="zmgnAT0viagxxQuJm_vw-0" />
         <mxCell id="zmgnAT0viagxxQuJm_vw-1" parent="zmgnAT0viagxxQuJm_vw-0" />
@@ -135,10 +144,10 @@
             <mxPoint x="210" y="304" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="T1_D9YDXICz4o3n0c1NQ-10" value="Presentation.WebApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
+        <mxCell id="T1_D9YDXICz4o3n0c1NQ-10" value="Presentation.HttpRestfulApi" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
           <mxGeometry x="460" y="484" width="245" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="T1_D9YDXICz4o3n0c1NQ-12" value="Presentation.WebApi.Contracts" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
+        <mxCell id="T1_D9YDXICz4o3n0c1NQ-12" value="Presentation.HttpRestfulApi.Contracts" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;" parent="zmgnAT0viagxxQuJm_vw-1" vertex="1">
           <mxGeometry x="190" y="484" width="235" height="70" as="geometry" />
         </mxCell>
         <mxCell id="T1_D9YDXICz4o3n0c1NQ-14" value="" style="endArrow=classic;html=1;rounded=0;fontSize=16;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="zmgnAT0viagxxQuJm_vw-1" source="T1_D9YDXICz4o3n0c1NQ-10" target="T1_D9YDXICz4o3n0c1NQ-4" edge="1">
@@ -288,7 +297,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="mfpDQBxBMV69t6_BPWfB" name="Model">
-    <mxGraphModel dx="1434" dy="854" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -444,7 +453,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DataModel" id="yQNt2nCYQnUcwYQTUjwJ">
-    <mxGraphModel dx="1434" dy="854" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="4sLvS9dzIjC9J2s6rB9a-0" />
         <mxCell id="4sLvS9dzIjC9J2s6rB9a-1" parent="4sLvS9dzIjC9J2s6rB9a-0" />

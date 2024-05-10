@@ -15,18 +15,18 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi" Version="5.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.WebApi.Contracts" Version="5.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi" Version="6.0.2" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="6.0.2" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
@@ -52,6 +52,7 @@
 		<PackageVersion Include="Quartz" Version="3.8.0" />
 		<PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="3.8.0" />
 		<PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
+		<PackageVersion Include="Quartz.Serialization.Json" Version="3.8.0" />
 		<PackageVersion Include="Refit.HttpClientFactory" Version="7.0.0" />
 		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.17.0.82934" />
 		<PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />

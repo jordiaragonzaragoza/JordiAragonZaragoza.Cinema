@@ -22,10 +22,10 @@ COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Application.Cont
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure/JordiAragon.SharedKernel.Infrastructure.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure/"]
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EntityFramework/JordiAragon.SharedKernel.Infrastructure.EntityFramework.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EntityFramework/"]
 COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EventStore/JordiAragon.SharedKernel.Infrastructure.EventStore.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Infrastructure.EventStore/"]
-COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi/JordiAragon.SharedKernel.Presentation.WebApi.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi/"]
-COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi.Contracts/JordiAragon.SharedKernel.Presentation.WebApi.Contracts.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.WebApi.Contracts/"]
-COPY ["src/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2.csproj", "src/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V2/"]
-COPY ["src/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1.csproj", "src/JordiAragon.Cinema.Reservation.Presentation.WebApi.Contracts.V1/"]
+COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.HttpRestfulApi/JordiAragon.SharedKernel.Presentation.HttpRestfulApi.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.HttpRestfulApi/"]
+COPY ["../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts/JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts.csproj", "../JordiAragon.SharedKernel/src/JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts/"]
+COPY ["src/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj", "src/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2/"]
+COPY ["src/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "src/JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1/"]
 RUN dotnet restore "src/JordiAragon.Cinema.Reservation/JordiAragon.Cinema.Reservation.csproj"
 COPY . .
 WORKDIR "/src/src/JordiAragon.Cinema.Reservation"

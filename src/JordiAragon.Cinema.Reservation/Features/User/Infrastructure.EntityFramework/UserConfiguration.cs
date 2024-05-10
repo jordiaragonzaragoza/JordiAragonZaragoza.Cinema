@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public sealed class UserConfiguration : BaseEntityTypeConfiguration<User, UserId>
+    public sealed class UserConfiguration : BaseAggregateRootTypeConfiguration<User, UserId>
     {
         public override void Configure(EntityTypeBuilder<User> builder)
         {
