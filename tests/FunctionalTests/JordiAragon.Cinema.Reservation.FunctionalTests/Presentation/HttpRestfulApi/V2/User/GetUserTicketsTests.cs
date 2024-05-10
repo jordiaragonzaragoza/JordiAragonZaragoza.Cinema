@@ -37,7 +37,7 @@
             var userId = SeedData.ExampleUser.Id;
 
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             var route = $"api/v2/{GetUserTickets.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(

@@ -9,6 +9,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
+    using Quartz;
 
     public sealed class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
@@ -50,6 +51,14 @@
                     {
                         options.UseSqlServer(this.readModelStoreConnection);
                         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    });
+
+                services
+                    .Configure<QuartzOptions>(options =>
+                    {
+                        // TODO: Review. Quartz Clustering is disabled on Functional Test due to an issue with db connection on testcontainers.
+                        options.Clear();
+                        options["quartz.scheduler.jobFactory.type"] = "Quartz.Simpl.MicrosoftDependencyInjectionJobFactory, Quartz.Extensions.DependencyInjection";
                     });
             });
         }

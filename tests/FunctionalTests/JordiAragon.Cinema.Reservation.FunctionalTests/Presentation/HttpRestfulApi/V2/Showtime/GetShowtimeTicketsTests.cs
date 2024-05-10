@@ -34,7 +34,7 @@
             var ticketResponse = await this.ReserveSeatsAsync(showtimeId);
 
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             var route = $"api/v2/{GetShowtimeTickets.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(

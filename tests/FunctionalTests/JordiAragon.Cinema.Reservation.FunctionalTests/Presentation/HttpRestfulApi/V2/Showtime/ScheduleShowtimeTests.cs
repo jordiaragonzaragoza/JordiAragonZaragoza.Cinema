@@ -53,7 +53,7 @@
         private async Task TestProjectionsAsync(DateTimeOffset sessionDateOnUtc, Guid showtimeId)
         {
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             await this.GetShowtime_WhenShowtimeCreated_ShouldReturnShowtimeCreated(sessionDateOnUtc, showtimeId);
 

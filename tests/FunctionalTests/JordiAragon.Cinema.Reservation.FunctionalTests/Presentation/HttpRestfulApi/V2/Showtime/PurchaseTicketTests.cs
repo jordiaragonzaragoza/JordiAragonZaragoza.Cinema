@@ -72,7 +72,7 @@
         private async Task TestProjectionsAsync(Guid showtimeId, IEnumerable<Guid> seatsIds, Guid ticketId)
         {
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             await this.GetUserTicket_WhenTicketPurchased_ShouldReturnTicketPurchased(showtimeId, seatsIds, ticketId);
         }

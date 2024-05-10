@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
 {
+    using System;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Xunit;
@@ -29,5 +30,8 @@
 
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabasesAsync();
+
+        protected static async Task AddEventualConsistencyDelayAsync()
+            => await Task.Delay(TimeSpan.FromSeconds(2));
     }
 }

@@ -44,7 +44,7 @@
         private async Task TestProjectionsAsync(Guid showtimeId)
         {
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             await this.GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
@@ -114,7 +114,7 @@
             var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
 
             // Required to satisfy eventual consistency on projections.
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await AddEventualConsistencyDelayAsync();
 
             return showtimeId;
         }
