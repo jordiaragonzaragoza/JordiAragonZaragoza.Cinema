@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.Cinema.Reservation.User.Infrastructure.EntityFramework;
-    using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
+    using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Context;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;

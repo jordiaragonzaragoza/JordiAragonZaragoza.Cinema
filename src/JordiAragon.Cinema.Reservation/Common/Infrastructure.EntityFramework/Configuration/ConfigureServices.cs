@@ -1,6 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.Outbox;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;

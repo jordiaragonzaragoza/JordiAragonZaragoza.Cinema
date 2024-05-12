@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox
+﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.Outbox
 {
     public sealed class ProcessOutboxMessagesJobOptions
     {
