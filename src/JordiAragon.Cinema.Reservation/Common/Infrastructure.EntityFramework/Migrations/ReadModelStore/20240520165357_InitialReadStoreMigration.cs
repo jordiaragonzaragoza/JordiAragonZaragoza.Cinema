@@ -29,6 +29,19 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
+                name: "Checkpoints",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Position = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Checkpoints", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Showtimes",
                 columns: table => new
                 {
@@ -94,6 +107,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         {
             migrationBuilder.DropTable(
                 name: "AvailableSeats");
+
+            migrationBuilder.DropTable(
+                name: "Checkpoints");
 
             migrationBuilder.DropTable(
                 name: "Showtimes");

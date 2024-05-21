@@ -112,6 +112,23 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.ToTable("Tickets");
                 });
 
+            modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.ProjectionCheckpoint.Checkpoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CheckpointedAtOnUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<decimal>("Position")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Checkpoints");
+                });
+
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
                 {
                     b.OwnsMany("JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
