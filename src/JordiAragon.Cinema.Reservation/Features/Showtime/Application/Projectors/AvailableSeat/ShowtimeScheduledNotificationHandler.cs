@@ -48,7 +48,7 @@
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber,
-                    @event.ShowtimeId,
+                    @event.AggregateId,
                     existingAuditorium.Id,
                     existingAuditorium.Name));
             }

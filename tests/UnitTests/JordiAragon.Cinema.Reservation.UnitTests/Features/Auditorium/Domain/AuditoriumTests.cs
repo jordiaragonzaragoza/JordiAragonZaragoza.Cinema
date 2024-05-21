@@ -70,7 +70,7 @@
                               .ContainSingle(x => x is AuditoriumCreatedEvent)
                               .Which.Should().BeOfType<AuditoriumCreatedEvent>()
                               .Which.Should().Match<AuditoriumCreatedEvent>(e =>
-                                                                            e.AuditoriumId == id &&
+                                                                            e.AggregateId == id &&
                                                                             e.Rows == rows &&
                                                                             e.SeatsPerRow == seatsPerRow);
         }
@@ -110,7 +110,7 @@
                               .ContainSingle(x => x is ShowtimeAddedEvent)
                               .Which.Should().BeOfType<ShowtimeAddedEvent>()
                               .Which.Should().Match<ShowtimeAddedEvent>(e =>
-                                                                            e.AuditoriumId == auditorium.Id &&
+                                                                            e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
@@ -149,7 +149,7 @@
                               .ContainSingle(x => x is ShowtimeRemovedEvent)
                               .Which.Should().BeOfType<ShowtimeRemovedEvent>()
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
-                                                                            e.AuditoriumId == auditorium.Id &&
+                                                                            e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 

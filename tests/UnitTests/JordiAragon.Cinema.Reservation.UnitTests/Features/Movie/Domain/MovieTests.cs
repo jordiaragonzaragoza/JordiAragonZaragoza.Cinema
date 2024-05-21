@@ -68,7 +68,7 @@
                               .ContainSingle(x => x is MovieCreatedEvent)
                               .Which.Should().BeOfType<MovieCreatedEvent>()
                               .Which.Should().Match<MovieCreatedEvent>(e =>
-                                                                            e.MovieId == id &&
+                                                                            e.AggregateId == id &&
                                                                             e.Title == title &&
                                                                             e.Runtime == runtime &&
                                                                             e.StartingExhibitionPeriodOnUtc == exhibitionPeriod.StartingPeriodOnUtc &&
@@ -110,7 +110,7 @@
                               .ContainSingle(x => x is ShowtimeAddedEvent)
                               .Which.Should().BeOfType<ShowtimeAddedEvent>()
                               .Which.Should().Match<ShowtimeAddedEvent>(e =>
-                                                                            e.MovieId == movie.Id &&
+                                                                            e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
@@ -135,7 +135,7 @@
                               .ContainSingle(x => x is ShowtimeRemovedEvent)
                               .Which.Should().BeOfType<ShowtimeRemovedEvent>()
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
-                                                                            e.MovieId == movie.Id &&
+                                                                            e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
     }

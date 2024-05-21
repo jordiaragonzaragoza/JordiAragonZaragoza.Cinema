@@ -25,7 +25,7 @@
             var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(@event.MovieId), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());
 
-            existingMovie.AddShowtime(ShowtimeId.Create(@event.ShowtimeId));
+            existingMovie.AddShowtime(ShowtimeId.Create(@event.AggregateId));
 
             await this.movieRepository.UpdateAsync(existingMovie, cancellationToken);
         }

@@ -106,7 +106,7 @@
                               .ContainSingle(x => x is ShowtimeScheduledEvent)
                               .Which.Should().BeOfType<ShowtimeScheduledEvent>()
                               .Which.Should().Match<ShowtimeScheduledEvent>(e =>
-                                                                            e.ShowtimeId == id &&
+                                                                            e.AggregateId == id &&
                                                                             e.MovieId == movieId &&
                                                                             e.SessionDateOnUtc == sessionDateOnUtc &&
                                                                             e.AuditoriumId == auditoriumId);
@@ -157,7 +157,7 @@
                               .ContainSingle(x => x is ReservedSeatsEvent)
                               .Which.Should().BeOfType<ReservedSeatsEvent>()
                               .Which.Should().Match<ReservedSeatsEvent>(e =>
-                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.AggregateId == showtime.Id &&
                                                                             e.TicketId == ticketCreated.Id &&
                                                                             e.SeatIds.Count() == seatIds.Count &&
                                                                             e.SeatIds.All(id => seatIds.Contains(SeatId.Create(id))) &&
@@ -216,7 +216,7 @@
                               .ContainSingle(x => x is PurchasedTicketEvent)
                               .Which.Should().BeOfType<PurchasedTicketEvent>()
                               .Which.Should().Match<PurchasedTicketEvent>(e =>
-                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.AggregateId == showtime.Id &&
                                                                             e.TicketId == ticketCreated.Id);
         }
 
@@ -313,7 +313,7 @@
                               .ContainSingle(x => x is ExpiredReservedSeatsEvent)
                               .Which.Should().BeOfType<ExpiredReservedSeatsEvent>()
                               .Which.Should().Match<ExpiredReservedSeatsEvent>(e =>
-                                                                            e.ShowtimeId == showtime.Id &&
+                                                                            e.AggregateId == showtime.Id &&
                                                                             e.TicketId == ticketId);
         }
 

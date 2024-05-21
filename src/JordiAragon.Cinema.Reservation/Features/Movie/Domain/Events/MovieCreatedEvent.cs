@@ -4,10 +4,10 @@
     using JordiAragon.SharedKernel.Domain.Events;
 
     public sealed record class MovieCreatedEvent(
-        Guid MovieId,
+        Guid AggregateId,
         string Title,
         TimeSpan Runtime,
         DateTimeOffset StartingExhibitionPeriodOnUtc,
         DateTimeOffset EndOfExhibitionPeriodOnUtc)
-        : BaseDomainEvent(MovieId);
+        : BaseDomainEvent(AggregateId);
 }

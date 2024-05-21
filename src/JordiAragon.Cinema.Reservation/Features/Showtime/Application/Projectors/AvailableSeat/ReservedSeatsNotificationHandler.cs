@@ -26,7 +26,7 @@
         {
             var @event = notification.Event;
 
-            var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdAndSeatIdsSpec(@event.ShowtimeId, @event.SeatIds), cancellationToken);
+            var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdAndSeatIdsSpec(@event.AggregateId, @event.SeatIds), cancellationToken);
 
             await this.availableReadModelRepository.DeleteRangeAsync(availableSeats, cancellationToken);
         }

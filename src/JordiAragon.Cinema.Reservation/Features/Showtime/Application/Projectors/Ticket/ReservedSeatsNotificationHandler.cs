@@ -39,10 +39,10 @@
         {
             var @event = notification.Event;
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(@event.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)
             {
-                throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());
+                throw new NotFoundException(nameof(Showtime), @event.AggregateId.ToString());
             }
 
             var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(existingShowtime.MovieId), cancellationToken);
@@ -63,7 +63,7 @@
             var ticketReadModel = new TicketReadModel(
                 @event.TicketId,
                 @event.UserId,
-                @event.ShowtimeId,
+                @event.AggregateId,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Name,
                 existingMovie.Title,
