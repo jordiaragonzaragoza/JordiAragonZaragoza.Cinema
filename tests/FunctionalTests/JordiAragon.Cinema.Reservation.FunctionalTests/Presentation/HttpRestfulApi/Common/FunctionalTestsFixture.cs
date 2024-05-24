@@ -10,6 +10,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Respawn;
+    using Testcontainers.EventStoreDb;
     using Testcontainers.SqlEdge;
     using Xunit;
 
@@ -22,6 +23,12 @@
             .WithName("azuresqledge.cinema.reservation.businessmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
+        private readonly EventStoreDbContainer eventStoreContainer =
+            new EventStoreDbBuilder()
+            .WithImage("eventstore/eventstore:23.10.1-alpha-arm64v8")
+            .WithName("eventstoredb.cinema.reservation.eventstore.functionaltests.presentation.httprestfulapi")
+            .WithAutoRemove(true).Build();
+
         private readonly SqlEdgeContainer readModelStoreContainer =
             new SqlEdgeBuilder()
             .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
@@ -30,6 +37,7 @@
 
         private SqlConnection businessModelStoreConnection;
         private SqlConnection readModelStoreConnection;
+        private string eventStoreDbConnectionString;
         private CustomWebApplicationFactory<TProgram> customApplicationFactory;
         private IServiceScopeFactory scopeFactory;
         private Respawner businessModelStoreRespawner;
@@ -42,7 +50,7 @@
         {
             await this.StartDbsConnectionsAsync();
 
-            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.businessModelStoreConnection, this.readModelStoreConnection);
+            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.businessModelStoreConnection, this.readModelStoreConnection, this.eventStoreDbConnectionString);
 
             this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -85,8 +93,9 @@
 
             var disposeBusinessModelContainerTask = this.businessModelStoreContainer.DisposeAsync();
             var disposeReadModelContainerTask = this.readModelStoreContainer.DisposeAsync();
+            var disposeEventStoreContainerTask = this.eventStoreContainer.DisposeAsync();
 
-            await Task.WhenAll(disposeBusinessModelContainerTask.AsTask(), disposeReadModelContainerTask.AsTask());
+            await Task.WhenAll(disposeBusinessModelContainerTask.AsTask(), disposeReadModelContainerTask.AsTask(), disposeEventStoreContainerTask.AsTask());
         }
 
         public void Dispose()
@@ -114,11 +123,13 @@
         {
             var startBusinessModelContainerTask = this.businessModelStoreContainer.StartAsync();
             var startReadModelContainerTask = this.readModelStoreContainer.StartAsync();
+            var startEventStoreContainerTask = this.eventStoreContainer.StartAsync();
 
-            await Task.WhenAll(startBusinessModelContainerTask, startReadModelContainerTask);
+            await Task.WhenAll(startBusinessModelContainerTask, startReadModelContainerTask, startEventStoreContainerTask);
 
             this.businessModelStoreConnection = new SqlConnection(this.businessModelStoreContainer.GetConnectionString());
             this.readModelStoreConnection = new SqlConnection(this.readModelStoreContainer.GetConnectionString());
+            this.eventStoreDbConnectionString = this.eventStoreContainer.GetConnectionString();
         }
 
         private void InitBusinessModelStoreDatabase()
