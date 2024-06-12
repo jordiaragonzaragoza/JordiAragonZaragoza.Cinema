@@ -1,4 +1,4 @@
-namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain
+namespace JordiAragon.Cinema.Reservation.TestUtilities.Domain
 {
     using System;
     using System.Collections.Generic;

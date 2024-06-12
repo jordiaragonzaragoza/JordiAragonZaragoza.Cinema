@@ -6,11 +6,15 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
     using Serilog.Sinks.Graylog;
     using Serilog.Sinks.Graylog.Core.Transport;
 
-    public static class ConfigureBuilder
+    public static class ConfigureHostBuilder
     {
-        public static IHostBuilder AddHttpRestfulApiHostBuilderConfigurations(this IHostBuilder hostBuilder)
+        public static IHostBuilder AddHostBuilderConfigurations(this IHostBuilder hostBuilder)
         {
             hostBuilder.UseSerilog(ConfigureSerilog);
+            /*hostBuilder.UseDefaultServiceProvider(options =>
+            {
+                options.ValidateOnBuild = true;
+            });*/
 
             return hostBuilder;
         }

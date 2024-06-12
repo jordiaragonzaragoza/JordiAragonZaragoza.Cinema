@@ -29,5 +29,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinema.Reservation\JordiAragon.Cinema.Reservation.csproj" />
+	  <ProjectReference Include="..\..\TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>
 </Project>

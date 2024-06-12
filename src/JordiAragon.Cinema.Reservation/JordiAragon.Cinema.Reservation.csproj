@@ -29,6 +29,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.UnitTests" />
+		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.TestUtilities" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
@@ -65,9 +66,14 @@
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
+	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\SeedData\QuartzClusteringSQLServerData.sql" />
+	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\SeedData\ReservationBusinessModelData.sql" />
+	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\SeedData\ReservationReadModelData.sql" />
+	  <None Remove="Features\Showtime\Infrastructure.EventStore\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
+	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\SeedData\QuartzClusteringSQLServerData.sql" />
+	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\SeedData\ReservationBusinessModelData.sql" />
+	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\SeedData\ReservationReadModelData.sql" />
 	</ItemGroup>
 </Project>

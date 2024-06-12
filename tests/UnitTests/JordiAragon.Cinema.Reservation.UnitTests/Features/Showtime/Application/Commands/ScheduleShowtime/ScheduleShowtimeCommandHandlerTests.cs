@@ -9,8 +9,8 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Application;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using NSubstitute;
     using Volo.Abp.Guids;

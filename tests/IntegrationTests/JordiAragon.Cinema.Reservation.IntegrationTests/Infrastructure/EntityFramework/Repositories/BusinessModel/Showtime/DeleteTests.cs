@@ -8,6 +8,7 @@
     using JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using Xunit.Abstractions;
@@ -27,9 +28,9 @@
             // Arrange
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id),
+                MovieId.Create(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
+                AuditoriumId.Create(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
@@ -51,9 +52,9 @@
             // Arrange
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id),
+                MovieId.Create(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
+                AuditoriumId.Create(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 

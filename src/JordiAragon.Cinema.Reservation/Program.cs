@@ -4,6 +4,7 @@
     using Autofac.Extensions.DependencyInjection;
     using JordiAragon.Cinema.Reservation.Common.Application;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations;
     using JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration;
@@ -57,7 +58,8 @@
                 containerBuilder.RegisterModule(new SharedKernelHttpRestfulApiModule());
             });
 
-            builder.Host.AddHttpRestfulApiHostBuilderConfigurations();
+            builder.Host.AddHostBuilderConfigurations();
+            builder.WebHost.AddWebHostBuilderConfigurations();
 
             var app = builder.Build();
 
@@ -65,7 +67,7 @@
 
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            MigrationsApplier.Initialize(app);
 
             app.Run();
         }

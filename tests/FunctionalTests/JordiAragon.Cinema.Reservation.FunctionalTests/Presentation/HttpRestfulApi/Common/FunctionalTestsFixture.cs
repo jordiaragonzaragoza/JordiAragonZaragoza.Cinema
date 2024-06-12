@@ -2,12 +2,13 @@
 {
     using System;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Respawn;
     using Testcontainers.EventStoreDb;
@@ -43,6 +44,8 @@
         private Respawner businessModelStoreRespawner;
         private Respawner readModelStoreRespawner;
         private bool disposedValue;
+        private IHostedService hostedService;
+        private CancellationTokenSource cancellationTokenSource;
 
         public HttpClient HttpClient { get; private set; }
 
@@ -51,6 +54,9 @@
             await this.StartDbsConnectionsAsync();
 
             this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.businessModelStoreConnection, this.readModelStoreConnection, this.eventStoreDbConnectionString);
+
+            this.hostedService = this.customApplicationFactory.Services.GetRequiredService<IHostedService>();
+            this.cancellationTokenSource = this.customApplicationFactory.Services.GetRequiredService<CancellationTokenSource>();
 
             this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -68,12 +74,13 @@
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
+
+            await this.hostedService.StartAsync(this.cancellationTokenSource.Token);
         }
 
         public void InitDatabases()
         {
             this.InitBusinessModelStoreDatabase();
-            this.InitReadModelStoreDatabase();
         }
 
         public async Task ResetDatabasesAsync()
@@ -86,6 +93,11 @@
 
         public async Task DisposeAsync()
         {
+            this.cancellationTokenSource.Cancel();
+            await this.hostedService.StopAsync(CancellationToken.None);
+
+            ////await Task.Delay(2000);
+
             var disposeBusinessModelConnectionTask = this.businessModelStoreConnection.DisposeAsync();
             var disposeReadModelConnectionTask = this.readModelStoreConnection.DisposeAsync();
 
@@ -111,9 +123,11 @@
             {
                 if (disposing)
                 {
+                    this.cancellationTokenSource.Dispose();
                     this.customApplicationFactory.Dispose();
                 }
 
+                this.cancellationTokenSource = null;
                 this.customApplicationFactory = null;
                 this.disposedValue = true;
             }
@@ -140,27 +154,11 @@
 
             try
             {
-                SeedData.PopulateBusinessModelTestData(writeContext, true);
+                SeedData.PopulateBusinessModelTestData(writeContext);
             }
             catch (Exception exception)
             {
                 logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {exceptionMessage}", exception.Message);
-            }
-        }
-
-        private void InitReadModelStoreDatabase()
-        {
-            using var readScope = this.scopeFactory.CreateScope();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
-            var logger = readScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
-
-            try
-            {
-                SeedData.PopulateReadModelTestData(readContext, true);
-            }
-            catch (Exception exception)
-            {
-                logger.LogError(exception, "An error occurred seeding the read model database with test data. Error: {exceptionMessage}", exception.Message);
             }
         }
     }

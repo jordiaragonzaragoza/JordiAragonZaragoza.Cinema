@@ -1,8 +1,8 @@
-﻿namespace JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Application
+﻿namespace JordiAragon.Cinema.Reservation.TestUtilities.Application
 {
     using System;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
 
     public static class ScheduleShowtimeCommandUtils
     {

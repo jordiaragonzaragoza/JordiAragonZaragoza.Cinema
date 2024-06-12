@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration.SeedData;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
@@ -130,7 +130,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            SeedData.PopulateReadModelTestData(this.ReadModelContext, true);
+            SeedData.PopulateReadModelTestData(this.ReadModelContext);
         }
 
         private DbContextOptions<ReservationReadModelContext> CreateNewReadModelContextOptions()

@@ -2,9 +2,8 @@
 {
     using System.Reflection;
     using Autofac;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.Features.Showtime.Infrastructure.EventStore;
     using JordiAragon.SharedKernel;
-    using JordiAragon.SharedKernel.Contracts.Repositories;
 
     public sealed class EventStoreModule : AssemblyModule
     {
@@ -14,9 +13,7 @@
         {
             base.Load(builder);
 
-            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
-                    .As<IRepository<Showtime, ShowtimeId>>()
-                    .InstancePerLifetimeScope();
+            ShowtimeRepositories.RegisterBusinessModelRepositories(builder);
         }
     }
 }

@@ -7,7 +7,6 @@
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
@@ -15,6 +14,8 @@
     using JordiAragon.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
+
+    using Constants = JordiAragon.Cinema.Reservation.TestUtilities.Domain.Constants;
 
     public sealed class ScheduleShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -34,14 +35,16 @@
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                Constants.Auditorium.Id,
+                Constants.Movie.Id,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
             // Act
             var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+
+            await AddEventualConsistencyDelayAsync();
 
             // Assert
             showtimeId.Should()
@@ -52,9 +55,6 @@
 
         private async Task TestProjectionsAsync(DateTimeOffset sessionDateOnUtc, Guid showtimeId)
         {
-            // Required to satisfy eventual consistency on projections.
-            await AddEventualConsistencyDelayAsync();
-
             await this.GetShowtime_WhenShowtimeCreated_ShouldReturnShowtimeCreated(sessionDateOnUtc, showtimeId);
 
             await this.GetAvailableSeats_WhenShowtimeCreated_ShouldReturnAvailableSeats(showtimeId);
