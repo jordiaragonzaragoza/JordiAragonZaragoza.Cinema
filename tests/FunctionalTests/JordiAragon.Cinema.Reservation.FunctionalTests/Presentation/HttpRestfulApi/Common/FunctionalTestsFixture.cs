@@ -44,8 +44,6 @@
         private Respawner businessModelStoreRespawner;
         private Respawner readModelStoreRespawner;
         private bool disposedValue;
-        private IHostedService hostedService;
-        private CancellationTokenSource cancellationTokenSource;
 
         public HttpClient HttpClient { get; private set; }
 
@@ -54,9 +52,6 @@
             await this.StartDbsConnectionsAsync();
 
             this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.businessModelStoreConnection, this.readModelStoreConnection, this.eventStoreDbConnectionString);
-
-            this.hostedService = this.customApplicationFactory.Services.GetRequiredService<IHostedService>();
-            this.cancellationTokenSource = this.customApplicationFactory.Services.GetRequiredService<CancellationTokenSource>();
 
             this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -74,8 +69,6 @@
             {
                 TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             });
-
-            await this.hostedService.StartAsync(this.cancellationTokenSource.Token);
         }
 
         public void InitDatabases()
@@ -93,9 +86,6 @@
 
         public async Task DisposeAsync()
         {
-            this.cancellationTokenSource.Cancel();
-            await this.hostedService.StopAsync(CancellationToken.None);
-
             ////await Task.Delay(2000);
 
             var disposeBusinessModelConnectionTask = this.businessModelStoreConnection.DisposeAsync();
@@ -123,11 +113,9 @@
             {
                 if (disposing)
                 {
-                    this.cancellationTokenSource.Dispose();
-                    this.customApplicationFactory.Dispose();
+                    this.customApplicationFactory?.Dispose();
                 }
 
-                this.cancellationTokenSource = null;
                 this.customApplicationFactory = null;
                 this.disposedValue = true;
             }
