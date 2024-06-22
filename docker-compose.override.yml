@@ -29,6 +29,35 @@ services:
     networks:
       - cinema-network
 
+  postgres.cinema:
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./containers/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cinema-network
+
+  pgadmin.cinema:
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-postgres}
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    entrypoint: /bin/sh -c "chmod 600 /pgpass; /entrypoint.sh;"
+    user: root
+    volumes:
+      - ./containers/pgAdmin/pgpass:/pgpass
+      - ./containers/pgAdmin/servers.json:/pgadmin4/servers.json
+    restart: unless-stopped
+    networks:
+      - cinema-network
+
   eventstore.cinema:
     environment:
       - EVENTSTORE_CLUSTER_SIZE=1
