@@ -15,13 +15,13 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "AvailableSeats",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SeatId = table.Column<Guid>(type: "uuid", nullable: false),
                     Row = table.Column<short>(type: "smallint", nullable: false),
                     SeatNumber = table.Column<short>(type: "smallint", nullable: false),
-                    ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuditoriumName = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,9 +32,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "Checkpoints",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Position = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
-                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Position = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,13 +45,13 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "Showtimes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MovieRuntime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    AuditoriumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    MovieId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MovieTitle = table.Column<string>(type: "text", nullable: true),
+                    MovieRuntime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuditoriumName = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,14 +62,14 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "Tickets",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShowtimeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MovieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsPurchased = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    AuditoriumName = table.Column<string>(type: "text", nullable: true),
+                    MovieTitle = table.Column<string>(type: "text", nullable: true),
+                    IsPurchased = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,8 +80,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "TicketsSeats",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uuid", nullable: false),
                     Row = table.Column<short>(type: "smallint", nullable: false),
                     SeatNumber = table.Column<short>(type: "smallint", nullable: false)
                 },

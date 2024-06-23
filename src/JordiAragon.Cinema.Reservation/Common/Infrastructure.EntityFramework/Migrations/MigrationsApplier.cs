@@ -8,18 +8,23 @@
 
     public static class MigrationsApplier
     {
-        public static void Initialize(WebApplication app)
+        public static void Initialize(WebApplication app, bool isDevelopment)
         {
+            if (!isDevelopment)
+            {
+                return;
+            }
+
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            using var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            using var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                MigrateAndEnsureSqlServerDatabase(writeContext);
-                MigrateAndEnsureSqlServerDatabase(readContext);
+                ApplyMigrations(writeContext);
+                ApplyMigrations(readContext);
             }
             catch (Exception exception)
             {
@@ -27,12 +32,9 @@
             }
         }
 
-        public static void MigrateAndEnsureSqlServerDatabase(DbContext context)
+        private static void ApplyMigrations(DbContext context)
         {
-            if (context.Database.IsSqlServer())
-            {
-                context.Database.Migrate();
-            }
+            context.Database.Migrate();
         }
     }
 }

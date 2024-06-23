@@ -2,12 +2,12 @@
     "Servers": {
         "1": {
             "Group": "Servers",
-            "Name": "docker_postgres",
-            "Host": "postgres",
+            "Name": "postgres.cinema",
+            "Host": "postgres.cinema",
             "Port": 5432,
             "MaintenanceDB": "postgres",
             "Username": "postgres",
-            "PassFile": "/pgpass",
+            "Password": "postgres",
             "SSLMode": "prefer"
         }
     }

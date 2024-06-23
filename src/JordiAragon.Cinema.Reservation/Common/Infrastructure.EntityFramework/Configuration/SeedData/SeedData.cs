@@ -55,7 +55,7 @@
 
         public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context, bool isDevelopment)
         {
-            MigrateAndEnsureSqlServerDatabase(context);
+            ApplyMigrations(context);
 
             if (!isDevelopment || HasAnyData(context))
             {
@@ -67,15 +67,12 @@
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
-            MigrateAndEnsureSqlServerDatabase(context);
+            ApplyMigrations(context);
         }
 
-        private static void MigrateAndEnsureSqlServerDatabase(DbContext context)
+        private static void ApplyMigrations(DbContext context)
         {
-            if (context.Database.IsSqlServer())
-            {
-                context.Database.Migrate();
-            }
+            context.Database.Migrate();
         }
 
         private static bool HasAnyData(DbContext context)

@@ -2,26 +2,24 @@
 {
     using System;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
     using Microsoft.AspNetCore.Mvc.Testing;
-    using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Npgsql;
     using Respawn;
     using Testcontainers.EventStoreDb;
-    using Testcontainers.SqlEdge;
+    using Testcontainers.PostgreSql;
     using Xunit;
 
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
-        private readonly SqlEdgeContainer businessModelStoreContainer =
-            new SqlEdgeBuilder()
-            .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.businessmodelstore.functionaltests.presentation.httprestfulapi")
+        private readonly PostgreSqlContainer businessModelStoreContainer =
+            new PostgreSqlBuilder()
+            .WithImage("postgres:15.1-alpine")
+            .WithName("postgres.cinema.reservation.businessmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
         private readonly EventStoreDbContainer eventStoreContainer =
@@ -30,14 +28,14 @@
             .WithName("eventstoredb.cinema.reservation.eventstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
-        private readonly SqlEdgeContainer readModelStoreContainer =
-            new SqlEdgeBuilder()
-            .WithImage("mcr.microsoft.com/azure-sql-edge:latest")
-            .WithName("azuresqledge.cinema.reservation.readmodelstore.functionaltests.presentation.httprestfulapi")
+        private readonly PostgreSqlContainer readModelStoreContainer =
+            new PostgreSqlBuilder()
+            .WithImage("postgres:15.1-alpine")
+            .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
-        private SqlConnection businessModelStoreConnection;
-        private SqlConnection readModelStoreConnection;
+        private NpgsqlConnection businessModelStoreConnection;
+        private NpgsqlConnection readModelStoreConnection;
         private string eventStoreDbConnectionString;
         private CustomWebApplicationFactory<TProgram> customApplicationFactory;
         private IServiceScopeFactory scopeFactory;
@@ -59,27 +57,20 @@
             });
 
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
-
-            this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreContainer.GetConnectionString(), new RespawnerOptions
-            {
-                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
-            });
-
-            this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreContainer.GetConnectionString(), new RespawnerOptions
-            {
-                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
-            });
         }
 
-        public void InitDatabases()
+        public async Task InitDatabasesAsync()
         {
-            this.InitBusinessModelStoreDatabase();
+            var initBusinessDatabaseTask = this.InitBusinessModelStoreDatabaseAsync();
+            var initReadModelDatabaseTask = this.InitReadModelStoreDatabaseAsync();
+
+            await Task.WhenAll(initBusinessDatabaseTask, initReadModelDatabaseTask);
         }
 
         public async Task ResetDatabasesAsync()
         {
-            var resetBusinessModelStoreTask = this.businessModelStoreRespawner.ResetAsync(this.businessModelStoreContainer.GetConnectionString());
-            var resetReadModelStoreTask = this.readModelStoreRespawner.ResetAsync(this.readModelStoreContainer.GetConnectionString());
+            var resetBusinessModelStoreTask = this.businessModelStoreRespawner.ResetAsync(this.businessModelStoreConnection);
+            var resetReadModelStoreTask = this.readModelStoreRespawner.ResetAsync(this.readModelStoreConnection);
 
             await Task.WhenAll(resetBusinessModelStoreTask, resetReadModelStoreTask);
         }
@@ -129,12 +120,16 @@
 
             await Task.WhenAll(startBusinessModelContainerTask, startReadModelContainerTask, startEventStoreContainerTask);
 
-            this.businessModelStoreConnection = new SqlConnection(this.businessModelStoreContainer.GetConnectionString());
-            this.readModelStoreConnection = new SqlConnection(this.readModelStoreContainer.GetConnectionString());
+            this.businessModelStoreConnection = new NpgsqlConnection(this.businessModelStoreContainer.GetConnectionString());
+            await this.businessModelStoreConnection.OpenAsync();
+
+            this.readModelStoreConnection = new NpgsqlConnection(this.readModelStoreContainer.GetConnectionString());
+            await this.readModelStoreConnection.OpenAsync();
+
             this.eventStoreDbConnectionString = this.eventStoreContainer.GetConnectionString();
         }
 
-        private void InitBusinessModelStoreDatabase()
+        private async Task InitBusinessModelStoreDatabaseAsync()
         {
             using var businessModelScope = this.scopeFactory.CreateScope();
             var writeContext = businessModelScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
@@ -143,11 +138,26 @@
             try
             {
                 SeedData.PopulateBusinessModelTestData(writeContext);
+
+                this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreConnection, new RespawnerOptions
+                {
+                    DbAdapter = DbAdapter.Postgres,
+                    TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+                });
             }
             catch (Exception exception)
             {
                 logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {exceptionMessage}", exception.Message);
             }
+        }
+
+        private async Task InitReadModelStoreDatabaseAsync()
+        {
+            this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
+            {
+                DbAdapter = DbAdapter.Postgres,
+                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+            });
         }
     }
 }

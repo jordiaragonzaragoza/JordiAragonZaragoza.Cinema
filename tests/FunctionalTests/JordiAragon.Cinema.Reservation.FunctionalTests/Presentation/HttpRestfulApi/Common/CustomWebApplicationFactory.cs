@@ -52,14 +52,14 @@
                     .RemoveAll<DbContextOptions<ReservationBusinessModelContext>>()
                     .AddDbContext<ReservationBusinessModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.businessModelStoreConnection);
+                        options.UseNpgsql(this.businessModelStoreConnection);
                     });
 
                 services
                     .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
                     .AddDbContext<ReservationReadModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.readModelStoreConnection);
+                        options.UseNpgsql(this.readModelStoreConnection);
                         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
 
