@@ -4,7 +4,6 @@
     using Autofac.Extensions.DependencyInjection;
     using JordiAragon.Cinema.Reservation.Common.Application;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration.SeedData;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations;
     using JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;

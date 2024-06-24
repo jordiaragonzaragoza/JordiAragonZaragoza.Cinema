@@ -5,7 +5,6 @@
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Quartz;
     using Volo.Abp.Guids;
 
@@ -19,20 +18,11 @@
                 options.DefaultSequentialGuidType = SequentialGuidType.SequentialAsString;
             });
 
-            // TODO: Remove AzureSqlDatabaseOptions
-            var azureSqlDatabaseOptionsWrite = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.BusinessModelSection, azureSqlDatabaseOptionsWrite);
-            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsWrite));
-
             serviceCollection.AddDbContext<ReservationBusinessModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(configuration.GetConnectionString("BusinessModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
             });
-
-            var azureSqlDatabaseOptionsRead = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.ReadModelSection, azureSqlDatabaseOptionsRead);
-            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsRead));
 
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {

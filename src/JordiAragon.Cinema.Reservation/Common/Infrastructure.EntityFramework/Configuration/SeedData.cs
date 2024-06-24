@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration.SeedData
+﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +11,9 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
+    /// <summary>
+    /// Seeds the data base. This file should only be used in the development environment.
+    /// </summary>
     public static class SeedData
     {
         public static readonly Movie ExampleMovie =
@@ -36,15 +39,20 @@
 
         public static void Initialize(WebApplication app, bool isDevelopment)
         {
+            if (!isDevelopment)
+            {
+                return;
+            }
+
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            using var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            using var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                PopulateBusinessModelTestData(writeContext, isDevelopment);
+                PopulateBusinessModelTestData(writeContext);
                 PopulateReadModelTestData(readContext);
             }
             catch (Exception exception)
@@ -53,26 +61,25 @@
             }
         }
 
-        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context, bool isDevelopment)
+        private static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
         {
-            ApplyMigrations(context);
-
-            if (!isDevelopment || HasAnyData(context))
+            if (HasAnyData(context))
             {
                 return;
             }
 
-            SetPreconfiguredWriteData(context);
+            context.Movies.Add(ExampleMovie);
+
+            context.Auditoriums.Add(ExampleAuditorium);
+
+            context.Users.Add(ExampleUser);
+
+            context.SaveChanges();
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context)
+        private static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
-            ApplyMigrations(context);
-        }
-
-        private static void ApplyMigrations(DbContext context)
-        {
-            context.Database.Migrate();
+            // Intentionally empty. Will be used to populate test data on read model.
         }
 
         private static bool HasAnyData(DbContext context)
@@ -92,17 +99,6 @@
             }
 
             return false;
-        }
-
-        private static void SetPreconfiguredWriteData(ReservationBusinessModelContext context)
-        {
-            context.Movies.Add(ExampleMovie);
-
-            context.Auditoriums.Add(ExampleAuditorium);
-
-            context.Users.Add(ExampleUser);
-
-            context.SaveChanges();
         }
     }
 }

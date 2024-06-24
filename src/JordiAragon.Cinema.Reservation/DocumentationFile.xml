@@ -4,6 +4,11 @@
         <name>JordiAragon.Cinema.Reservation</name>
     </assembly>
     <members>
+        <member name="T:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration.SeedData">
+            <summary>
+            Seeds the data base. This file should only be used in the development environment.
+            </summary>
+        </member>
         <member name="T:JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration">
             <inheritdoc />
         </member>

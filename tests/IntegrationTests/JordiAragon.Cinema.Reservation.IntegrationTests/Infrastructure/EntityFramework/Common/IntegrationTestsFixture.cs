@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration.SeedData;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
@@ -104,7 +103,8 @@
 
             this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
 
-            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext, true);
+            this.BusinessModelContext.Database.Migrate();
+            SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
 
             this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreConnection, new RespawnerOptions
             {
@@ -130,7 +130,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            SeedData.PopulateReadModelTestData(this.ReadModelContext);
+            this.ReadModelContext.Database.Migrate();
 
             this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
             {
