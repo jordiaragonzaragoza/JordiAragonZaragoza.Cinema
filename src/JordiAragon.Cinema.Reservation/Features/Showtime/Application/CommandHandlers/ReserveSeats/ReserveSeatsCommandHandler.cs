@@ -27,14 +27,14 @@
         private readonly IGuidGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
-        private readonly IShowtimeManager showtimeManager;
+        private readonly IReservationManager showtimeManager;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public ReserveSeatsCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             IReadRepository<User, UserId> userRepository,
-            IShowtimeManager showtimeManager,
+            IReservationManager showtimeManager,
             IMapper mapper,
             IGuidGenerator guidGenerator,
             IDateTime dateTime,

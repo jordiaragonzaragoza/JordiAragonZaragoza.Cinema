@@ -15,14 +15,14 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeManager : BaseDomainService, IShowtimeManager
+    public sealed class ReservationManager : BaseDomainService, IReservationManager
     {
         public static readonly TimeSpan CleaningAndAccessTimeSpan = TimeSpan.FromMinutes(30);
 
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
-        public ShowtimeManager(
+        public ReservationManager(
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {

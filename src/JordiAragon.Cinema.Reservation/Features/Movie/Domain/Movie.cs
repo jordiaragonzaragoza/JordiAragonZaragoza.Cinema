@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
+    using JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
@@ -27,7 +28,7 @@
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
-        public static Movie Create(
+        public static Movie Add(
             MovieId id,
             string title,
             TimeSpan runtime,
@@ -35,10 +36,13 @@
         {
             var movie = new Movie();
 
-            movie.Apply(new MovieCreatedEvent(id, title, runtime, exhibitionPeriod.StartingPeriodOnUtc, exhibitionPeriod.EndOfPeriodOnUtc));
+            movie.Apply(new MovieAddedEvent(id, title, runtime, exhibitionPeriod.StartingPeriodOnUtc, exhibitionPeriod.EndOfPeriodOnUtc));
 
             return movie;
         }
+
+        public void Remove()
+            => this.Apply(new MovieRemovedEvent(this.Id));
 
         public void AddShowtime(ShowtimeId showtimeId)
             => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
@@ -50,8 +54,11 @@
         {
             switch (domainEvent)
             {
-                case MovieCreatedEvent @event:
+                case MovieAddedEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case MovieRemovedEvent:
                     break;
 
                 case ShowtimeAddedEvent @event:
@@ -79,7 +86,7 @@
             }
         }
 
-        private void Applier(MovieCreatedEvent @event)
+        private void Applier(MovieAddedEvent @event)
         {
             this.Id = MovieId.Create(@event.AggregateId);
             this.Title = @event.Title;

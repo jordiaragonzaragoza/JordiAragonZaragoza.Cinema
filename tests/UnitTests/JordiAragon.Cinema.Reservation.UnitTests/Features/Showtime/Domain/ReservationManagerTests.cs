@@ -19,19 +19,19 @@
     using Auditorium = JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium;
     using Showtime = JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime;
 
-    public sealed class ShowtimeManagerTests
+    public sealed class ReservationManagerTests
     {
-        private readonly ShowtimeManager showtimeManager;
+        private readonly ReservationManager showtimeManager;
 
         private readonly IReadRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> mockMovieRepository;
 
-        public ShowtimeManagerTests()
+        public ReservationManagerTests()
         {
             this.mockAuditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
             this.mockMovieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
 
-            this.showtimeManager = new ShowtimeManager(
+            this.showtimeManager = new ReservationManager(
                 this.mockMovieRepository,
                 this.mockAuditoriumRepository);
         }
@@ -129,7 +129,7 @@
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IReadRepository<Movie, MovieId> movieRepository)
         {
-            FluentActions.Invoking(() => new ShowtimeManager(movieRepository, auditoriumRepository))
+            FluentActions.Invoking(() => new ReservationManager(movieRepository, auditoriumRepository))
             .Should().Throw<ArgumentException>();
         }
 

@@ -1,0 +1,9 @@
+﻿namespace JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events
+{
+    using System;
+    using JordiAragon.SharedKernel.Domain.Events;
+
+    public sealed record class MovieRemovedEvent(
+        Guid AggregateId)
+        : BaseDomainEvent(AggregateId);
+}

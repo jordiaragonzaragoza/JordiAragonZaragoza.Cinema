@@ -47,6 +47,9 @@
             return showtime;
         }
 
+        public void Cancel()
+            => this.Apply(new ShowtimeCanceledEvent(this.Id, this.AuditoriumId, this.MovieId));
+
         public void End()
             => this.Apply(new ShowtimeEndedEvent(this.Id));
 
@@ -71,6 +74,9 @@
             {
                 case ShowtimeScheduledEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case ShowtimeCanceledEvent:
                     break;
 
                 case ShowtimeEndedEvent:

@@ -4,11 +4,10 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
-
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public sealed class ShowtimeCanceledNotificationHandler : INotificationHandler<ShowtimeCanceledNotification>
@@ -25,10 +24,10 @@
         {
             var @event = notification.Event;
 
-            var readModel = await this.showtimeReadModelRepository.GetByIdAsync(@event.ShowtimeId, cancellationToken);
+            var readModel = await this.showtimeReadModelRepository.GetByIdAsync(@event.AggregateId, cancellationToken);
             if (readModel is null)
             {
-                throw new NotFoundException(nameof(ShowtimeReadModel), @event.ShowtimeId.ToString());
+                throw new NotFoundException(nameof(ShowtimeReadModel), @event.AggregateId.ToString());
             }
 
             await this.showtimeReadModelRepository.DeleteAsync(readModel, cancellationToken);

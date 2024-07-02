@@ -58,7 +58,7 @@
 
             var existingAvailableSeatsIds = existingAvailableSeats.Select(seatReadModel => seatReadModel.SeatId);
 
-            var totalAvailableSeats = ShowtimeManager.AvailableSeats(existingAuditorium, existingShowtime);
+            var totalAvailableSeats = ReservationManager.AvailableSeats(existingAuditorium, existingShowtime);
 
             var newAvailableSeats = totalAvailableSeats.Where(seat => !existingAvailableSeatsIds.Contains(seat.Id))
                                     .Select(seat => new AvailableSeatReadModel(

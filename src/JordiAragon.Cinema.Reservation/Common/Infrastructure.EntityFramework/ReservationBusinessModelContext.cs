@@ -20,8 +20,8 @@
             DbContextOptions<ReservationBusinessModelContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment,
-            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
-            : base(options, loggerFactory, hostEnvironment, auditableEntitySaveChangesInterceptor)
+            SoftDeleteEntitySaveChangesInterceptor softDeleteEntitySaveChangesInterceptor)
+            : base(options, loggerFactory, hostEnvironment, softDeleteEntitySaveChangesInterceptor)
         {
         }
 

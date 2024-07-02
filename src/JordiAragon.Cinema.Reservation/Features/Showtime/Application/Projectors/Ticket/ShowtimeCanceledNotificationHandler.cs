@@ -5,8 +5,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
 
@@ -27,7 +27,7 @@
         {
             var @event = notification.Event;
 
-            var specification = new GetTicketsByShowtimeIdSpec(@event.ShowtimeId);
+            var specification = new GetTicketsByShowtimeIdSpec(@event.AggregateId);
             var existingTickets = await this.specificationRepository.ListAsync(specification, cancellationToken);
             if (existingTickets.Any())
             {

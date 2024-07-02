@@ -20,7 +20,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Name = table.Column<string>(type: "text", nullable: true),
                     Rows = table.Column<int>(type: "integer", nullable: false),
                     SeatsPerRow = table.Column<int>(type: "integer", nullable: false),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +50,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Runtime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,7 +84,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsEnded = table.Column<bool>(type: "boolean", nullable: false),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +97,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.User.Domain;
 
     // TODO: Review. This interface probably is not required. Inject implementation instead.
-    public interface IShowtimeManager
+    public interface IReservationManager
     {
         Task<Ticket> ReserveSeatsAsync(
             Showtime showtime,

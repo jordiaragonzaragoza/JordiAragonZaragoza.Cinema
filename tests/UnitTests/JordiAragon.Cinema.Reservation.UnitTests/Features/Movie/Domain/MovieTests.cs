@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using FluentAssertions;
+    using JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
@@ -10,7 +11,7 @@
 
     public sealed class MovieTests
     {
-        public static IEnumerable<object[]> InvalidArgumentsCreateMovie()
+        public static IEnumerable<object[]> InvalidArgumentsAddMovie()
         {
             var id = Constants.Movie.Id;
             var title = Constants.Movie.Title;
@@ -46,7 +47,7 @@
         }
 
         [Fact]
-        public void CreateMovie_WhenHavingValidArguments_ShouldCreateMovieAndAddMovieCreatedEvent()
+        public void AddMovie_WhenHavingValidArguments_ShouldCreateMovieAndAddMovieCreatedEvent()
         {
             // Arrange
             var id = Constants.Movie.Id;
@@ -55,7 +56,7 @@
             var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
 
             // Act
-            var movie = Movie.Create(id, title, runtime, exhibitionPeriod);
+            var movie = Movie.Add(id, title, runtime, exhibitionPeriod);
 
             // Assert
             movie.Should().NotBeNull();
@@ -65,9 +66,9 @@
             movie.ExhibitionPeriod.Should().Be(exhibitionPeriod);
 
             movie.Events.Should()
-                              .ContainSingle(x => x is MovieCreatedEvent)
-                              .Which.Should().BeOfType<MovieCreatedEvent>()
-                              .Which.Should().Match<MovieCreatedEvent>(e =>
+                              .ContainSingle(x => x is MovieAddedEvent)
+                              .Which.Should().BeOfType<MovieAddedEvent>()
+                              .Which.Should().Match<MovieAddedEvent>(e =>
                                                                             e.AggregateId == id &&
                                                                             e.Title == title &&
                                                                             e.Runtime == runtime &&
@@ -76,18 +77,33 @@
         }
 
         [Theory]
-        [MemberData(nameof(InvalidArgumentsCreateMovie))]
-        public void CreateMovie_WhenHavingInvalidArguments_ShouldThrowException(
+        [MemberData(nameof(InvalidArgumentsAddMovie))]
+        public void AddMovie_WhenHavingInvalidArguments_ShouldThrowException(
             MovieId id,
             string title,
             TimeSpan runtime,
             ExhibitionPeriod exhibitionPeriod)
         {
             // Act
-            Func<Movie> movie = () => Movie.Create(id, title, runtime, exhibitionPeriod);
+            Func<Movie> movie = () => Movie.Add(id, title, runtime, exhibitionPeriod);
 
             // Assert
             movie.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void RemoveMovie_WhenHavingValidArguments_ShouldAddMovieRemovedEvent()
+        {
+            // Arrange.
+            var movie = CreateMovieUtils.Create();
+
+            // Act.
+            movie.Remove();
+
+            movie.Events.Should()
+                              .ContainSingle(x => x is MovieRemovedEvent)
+                              .Which.Should().BeOfType<MovieRemovedEvent>()
+                              .Which.Should().Match<MovieRemovedEvent>(e => e.AggregateId == movie.Id);
         }
 
         [Fact]

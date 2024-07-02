@@ -17,7 +17,7 @@
     public static class SeedData
     {
         public static readonly Movie ExampleMovie =
-            Movie.Create(
+            Movie.Add(
                 id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
                 runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),

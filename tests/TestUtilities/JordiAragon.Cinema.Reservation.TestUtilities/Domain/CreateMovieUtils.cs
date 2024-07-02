@@ -5,7 +5,7 @@
     public static class CreateMovieUtils
     {
         public static Movie Create()
-            => Movie.Create(
+            => Movie.Add(
                 Constants.Movie.Id,
                 Constants.Movie.Title,
                 Constants.Movie.Runtime,

@@ -3,7 +3,7 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public sealed record class MovieCreatedEvent(
+    public sealed record class MovieAddedEvent(
         Guid AggregateId,
         string Title,
         TimeSpan Runtime,

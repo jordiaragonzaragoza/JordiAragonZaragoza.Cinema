@@ -2,8 +2,6 @@
 {
     using System.Threading.Tasks;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
-    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
@@ -96,12 +94,10 @@
             var options = this.CreateNewBusinessModelContextOptions();
             var mockLoggerFactory = Substitute.For<ILoggerFactory>();
             var mockHostEnvironment = Substitute.For<IHostEnvironment>();
-            var mockCurrentUserService = Substitute.For<ICurrentUserService>();
-            var mockDateTimeService = Substitute.For<IDateTime>();
 
-            var auditableEntitySaveChangesInterceptor = new AuditableEntitySaveChangesInterceptor(mockCurrentUserService, mockDateTimeService);
+            var softDeleteEntitySaveChangesInterceptor = new SoftDeleteEntitySaveChangesInterceptor();
 
-            this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, auditableEntitySaveChangesInterceptor);
+            this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, softDeleteEntitySaveChangesInterceptor);
 
             this.BusinessModelContext.Database.Migrate();
             SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
