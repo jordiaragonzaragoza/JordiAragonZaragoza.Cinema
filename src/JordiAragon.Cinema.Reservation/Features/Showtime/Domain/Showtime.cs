@@ -61,9 +61,7 @@
         }
 
         public void PurchaseTicket(TicketId ticketId)
-        {
-            this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
-        }
+            => this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
 
         public void ExpireReservedSeats(TicketId ticketToRemove)
             => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));

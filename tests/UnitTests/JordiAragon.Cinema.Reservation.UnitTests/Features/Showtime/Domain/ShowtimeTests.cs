@@ -128,6 +128,42 @@
         }
 
         [Fact]
+        public void Cancel_WhenHavingValidArguments_ShouldCreateShowtimeCanceledEvent()
+        {
+            // Arrange
+            var showtime = ScheduleShowtimeUtils.Schedule();
+
+            // Act
+            showtime.Cancel();
+
+            // Assert
+            showtime.Events.Should()
+                              .ContainSingle(x => x is ShowtimeCanceledEvent)
+                              .Which.Should().BeOfType<ShowtimeCanceledEvent>()
+                              .Which.Should().Match<ShowtimeCanceledEvent>(e =>
+                                                                            e.AggregateId == showtime.Id &&
+                                                                            e.AuditoriumId == showtime.AuditoriumId &&
+                                                                            e.MovieId == showtime.MovieId);
+        }
+
+        [Fact]
+        public void End_WhenHavingValidArguments_ShouldCreateShowtimeEndedEvent()
+        {
+            // Arrange
+            var showtime = ScheduleShowtimeUtils.Schedule();
+
+            // Act
+            showtime.End();
+
+            // Assert
+            showtime.Events.Should()
+                              .ContainSingle(x => x is ShowtimeEndedEvent)
+                              .Which.Should().BeOfType<ShowtimeEndedEvent>()
+                              .Which.Should().Match<ShowtimeEndedEvent>(e =>
+                                                                            e.AggregateId == showtime.Id);
+        }
+
+        [Fact]
         public void ReserveSeats_WhenHavingValidArguments_ShouldCreateTicketAddTheTickedAndAddReservedSeatsEvent()
         {
             // Arrange
