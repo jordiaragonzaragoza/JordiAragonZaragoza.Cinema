@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Movie.Infrastructure.EntityFramework
+﻿namespace JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework
 {
     using Autofac;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;

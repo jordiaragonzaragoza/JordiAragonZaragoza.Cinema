@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Auditorium.Infrastructure.EntityFramework
+﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework
 {
     using Autofac;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;

@@ -1,10 +1,10 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Movie.Application.CommandHanders.AddMovie
+﻿namespace JordiAragon.Cinema.Reservation.Movie.Application.CommandHanders.AddMovie
 {
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using JordiAragon.Cinema.Reservation.Features.Movie.Application.Contracts.Commands;
+    using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;

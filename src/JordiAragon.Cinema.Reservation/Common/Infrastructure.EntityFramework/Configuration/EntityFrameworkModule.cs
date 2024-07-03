@@ -5,10 +5,10 @@
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.DataModel;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
-    using JordiAragon.Cinema.Reservation.Features.Auditorium.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Features.Movie.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Features.Showtime.Infrastructure.EntityFramework;
-    using JordiAragon.Cinema.Reservation.Features.User.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.Movie.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework;
+    using JordiAragon.Cinema.Reservation.User.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;

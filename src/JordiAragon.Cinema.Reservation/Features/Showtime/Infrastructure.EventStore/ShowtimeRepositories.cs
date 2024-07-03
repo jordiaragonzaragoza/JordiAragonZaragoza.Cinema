@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Showtime.Infrastructure.EventStore
+﻿namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EventStore
 {
     using Autofac;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore;

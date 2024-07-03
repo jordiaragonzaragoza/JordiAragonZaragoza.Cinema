@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;

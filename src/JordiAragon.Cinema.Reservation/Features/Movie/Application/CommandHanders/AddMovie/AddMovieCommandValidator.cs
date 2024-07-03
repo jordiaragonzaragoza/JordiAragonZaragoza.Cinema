@@ -1,7 +1,7 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Movie.Application.CommandHanders.AddMovie
+﻿namespace JordiAragon.Cinema.Reservation.Movie.Application.CommandHanders.AddMovie
 {
     using FluentValidation;
-    using JordiAragon.Cinema.Reservation.Features.Movie.Application.Contracts.Commands;
+    using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.Commands;
     using JordiAragon.SharedKernel.Application.Validators;
 
     public sealed class AddMovieCommandValidator : BaseValidator<AddMovieCommand>

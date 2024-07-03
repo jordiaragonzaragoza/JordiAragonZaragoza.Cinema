@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Generic;
     using FluentAssertions;
-    using JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events;
-    using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Events;
+    using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
 

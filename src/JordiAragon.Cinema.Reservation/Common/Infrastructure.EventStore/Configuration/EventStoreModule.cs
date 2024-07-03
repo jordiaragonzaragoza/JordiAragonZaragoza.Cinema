@@ -2,7 +2,7 @@
 {
     using System.Reflection;
     using Autofac;
-    using JordiAragon.Cinema.Reservation.Features.Showtime.Infrastructure.EventStore;
+    using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EventStore;
     using JordiAragon.SharedKernel;
 
     public sealed class EventStoreModule : AssemblyModule

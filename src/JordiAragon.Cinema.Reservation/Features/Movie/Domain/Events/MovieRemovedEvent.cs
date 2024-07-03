@@ -1,4 +1,4 @@
-﻿namespace JordiAragon.Cinema.Reservation.Features.Movie.Domain.Events
+﻿namespace JordiAragon.Cinema.Reservation.Movie.Domain.Events
 {
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
