@@ -21,6 +21,7 @@
         public override async Task<Result> Handle(AddMovieCommand command, CancellationToken cancellationToken)
         {
             // TODO: There cannot be two movies with the same title, duration and viewing period.
+            // Check will be done via domain service.
             var newMovie = Movie.Add(
                 id: MovieId.Create(command.MovieId),
                 title: command.Title,

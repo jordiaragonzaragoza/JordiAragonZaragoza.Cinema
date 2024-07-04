@@ -91,6 +91,21 @@
         }
 
         [Fact]
+        public void RemoveAuditorium_WhenHavingValidArguments_ShouldAddAuditoriumRemovedEvent()
+        {
+            // Arrange.
+            var auditorium = CreateAuditoriumUtils.Create();
+
+            // Act.
+            auditorium.Remove();
+
+            auditorium.Events.Should()
+                              .ContainSingle(x => x is AuditoriumRemovedEvent)
+                              .Which.Should().BeOfType<AuditoriumRemovedEvent>()
+                              .Which.Should().Match<AuditoriumRemovedEvent>(e => e.AggregateId == auditorium.Id);
+        }
+
+        [Fact]
         public void AddShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeAddedEvent()
         {
             // Arrange.
