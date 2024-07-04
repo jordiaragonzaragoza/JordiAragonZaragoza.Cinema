@@ -9,9 +9,9 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using MediatR;
-    using Volo.Abp.Guids;
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
@@ -21,14 +21,14 @@
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> specificationReadRepository;
         private readonly IReadRepository<Showtime, ShowtimeId> showtimeReadRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository;
-        private readonly IGuidGenerator guidGenerator;
+        private readonly IIdGenerator guidGenerator;
 
         public ExpiredReservedSeatsNotificationHandler(
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository,
             ISpecificationReadRepository<AvailableSeatReadModel, Guid> specificationReadRepository,
             IReadRepository<Showtime, ShowtimeId> showtimeReadRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumReadRepository,
-            IGuidGenerator guidGenerator)
+            IIdGenerator guidGenerator)
         {
             this.availableReadModelRepository = Guard.Against.Null(availableReadModelRepository, nameof(availableReadModelRepository));
             this.specificationReadRepository = Guard.Against.Null(specificationReadRepository, nameof(specificationReadRepository));

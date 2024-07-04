@@ -10,21 +10,21 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using Volo.Abp.Guids;
 
     public sealed class ScheduleShowtimeCommandHandler : BaseCommandHandler<ScheduleShowtimeCommand, Guid>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
-        private readonly IGuidGenerator guidGenerator;
+        private readonly IIdGenerator guidGenerator;
 
         public ScheduleShowtimeCommandHandler(
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IReadRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
-            IGuidGenerator guidGenerator)
+            IIdGenerator guidGenerator)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));

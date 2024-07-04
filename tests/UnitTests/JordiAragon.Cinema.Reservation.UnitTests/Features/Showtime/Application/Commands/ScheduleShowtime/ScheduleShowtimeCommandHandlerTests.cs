@@ -11,9 +11,9 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.TestUtilities.Application;
     using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using NSubstitute;
-    using Volo.Abp.Guids;
     using Xunit;
 
     public sealed class ScheduleShowtimeCommandHandlerTests
@@ -23,14 +23,14 @@
         private readonly IRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
         private readonly IRepository<Movie, MovieId> mockMovieRepository;
         private readonly IRepository<Showtime, ShowtimeId> mockShowtimeRepository;
-        private readonly IGuidGenerator mockGuidGenerator;
+        private readonly IIdGenerator mockGuidGenerator;
 
         public ScheduleShowtimeCommandHandlerTests()
         {
             this.mockAuditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             this.mockMovieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
-            this.mockGuidGenerator = Substitute.For<IGuidGenerator>();
+            this.mockGuidGenerator = Substitute.For<IIdGenerator>();
 
             this.handler = new ScheduleShowtimeCommandHandler(
                 this.mockAuditoriumRepository,
@@ -44,7 +44,7 @@
             var auditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             var movieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
-            var guidGenerator = Substitute.For<IGuidGenerator>();
+            var guidGenerator = Substitute.For<IIdGenerator>();
 
             var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
             var movieRepositoryValues = new object[] { null, movieRepository };
@@ -80,7 +80,7 @@
             IRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository,
-            IGuidGenerator guidGenerator)
+            IIdGenerator guidGenerator)
         {
             FluentActions.Invoking(() => new ScheduleShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, guidGenerator))
             .Should().Throw<ArgumentNullException>();
