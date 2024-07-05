@@ -6,18 +6,18 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
 
     public sealed class PurchaseTicket : Endpoint<PurchaseTicketRequest>
     {
         public const string Route = "showtimes/{showtimeId}/tickets/{ticketId}/purchase";
 
-        private readonly ISender internalBus;
+        private readonly ICommandBus commandBus;
 
-        public PurchaseTicket(ISender internalBus)
+        public PurchaseTicket(ICommandBus queryBus)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.commandBus = Guard.Against.Null(queryBus, nameof(queryBus));
         }
 
         public override void Configure()
@@ -34,7 +34,7 @@
 
         public async override Task HandleAsync(PurchaseTicketRequest req, CancellationToken ct)
         {
-            var result = await this.internalBus.Send(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
+            var result = await this.commandBus.SendAsync(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
 
             await this.SendResponseAsync(result, ct);
         }

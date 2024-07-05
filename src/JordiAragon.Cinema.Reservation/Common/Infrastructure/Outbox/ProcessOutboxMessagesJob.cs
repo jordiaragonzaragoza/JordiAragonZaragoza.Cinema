@@ -6,7 +6,6 @@
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Infrastructure.Outbox;
-    using MediatR;
     using Microsoft.Extensions.Logging;
     using SharedKernelProcessOutboxMessagesJob = JordiAragon.SharedKernel.Infrastructure.Outbox.ProcessOutboxMessagesJob;
 
@@ -14,10 +13,10 @@
     {
         public ProcessOutboxMessagesJob(
             IDateTime dateTime,
-            IPublisher internalBus,
+            IEventBus eventBus,
             ILogger<ProcessOutboxMessagesJob> logger,
             ICachedSpecificationRepository<OutboxMessage, Guid> repositoryOutboxMessages)
-            : base(dateTime, internalBus, logger, repositoryOutboxMessages)
+            : base(dateTime, eventBus, logger, repositoryOutboxMessages)
         {
         }
 

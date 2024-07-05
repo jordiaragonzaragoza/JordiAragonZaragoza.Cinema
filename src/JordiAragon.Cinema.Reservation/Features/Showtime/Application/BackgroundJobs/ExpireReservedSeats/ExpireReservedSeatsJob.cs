@@ -5,10 +5,10 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Application.Helpers;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
-    using MediatR;
     using Microsoft.Extensions.Logging;
     using Quartz;
 
@@ -18,18 +18,18 @@
     {
         private readonly IDateTime dateTime;
         private readonly ISpecificationReadRepository<TicketReadModel, Guid> ticketReadModelRepository;
-        private readonly ISender internalBus;
+        private readonly ICommandBus commandBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
             ISpecificationReadRepository<TicketReadModel, Guid> ticketReadModelRepository,
-            ISender internalBus,
+            ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger)
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
             this.ticketReadModelRepository = Guard.Against.Null(ticketReadModelRepository, nameof(ticketReadModelRepository));
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
             this.logger = Guard.Against.Null(logger, nameof(logger));
         }
 
@@ -42,7 +42,7 @@
                 var expiredTickets = await this.ticketReadModelRepository.ListAsync(new GetExpiredTicketsSpec(dateTimeUtcNow), context.CancellationToken);
                 foreach (var ticket in expiredTickets)
                 {
-                    var result = await this.internalBus.Send(new ExpireReservedSeatsCommand(ticket.ShowtimeId, ticket.Id), context.CancellationToken);
+                    var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(ticket.ShowtimeId, ticket.Id), context.CancellationToken);
                     if (!result.IsSuccess)
                     {
                         var errorDetails = result.ResultDetails();

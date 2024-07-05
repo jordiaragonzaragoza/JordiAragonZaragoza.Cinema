@@ -7,18 +7,19 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
+
     using IMapper = AutoMapper.IMapper;
 
     public sealed class ScheduleShowtime : Endpoint<ScheduleShowtimeRequest, Guid>
     {
-        private readonly ISender internalBus;
+        private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
 
-        public ScheduleShowtime(ISender internalBus, IMapper mapper)
+        public ScheduleShowtime(ICommandBus commandBus, IMapper mapper)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -38,7 +39,7 @@
         {
             var command = this.mapper.Map<ScheduleShowtimeCommand>(req);
 
-            var resultResponse = await this.internalBus.Send(command, ct);
+            var resultResponse = await this.commandBus.SendAsync(command, ct);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

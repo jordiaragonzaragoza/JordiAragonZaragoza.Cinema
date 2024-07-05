@@ -12,16 +12,16 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.SharedKernel.Application.Contracts;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
 
     public sealed class GetShowtimes : Endpoint<GetShowtimesRequest, IEnumerable<ShowtimeResponse>>
     {
-        private readonly ISender internalBus;
+        private readonly IQueryBus queryBus;
 
-        public GetShowtimes(ISender internalBus)
+        public GetShowtimes(IQueryBus queryBus)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
         }
 
         public override void Configure()
@@ -48,7 +48,7 @@
                 PageNumber: 1,
                 PageSize: 0);
 
-            var resultOutputDto = await this.internalBus.Send(query, ct);
+            var resultOutputDto = await this.queryBus.SendAsync(query, ct);
 
             var resultResponse = MapToResultResponse(resultOutputDto);
 
