@@ -8,18 +8,19 @@
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
+
     using IMapper = AutoMapper.IMapper;
 
     public sealed class PurchaseTicket : Endpoint<PurchaseTicketRequest, TicketResponse>
     {
-        private readonly ISender internalBus;
+        private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
 
-        public PurchaseTicket(ISender internalBus, IMapper mapper)
+        public PurchaseTicket(ICommandBus commandBus, IMapper mapper)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -37,7 +38,7 @@
 
         public async override Task HandleAsync(PurchaseTicketRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.internalBus.Send(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
+            var resultOutputDto = await this.commandBus.SendAsync(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
 
             var resultResponse = this.mapper.Map<Result<TicketResponse>>(resultOutputDto);
 

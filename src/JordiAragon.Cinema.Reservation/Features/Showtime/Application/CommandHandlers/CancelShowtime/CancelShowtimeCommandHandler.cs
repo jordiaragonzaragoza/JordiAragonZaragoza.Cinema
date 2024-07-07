@@ -5,7 +5,6 @@
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
     using JordiAragon.SharedKernel.Contracts.Repositories;
@@ -20,17 +19,16 @@
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
-        public override async Task<Result> Handle(CancelShowtimeCommand request, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(CancelShowtimeCommand command, CancellationToken cancellationToken)
         {
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(command.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
-                return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
+                return Result.NotFound($"{nameof(Showtime)}: {command.ShowtimeId} not found.");
             }
 
+            existingShowtime.Cancel();
             await this.showtimeRepository.DeleteAsync(existingShowtime, cancellationToken);
-
-            this.RegisterApplicationEvent(new ShowtimeCanceledEvent(existingShowtime.Id, existingShowtime.AuditoriumId, existingShowtime.MovieId));
 
             return Result.Success();
         }

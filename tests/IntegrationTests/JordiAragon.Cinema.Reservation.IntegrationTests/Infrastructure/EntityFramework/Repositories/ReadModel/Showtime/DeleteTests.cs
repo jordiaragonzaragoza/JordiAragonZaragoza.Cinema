@@ -24,7 +24,7 @@
             // Arrange
             var newShowtime = new ShowtimeReadModel(
                 Guid.NewGuid(),
-                DateTimeOffset.Now,
+                DateTimeOffset.UtcNow,
                 Guid.NewGuid(),
                 "Some title",
                 TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
@@ -51,7 +51,7 @@
             // Arrange
             var newShowtime = new ShowtimeReadModel(
                 Guid.NewGuid(),
-                DateTimeOffset.Now,
+                DateTimeOffset.UtcNow,
                 Guid.NewGuid(),
                 "Some title",
                 TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),

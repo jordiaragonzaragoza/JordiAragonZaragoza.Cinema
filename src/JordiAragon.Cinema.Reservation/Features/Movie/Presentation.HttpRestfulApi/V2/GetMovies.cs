@@ -8,8 +8,8 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Movie.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Movie.Responses;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
 
     using IMapper = AutoMapper.IMapper;
 
@@ -18,12 +18,12 @@
     {
         public const string Route = "movies";
 
-        private readonly ISender internalBus;
+        private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
-        public GetMovies(ISender internalBus, IMapper mapper)
+        public GetMovies(IQueryBus queryBus, IMapper mapper)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -41,7 +41,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.internalBus.Send(new GetMoviesQuery(), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(new GetMoviesQuery(), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<MovieResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

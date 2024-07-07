@@ -6,12 +6,12 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class PurchasedTicketNotificationHandler : INotificationHandler<PurchasedTicketNotification>
+    public sealed class PurchasedTicketNotificationHandler : IEventNotificationHandler<PurchasedTicketNotification>
     {
         private readonly IRepository<TicketReadModel, Guid> ticketReadModelRepository;
 

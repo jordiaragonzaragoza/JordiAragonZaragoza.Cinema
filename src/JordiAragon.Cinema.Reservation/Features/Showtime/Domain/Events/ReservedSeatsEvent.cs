@@ -5,10 +5,10 @@
     using JordiAragon.SharedKernel.Domain.Events;
 
     public sealed record class ReservedSeatsEvent(
-        Guid ShowtimeId,
+        Guid AggregateId,
         Guid TicketId,
         Guid UserId,
         IEnumerable<Guid> SeatIds,
         DateTimeOffset CreatedTimeOnUtc)
-        : BaseDomainEvent(ShowtimeId);
+        : BaseDomainEvent(AggregateId);
 }

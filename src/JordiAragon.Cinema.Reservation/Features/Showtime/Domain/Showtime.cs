@@ -47,6 +47,9 @@
             return showtime;
         }
 
+        public void Cancel()
+            => this.Apply(new ShowtimeCanceledEvent(this.Id, this.AuditoriumId, this.MovieId));
+
         public void End()
             => this.Apply(new ShowtimeEndedEvent(this.Id));
 
@@ -58,9 +61,7 @@
         }
 
         public void PurchaseTicket(TicketId ticketId)
-        {
-            this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
-        }
+            => this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
 
         public void ExpireReservedSeats(TicketId ticketToRemove)
             => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
@@ -71,6 +72,9 @@
             {
                 case ShowtimeScheduledEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case ShowtimeCanceledEvent:
                     break;
 
                 case ShowtimeEndedEvent:

@@ -16,27 +16,27 @@
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Application.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
-    using Volo.Abp.Guids;
 
     public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;
-        private readonly IGuidGenerator guidGenerator;
+        private readonly IIdGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
-        private readonly IShowtimeManager showtimeManager;
+        private readonly IReservationManager showtimeManager;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public ReserveSeatsCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             IReadRepository<User, UserId> userRepository,
-            IShowtimeManager showtimeManager,
+            IReservationManager showtimeManager,
             IMapper mapper,
-            IGuidGenerator guidGenerator,
+            IIdGenerator guidGenerator,
             IDateTime dateTime,
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)

@@ -29,6 +29,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.UnitTests" />
+		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.TestUtilities" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
@@ -40,14 +41,12 @@
 		<PackageReference Include="Quartz.Extensions.DependencyInjection" />
 		<PackageReference Include="FastEndpoints.Swagger" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
-		<PackageReference Include="Volo.Abp.Guids" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
 		<PackageReference Include="Quartz.Serialization.Json" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
@@ -63,11 +62,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="Common\Infrastructure.EntityFramework\Configuration\QuartzClusteringSQLServerTables.sql" />
 	</ItemGroup>
 </Project>

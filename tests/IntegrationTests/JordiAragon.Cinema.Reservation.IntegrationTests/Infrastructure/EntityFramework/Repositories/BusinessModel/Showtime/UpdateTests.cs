@@ -5,10 +5,11 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
     using JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
@@ -29,7 +30,9 @@
             // Arrange
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
-            var existingShowtime = await repository.GetByIdAsync(ShowtimeId.Create(SeedData.ExampleShowtime.Id));
+            var newShowtime = await AddNewShowtimeAsync(repository);
+
+            var existingShowtime = await repository.GetByIdAsync(ShowtimeId.Create(newShowtime.Id));
 
             var ticketId = TicketId.Create(Guid.NewGuid());
 
@@ -60,9 +63,9 @@
             // Arrange
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id),
+                MovieId.Create(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
+                AuditoriumId.Create(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
@@ -71,6 +74,19 @@
 
             // Assert
             await deleteAsync.Should().ThrowAsync<DbUpdateConcurrencyException>();
+        }
+
+        private static async Task<Showtime> AddNewShowtimeAsync(ReservationRepository<Showtime, ShowtimeId> repository)
+        {
+            var newShowtime = Showtime.Schedule(
+                ShowtimeId.Create(Guid.NewGuid()),
+                MovieId.Create(Constants.Movie.Id),
+                DateTimeOffset.UtcNow.AddDays(1),
+                AuditoriumId.Create(Constants.Auditorium.Id));
+
+            await repository.AddAsync(newShowtime);
+
+            return newShowtime;
         }
     }
 }

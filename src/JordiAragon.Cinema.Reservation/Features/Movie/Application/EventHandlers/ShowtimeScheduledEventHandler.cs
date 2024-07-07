@@ -6,11 +6,12 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
+
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeScheduledEventHandler : INotificationHandler<ShowtimeScheduledEvent>
+    public sealed class ShowtimeScheduledEventHandler : IEventHandler<ShowtimeScheduledEvent>
     {
         private readonly IRepository<Movie, MovieId> movieRepository;
 
@@ -25,7 +26,7 @@
             var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(@event.MovieId), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());
 
-            existingMovie.AddShowtime(ShowtimeId.Create(@event.ShowtimeId));
+            existingMovie.AddShowtime(ShowtimeId.Create(@event.AggregateId));
 
             await this.movieRepository.UpdateAsync(existingMovie, cancellationToken);
         }

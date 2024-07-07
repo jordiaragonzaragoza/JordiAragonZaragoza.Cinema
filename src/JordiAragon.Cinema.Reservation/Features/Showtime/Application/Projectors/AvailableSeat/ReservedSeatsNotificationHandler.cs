@@ -6,10 +6,10 @@
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
 
-    public sealed class ReservedSeatsNotificationHandler : INotificationHandler<ReservedSeatsNotification>
+    public sealed class ReservedSeatsNotificationHandler : IEventNotificationHandler<ReservedSeatsNotification>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;
@@ -26,7 +26,7 @@
         {
             var @event = notification.Event;
 
-            var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdAndSeatIdsSpec(@event.ShowtimeId, @event.SeatIds), cancellationToken);
+            var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdAndSeatIdsSpec(@event.AggregateId, @event.SeatIds), cancellationToken);
 
             await this.availableReadModelRepository.DeleteRangeAsync(availableSeats, cancellationToken);
         }

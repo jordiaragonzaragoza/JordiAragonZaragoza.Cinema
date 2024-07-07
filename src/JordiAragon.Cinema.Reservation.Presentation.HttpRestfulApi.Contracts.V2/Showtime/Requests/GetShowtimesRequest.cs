@@ -7,8 +7,8 @@ namespace JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V
     public sealed record class GetShowtimesRequest(
         Guid? AuditoriumId,
         Guid? MovieId,
-        DateTime? StartTimeOnUtc,
-        DateTime? EndTimeOnUtc,
+        DateTimeOffset? StartTimeOnUtc,
+        DateTimeOffset? EndTimeOnUtc,
         string? MovieTitle,
         string? AuditoriumName)
         : PaginatedRequest;

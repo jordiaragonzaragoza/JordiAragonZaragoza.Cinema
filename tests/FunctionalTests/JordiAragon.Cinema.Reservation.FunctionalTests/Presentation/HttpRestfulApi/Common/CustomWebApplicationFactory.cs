@@ -1,14 +1,21 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
 {
+    using System.Collections.Generic;
     using System.Data.Common;
+    using EventStore.Client;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
+    using JordiAragon.SharedKernel.Infrastructure.EventStore;
+    using JordiAragon.SharedKernel.Infrastructure.EventStore.EventStoreDb;
+    using JordiAragon.SharedKernel.Infrastructure.EventStore.EventStoreDb.Subscriptions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
+    using JordiAragon.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using Quartz;
 
     public sealed class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
@@ -16,13 +23,16 @@
     {
         private readonly DbConnection businessModelStoreConnection;
         private readonly DbConnection readModelStoreConnection;
+        private readonly string eventStoreDbConnectionString;
 
         public CustomWebApplicationFactory(
             DbConnection businessModelStoreConnection,
-            DbConnection readModelStoreConnection)
+            DbConnection readModelStoreConnection,
+            string eventStoreDbConnectionString)
         {
             this.businessModelStoreConnection = businessModelStoreConnection;
             this.readModelStoreConnection = readModelStoreConnection;
+            this.eventStoreDbConnectionString = eventStoreDbConnectionString;
         }
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -42,14 +52,14 @@
                     .RemoveAll<DbContextOptions<ReservationBusinessModelContext>>()
                     .AddDbContext<ReservationBusinessModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.businessModelStoreConnection);
+                        options.UseNpgsql(this.businessModelStoreConnection);
                     });
 
                 services
                     .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
                     .AddDbContext<ReservationReadModelContext>((options) =>
                     {
-                        options.UseSqlServer(this.readModelStoreConnection);
+                        options.UseNpgsql(this.readModelStoreConnection);
                         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
 
@@ -60,6 +70,21 @@
                         options.Clear();
                         options["quartz.scheduler.jobFactory.type"] = "Quartz.Simpl.MicrosoftDependencyInjectionJobFactory, Quartz.Extensions.DependencyInjection";
                     });
+
+                services
+                    .Configure<EventStoreDbOptions>(options =>
+                    {
+                        options.ConnectionString = this.eventStoreDbConnectionString;
+                    });
+
+                services
+                    .RemoveAll<EventStoreClient>()
+                    .RemoveAll<EventTypeMapper>()
+                    .RemoveAll<EventStoreDbSubscriptionToAll>()
+                    .AddSharedKernelEventStoreServices(new ConfigurationBuilder().AddInMemoryCollection(new[]
+                            {
+                                new KeyValuePair<string, string>("EventStore:ConnectionString", this.eventStoreDbConnectionString),
+                            }).Build());
             });
         }
     }

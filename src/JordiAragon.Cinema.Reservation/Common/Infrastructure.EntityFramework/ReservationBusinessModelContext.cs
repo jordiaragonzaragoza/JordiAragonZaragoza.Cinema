@@ -8,7 +8,7 @@
     using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.Cinema.Reservation.User.Infrastructure.EntityFramework;
-    using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
+    using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Context;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
@@ -20,8 +20,8 @@
             DbContextOptions<ReservationBusinessModelContext> options,
             ILoggerFactory loggerFactory,
             IHostEnvironment hostEnvironment,
-            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
-            : base(options, loggerFactory, hostEnvironment, auditableEntitySaveChangesInterceptor)
+            SoftDeleteEntitySaveChangesInterceptor softDeleteEntitySaveChangesInterceptor)
+            : base(options, loggerFactory, hostEnvironment, softDeleteEntitySaveChangesInterceptor)
         {
         }
 

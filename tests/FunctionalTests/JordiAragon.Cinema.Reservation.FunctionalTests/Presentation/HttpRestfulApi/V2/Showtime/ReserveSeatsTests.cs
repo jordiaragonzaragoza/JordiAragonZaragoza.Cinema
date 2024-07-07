@@ -7,7 +7,6 @@
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
@@ -15,6 +14,8 @@
     using JordiAragon.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
+
+    using Constants = JordiAragon.Cinema.Reservation.TestUtilities.Domain.Constants;
 
     public sealed class ReserveSeatsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -29,7 +30,9 @@
         public async Task CreateTicket_WhenHavingValidArguments_ShouldCreateRequiredTicket()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
             var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
             routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString());
@@ -48,14 +51,13 @@
             // Act
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
-            // Required to satisfy eventual consistency on projections.
             await AddEventualConsistencyDelayAsync();
 
             var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
             // Assert
             ticketResponse.SessionDateOnUtc.Should()
-                .Be(SeedData.ExampleShowtime.SessionDateOnUtc);
+                .Be(sessionDateOnUtc);
 
             ticketResponse.AuditoriumName.Should()
                 .Be(SeedData.ExampleAuditorium.Name);
@@ -69,6 +71,24 @@
             ticketResponse.IsPurchased.Should().BeFalse();
 
             availableSeatsAfterReservation.Should().NotContain(ticketResponse.Seats);
+        }
+
+        private async Task<Guid> ScheduleNewShowtimeAsync(DateTimeOffset sessionDateOnUtc)
+        {
+            var url = $"api/v2/{ScheduleShowtime.Route}";
+
+            var request = new ScheduleShowtimeRequest(
+                Constants.Auditorium.Id,
+                Constants.Movie.Id,
+                sessionDateOnUtc);
+
+            var content = StringContentHelpers.FromModelAsJson(request);
+
+            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+
+            await AddEventualConsistencyDelayAsync();
+
+            return response;
         }
     }
 }
