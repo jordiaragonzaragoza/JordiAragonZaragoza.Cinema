@@ -11,12 +11,12 @@
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ReservedSeatsNotificationHandler : INotificationHandler<ReservedSeatsNotification>
+    public sealed class ReservedSeatsNotificationHandler : IEventNotificationHandler<ReservedSeatsNotification>
     {
         private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;

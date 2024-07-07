@@ -6,11 +6,12 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
+
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeCanceledEventHandler : INotificationHandler<ShowtimeCanceledEvent>
+    public sealed class ShowtimeCanceledEventHandler : IEventHandler<ShowtimeCanceledEvent>
     {
         private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
