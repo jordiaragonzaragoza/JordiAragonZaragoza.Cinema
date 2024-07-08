@@ -8,20 +8,21 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Responses;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
+
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the cinema manager bounded context.
     public sealed class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";
-        private readonly ISender internalBus;
+        private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
-        public GetAuditoriums(ISender internalBus, IMapper mapper)
+        public GetAuditoriums(IQueryBus queryBus, IMapper mapper)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -39,7 +40,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.internalBus.Send(new GetAuditoriumsQuery(), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(new GetAuditoriumsQuery(), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<AuditoriumResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

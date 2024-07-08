@@ -21,12 +21,8 @@
 
         protected ITestOutputHelper OutputHelper { get; private init; }
 
-        public virtual Task InitializeAsync()
-        {
-            this.Fixture.InitDatabases();
-
-            return Task.CompletedTask;
-        }
+        public virtual async Task InitializeAsync()
+            => await this.Fixture.InitDatabasesAsync();
 
         public virtual async Task DisposeAsync()
             => await this.Fixture.ResetDatabasesAsync();

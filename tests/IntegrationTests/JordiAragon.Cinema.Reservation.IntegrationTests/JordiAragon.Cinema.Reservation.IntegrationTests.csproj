@@ -9,7 +9,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="Respawn" />
-		<PackageReference Include="Testcontainers.SqlEdge" />
+		<PackageReference Include="Testcontainers.PostgreSql" />
 		<PackageReference Include="xunit" />
 		<PackageReference Include="xunit.runner.visualstudio">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,11 +25,18 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\AddTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\UpdateTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\DeleteTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\GetTests.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<Compile Include="..\..\..\GlobalSuppressions.cs">
 			<Link>GlobalSuppressions.cs</Link>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragon.Cinema.Reservation\JordiAragon.Cinema.Reservation.csproj" />
+	  <ProjectReference Include="..\..\TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>
 </Project>

@@ -2,23 +2,22 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
-    using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
+    /// <summary>
+    /// Seeds the data base. This file should only be used in the development environment.
+    /// </summary>
     public static class SeedData
     {
         public static readonly Movie ExampleMovie =
-            Movie.Create(
+            Movie.Add(
                 id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
                 runtime: TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
@@ -34,57 +33,27 @@
                 rows: 10,
                 seatsPerRow: 10);
 
-        public static readonly Showtime ExampleShowtime =
-            Showtime.Schedule(
-                id: ShowtimeId.Create(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
-                movieId: MovieId.Create(ExampleMovie.Id),
-                sessionDateOnUtc: new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero),
-                auditoriumId: AuditoriumId.Create(ExampleAuditorium.Id));
-
         public static readonly User ExampleUser =
             User.Create(
                 id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
-        public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
-            new(
-                ExampleShowtime.Id,
-                ExampleShowtime.SessionDateOnUtc,
-                ExampleMovie.Id,
-                ExampleMovie.Title,
-                ExampleMovie.Runtime,
-                ExampleShowtime.AuditoriumId,
-                ExampleAuditorium.Name);
-
-        public static IList<AvailableSeatReadModel> ExampleShowtimeAvailableSeatsReadModel()
-        {
-            var availableSeats = new List<AvailableSeatReadModel>();
-            foreach (var seat in ExampleAuditorium.Seats)
-            {
-                availableSeats.Add(new AvailableSeatReadModel(
-                    Guid.NewGuid(),
-                    seat.Id,
-                    seat.Row,
-                    seat.SeatNumber,
-                    ExampleShowtime.Id,
-                    ExampleAuditorium.Id,
-                    ExampleAuditorium.Name));
-            }
-
-            return availableSeats;
-        }
-
         public static void Initialize(WebApplication app, bool isDevelopment)
         {
+            if (!isDevelopment)
+            {
+                return;
+            }
+
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-            var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
-            var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            using var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
+            using var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                PopulateBusinessModelTestData(writeContext, isDevelopment);
-                PopulateReadModelTestData(readContext, isDevelopment);
+                PopulateBusinessModelTestData(writeContext);
+                PopulateReadModelTestData(readContext);
             }
             catch (Exception exception)
             {
@@ -92,37 +61,25 @@
             }
         }
 
-        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context, bool isDevelopment)
+        private static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
         {
-            MigrateAndEnsureSqlServerDatabase(context);
-
-            if (!isDevelopment || HasAnyData(context))
+            if (HasAnyData(context))
             {
                 return;
             }
 
-            SetPreconfiguredWriteData(context);
+            context.Movies.Add(ExampleMovie);
+
+            context.Auditoriums.Add(ExampleAuditorium);
+
+            context.Users.Add(ExampleUser);
+
+            context.SaveChanges();
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context, bool isDevelopment)
+        private static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
-            MigrateAndEnsureSqlServerDatabase(context);
-
-            if (!isDevelopment || HasAnyData(context))
-            {
-                return;
-            }
-
-            SetPreconfiguredReadData(context);
-        }
-
-        private static void MigrateAndEnsureSqlServerDatabase(DbContext context)
-        {
-            if (context.Database.IsSqlServer())
-            {
-                context.Database.Migrate();
-                context.Database.EnsureCreated();
-            }
+            // Intentionally empty. Will be used to populate test data on read model.
         }
 
         private static bool HasAnyData(DbContext context)
@@ -142,77 +99,6 @@
             }
 
             return false;
-        }
-
-        private static void SetPreconfiguredWriteData(ReservationBusinessModelContext context)
-        {
-            SetQuartzClusteringSQLServerTables(context);
-
-            context.Movies.Add(ExampleMovie);
-
-            context.Auditoriums.Add(ExampleAuditorium);
-
-            context.Showtimes.Add(ExampleShowtime);
-
-            context.Users.Add(ExampleUser);
-
-            ExampleAuditorium.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
-
-            ExampleMovie.AddShowtime(ShowtimeId.Create(ExampleShowtime.Id));
-
-            context.SaveChanges();
-        }
-
-        private static void SetPreconfiguredReadData(ReservationReadModelContext context)
-        {
-            context.Showtimes.Add(ExampleShowtimeReadModel);
-
-            context.AvailableSeats.AddRange(ExampleShowtimeAvailableSeatsReadModel());
-
-            context.SaveChanges();
-        }
-
-        private static void SetQuartzClusteringSQLServerTables(DbContext context)
-        {
-            var tableName = "__QRTZ_LOCKS";
-            var tableExists = TableExists(context, tableName);
-
-            if (!tableExists)
-            {
-                var currentDatabase = context.Database.GetDbConnection().Database;
-
-                var script = GetEmbeddedResource("Common.Infrastructure.EntityFramework.Configuration.QuartzClusteringSQLServerTables.sql");
-                script = script.Replace("[currentDatabase]", currentDatabase);
-
-                context.Database.ExecuteSqlRaw(script);
-            }
-        }
-
-        private static bool TableExists(DbContext context, string tableName)
-        {
-            var dbConnection = context.Database.GetDbConnection();
-            dbConnection.Open();
-            var dbCommand = dbConnection.CreateCommand();
-            dbCommand.CommandText = $"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{tableName}'";
-            var count = (int)dbCommand.ExecuteScalar();
-            dbConnection.Close();
-            return count > 0;
-        }
-
-        private static string GetEmbeddedResource(string resourceName)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fullResourceName = $"{assembly.GetName().Name}.{resourceName}";
-
-            var resourceStream = assembly.GetManifestResourceStream(fullResourceName);
-
-            if (resourceStream == null)
-            {
-                throw new InvalidOperationException($"Resource '{resourceName}' not found in assembly.");
-            }
-
-            using var reader = new StreamReader(resourceStream);
-            return reader.ReadToEnd();
         }
     }
 }

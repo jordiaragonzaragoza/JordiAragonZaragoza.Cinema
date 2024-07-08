@@ -5,7 +5,6 @@
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
@@ -34,6 +33,8 @@
             this.OutputHelper.WriteLine($"Requesting with DELETE {route}");
             var response = await this.Fixture.HttpClient.DeleteAsync(route);
 
+            await AddEventualConsistencyDelayAsync();
+
             // Assert
             response.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NoContent);
@@ -43,9 +44,6 @@
 
         private async Task TestProjectionsAsync(Guid showtimeId)
         {
-            // Required to satisfy eventual consistency on projections.
-            await AddEventualConsistencyDelayAsync();
-
             await this.GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
             await this.GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
@@ -110,13 +108,11 @@
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            // Act
-            var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
 
-            // Required to satisfy eventual consistency on projections.
             await AddEventualConsistencyDelayAsync();
 
-            return showtimeId;
+            return response;
         }
     }
 }

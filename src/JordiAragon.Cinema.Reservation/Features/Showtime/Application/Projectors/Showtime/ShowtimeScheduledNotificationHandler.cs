@@ -8,12 +8,12 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeScheduledNotificationHandler : INotificationHandler<ShowtimeScheduledNotification>
+    public sealed class ShowtimeScheduledNotificationHandler : IEventNotificationHandler<ShowtimeScheduledNotification>
     {
         private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
@@ -46,7 +46,7 @@
             }
 
             var showtimeReadModel = new ShowtimeReadModel(
-                @event.ShowtimeId,
+                @event.AggregateId,
                 @event.SessionDateOnUtc,
                 existingMovie.Id,
                 existingMovie.Title,

@@ -4,10 +4,10 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using Xunit.Abstractions;
@@ -27,9 +27,9 @@
             // Arrange
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(SeedData.ExampleMovie.Id),
+                MovieId.Create(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(SeedData.ExampleAuditorium.Id));
+                AuditoriumId.Create(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
@@ -49,9 +49,15 @@
         public async Task AddAsync_WhenHavingAnExistingShowtime_ShouldThrowDbUpdateException()
         {
             // Arrange
-            var existingShowtime = SeedData.ExampleShowtime;
+            var existingShowtime = Showtime.Schedule(
+                ShowtimeId.Create(Guid.NewGuid()),
+                MovieId.Create(Constants.Movie.Id),
+                DateTimeOffset.UtcNow.AddDays(1),
+                AuditoriumId.Create(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
+
+            await repository.AddAsync(existingShowtime);
 
             // Act
             Func<Task> addAsync = async () => await repository.AddAsync(existingShowtime);

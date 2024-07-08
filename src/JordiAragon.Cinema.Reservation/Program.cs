@@ -4,14 +4,16 @@
     using Autofac.Extensions.DependencyInjection;
     using JordiAragon.Cinema.Reservation.Common.Application;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations;
     using JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi;
     using JordiAragon.SharedKernel.Application.AssemblyConfiguration;
     using JordiAragon.SharedKernel.Infrastructure.AssemblyConfiguration;
+    using JordiAragon.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using EventStoreModule = JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration.EventStoreModule;
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
     using SharedKernelEntityFrameworkModule = JordiAragon.SharedKernel.Infrastructure.EntityFramework.AssemblyConfiguration.EntityFrameworkModule;
@@ -41,7 +43,7 @@
             builder.Services.AddHttpRestfulApiServices(configuration);
             builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
-            builder.Services.AddEventStoreServices(configuration, builder.Environment.ApplicationName);
+            builder.Services.AddSharedKernelEventStoreServices(configuration);
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -56,7 +58,8 @@
                 containerBuilder.RegisterModule(new SharedKernelHttpRestfulApiModule());
             });
 
-            builder.Host.AddHttpRestfulApiHostBuilderConfigurations();
+            builder.Host.AddHostBuilderConfigurations();
+            builder.WebHost.AddWebHostBuilderConfigurations();
 
             var app = builder.Build();
 
@@ -64,7 +67,8 @@
 
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
-            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            MigrationsApplier.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            ////SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

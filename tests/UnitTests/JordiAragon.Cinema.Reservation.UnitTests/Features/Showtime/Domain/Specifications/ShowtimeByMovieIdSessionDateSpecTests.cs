@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
     using JordiAragon.Cinema.Reservation.Showtime.Domain.Specifications;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
 
     public sealed class ShowtimeByMovieIdSessionDateSpecTests

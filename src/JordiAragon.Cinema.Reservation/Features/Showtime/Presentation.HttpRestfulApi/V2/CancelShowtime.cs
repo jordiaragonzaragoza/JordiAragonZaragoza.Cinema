@@ -6,18 +6,18 @@
     using FastEndpoints;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Commands;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
 
     public sealed class CancelShowtime : Endpoint<CancelShowtimeRequest>
     {
         public const string Route = "showtimes/{showtimeId}";
 
-        private readonly ISender internalBus;
+        private readonly ICommandBus commandBus;
 
-        public CancelShowtime(ISender internalBus)
+        public CancelShowtime(ICommandBus queryBus)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.commandBus = Guard.Against.Null(queryBus, nameof(queryBus));
         }
 
         public override void Configure()
@@ -34,7 +34,7 @@
 
         public async override Task HandleAsync(CancelShowtimeRequest req, CancellationToken ct)
         {
-            var resultResponse = await this.internalBus.Send(new CancelShowtimeCommand(req.ShowtimeId), ct);
+            var resultResponse = await this.commandBus.SendAsync(new CancelShowtimeCommand(req.ShowtimeId), ct);
 
             await this.SendResponseAsync(resultResponse, ct);
         }
