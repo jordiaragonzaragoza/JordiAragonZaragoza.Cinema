@@ -2,7 +2,7 @@
 {
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework;
-    using JordiAragon.SharedKernel.Infrastructure.EntityFramework;
+    using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Context;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;

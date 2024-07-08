@@ -25,6 +25,7 @@
                 .Must(this.ValidateExpirationDateOnUtc).WithMessage("Session Date must be a future date.");
         }
 
+        // TODO: Move to domain.
         private bool ValidateExpirationDateOnUtc(DateTimeOffset sessionDateOnUtc)
         {
             if (sessionDateOnUtc < this.dateTime.UtcNow)

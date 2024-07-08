@@ -6,7 +6,7 @@
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 
@@ -70,7 +70,7 @@
                               .ContainSingle(x => x is AuditoriumCreatedEvent)
                               .Which.Should().BeOfType<AuditoriumCreatedEvent>()
                               .Which.Should().Match<AuditoriumCreatedEvent>(e =>
-                                                                            e.AuditoriumId == id &&
+                                                                            e.AggregateId == id &&
                                                                             e.Rows == rows &&
                                                                             e.SeatsPerRow == seatsPerRow);
         }
@@ -88,6 +88,21 @@
 
             // Assert
             auditorium.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void RemoveAuditorium_WhenHavingValidArguments_ShouldAddAuditoriumRemovedEvent()
+        {
+            // Arrange.
+            var auditorium = CreateAuditoriumUtils.Create();
+
+            // Act.
+            auditorium.Remove();
+
+            auditorium.Events.Should()
+                              .ContainSingle(x => x is AuditoriumRemovedEvent)
+                              .Which.Should().BeOfType<AuditoriumRemovedEvent>()
+                              .Which.Should().Match<AuditoriumRemovedEvent>(e => e.AggregateId == auditorium.Id);
         }
 
         [Fact]
@@ -110,7 +125,7 @@
                               .ContainSingle(x => x is ShowtimeAddedEvent)
                               .Which.Should().BeOfType<ShowtimeAddedEvent>()
                               .Which.Should().Match<ShowtimeAddedEvent>(e =>
-                                                                            e.AuditoriumId == auditorium.Id &&
+                                                                            e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
@@ -149,7 +164,7 @@
                               .ContainSingle(x => x is ShowtimeRemovedEvent)
                               .Which.Should().BeOfType<ShowtimeRemovedEvent>()
                               .Which.Should().Match<ShowtimeRemovedEvent>(e =>
-                                                                            e.AuditoriumId == auditorium.Id &&
+                                                                            e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 

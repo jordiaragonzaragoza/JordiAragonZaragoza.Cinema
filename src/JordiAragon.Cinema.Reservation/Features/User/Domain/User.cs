@@ -24,12 +24,18 @@
             return user;
         }
 
+        public void Remove()
+            => this.Apply(new UserRemovedEvent(this.Id));
+
         protected override void When(IDomainEvent domainEvent)
         {
             switch (domainEvent)
             {
                 case UserCreatedEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case UserRemovedEvent:
                     break;
             }
         }

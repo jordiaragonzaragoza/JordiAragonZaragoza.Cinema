@@ -8,17 +8,29 @@ services:
       context: .
       dockerfile: src/JordiAragon.Cinema.Reservation/Dockerfile
     depends_on:
-      - "azuresqledge.cinema"
+      - "postgres.cinema"
       - "eventstore.cinema"
       - "rabbitmq.cinema"
     links:
-      - "azuresqledge.cinema"
+      - "postgres.cinema"
       - "eventstore.cinema"
       - "rabbitmq.cinema"
 
-  azuresqledge.cinema:
-    image: mcr.microsoft.com/azure-sql-edge:latest
-    container_name: azuresqledge.cinema
+  postgres.cinema:
+    image: postgres:15.1-alpine
+    container_name: postgres.cinema
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "wal_compression=on"
+
+  pgadmin.cinema:
+    image: dpage/pgadmin4
+    container_name: pgadmin.cinema
+    depends_on:
+      - "postgres.cinema"
 
   eventstore.cinema:
     image: eventstore/eventstore:23.10.1-alpha-arm64v8

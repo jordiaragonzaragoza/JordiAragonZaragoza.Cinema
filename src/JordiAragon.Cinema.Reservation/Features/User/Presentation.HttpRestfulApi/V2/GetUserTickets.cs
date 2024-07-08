@@ -8,9 +8,9 @@
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Requests;
     using JordiAragon.Cinema.Reservation.User.Application.Contracts.Queries;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using MediatR;
 
     using IMapper = AutoMapper.IMapper;
 
@@ -18,12 +18,12 @@
     {
         public const string Route = "users/{userId}/tickets";
 
-        private readonly ISender internalBus;
+        private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
-        public GetUserTickets(ISender internalBus, IMapper mapper)
+        public GetUserTickets(IQueryBus queryBus, IMapper mapper)
         {
-            this.internalBus = Guard.Against.Null(internalBus, nameof(internalBus));
+            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
@@ -41,7 +41,7 @@
 
         public override async Task HandleAsync(UserTicketsRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.internalBus.Send(this.mapper.Map<GetUserTicketsQuery>(req), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(this.mapper.Map<GetUserTicketsQuery>(req), ct);
 
             var resultResponse = this.mapper.Map<Result<PaginatedCollectionResponse<TicketResponse>>>(resultOutputDto);
 

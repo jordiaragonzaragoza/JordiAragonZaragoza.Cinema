@@ -3,5 +3,5 @@
     using System;
     using JordiAragon.SharedKernel.Domain.Events;
 
-    public sealed record class ShowtimeAddedEvent(Guid AuditoriumId, Guid ShowtimeId) : BaseDomainEvent(AuditoriumId);
+    public sealed record class ShowtimeAddedEvent(Guid AggregateId, Guid ShowtimeId) : BaseDomainEvent(AggregateId);
 }

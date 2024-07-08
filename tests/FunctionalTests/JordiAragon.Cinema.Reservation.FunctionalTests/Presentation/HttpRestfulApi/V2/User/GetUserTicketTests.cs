@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
@@ -15,6 +14,8 @@
     using JordiAragon.Cinema.Reservation.User.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
+
+    using Constants = JordiAragon.Cinema.Reservation.TestUtilities.Domain.Constants;
 
     public sealed class GetUserTicketTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -29,15 +30,12 @@
         public async Task GetUserTicket_WhenHavingValidArguments_ShouldReturnUserTicket()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = await this.ScheduleNewShowtimeAsync();
 
             var ticketResponse = await this.ReserveSeatsAsync(showtimeId);
             var ticketId = ticketResponse.Id;
 
             var userId = SeedData.ExampleUser.Id;
-
-            // Required to satisfy eventual consistency on projections.
-            await AddEventualConsistencyDelayAsync();
 
             var route = $"api/v2/{GetUserTicket.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
@@ -70,7 +68,31 @@
             var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
             reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString());
 
-            return await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+
+            await AddEventualConsistencyDelayAsync();
+
+            return response;
+        }
+
+        private async Task<Guid> ScheduleNewShowtimeAsync()
+        {
+            var url = $"api/v2/{ScheduleShowtime.Route}";
+
+            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            var request = new ScheduleShowtimeRequest(
+                Constants.Auditorium.Id,
+                Constants.Movie.Id,
+                sessionDateOnUtc);
+
+            var content = StringContentHelpers.FromModelAsJson(request);
+
+            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+
+            await AddEventualConsistencyDelayAsync();
+
+            return response;
         }
     }
 }

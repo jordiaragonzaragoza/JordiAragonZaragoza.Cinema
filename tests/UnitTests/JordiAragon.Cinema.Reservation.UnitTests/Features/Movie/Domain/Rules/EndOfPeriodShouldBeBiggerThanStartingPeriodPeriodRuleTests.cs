@@ -4,7 +4,7 @@
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Rules;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
 
     public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRuleTests

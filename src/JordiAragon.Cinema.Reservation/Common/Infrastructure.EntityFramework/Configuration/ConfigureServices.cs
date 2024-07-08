@@ -1,11 +1,10 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
-    using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Outbox;
+    using JordiAragon.Cinema.Reservation.Common.Infrastructure.Outbox;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Quartz;
     using Volo.Abp.Guids;
 
@@ -15,50 +14,20 @@
         {
             serviceCollection.Configure<AbpSequentialGuidGeneratorOptions>(options =>
             {
-                // Recomended option to Generate Guids on SQL Server Databases.
-                options.DefaultSequentialGuidType = SequentialGuidType.SequentialAtEnd;
+                // Recomended option to Generate Guids on PostgreSQL Databases.
+                options.DefaultSequentialGuidType = SequentialGuidType.SequentialAsString;
             });
-
-            var azureSqlDatabaseOptionsWrite = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.BusinessModelSection, azureSqlDatabaseOptionsWrite);
-            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsWrite));
 
             serviceCollection.AddDbContext<ReservationBusinessModelContext>(optionsBuilder =>
             {
-                if (isDevelopment)
-                {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragonCinemaReservationBusinessModelStore")
-                                  .EnableSensitiveDataLogging()
-                                  .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
-
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("BusinessModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("BusinessModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
-                }
-                else
-                {
-                    optionsBuilder.UseSqlServer(azureSqlDatabaseOptionsWrite.BuildConnectionString());
-                }
             });
-
-            var azureSqlDatabaseOptionsRead = new AzureSqlDatabaseOptions();
-            configuration.Bind(AzureSqlDatabaseOptions.ReadModelSection, azureSqlDatabaseOptionsRead);
-            serviceCollection.AddSingleton(Options.Create(azureSqlDatabaseOptionsRead));
 
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
-                if (isDevelopment)
-                {
-                    /*optionsBuilder.UseInMemoryDatabase("JordiAragonCinemaReservationReadModelStore")
-                                  .EnableSensitiveDataLogging()
-                                  .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));*/
-
-                    optionsBuilder.UseSqlServer(configuration.GetConnectionString("ReadModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("ReadModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
-                }
-                else
-                {
-                    optionsBuilder.UseSqlServer(azureSqlDatabaseOptionsRead.BuildConnectionString());
-                }
 
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });

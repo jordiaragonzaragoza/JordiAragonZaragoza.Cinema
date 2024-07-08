@@ -45,6 +45,9 @@
             return auditorium;
         }
 
+        public void Remove()
+            => this.Apply(new AuditoriumRemovedEvent(this.Id));
+
         public void AddShowtime(ShowtimeId showtimeId)
             => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
 
@@ -57,6 +60,9 @@
             {
                 case AuditoriumCreatedEvent @event:
                     this.Applier(@event);
+                    break;
+
+                case AuditoriumRemovedEvent:
                     break;
 
                 case ShowtimeAddedEvent @event:

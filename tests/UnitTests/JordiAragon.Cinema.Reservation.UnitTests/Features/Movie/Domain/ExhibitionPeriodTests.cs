@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
-    using JordiAragon.Cinema.Reservation.UnitTests.TestUtils.Domain;
+    using JordiAragon.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragon.SharedKernel.Domain.Exceptions;
     using Xunit;
 

@@ -5,12 +5,12 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.Events;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragon.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Contracts.Repositories;
-    using MediatR;
 
-    public sealed class ShowtimeCanceledNotificationHandler : INotificationHandler<ShowtimeCanceledNotification>
+    public sealed class ShowtimeCanceledNotificationHandler : IEventNotificationHandler<ShowtimeCanceledNotification>
     {
         private readonly IRangeableRepository<TicketReadModel, Guid> ticketReadModelRepository;
         private readonly ISpecificationReadRepository<TicketReadModel, Guid> specificationRepository;
@@ -27,7 +27,7 @@
         {
             var @event = notification.Event;
 
-            var specification = new GetTicketsByShowtimeIdSpec(@event.ShowtimeId);
+            var specification = new GetTicketsByShowtimeIdSpec(@event.AggregateId);
             var existingTickets = await this.specificationRepository.ListAsync(specification, cancellationToken);
             if (existingTickets.Any())
             {

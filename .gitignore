@@ -378,3 +378,6 @@ containers/azuresqledge/secrets
 # Event Store DB
 containers/eventstore/data
 containers/eventstore/logs
+
+# Postgresql
+containers/postgres/data
