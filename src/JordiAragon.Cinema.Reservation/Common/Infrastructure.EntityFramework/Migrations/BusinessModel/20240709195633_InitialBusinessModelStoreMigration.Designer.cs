@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20240702162759_InitialBusinessModelStoreMigration")]
+    [Migration("20240709195633_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -36,10 +36,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Rows")
+                    b.Property<ushort?>("Rows")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SeatsPerRow")
+                    b.Property<ushort?>("SeatsPerRow")
                         .HasColumnType("integer");
 
                     b.Property<uint>("Version")
@@ -61,7 +61,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<TimeSpan>("Runtime")
+                    b.Property<TimeSpan?>("Runtime")
                         .HasColumnType("interval");
 
                     b.Property<string>("Title")

@@ -18,8 +18,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Rows = table.Column<int>(type: "integer", nullable: false),
-                    SeatsPerRow = table.Column<int>(type: "integer", nullable: false),
+                    Rows = table.Column<int>(type: "integer", nullable: true),
+                    SeatsPerRow = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
@@ -47,7 +47,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: true),
-                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: true),
                     StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),

@@ -18,10 +18,10 @@
         {
         }
 
-        // TODO: It belongs to the catalog bounded context.
+        // It belongs to the catalog bounded context but title is inmutable.
         public string Title { get; private set; }
 
-        public TimeSpan Runtime { get; private set; }
+        public Runtime Runtime { get; private set; }
 
         public ExhibitionPeriod ExhibitionPeriod { get; private set; }
 
@@ -30,7 +30,7 @@
         public static Movie Add(
             MovieId id,
             string title,
-            TimeSpan runtime,
+            Runtime runtime,
             ExhibitionPeriod exhibitionPeriod)
         {
             var movie = new Movie();
@@ -76,7 +76,7 @@
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.NullOrWhiteSpace(this.Title, nameof(this.Title));
-                Guard.Against.Default(this.Runtime, nameof(this.Runtime));
+                Guard.Against.Null(this.Runtime, nameof(this.Runtime));
                 Guard.Against.Null(this.ExhibitionPeriod, nameof(this.ExhibitionPeriod));
             }
             catch (Exception exception)
@@ -89,11 +89,11 @@
         {
             this.Id = MovieId.Create(@event.AggregateId);
             this.Title = @event.Title;
-            this.Runtime = @event.Runtime;
+            this.Runtime = Runtime.Create(@event.Runtime);
             this.ExhibitionPeriod = ExhibitionPeriod.Create(
                 StartingPeriod.Create(@event.StartingExhibitionPeriodOnUtc),
                 EndOfPeriod.Create(@event.EndOfExhibitionPeriodOnUtc),
-                @event.Runtime);
+                Runtime.Create(@event.Runtime));
         }
     }
 }

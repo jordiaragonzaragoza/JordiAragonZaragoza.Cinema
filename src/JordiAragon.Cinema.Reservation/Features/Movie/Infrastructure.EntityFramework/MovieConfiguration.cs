@@ -42,6 +42,11 @@
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => MovieId.Create(value));
 
+            builder.Property(movie => movie.Runtime)
+                .HasConversion(
+                    runtime => runtime.Value,
+                    value => Runtime.Create(value));
+
             builder.OwnsOne(movie => movie.ExhibitionPeriod, exhibitionBuilder =>
             {
                 exhibitionBuilder.Property(x => x.StartingPeriodOnUtc)

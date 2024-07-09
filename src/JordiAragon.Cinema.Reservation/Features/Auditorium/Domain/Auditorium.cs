@@ -24,9 +24,9 @@
         // TODO: It belongs to the cinema manager bounded context.
         public string Name { get; private set; }
 
-        public ushort Rows { get; private set; }
+        public Rows Rows { get; private set; }
 
-        public ushort SeatsPerRow { get; private set; }
+        public SeatsPerRow SeatsPerRow { get; private set; }
 
         public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
 
@@ -35,8 +35,8 @@
         public static Auditorium Create(
             AuditoriumId id,
             string name,
-            ushort rows,
-            ushort seatsPerRow)
+            Rows rows,
+            SeatsPerRow seatsPerRow)
         {
             var auditorium = new Auditorium();
 
@@ -81,8 +81,8 @@
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.NullOrWhiteSpace(this.Name, nameof(this.Name));
-                Guard.Against.NegativeOrZero(this.Rows, nameof(this.Rows));
-                Guard.Against.NegativeOrZero(this.SeatsPerRow, nameof(this.SeatsPerRow));
+                Guard.Against.Null(this.Rows, nameof(this.Rows));
+                Guard.Against.Null(this.SeatsPerRow, nameof(this.SeatsPerRow));
             }
             catch (Exception exception)
             {
@@ -108,8 +108,8 @@
         {
             this.Id = AuditoriumId.Create(@event.AggregateId);
             this.Name = @event.Name;
-            this.Rows = @event.Rows;
-            this.SeatsPerRow = @event.SeatsPerRow;
+            this.Rows = Rows.Create(@event.Rows);
+            this.SeatsPerRow = SeatsPerRow.Create(@event.SeatsPerRow);
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
         }
 

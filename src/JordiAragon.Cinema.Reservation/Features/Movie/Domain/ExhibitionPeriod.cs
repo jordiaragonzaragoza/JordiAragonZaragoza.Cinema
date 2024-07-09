@@ -1,6 +1,5 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Movie.Domain
 {
-    using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Movie.Domain.Rules;
@@ -8,11 +7,11 @@
 
     public sealed class ExhibitionPeriod : BaseValueObject
     {
-        private ExhibitionPeriod(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, TimeSpan runtime)
+        private ExhibitionPeriod(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {
             Guard.Against.Null(startingPeriod, nameof(startingPeriod));
             Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
-            Guard.Against.Default(runtime, nameof(runtime));
+            Guard.Against.Null(runtime, nameof(runtime));
 
             this.StartingPeriodOnUtc = startingPeriod;
             this.EndOfPeriodOnUtc = endOfPeriod;
@@ -29,7 +28,7 @@
 
         public EndOfPeriod EndOfPeriodOnUtc { get; init; }
 
-        public static ExhibitionPeriod Create(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, TimeSpan runtime)
+        public static ExhibitionPeriod Create(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {
             return new ExhibitionPeriod(startingPeriod, endOfPeriod, runtime);
         }

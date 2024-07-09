@@ -16,7 +16,7 @@
             var runtime = Constants.Movie.Runtime;
 
             var exhibitionPeriodValues = new object[] { null, exhibitionPeriod };
-            var runtimeValues = new object[] { default(TimeSpan), runtime };
+            var runtimeValues = new object[] { null, runtime };
 
             foreach (var exhibitionPeriodValue in exhibitionPeriodValues)
             {
@@ -37,7 +37,7 @@
         [MemberData(nameof(InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule))]
         public void ConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             ExhibitionPeriod exhibitionPeriod,
-            TimeSpan runtime)
+            Runtime runtime)
         {
             // Act
             Func<ExhibitionPeriodMustExceedOrEqualRuntimeRule> constructor = () => new ExhibitionPeriodMustExceedOrEqualRuntimeRule(exhibitionPeriod, runtime);
@@ -66,7 +66,7 @@
             // Arrange
             var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
             var endOfPeriod = EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2));
-            var runtime = TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28);
+            var runtime = Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28));
 
             var exhibitionPeriod = ExhibitionPeriod.Create(
                     startingPeriod,

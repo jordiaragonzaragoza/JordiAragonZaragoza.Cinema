@@ -63,6 +63,16 @@
             builder.Property(auditorium => auditorium.Id)
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => AuditoriumId.Create(value));
+
+            builder.Property(auditorium => auditorium.Rows)
+                .HasConversion(
+                    rows => rows.Value,
+                    value => Rows.Create(value));
+
+            builder.Property(auditorium => auditorium.SeatsPerRow)
+                .HasConversion(
+                    seatsPerRow => seatsPerRow.Value,
+                    value => SeatsPerRow.Create(value));
         }
     }
 }

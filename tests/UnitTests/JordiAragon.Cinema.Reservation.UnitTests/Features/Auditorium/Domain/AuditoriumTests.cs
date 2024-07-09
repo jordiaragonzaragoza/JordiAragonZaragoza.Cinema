@@ -16,13 +16,13 @@
         {
             var id = Constants.Auditorium.Id;
             string name = Constants.Auditorium.Name;
-            ushort rows = 10;
-            ushort seatsPerRow = 10;
+            var rows = Constants.Auditorium.Rows;
+            var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             var idValues = new object[] { null, id };
             var nameValues = new object[] { null, string.Empty, " ", name };
-            var rowsValues = new object[] { 0, rows };
-            var seatsPerRowValues = new object[] { 0, seatsPerRow };
+            var rowsValues = new object[] { null, rows };
+            var seatsPerRowValues = new object[] { null, seatsPerRow };
 
             foreach (var idValue in idValues)
             {
@@ -34,8 +34,8 @@
                         {
                             if (idValue != null && idValue.Equals(id) &&
                                 nameValue != null && nameValue.Equals(name) &&
-                                rowsValue.Equals(rows) &&
-                                seatsPerRowValue.Equals(seatsPerRow))
+                                rowsValue != null && rowsValue.Equals(rows) &&
+                                seatsPerRowValue != null && seatsPerRowValue.Equals(seatsPerRow))
                             {
                                 continue;
                             }
@@ -53,8 +53,8 @@
             // Arrange
             var id = Constants.Auditorium.Id;
             string name = Constants.Auditorium.Name;
-            ushort rows = Constants.Auditorium.Rows;
-            ushort seatsPerRow = Constants.Auditorium.SeatsPerRow;
+            var rows = Constants.Auditorium.Rows;
+            var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             // Act
             var auditorium = Auditorium.Create(id, name, rows, seatsPerRow);
@@ -80,8 +80,8 @@
         public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(
             AuditoriumId id,
             string name,
-            ushort rows,
-            ushort seatsPerRow)
+            Rows rows,
+            SeatsPerRow seatsPerRow)
         {
             // Act
             Func<Auditorium> auditorium = () => Auditorium.Create(id, name, rows, seatsPerRow);

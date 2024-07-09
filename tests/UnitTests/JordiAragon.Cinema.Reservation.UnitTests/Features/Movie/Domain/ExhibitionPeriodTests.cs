@@ -18,7 +18,7 @@
 
             var startingPeriodValues = new object[] { null, default(StartingPeriod), startingPeriod };
             var endOfPeriodValues = new object[] { null, default(EndOfPeriod), endOfPeriod };
-            var runtimeValues = new object[] { default(TimeSpan), runtime };
+            var runtimeValues = new object[] { null, runtime };
 
             foreach (var startingPeriodValue in startingPeriodValues)
             {
@@ -44,7 +44,7 @@
         public void CreateExhibitionPeriod_WhenHavingInvalidArguments_ShouldThrowException(
             StartingPeriod startingPeriod,
             EndOfPeriod endOfPeriod,
-            TimeSpan runtime)
+            Runtime runtime)
         {
             // Act
             Func<ExhibitionPeriod> exhibitionPeriod = () => ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);

@@ -19,7 +19,7 @@
 
             var idValues = new object[] { null, id };
             var titleValues = new object[] { null, string.Empty, " ", title };
-            var runtimeValues = new object[] { default(TimeSpan), runtime };
+            var runtimeValues = new object[] { null, runtime };
             var exhibitionPeriodValues = new object[] { null, exhibitionPeriod };
 
             foreach (var idValue in idValues)
@@ -80,7 +80,7 @@
         public void AddMovie_WhenHavingInvalidArguments_ShouldThrowException(
             MovieId id,
             string title,
-            TimeSpan runtime,
+            Runtime runtime,
             ExhibitionPeriod exhibitionPeriod)
         {
             // Act

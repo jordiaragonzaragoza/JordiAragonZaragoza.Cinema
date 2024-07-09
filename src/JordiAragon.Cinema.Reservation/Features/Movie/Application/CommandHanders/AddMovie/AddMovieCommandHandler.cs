@@ -20,16 +20,16 @@
 
         public override async Task<Result> Handle(AddMovieCommand command, CancellationToken cancellationToken)
         {
-            // TODO: There cannot be two movies with the same title, duration and viewing period.
+            // TODO: There cannot be two movies with the same title, runtime and exhibitionPeriod.
             // Check will be done via domain service.
             var newMovie = Movie.Add(
                 id: MovieId.Create(command.MovieId),
                 title: command.Title,
-                runtime: command.Runtime,
+                runtime: Runtime.Create(command.Runtime),
                 exhibitionPeriod: ExhibitionPeriod.Create(
                     StartingPeriod.Create(command.StartingPeriod),
                     EndOfPeriod.Create(command.EndOfPeriod),
-                    command.Runtime));
+                    Runtime.Create(command.Runtime)));
 
             await this.movieRepository.AddAsync(newMovie, cancellationToken);
 
