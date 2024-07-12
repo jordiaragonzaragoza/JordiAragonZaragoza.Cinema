@@ -106,50 +106,50 @@
         }
 
         [Fact]
-        public void AddShowtimeToMovie_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeAddedEvent()
+        public void AddActiveShowtimeToMovie_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeAddedEvent()
         {
             // Arrange.
             var movie = CreateMovieUtils.Create();
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            movie.AddShowtime(showtimeId);
+            movie.AddActiveShowtime(showtimeId);
 
             // Assert.
-            movie.Showtimes.Should()
+            movie.ActiveShowtimes.Should()
                           .Contain(showtimeId)
                           .And
                           .HaveCount(1);
 
             movie.Events.Should()
-                              .ContainSingle(x => x is ShowtimeAddedEvent)
-                              .Which.Should().BeOfType<ShowtimeAddedEvent>()
-                              .Which.Should().Match<ShowtimeAddedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeAddedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeAddedEvent>()
+                              .Which.Should().Match<ActiveShowtimeAddedEvent>(e =>
                                                                             e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
         [Fact]
-        public void RemoveShowtimeToMovie_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeRemovedEvent()
+        public void RemoveActiveShowtimeToMovie_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeRemovedEvent()
         {
             // Arrange.
             var movie = CreateMovieUtils.Create();
             var showtimeId = Constants.Showtime.Id;
-            movie.AddShowtime(showtimeId);
+            movie.AddActiveShowtime(showtimeId);
 
             // Act.
-            movie.RemoveShowtime(showtimeId);
+            movie.RemoveActiveShowtime(showtimeId);
 
             // Assert.
-            movie.Showtimes.Should()
+            movie.ActiveShowtimes.Should()
                           .NotContain(showtimeId)
                           .And
                           .HaveCount(0);
 
             movie.Events.Should()
-                              .ContainSingle(x => x is ShowtimeRemovedEvent)
-                              .Which.Should().BeOfType<ShowtimeRemovedEvent>()
-                              .Which.Should().Match<ShowtimeRemovedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeRemovedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeRemovedEvent>()
+                              .Which.Should().Match<ActiveShowtimeRemovedEvent>(e =>
                                                                             e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }

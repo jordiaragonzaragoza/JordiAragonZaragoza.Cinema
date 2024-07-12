@@ -17,9 +17,9 @@
 
         private static void ConfigureMoviesShowtimeIdsTable(EntityTypeBuilder<Movie> builder)
         {
-            builder.OwnsMany(movie => movie.Showtimes, sib =>
+            builder.OwnsMany(movie => movie.ActiveShowtimes, sib =>
             {
-                sib.ToTable("MoviesShowtimeIds");
+                sib.ToTable("MoviesActiveShowtimeIds");
 
                 sib.WithOwner().HasForeignKey(nameof(MovieId));
 
@@ -28,7 +28,7 @@
                 .HasColumnName(nameof(ShowtimeId));
             });
 
-            builder.Metadata.FindNavigation(nameof(Movie.Showtimes))
+            builder.Metadata.FindNavigation(nameof(Movie.ActiveShowtimes))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 

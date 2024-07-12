@@ -106,6 +106,26 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuditoriumsActiveShowtimeIds",
+                columns: table => new
+                {
+                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditoriumsActiveShowtimeIds", x => new { x.AuditoriumId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_AuditoriumsActiveShowtimeIds_Auditoriums_AuditoriumId",
+                        column: x => x.AuditoriumId,
+                        principalTable: "Auditoriums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AuditoriumsSeats",
                 columns: table => new
                 {
@@ -126,27 +146,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuditoriumsShowtimeIds",
-                columns: table => new
-                {
-                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuditoriumsShowtimeIds", x => new { x.AuditoriumId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_AuditoriumsShowtimeIds_Auditoriums_AuditoriumId",
-                        column: x => x.AuditoriumId,
-                        principalTable: "Auditoriums",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MoviesShowtimeIds",
+                name: "MoviesActiveShowtimeIds",
                 columns: table => new
                 {
                     MovieId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -156,9 +156,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoviesShowtimeIds", x => new { x.MovieId, x.Id });
+                    table.PrimaryKey("PK_MoviesActiveShowtimeIds", x => new { x.MovieId, x.Id });
                     table.ForeignKey(
-                        name: "FK_MoviesShowtimeIds_Movies_MovieId",
+                        name: "FK_MoviesActiveShowtimeIds_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -228,13 +228,13 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 name: "__OutboxMessages");
 
             migrationBuilder.DropTable(
+                name: "AuditoriumsActiveShowtimeIds");
+
+            migrationBuilder.DropTable(
                 name: "AuditoriumsSeats");
 
             migrationBuilder.DropTable(
-                name: "AuditoriumsShowtimeIds");
-
-            migrationBuilder.DropTable(
-                name: "MoviesShowtimeIds");
+                name: "MoviesActiveShowtimeIds");
 
             migrationBuilder.DropTable(
                 name: "ShowtimeTicketSeatIds");

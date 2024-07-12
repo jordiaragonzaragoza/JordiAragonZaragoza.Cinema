@@ -11,7 +11,7 @@
 
     public sealed class Movie : BaseAggregateRoot<MovieId, Guid>
     {
-        private readonly List<ShowtimeId> showtimes = new();
+        private readonly List<ShowtimeId> activeShowtimes = new();
 
         // Required by EF.
         private Movie()
@@ -25,7 +25,7 @@
 
         public ExhibitionPeriod ExhibitionPeriod { get; private set; }
 
-        public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
+        public IEnumerable<ShowtimeId> ActiveShowtimes => this.activeShowtimes.AsReadOnly();
 
         public static Movie Add(
             MovieId id,
@@ -43,11 +43,11 @@
         public void Remove()
             => this.Apply(new MovieRemovedEvent(this.Id));
 
-        public void AddShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
+        public void AddActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
 
-        public void RemoveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeRemovedEvent(this.Id, showtimeId));
+        public void RemoveActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
 
         protected override void When(IDomainEvent domainEvent)
         {
@@ -60,12 +60,12 @@
                 case MovieRemovedEvent:
                     break;
 
-                case ShowtimeAddedEvent @event:
-                    this.showtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                case ActiveShowtimeAddedEvent @event:
+                    this.activeShowtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
                     break;
 
-                case ShowtimeRemovedEvent @event:
-                    this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                case ActiveShowtimeRemovedEvent @event:
+                    this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
                     break;
             }
         }

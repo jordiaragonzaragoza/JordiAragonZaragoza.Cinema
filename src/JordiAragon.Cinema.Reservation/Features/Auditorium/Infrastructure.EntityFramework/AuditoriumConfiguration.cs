@@ -19,9 +19,9 @@
 
         private static void ConfigureAuditoriumsShowtimeIdsTable(EntityTypeBuilder<Auditorium> builder)
         {
-            builder.OwnsMany(auditorium => auditorium.Showtimes, sib =>
+            builder.OwnsMany(auditorium => auditorium.ActiveShowtimes, sib =>
             {
-                sib.ToTable("AuditoriumsShowtimeIds");
+                sib.ToTable("AuditoriumsActiveShowtimeIds");
 
                 sib.WithOwner().HasForeignKey(nameof(AuditoriumId));
 
@@ -30,7 +30,7 @@
                 .HasColumnName(nameof(ShowtimeId));
             });
 
-            builder.Metadata.FindNavigation(nameof(Auditorium.Showtimes))
+            builder.Metadata.FindNavigation(nameof(Auditorium.ActiveShowtimes))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 

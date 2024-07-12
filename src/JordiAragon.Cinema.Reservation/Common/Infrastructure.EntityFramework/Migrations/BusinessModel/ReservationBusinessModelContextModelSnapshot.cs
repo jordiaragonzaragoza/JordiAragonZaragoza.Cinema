@@ -175,7 +175,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium", b =>
                 {
-                    b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
+                    b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "ActiveShowtimes", b1 =>
                         {
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uuid");
@@ -192,7 +192,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                             b1.HasKey("AuditoriumId", "Id");
 
-                            b1.ToTable("AuditoriumsShowtimeIds", (string)null);
+                            b1.ToTable("AuditoriumsActiveShowtimeIds", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AuditoriumId");
@@ -223,9 +223,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                                 .HasForeignKey("AuditoriumId");
                         });
 
-                    b.Navigation("Seats");
+                    b.Navigation("ActiveShowtimes");
 
-                    b.Navigation("Showtimes");
+                    b.Navigation("Seats");
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Movie.Domain.Movie", b =>
@@ -251,7 +251,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                                 .HasForeignKey("MovieId");
                         });
 
-                    b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "Showtimes", b1 =>
+                    b.OwnsMany("JordiAragon.Cinema.Reservation.Showtime.Domain.ShowtimeId", "ActiveShowtimes", b1 =>
                         {
                             b1.Property<Guid>("MovieId")
                                 .HasColumnType("uuid");
@@ -268,16 +268,16 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                             b1.HasKey("MovieId", "Id");
 
-                            b1.ToTable("MoviesShowtimeIds", (string)null);
+                            b1.ToTable("MoviesActiveShowtimeIds", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MovieId");
                         });
 
+                    b.Navigation("ActiveShowtimes");
+
                     b.Navigation("ExhibitionPeriod")
                         .IsRequired();
-
-                    b.Navigation("Showtimes");
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Domain.Showtime", b =>

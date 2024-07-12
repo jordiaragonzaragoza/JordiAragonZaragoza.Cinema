@@ -13,7 +13,7 @@
 
     public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
-        private readonly List<ShowtimeId> showtimes = new();
+        private readonly List<ShowtimeId> activeShowtimes = new();
         private List<Seat> seats;
 
         // Required by EF
@@ -28,7 +28,7 @@
 
         public SeatsPerRow SeatsPerRow { get; private set; }
 
-        public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
+        public IEnumerable<ShowtimeId> ActiveShowtimes => this.activeShowtimes.AsReadOnly();
 
         public IEnumerable<Seat> Seats => this.seats.AsReadOnly();
 
@@ -48,11 +48,11 @@
         public void Remove()
             => this.Apply(new AuditoriumRemovedEvent(this.Id));
 
-        public void AddShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
+        public void AddActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
 
-        public void RemoveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeRemovedEvent(this.Id, showtimeId));
+        public void RemoveActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
 
         protected override void When(IDomainEvent domainEvent)
         {
@@ -65,11 +65,11 @@
                 case AuditoriumRemovedEvent:
                     break;
 
-                case ShowtimeAddedEvent @event:
-                    this.showtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                case ActiveShowtimeAddedEvent @event:
+                    this.activeShowtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
                     break;
 
-                case ShowtimeRemovedEvent @event:
+                case ActiveShowtimeRemovedEvent @event:
                     this.Applier(@event);
                     break;
             }
@@ -113,9 +113,9 @@
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
         }
 
-        private void Applier(ShowtimeRemovedEvent @event)
+        private void Applier(ActiveShowtimeRemovedEvent @event)
         {
-            var isRemoved = this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+            var isRemoved = this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
             if (!isRemoved)
             {
                 throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());

@@ -106,64 +106,64 @@
         }
 
         [Fact]
-        public void AddShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeAddedEvent()
+        public void AddActiveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeAddedEvent()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            auditorium.AddShowtime(showtimeId);
+            auditorium.AddActiveShowtime(showtimeId);
 
             // Assert.
-            auditorium.Showtimes.Should()
+            auditorium.ActiveShowtimes.Should()
                           .Contain(showtimeId)
                           .And
                           .HaveCount(1);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ShowtimeAddedEvent)
-                              .Which.Should().BeOfType<ShowtimeAddedEvent>()
-                              .Which.Should().Match<ShowtimeAddedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeAddedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeAddedEvent>()
+                              .Which.Should().Match<ActiveShowtimeAddedEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
         [Fact]
-        public void AddShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
+        public void AddActiveShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             ShowtimeId showtimeId = null;
 
             // Act.
-            Action addShowtime = () => auditorium.AddShowtime(showtimeId);
+            Action addShowtime = () => auditorium.AddActiveShowtime(showtimeId);
 
             // Assert.
             addShowtime.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
-        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeRemovedEvent()
+        public void RemoveActiveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeRemovedEvent()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             var showtimeId = Constants.Showtime.Id;
-            auditorium.AddShowtime(showtimeId);
+            auditorium.AddActiveShowtime(showtimeId);
 
             // Act.
-            auditorium.RemoveShowtime(showtimeId);
+            auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
-            auditorium.Showtimes.Should()
+            auditorium.ActiveShowtimes.Should()
                           .NotContain(showtimeId)
                           .And
                           .HaveCount(0);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ShowtimeRemovedEvent)
-                              .Which.Should().BeOfType<ShowtimeRemovedEvent>()
-                              .Which.Should().Match<ShowtimeRemovedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeRemovedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeRemovedEvent>()
+                              .Which.Should().Match<ActiveShowtimeRemovedEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
@@ -176,7 +176,7 @@
             ShowtimeId showtimeId = null;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<ArgumentNullException>();
@@ -190,7 +190,7 @@
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<NotFoundException>();
