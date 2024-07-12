@@ -13,6 +13,36 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "__IdempotentConsumers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ConsumerFullName = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK___IdempotentConsumers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "__OutboxMessages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateOccurredOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: true),
+                    Content = table.Column<string>(type: "text", nullable: true),
+                    DateProcessedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK___OutboxMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Auditoriums",
                 columns: table => new
                 {
@@ -26,19 +56,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auditoriums", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdempotentConsumers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ConsumerFullName = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdempotentConsumers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,23 +73,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OutboxMessages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateOccurredOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: true),
-                    Content = table.Column<string>(type: "text", nullable: true),
-                    DateProcessedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Error = table.Column<string>(type: "text", nullable: true),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OutboxMessages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,19 +222,19 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "__IdempotentConsumers");
+
+            migrationBuilder.DropTable(
+                name: "__OutboxMessages");
+
+            migrationBuilder.DropTable(
                 name: "AuditoriumsSeats");
 
             migrationBuilder.DropTable(
                 name: "AuditoriumsShowtimeIds");
 
             migrationBuilder.DropTable(
-                name: "IdempotentConsumers");
-
-            migrationBuilder.DropTable(
                 name: "MoviesShowtimeIds");
-
-            migrationBuilder.DropTable(
-                name: "OutboxMessages");
 
             migrationBuilder.DropTable(
                 name: "ShowtimeTicketSeatIds");

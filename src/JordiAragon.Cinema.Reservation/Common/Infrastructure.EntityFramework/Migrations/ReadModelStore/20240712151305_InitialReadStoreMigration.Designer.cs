@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20240622121718_InitialReadStoreMigration")]
+    [Migration("20240712151305_InitialReadStoreMigration")]
     partial class InitialReadStoreMigration
     {
         /// <inheritdoc />
@@ -129,7 +129,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("Checkpoints");
+                    b.ToTable("__Checkpoints", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>

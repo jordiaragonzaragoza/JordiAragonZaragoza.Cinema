@@ -12,6 +12,19 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "__Checkpoints",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Position = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK___Checkpoints", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AvailableSeats",
                 columns: table => new
                 {
@@ -26,19 +39,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AvailableSeats", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Checkpoints",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Position = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Checkpoints", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,10 +106,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AvailableSeats");
+                name: "__Checkpoints");
 
             migrationBuilder.DropTable(
-                name: "Checkpoints");
+                name: "AvailableSeats");
 
             migrationBuilder.DropTable(
                 name: "Showtimes");

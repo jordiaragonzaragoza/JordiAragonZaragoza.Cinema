@@ -126,7 +126,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("Checkpoints");
+                    b.ToTable("__Checkpoints", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>

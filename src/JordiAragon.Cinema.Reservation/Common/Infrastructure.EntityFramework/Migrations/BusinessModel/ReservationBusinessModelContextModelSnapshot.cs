@@ -139,7 +139,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdempotentConsumers");
+                    b.ToTable("__IdempotentConsumers", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.Outbox.OutboxMessage", b =>
@@ -170,7 +170,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessages");
+                    b.ToTable("__OutboxMessages", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium", b =>

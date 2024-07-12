@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20240709195633_InitialBusinessModelStoreMigration")]
+    [Migration("20240712150903_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -142,7 +142,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdempotentConsumers");
+                    b.ToTable("__IdempotentConsumers", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.SharedKernel.Infrastructure.Outbox.OutboxMessage", b =>
@@ -173,7 +173,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessages");
+                    b.ToTable("__OutboxMessages", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Auditorium.Domain.Auditorium", b =>
