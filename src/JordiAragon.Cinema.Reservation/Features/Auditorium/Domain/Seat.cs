@@ -23,9 +23,9 @@
         {
         }
 
-        public short Row { get; private set; }
+        public short Row { get; private set; } // TODO: Use a value object.
 
-        public short SeatNumber { get; private set; }
+        public short SeatNumber { get; private set; } // TODO: Use a value object.
 
         internal static Seat Create(
             SeatId seatId,

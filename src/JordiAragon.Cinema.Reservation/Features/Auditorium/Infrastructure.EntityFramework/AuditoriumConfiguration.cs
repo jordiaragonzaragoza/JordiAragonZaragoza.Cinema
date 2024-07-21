@@ -31,7 +31,7 @@
             });
 
             builder.Metadata.FindNavigation(nameof(Auditorium.ActiveShowtimes))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private static void ConfigureAuditoriumsSeatsTable(EntityTypeBuilder<Auditorium> builder)
@@ -51,7 +51,7 @@
             });
 
             builder.Metadata.FindNavigation(nameof(Auditorium.Seats))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private void ConfigureAuditoriumsTable(EntityTypeBuilder<Auditorium> builder)

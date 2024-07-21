@@ -2,6 +2,6 @@
 {
     public static class ShowtimeConstants
     {
-        public static readonly string CachePrefix = typeof(ShowtimeConstants).FullName;
+        public static readonly string CachePrefix = typeof(ShowtimeConstants).FullName!;
     }
 }

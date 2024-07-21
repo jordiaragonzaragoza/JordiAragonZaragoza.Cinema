@@ -19,11 +19,11 @@
         }
 
         // It belongs to the catalog bounded context but title is inmutable.
-        public string Title { get; private set; }
+        public string Title { get; private set; } = string.Empty;
 
-        public Runtime Runtime { get; private set; }
+        public Runtime Runtime { get; private set; } = default!;
 
-        public ExhibitionPeriod ExhibitionPeriod { get; private set; }
+        public ExhibitionPeriod ExhibitionPeriod { get; private set; } = default!;
 
         public IEnumerable<ShowtimeId> ActiveShowtimes => this.activeShowtimes.AsReadOnly();
 

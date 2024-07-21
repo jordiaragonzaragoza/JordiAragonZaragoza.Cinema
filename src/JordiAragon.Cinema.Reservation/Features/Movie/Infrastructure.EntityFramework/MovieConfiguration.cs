@@ -29,7 +29,7 @@
             });
 
             builder.Metadata.FindNavigation(nameof(Movie.ActiveShowtimes))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private void ConfigureMoviesTable(EntityTypeBuilder<Movie> builder)

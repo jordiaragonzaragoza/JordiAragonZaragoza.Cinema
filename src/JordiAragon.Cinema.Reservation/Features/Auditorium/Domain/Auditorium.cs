@@ -14,7 +14,7 @@
     public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> activeShowtimes = new();
-        private List<Seat> seats;
+        private List<Seat> seats = new();
 
         // Required by EF
         private Auditorium()
@@ -22,11 +22,11 @@
         }
 
         // TODO: It belongs to the cinema manager bounded context.
-        public string Name { get; private set; }
+        public string Name { get; private set; } = string.Empty;
 
-        public Rows Rows { get; private set; }
+        public Rows Rows { get; private set; } = default!;
 
-        public SeatsPerRow SeatsPerRow { get; private set; }
+        public SeatsPerRow SeatsPerRow { get; private set; } = default!;
 
         public IEnumerable<ShowtimeId> ActiveShowtimes => this.activeShowtimes.AsReadOnly();
 

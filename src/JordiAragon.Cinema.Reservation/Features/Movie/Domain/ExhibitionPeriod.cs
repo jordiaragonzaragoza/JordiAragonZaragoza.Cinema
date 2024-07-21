@@ -24,9 +24,9 @@
         {
         }
 
-        public StartingPeriod StartingPeriodOnUtc { get; init; }
+        public StartingPeriod StartingPeriodOnUtc { get; init; } = default!;
 
-        public EndOfPeriod EndOfPeriodOnUtc { get; init; }
+        public EndOfPeriod EndOfPeriodOnUtc { get; init; } = default!;
 
         public static ExhibitionPeriod Create(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {

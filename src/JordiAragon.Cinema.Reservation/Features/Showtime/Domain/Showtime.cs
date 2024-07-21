@@ -24,11 +24,11 @@
         {
         }
 
-        public MovieId MovieId { get; private set; }
+        public MovieId MovieId { get; private set; } = default!;
 
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 
-        public AuditoriumId AuditoriumId { get; private set; }
+        public AuditoriumId AuditoriumId { get; private set; } = default!;
 
         public bool IsEnded { get; private set; } // TODO: Review. Probably this property is not required.
 

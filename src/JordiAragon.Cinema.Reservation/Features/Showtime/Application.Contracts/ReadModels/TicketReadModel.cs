@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
 
@@ -18,15 +19,15 @@
             bool isPurchased,
             DateTimeOffset createdTimeOnUtc)
         {
-            this.Id = id;
-            this.UserId = userId;
-            this.ShowtimeId = showtimeId;
-            this.SessionDateOnUtc = sessionDateOnUtc;
-            this.AuditoriumName = auditoriumName;
-            this.MovieTitle = movieTitle;
-            this.Seats = seats;
+            this.Id = Guard.Against.Default(id, nameof(id));
+            this.UserId = Guard.Against.Default(userId, nameof(userId));
+            this.ShowtimeId = Guard.Against.Default(showtimeId, nameof(showtimeId));
+            this.SessionDateOnUtc = Guard.Against.Default(sessionDateOnUtc, nameof(sessionDateOnUtc));
+            this.AuditoriumName = Guard.Against.NullOrWhiteSpace(auditoriumName, nameof(auditoriumName));
+            this.MovieTitle = Guard.Against.NullOrWhiteSpace(movieTitle, nameof(movieTitle));
+            this.Seats = Guard.Against.NullOrEmpty(seats, nameof(seats));
             this.IsPurchased = isPurchased;
-            this.CreatedTimeOnUtc = createdTimeOnUtc;
+            this.CreatedTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
         }
 
         // Required by EF.
@@ -42,11 +43,11 @@
 
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 
-        public string AuditoriumName { get; private set; }
+        public string AuditoriumName { get; private set; } = string.Empty;
 
-        public string MovieTitle { get; private set; }
+        public string MovieTitle { get; private set; } = string.Empty;
 
-        public IEnumerable<SeatReadModel> Seats { get; private set; }
+        public IEnumerable<SeatReadModel> Seats { get; private set; } = new List<SeatReadModel>();
 
         public bool IsPurchased { get; set; }
 

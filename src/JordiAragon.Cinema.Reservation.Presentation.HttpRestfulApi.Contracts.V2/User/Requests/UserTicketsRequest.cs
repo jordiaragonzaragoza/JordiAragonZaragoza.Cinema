@@ -1,5 +1,4 @@
-﻿#nullable enable
-namespace JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Requests
+﻿namespace JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Requests
 {
     using System;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts;

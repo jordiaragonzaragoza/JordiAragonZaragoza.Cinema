@@ -90,9 +90,9 @@
 
             foreach (var dbSetProperty in dbSets)
             {
-                var dbSet = (IEnumerable<object>)dbSetProperty.GetValue(context);
+                var dbSet = dbSetProperty.GetValue(context) as IEnumerable<object>;
 
-                if (dbSet.Any())
+                if (dbSet != null && dbSet.Any())
                 {
                     return true;
                 }
