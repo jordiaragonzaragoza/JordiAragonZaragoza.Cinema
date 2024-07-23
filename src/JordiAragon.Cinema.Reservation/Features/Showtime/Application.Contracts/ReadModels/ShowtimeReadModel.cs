@@ -35,12 +35,12 @@
 
         public Guid MovieId { get; private set; }
 
-        public string MovieTitle { get; private set; } = string.Empty;
+        public string MovieTitle { get; private set; } = default!;
 
         public TimeSpan MovieRuntime { get; private set; }
 
         public Guid AuditoriumId { get; private set; }
 
-        public string AuditoriumName { get; private set; } = string.Empty;
+        public string AuditoriumName { get; private set; } = default!;
     }
 }

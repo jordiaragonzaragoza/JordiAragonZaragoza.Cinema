@@ -9,8 +9,8 @@
         public AvailableSeatReadModel(
             Guid id,
             Guid seatId,
-            short row,
-            short seatNumber,
+            ushort row,
+            ushort seatNumber,
             Guid showtimeId,
             Guid auditoriumId,
             string auditoriumName)
@@ -33,14 +33,14 @@
 
         public Guid SeatId { get; private set; }
 
-        public short Row { get; private set; } // TODO: Use ushort
+        public ushort Row { get; private set; }
 
-        public short SeatNumber { get; private set; } // TODO: Use ushort
+        public ushort SeatNumber { get; private set; }
 
         public Guid ShowtimeId { get; private set; }
 
         public Guid AuditoriumId { get; private set; }
 
-        public string AuditoriumName { get; private set; } = string.Empty;
+        public string AuditoriumName { get; private set; } = default!;
     }
 }

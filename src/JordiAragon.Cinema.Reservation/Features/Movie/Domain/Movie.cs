@@ -19,7 +19,7 @@
         }
 
         // It belongs to the catalog bounded context but title is inmutable.
-        public string Title { get; private set; } = string.Empty;
+        public string Title { get; private set; } = default!;
 
         public Runtime Runtime { get; private set; } = default!;
 

@@ -43,9 +43,9 @@
 
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 
-        public string AuditoriumName { get; private set; } = string.Empty;
+        public string AuditoriumName { get; private set; } = default!;
 
-        public string MovieTitle { get; private set; } = string.Empty;
+        public string MovieTitle { get; private set; } = default!;
 
         public IEnumerable<SeatReadModel> Seats { get; private set; } = new List<SeatReadModel>();
 

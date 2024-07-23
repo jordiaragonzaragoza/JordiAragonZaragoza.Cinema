@@ -48,6 +48,16 @@
                 .HasColumnName(nameof(Seat.Id))
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => SeatId.Create(value));
+
+                sb.Property(seat => seat.Row)
+                .HasConversion(
+                    row => row.Value,
+                    value => Row.Create(value));
+
+                sb.Property(seat => seat.SeatNumber)
+                .HasConversion(
+                    seatNumber => seatNumber.Value,
+                    value => SeatNumber.Create(value));
             });
 
             builder.Metadata.FindNavigation(nameof(Auditorium.Seats))

@@ -10,7 +10,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
 
         public LogEventLevel MinimumLevel { get; set; }
 
-        public string Host { get; set; } = string.Empty;
+        public string Host { get; set; } = default!;
 
         public int Port { get; set; }
     }

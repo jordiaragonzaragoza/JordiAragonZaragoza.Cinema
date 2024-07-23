@@ -8,8 +8,8 @@
     {
         public SeatReadModel(
             Guid id,
-            short row,
-            short seatNumber)
+            ushort row,
+            ushort seatNumber)
         {
             this.Id = Guard.Against.Default(id, nameof(id));
             this.Row = Guard.Against.Default(row, nameof(row));
@@ -23,8 +23,8 @@
 
         public Guid Id { get; private set; }
 
-        public short Row { get; private set; } // TODO: Use ushort
+        public ushort Row { get; private set; }
 
-        public short SeatNumber { get; private set; } // TODO: Use ushort
+        public ushort SeatNumber { get; private set; }
     }
 }

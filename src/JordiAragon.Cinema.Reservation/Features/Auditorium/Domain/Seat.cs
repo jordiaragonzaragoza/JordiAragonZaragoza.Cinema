@@ -7,8 +7,8 @@
     {
         private Seat(
             SeatId id,
-            short row,
-            short seatNumber)
+            Row row,
+            SeatNumber seatNumber)
             : base(id)
         {
             Guard.Against.NegativeOrZero(row, nameof(row));
@@ -23,14 +23,14 @@
         {
         }
 
-        public short Row { get; private set; } // TODO: Use a value object.
+        public Row Row { get; private set; } = default!;
 
-        public short SeatNumber { get; private set; } // TODO: Use a value object.
+        public SeatNumber SeatNumber { get; private set; } = default!;
 
         internal static Seat Create(
             SeatId seatId,
-            short row,
-            short seatNumber)
+            Row row,
+            SeatNumber seatNumber)
         {
             return new Seat(seatId, row, seatNumber);
         }

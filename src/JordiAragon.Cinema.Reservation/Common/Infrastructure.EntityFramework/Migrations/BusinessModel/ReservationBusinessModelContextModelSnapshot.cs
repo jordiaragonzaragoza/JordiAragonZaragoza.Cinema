@@ -31,12 +31,13 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<ushort?>("Rows")
+                    b.Property<ushort>("Rows")
                         .HasColumnType("integer");
 
-                    b.Property<ushort?>("SeatsPerRow")
+                    b.Property<ushort>("SeatsPerRow")
                         .HasColumnType("integer");
 
                     b.Property<uint>("Version")
@@ -58,10 +59,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<TimeSpan?>("Runtime")
+                    b.Property<TimeSpan>("Runtime")
                         .HasColumnType("interval");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<uint>("Version")
@@ -80,7 +82,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AuditoriumId")
+                    b.Property<Guid>("AuditoriumId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -89,7 +91,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     b.Property<bool>("IsEnded")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("MovieId")
+                    b.Property<Guid>("MovieId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("SessionDateOnUtc")
@@ -207,11 +209,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<short>("Row")
-                                .HasColumnType("smallint");
+                            b1.Property<ushort>("Row")
+                                .HasColumnType("integer");
 
-                            b1.Property<short>("SeatNumber")
-                                .HasColumnType("smallint");
+                            b1.Property<ushort>("SeatNumber")
+                                .HasColumnType("integer");
 
                             b1.HasKey("Id", "AuditoriumId");
 
@@ -235,11 +237,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<Guid>("MovieId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset?>("EndOfPeriodOnUtc")
+                            b1.Property<DateTimeOffset>("EndOfPeriodOnUtc")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("EndOfExhibitionPeriodOnUtc");
 
-                            b1.Property<DateTimeOffset?>("StartingPeriodOnUtc")
+                            b1.Property<DateTimeOffset>("StartingPeriodOnUtc")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("StartingExhibitionPeriodOnUtc");
 
@@ -297,7 +299,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("boolean");
 
-                            b1.Property<Guid?>("UserId")
+                            b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid")
                                 .HasColumnName("UserId");
 

@@ -30,11 +30,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SeatId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Row = table.Column<short>(type: "smallint", nullable: false),
-                    SeatNumber = table.Column<short>(type: "smallint", nullable: false),
+                    Row = table.Column<int>(type: "integer", nullable: false),
+                    SeatNumber = table.Column<int>(type: "integer", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: true)
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,10 +48,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     MovieId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MovieTitle = table.Column<string>(type: "text", nullable: true),
+                    MovieTitle = table.Column<string>(type: "text", nullable: false),
                     MovieRuntime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: true)
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,8 +66,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: true),
-                    MovieTitle = table.Column<string>(type: "text", nullable: true),
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false),
+                    MovieTitle = table.Column<string>(type: "text", nullable: false),
                     IsPurchased = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -82,8 +82,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TicketId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Row = table.Column<short>(type: "smallint", nullable: false),
-                    SeatNumber = table.Column<short>(type: "smallint", nullable: false)
+                    Row = table.Column<int>(type: "integer", nullable: false),
+                    SeatNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

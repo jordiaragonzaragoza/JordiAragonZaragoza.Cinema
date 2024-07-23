@@ -11,15 +11,15 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
 
         public LogEventLevel MinimumLevel { get; set; }
 
-        public string StorageTableName { get; set; } = string.Empty;
+        public string StorageTableName { get; set; } = default!;
 
-        public string DefaultEndpointsProtocol { get; set; } = string.Empty;
+        public string DefaultEndpointsProtocol { get; set; } = default!;
 
-        public string AccountName { get; set; } = string.Empty;
+        public string AccountName { get; set; } = default!;
 
-        public string AccountKey { get; set; } = string.Empty;
+        public string AccountKey { get; set; } = default!;
 
-        public string EndpointSuffix { get; set; } = string.Empty;
+        public string EndpointSuffix { get; set; } = default!;
 
         public string BuildConnectionString()
         {

@@ -22,7 +22,7 @@
         }
 
         // TODO: It belongs to the cinema manager bounded context.
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; private set; } = default!;
 
         public Rows Rows { get; private set; } = default!;
 
@@ -93,11 +93,11 @@
         private static List<Seat> GenerateSeats(ushort rows, ushort seatsPerRow)
         {
             var generatedSeats = new List<Seat>();
-            for (short row = 1; row <= rows; row++)
+            for (ushort row = 1; row <= rows; row++)
             {
-                for (short seat = 1; seat <= seatsPerRow; seat++)
+                for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), row, seat));
+                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), Row.Create(row), SeatNumber.Create(seatNumber)));
                 }
             }
 

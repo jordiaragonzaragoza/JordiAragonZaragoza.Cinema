@@ -47,9 +47,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Rows = table.Column<int>(type: "integer", nullable: true),
-                    SeatsPerRow = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Rows = table.Column<int>(type: "integer", nullable: false),
+                    SeatsPerRow = table.Column<int>(type: "integer", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
@@ -63,10 +63,10 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: true),
-                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: true),
-                    StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    StartingExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    EndOfExhibitionPeriodOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
@@ -80,9 +80,9 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MovieId = table.Column<Guid>(type: "uuid", nullable: true),
+                    MovieId = table.Column<Guid>(type: "uuid", nullable: false),
                     SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: true),
+                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsEnded = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
@@ -131,8 +131,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Row = table.Column<short>(type: "smallint", nullable: false),
-                    SeatNumber = table.Column<short>(type: "smallint", nullable: false)
+                    Row = table.Column<int>(type: "integer", nullable: false),
+                    SeatNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,7 +171,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsPurchased = table.Column<bool>(type: "boolean", nullable: false)
                 },
