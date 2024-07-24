@@ -75,3 +75,10 @@ services:
         #- ./containers/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
     networks:
       - cinema-network
+
+  redis.cinema:
+    ports:
+        - 6379:6379
+    restart: always
+    networks:
+      - cinema-network
