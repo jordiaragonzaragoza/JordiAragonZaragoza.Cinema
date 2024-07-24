@@ -11,11 +11,8 @@
             SeatNumber seatNumber)
             : base(id)
         {
-            Guard.Against.NegativeOrZero(row, nameof(row));
-            Guard.Against.NegativeOrZero(seatNumber, nameof(seatNumber));
-
-            this.Row = row;
-            this.SeatNumber = seatNumber;
+            this.Row = Guard.Against.Default(row, nameof(row));
+            this.SeatNumber = Guard.Against.Default(seatNumber, nameof(seatNumber));
         }
 
         // Required by EF
