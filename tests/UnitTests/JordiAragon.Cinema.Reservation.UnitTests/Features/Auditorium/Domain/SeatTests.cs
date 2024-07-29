@@ -11,9 +11,9 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsCreateSeat()
         {
-            var argument1Values = new object[] { null, Constants.Seat.Id };
-            var argument2Values = new object[] { null, Constants.Seat.Row };
-            var argument3Values = new object[] { null, Constants.Seat.SeatNumber };
+            var argument1Values = new object[] { default!, Constants.Seat.Id };
+            var argument2Values = new object[] { default!, Constants.Seat.Row };
+            var argument3Values = new object[] { default!, Constants.Seat.SeatNumber };
 
             foreach (var arg1 in argument1Values)
             {
@@ -28,7 +28,7 @@
                             continue;
                         }
 
-                        yield return new object[] { arg1, arg2, arg3 };
+                        yield return new object[] { arg1!, arg2!, arg3! };
                     }
                 }
             }

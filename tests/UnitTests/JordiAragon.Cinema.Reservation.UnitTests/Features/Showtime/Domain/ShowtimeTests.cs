@@ -23,10 +23,10 @@
             var sessionDateOnUtc = Constants.Showtime.SessionDateOnUtc;
             var auditoriumId = Constants.Showtime.AuditoriumId;
 
-            var showtimeIdValues = new object[] { null, showtimeId };
-            var movieIdValues = new object[] { null, movieId };
+            var showtimeIdValues = new object[] { default!, showtimeId };
+            var movieIdValues = new object[] { default!, movieId };
             var sessionDateOnUtcValues = new object[] { default(DateTimeOffset), sessionDateOnUtc };
-            var auditoriumIdValues = new object[] { null, auditoriumId };
+            var auditoriumIdValues = new object[] { default!, auditoriumId };
 
             foreach (var showtimeIdValue in showtimeIdValues)
             {
@@ -38,13 +38,13 @@
                         {
                             if (showtimeIdValue != null && showtimeIdValue.Equals(showtimeId) &&
                                     movieIdValue != null && movieIdValue.Equals(movieId) &&
-                                    sessionDateOnUtcValue.Equals(sessionDateOnUtc) &&
+                                    sessionDateOnUtcValue != default && sessionDateOnUtcValue.Equals(sessionDateOnUtc) &&
                                     auditoriumIdValue != null && auditoriumIdValue.Equals(auditoriumId))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { showtimeIdValue, movieIdValue, sessionDateOnUtcValue, auditoriumIdValue };
+                            yield return new object[] { showtimeIdValue!, movieIdValue!, sessionDateOnUtcValue!, auditoriumIdValue! };
                         }
                     }
                 }
@@ -58,9 +58,9 @@
             var seatIds = new List<SeatId> { Constants.Seat.Id };
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var ticketIdValues = new object[] { null, ticketId };
-            var userIdValues = new object[] { null, userId };
-            var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
+            var ticketIdValues = new object[] { default!, ticketId };
+            var userIdValues = new object[] { default!, userId };
+            var seatIdsValues = new object[] { default!, new List<SeatId>(), seatIds };
             var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var ticketIdValue in ticketIdValues)
@@ -74,12 +74,12 @@
                             if (ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
                                 userIdValue != null && userIdValue.Equals(userId) &&
                                 seatIdsValue != null && seatIdsValue.Equals(seatIds) &&
-                                createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                                createdTimeOnUtcValue != default && createdTimeOnUtcValue.Equals(createdTimeOnUtc))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { ticketIdValue, userIdValue, seatIdsValue, createdTimeOnUtcValue };
+                            yield return new object[] { ticketIdValue!, userIdValue!, seatIdsValue!, createdTimeOnUtcValue! };
                         }
                     }
                 }
@@ -260,7 +260,7 @@
         public void PurchaseSeats_WhenHavingNullTicketId_ShouldThrowArgumentException()
         {
             // Arrange
-            TicketId ticketId = null;
+            TicketId ticketId = null!;
 
             var showtime = ScheduleShowtimeUtils.Schedule();
 
@@ -357,7 +357,7 @@
         public void ExpireReservedSeats_WhenHavingNullTicketId_ShouldThrowArgumentException()
         {
             // Arrange
-            TicketId ticketId = null;
+            TicketId ticketId = null!;
 
             var showtime = ScheduleShowtimeUtils.Schedule();
 

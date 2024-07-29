@@ -19,10 +19,10 @@
             var rows = Constants.Auditorium.Rows;
             var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
-            var idValues = new object[] { null, id };
-            var nameValues = new object[] { null, string.Empty, " ", name };
-            var rowsValues = new object[] { null, rows };
-            var seatsPerRowValues = new object[] { null, seatsPerRow };
+            var idValues = new object[] { default!, id };
+            var nameValues = new object[] { default!, string.Empty, " ", name };
+            var rowsValues = new object[] { default!, rows };
+            var seatsPerRowValues = new object[] { default!, seatsPerRow };
 
             foreach (var idValue in idValues)
             {
@@ -40,7 +40,7 @@
                                 continue;
                             }
 
-                            yield return new object[] { idValue, nameValue, rowsValue, seatsPerRowValue };
+                            yield return new object[] { idValue!, nameValue!, rowsValue!, seatsPerRowValue! };
                         }
                     }
                 }
@@ -134,7 +134,7 @@
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
-            ShowtimeId showtimeId = null;
+            ShowtimeId showtimeId = null!;
 
             // Act.
             Action addShowtime = () => auditorium.AddActiveShowtime(showtimeId);
@@ -173,7 +173,7 @@
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
-            ShowtimeId showtimeId = null;
+            ShowtimeId showtimeId = default!;
 
             // Act.
             Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);

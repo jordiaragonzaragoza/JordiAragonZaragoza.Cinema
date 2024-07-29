@@ -15,8 +15,8 @@
             var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
             var runtime = Constants.Movie.Runtime;
 
-            var exhibitionPeriodValues = new object[] { null, exhibitionPeriod };
-            var runtimeValues = new object[] { null, runtime };
+            var exhibitionPeriodValues = new object[] { default!, exhibitionPeriod };
+            var runtimeValues = new object[] { default!, runtime };
 
             foreach (var exhibitionPeriodValue in exhibitionPeriodValues)
             {
@@ -28,7 +28,7 @@
                         continue;
                     }
 
-                    yield return new object[] { exhibitionPeriodValue, runtimeValue };
+                    yield return new object[] { exhibitionPeriodValue!, runtimeValue! };
                 }
             }
         }

@@ -16,9 +16,9 @@
             var endOfPeriod = Constants.Movie.EndOfPeriod;
             var runtime = Constants.Movie.Runtime;
 
-            var startingPeriodValues = new object[] { null, default(StartingPeriod), startingPeriod };
-            var endOfPeriodValues = new object[] { null, default(EndOfPeriod), endOfPeriod };
-            var runtimeValues = new object[] { null, runtime };
+            var startingPeriodValues = new object[] { default!, startingPeriod };
+            var endOfPeriodValues = new object[] { default!, endOfPeriod };
+            var runtimeValues = new object[] { default!, runtime };
 
             foreach (var startingPeriodValue in startingPeriodValues)
             {
@@ -33,7 +33,7 @@
                             continue;
                         }
 
-                        yield return new object[] { startingPeriodValue, endOfPeriodValue, runtimeValue };
+                        yield return new object[] { startingPeriodValue!, endOfPeriodValue!, runtimeValue! };
                     }
                 }
             }
