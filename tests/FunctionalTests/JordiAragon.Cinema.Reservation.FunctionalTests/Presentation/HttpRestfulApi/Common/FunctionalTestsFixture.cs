@@ -34,16 +34,16 @@
             .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
-        private NpgsqlConnection businessModelStoreConnection;
-        private NpgsqlConnection readModelStoreConnection;
-        private string eventStoreDbConnectionString;
-        private CustomWebApplicationFactory<TProgram> customApplicationFactory;
-        private IServiceScopeFactory scopeFactory;
-        private Respawner businessModelStoreRespawner;
-        private Respawner readModelStoreRespawner;
+        private NpgsqlConnection businessModelStoreConnection = default!;
+        private NpgsqlConnection readModelStoreConnection = default!;
+        private string eventStoreDbConnectionString = default!;
+        private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;
+        private IServiceScopeFactory scopeFactory = default!;
+        private Respawner businessModelStoreRespawner = default!;
+        private Respawner readModelStoreRespawner = default!;
         private bool disposedValue;
 
-        public HttpClient HttpClient { get; private set; }
+        public HttpClient HttpClient { get; private set; } = default!;
 
         public async Task InitializeAsync()
         {
@@ -107,7 +107,7 @@
                     this.customApplicationFactory?.Dispose();
                 }
 
-                this.customApplicationFactory = null;
+                this.customApplicationFactory = null!;
                 this.disposedValue = true;
             }
         }
