@@ -40,7 +40,7 @@
             var route = $"api/v2/{GetUserTickets.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
-                (nameof(userId), userId.ToString()));
+                (nameof(userId), userId.ToString()!));
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<TicketResponse>>(pathAndQuery, this.OutputHelper);

@@ -56,13 +56,13 @@
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
             if (existingMovie is null)
             {
-                throw new NotFoundException(nameof(Movie), showtime.MovieId.ToString());
+                throw new NotFoundException(nameof(Movie), showtime.MovieId.ToString()!);
             }
 
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(showtime.AuditoriumId, cancellationToken);
             if (existingAuditorium is null)
             {
-                throw new NotFoundException(nameof(Auditorium), showtime.AuditoriumId.ToString());
+                throw new NotFoundException(nameof(Auditorium), showtime.AuditoriumId.ToString()!);
             }
 
             CheckRule(new NoReservationsAllowedAfterShowtimeEndedRule(showtime, existingMovie, currentDateTimeOnUtc));
@@ -87,7 +87,7 @@
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
             if (existingMovie is null)
             {
-                throw new NotFoundException(nameof(Movie), showtime.MovieId.ToString());
+                throw new NotFoundException(nameof(Movie), showtime.MovieId.ToString()!);
             }
 
             var rule = new NoReservationsAllowedAfterShowtimeEndedRule(showtime, existingMovie, currentDateTimeOnUtc);
