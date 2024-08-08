@@ -31,8 +31,8 @@
 
             await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
-            var movieId = SeedData.ExampleMovie.Id.ToString();
-            var auditoriumId = SeedData.ExampleAuditorium.Id.ToString();
+            var movieId = SeedData.ExampleMovie.Id.ToString()!;
+            var auditoriumId = SeedData.ExampleAuditorium.Id.ToString()!;
             var startTimeOnUtc = sessionDateOnUtc.ToString("O");
             var endTimeOnUtc = DateTimeOffset.UtcNow.AddYears(2).ToString("O");
 

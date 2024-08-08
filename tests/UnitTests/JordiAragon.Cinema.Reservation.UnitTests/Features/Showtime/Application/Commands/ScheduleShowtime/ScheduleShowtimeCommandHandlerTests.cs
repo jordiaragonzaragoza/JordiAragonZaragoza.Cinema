@@ -46,10 +46,10 @@
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
             var guidGenerator = Substitute.For<IIdGenerator>();
 
-            var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
-            var movieRepositoryValues = new object[] { null, movieRepository };
-            var showtimeRepositoryValues = new object[] { null, showtimeRepository };
-            var guidGeneratorValues = new object[] { null, guidGenerator };
+            var auditoriumRepositoryValues = new object[] { default!, auditoriumRepository };
+            var movieRepositoryValues = new object[] { default!, movieRepository };
+            var showtimeRepositoryValues = new object[] { default!, showtimeRepository };
+            var guidGeneratorValues = new object[] { default!, guidGenerator };
 
             foreach (var auditoriumRepositoryValue in auditoriumRepositoryValues)
             {
@@ -67,7 +67,7 @@
                                 continue;
                             }
 
-                            yield return new object[] { auditoriumRepositoryValue, movieRepositoryValue, showtimeRepositoryValue, guidGeneratorValue };
+                            yield return new object[] { auditoriumRepositoryValue!, movieRepositoryValue!, showtimeRepositoryValue!, guidGeneratorValue! };
                         }
                     }
                 }
@@ -122,8 +122,10 @@
             // Arrange
             var createShowtimeCommand = ScheduleShowtimeCommandUtils.CreateCommand();
 
+            Auditorium auditorium = null!;
+
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
-                .Returns((Auditorium)null);
+                .Returns(auditorium);
 
             // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
@@ -148,8 +150,10 @@
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
                 .Returns(existingAuditorium);
 
+            Movie movie = default!;
+
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
-                .Returns((Movie)null);
+                .Returns(movie);
 
             // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);

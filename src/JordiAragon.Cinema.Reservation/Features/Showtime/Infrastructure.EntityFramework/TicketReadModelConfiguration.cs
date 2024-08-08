@@ -29,7 +29,7 @@
             });
 
             builder.Metadata.FindNavigation(nameof(Ticket.Seats))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

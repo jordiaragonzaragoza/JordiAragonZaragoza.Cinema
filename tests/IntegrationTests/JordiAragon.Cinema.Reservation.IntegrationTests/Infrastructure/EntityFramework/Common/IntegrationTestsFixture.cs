@@ -26,15 +26,15 @@
             .WithName("postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
-        private NpgsqlConnection businessModelStoreConnection;
-        private Respawner businessModelStoreRespawner;
+        private NpgsqlConnection businessModelStoreConnection = default!;
+        private Respawner businessModelStoreRespawner = default!;
 
-        private NpgsqlConnection readModelStoreConnection;
-        private Respawner readModelStoreRespawner;
+        private NpgsqlConnection readModelStoreConnection = default!;
+        private Respawner readModelStoreRespawner = default!;
 
-        public ReservationBusinessModelContext BusinessModelContext { get; private set; }
+        public ReservationBusinessModelContext BusinessModelContext { get; private set; } = default!;
 
-        public ReservationReadModelContext ReadModelContext { get; private set; }
+        public ReservationReadModelContext ReadModelContext { get; private set; } = default!;
 
         public async Task InitializeAsync()
         {

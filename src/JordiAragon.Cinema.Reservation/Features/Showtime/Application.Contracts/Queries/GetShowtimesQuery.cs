@@ -7,9 +7,9 @@
 
     public sealed record class GetShowtimesQuery(
         Guid? AuditoriumId,
-        string AuditoriumName,
+        string? AuditoriumName,
         Guid? MovieId,
-        string MovieTitle,
+        string? MovieTitle,
         DateTimeOffset? StartTimeOnUtc,
         DateTimeOffset? EndTimeOnUtc,
         int PageNumber,

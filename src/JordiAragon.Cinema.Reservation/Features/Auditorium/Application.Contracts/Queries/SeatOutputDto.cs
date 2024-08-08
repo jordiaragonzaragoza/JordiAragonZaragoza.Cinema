@@ -2,5 +2,5 @@
 {
     using System;
 
-    public sealed record class SeatOutputDto(Guid Id, short Row, short SeatNumber);
+    public sealed record class SeatOutputDto(Guid Id, ushort Row, ushort SeatNumber);
 }

@@ -24,11 +24,11 @@
         {
         }
 
-        public MovieId MovieId { get; private set; }
+        public MovieId MovieId { get; private set; } = default!;
 
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 
-        public AuditoriumId AuditoriumId { get; private set; }
+        public AuditoriumId AuditoriumId { get; private set; } = default!;
 
         public bool IsEnded { get; private set; } // TODO: Review. Probably this property is not required.
 
@@ -51,7 +51,7 @@
             => this.Apply(new ShowtimeCanceledEvent(this.Id, this.AuditoriumId, this.MovieId));
 
         public void End()
-            => this.Apply(new ShowtimeEndedEvent(this.Id));
+            => this.Apply(new ShowtimeEndedEvent(this.Id, this.AuditoriumId, this.MovieId));
 
         public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {

@@ -19,9 +19,9 @@
 
         private static void ConfigureAuditoriumsShowtimeIdsTable(EntityTypeBuilder<Auditorium> builder)
         {
-            builder.OwnsMany(auditorium => auditorium.Showtimes, sib =>
+            builder.OwnsMany(auditorium => auditorium.ActiveShowtimes, sib =>
             {
-                sib.ToTable("AuditoriumsShowtimeIds");
+                sib.ToTable("AuditoriumsActiveShowtimeIds");
 
                 sib.WithOwner().HasForeignKey(nameof(AuditoriumId));
 
@@ -30,8 +30,8 @@
                 .HasColumnName(nameof(ShowtimeId));
             });
 
-            builder.Metadata.FindNavigation(nameof(Auditorium.Showtimes))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.Metadata.FindNavigation(nameof(Auditorium.ActiveShowtimes))
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private static void ConfigureAuditoriumsSeatsTable(EntityTypeBuilder<Auditorium> builder)
@@ -48,10 +48,20 @@
                 .HasColumnName(nameof(Seat.Id))
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => SeatId.Create(value));
+
+                sb.Property(seat => seat.Row)
+                .HasConversion(
+                    row => row.Value,
+                    value => Row.Create(value));
+
+                sb.Property(seat => seat.SeatNumber)
+                .HasConversion(
+                    seatNumber => seatNumber.Value,
+                    value => SeatNumber.Create(value));
             });
 
             builder.Metadata.FindNavigation(nameof(Auditorium.Seats))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private void ConfigureAuditoriumsTable(EntityTypeBuilder<Auditorium> builder)
@@ -63,6 +73,16 @@
             builder.Property(auditorium => auditorium.Id)
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => AuditoriumId.Create(value));
+
+            builder.Property(auditorium => auditorium.Rows)
+                .HasConversion(
+                    rows => rows.Value,
+                    value => Rows.Create(value));
+
+            builder.Property(auditorium => auditorium.SeatsPerRow)
+                .HasConversion(
+                    seatsPerRow => seatsPerRow.Value,
+                    value => SeatsPerRow.Create(value));
         }
     }
 }

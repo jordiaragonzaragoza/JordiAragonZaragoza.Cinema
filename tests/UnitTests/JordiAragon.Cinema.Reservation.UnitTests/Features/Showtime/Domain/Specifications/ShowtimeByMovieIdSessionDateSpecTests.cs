@@ -13,9 +13,9 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsFindShowtimeByMovieIdSessionDateSpec()
         {
-            yield return new object[] { null, default(DateTimeOffset) };
+            yield return new object[] { default!, default(DateTimeOffset) };
             yield return new object[] { Constants.Movie.Id, default(DateTimeOffset) };
-            yield return new object[] { null, DateTimeOffset.UtcNow };
+            yield return new object[] { default!, DateTimeOffset.UtcNow };
         }
 
         [Fact]

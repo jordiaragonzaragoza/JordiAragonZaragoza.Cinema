@@ -1,15 +1,14 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Movie.Domain.Rules
 {
-    using System;
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
 
     public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRule : IBusinessRule
     {
         private readonly ExhibitionPeriod exhibitionPeriod;
-        private readonly TimeSpan runtime;
+        private readonly Runtime runtime;
 
-        public ExhibitionPeriodMustExceedOrEqualRuntimeRule(ExhibitionPeriod exhibitionPeriod, TimeSpan runtime)
+        public ExhibitionPeriodMustExceedOrEqualRuntimeRule(ExhibitionPeriod exhibitionPeriod, Runtime runtime)
         {
             this.exhibitionPeriod = Guard.Against.Null(exhibitionPeriod, nameof(exhibitionPeriod));
             this.runtime = Guard.Against.Default(runtime, nameof(runtime));
@@ -19,7 +18,8 @@
 
         public bool IsBroken()
         {
-            if (this.exhibitionPeriod.EndOfPeriodOnUtc.Value - this.exhibitionPeriod.StartingPeriodOnUtc.Value >= this.runtime)
+            // TODO: Review check rule using implicit operators.
+            if (this.exhibitionPeriod.EndOfPeriodOnUtc.Value - this.exhibitionPeriod.StartingPeriodOnUtc.Value >= this.runtime.Value)
             {
                 return false;
             }
