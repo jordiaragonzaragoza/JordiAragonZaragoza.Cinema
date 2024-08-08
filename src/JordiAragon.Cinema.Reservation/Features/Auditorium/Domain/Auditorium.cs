@@ -13,8 +13,8 @@
 
     public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
     {
-        private readonly List<ShowtimeId> showtimes = new();
-        private List<Seat> seats;
+        private readonly List<ShowtimeId> activeShowtimes = new();
+        private List<Seat> seats = new();
 
         // Required by EF
         private Auditorium()
@@ -22,21 +22,21 @@
         }
 
         // TODO: It belongs to the cinema manager bounded context.
-        public string Name { get; private set; }
+        public string Name { get; private set; } = default!;
 
-        public ushort Rows { get; private set; }
+        public Rows Rows { get; private set; } = default!;
 
-        public ushort SeatsPerRow { get; private set; }
+        public SeatsPerRow SeatsPerRow { get; private set; } = default!;
 
-        public IEnumerable<ShowtimeId> Showtimes => this.showtimes.AsReadOnly();
+        public IEnumerable<ShowtimeId> ActiveShowtimes => this.activeShowtimes.AsReadOnly();
 
         public IEnumerable<Seat> Seats => this.seats.AsReadOnly();
 
         public static Auditorium Create(
             AuditoriumId id,
             string name,
-            ushort rows,
-            ushort seatsPerRow)
+            Rows rows,
+            SeatsPerRow seatsPerRow)
         {
             var auditorium = new Auditorium();
 
@@ -48,11 +48,11 @@
         public void Remove()
             => this.Apply(new AuditoriumRemovedEvent(this.Id));
 
-        public void AddShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeAddedEvent(this.Id, showtimeId));
+        public void AddActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
 
-        public void RemoveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ShowtimeRemovedEvent(this.Id, showtimeId));
+        public void RemoveActiveShowtime(ShowtimeId showtimeId)
+            => this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
 
         protected override void When(IDomainEvent domainEvent)
         {
@@ -65,11 +65,11 @@
                 case AuditoriumRemovedEvent:
                     break;
 
-                case ShowtimeAddedEvent @event:
-                    this.showtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                case ActiveShowtimeAddedEvent @event:
+                    this.activeShowtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
                     break;
 
-                case ShowtimeRemovedEvent @event:
+                case ActiveShowtimeRemovedEvent @event:
                     this.Applier(@event);
                     break;
             }
@@ -81,8 +81,8 @@
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.NullOrWhiteSpace(this.Name, nameof(this.Name));
-                Guard.Against.NegativeOrZero(this.Rows, nameof(this.Rows));
-                Guard.Against.NegativeOrZero(this.SeatsPerRow, nameof(this.SeatsPerRow));
+                Guard.Against.Null(this.Rows, nameof(this.Rows));
+                Guard.Against.Null(this.SeatsPerRow, nameof(this.SeatsPerRow));
             }
             catch (Exception exception)
             {
@@ -93,11 +93,11 @@
         private static List<Seat> GenerateSeats(ushort rows, ushort seatsPerRow)
         {
             var generatedSeats = new List<Seat>();
-            for (short row = 1; row <= rows; row++)
+            for (ushort row = 1; row <= rows; row++)
             {
-                for (short seat = 1; seat <= seatsPerRow; seat++)
+                for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), row, seat));
+                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), Row.Create(row), SeatNumber.Create(seatNumber)));
                 }
             }
 
@@ -108,14 +108,14 @@
         {
             this.Id = AuditoriumId.Create(@event.AggregateId);
             this.Name = @event.Name;
-            this.Rows = @event.Rows;
-            this.SeatsPerRow = @event.SeatsPerRow;
+            this.Rows = Rows.Create(@event.Rows);
+            this.SeatsPerRow = SeatsPerRow.Create(@event.SeatsPerRow);
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
         }
 
-        private void Applier(ShowtimeRemovedEvent @event)
+        private void Applier(ActiveShowtimeRemovedEvent @event)
         {
-            var isRemoved = this.showtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+            var isRemoved = this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
             if (!isRemoved)
             {
                 throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());

@@ -7,8 +7,8 @@ namespace JordiAragon.Cinema.Reservation.TestUtilities.Domain
     {
         public static class Seat
         {
-            public const short Row = 10;
-            public const short SeatNumber = 10;
+            public static readonly Row Row = Row.Create(10);
+            public static readonly SeatNumber SeatNumber = SeatNumber.Create(10);
             public static readonly SeatId Id = SeatId.Create(Guid.NewGuid());
         }
     }

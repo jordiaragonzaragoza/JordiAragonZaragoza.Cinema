@@ -7,15 +7,12 @@
     {
         private Seat(
             SeatId id,
-            short row,
-            short seatNumber)
+            Row row,
+            SeatNumber seatNumber)
             : base(id)
         {
-            Guard.Against.NegativeOrZero(row, nameof(row));
-            Guard.Against.NegativeOrZero(seatNumber, nameof(seatNumber));
-
-            this.Row = row;
-            this.SeatNumber = seatNumber;
+            this.Row = Guard.Against.Default(row, nameof(row));
+            this.SeatNumber = Guard.Against.Default(seatNumber, nameof(seatNumber));
         }
 
         // Required by EF
@@ -23,14 +20,14 @@
         {
         }
 
-        public short Row { get; private set; }
+        public Row Row { get; private set; } = default!;
 
-        public short SeatNumber { get; private set; }
+        public SeatNumber SeatNumber { get; private set; } = default!;
 
         internal static Seat Create(
             SeatId seatId,
-            short row,
-            short seatNumber)
+            Row row,
+            SeatNumber seatNumber)
         {
             return new Seat(seatId, row, seatNumber);
         }

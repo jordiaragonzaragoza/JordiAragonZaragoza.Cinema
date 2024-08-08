@@ -20,12 +20,13 @@
 
         public override async Task<Result> Handle(CreateAuditoriumCommand command, CancellationToken cancellationToken)
         {
-            // TODO: There cannot be two Auditoriums with the same name.
+            // TODO: There cannot be two Auditoriums with the same name and same cinema id.
+            // This rule is part from cinema manager bounded context using a domain service.
             var newAuditorium = Auditorium.Create(
                 id: AuditoriumId.Create(command.AuditoriumId),
                 name: command.Name,
-                rows: command.Rows,
-                seatsPerRow: command.SeatsPerRow);
+                rows: Rows.Create(command.Rows),
+                seatsPerRow: SeatsPerRow.Create(command.SeatsPerRow));
 
             await this.auditoriumRepository.AddAsync(newAuditorium, cancellationToken);
 

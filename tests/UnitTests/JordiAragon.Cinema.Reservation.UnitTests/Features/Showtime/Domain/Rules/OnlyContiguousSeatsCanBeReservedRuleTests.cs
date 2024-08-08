@@ -13,7 +13,7 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorOnlyContiguousSeatsCanBeReservedRule()
         {
-            yield return new object[] { null };
+            yield return new object[] { null! };
             yield return new object[] { new List<Seat>() };
         }
 

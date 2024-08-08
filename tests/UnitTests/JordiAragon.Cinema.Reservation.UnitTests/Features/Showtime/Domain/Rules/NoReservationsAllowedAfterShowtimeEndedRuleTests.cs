@@ -17,8 +17,8 @@
             var movie = CreateMovieUtils.Create();
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var showtimeValues = new object[] { null, showtime };
-            var movieValues = new object[] { null, movie };
+            var showtimeValues = new object[] { default!, showtime };
+            var movieValues = new object[] { default!, movie };
             var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var showtimeValue in showtimeValues)
@@ -29,12 +29,12 @@
                     {
                         if (showtimeValue != null && showtimeValue.Equals(showtime) &&
                             movieValue != null && movieValue.Equals(movie) &&
-                            createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                            createdTimeOnUtcValue != default && createdTimeOnUtcValue.Equals(createdTimeOnUtc))
                         {
                             continue;
                         }
 
-                        yield return new object[] { showtimeValue, movieValue, createdTimeOnUtcValue };
+                        yield return new object[] { showtimeValue!, movieValue!, createdTimeOnUtcValue! };
                     }
                 }
             }

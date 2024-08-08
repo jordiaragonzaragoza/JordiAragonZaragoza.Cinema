@@ -26,7 +26,7 @@
                 return Result.NotFound($"{nameof(Auditorium)}: {command.AuditoriumId} not found.");
             }
 
-            // TODO: Before remove auditorium check if there is some scheduled showtime regarding to auditorium via domain service.
+            // TODO: Sagas. Before remove auditorium check if there is some scheduled showtime regarding to auditorium.
             existingAuditorium.Remove();
 
             await this.auditoriumRepository.DeleteAsync(existingAuditorium, cancellationToken);

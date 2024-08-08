@@ -40,7 +40,7 @@
             var route = $"api/v2/{GetUserTicket.Route}";
             string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
-                (nameof(userId), userId.ToString()),
+                (nameof(userId), userId.ToString()!),
                 (nameof(showtimeId), showtimeId.ToString()),
                 (nameof(ticketId), ticketId.ToString()));
 

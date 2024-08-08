@@ -11,22 +11,22 @@
 
     using NotFoundException = JordiAragon.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeScheduledEventHandler : IEventHandler<ShowtimeScheduledEvent>
+    public sealed class ShowtimeEndedEventHandler : IEventHandler<ShowtimeEndedEvent>
     {
         private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
-        public ShowtimeScheduledEventHandler(
+        public ShowtimeEndedEventHandler(
             IRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public async Task Handle(ShowtimeScheduledEvent @event, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeEndedEvent @event, CancellationToken cancellationToken)
         {
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken)
-                                     ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
+                                    ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
 
-            existingAuditorium.AddActiveShowtime(ShowtimeId.Create(@event.AggregateId));
+            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(@event.AggregateId));
 
             await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
         }

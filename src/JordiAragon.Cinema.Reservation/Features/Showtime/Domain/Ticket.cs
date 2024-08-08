@@ -29,7 +29,7 @@
         {
         }
 
-        public UserId UserId { get; private set; }
+        public UserId UserId { get; private set; } = default!;
 
         public IEnumerable<SeatId> Seats => this.seats.AsReadOnly();
 

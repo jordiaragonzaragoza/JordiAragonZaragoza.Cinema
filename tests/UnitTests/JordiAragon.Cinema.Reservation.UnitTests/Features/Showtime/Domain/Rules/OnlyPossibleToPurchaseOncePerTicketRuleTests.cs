@@ -13,7 +13,7 @@
         public void ConstructorOnlyPossibleToPayOncePerTicketRule_WhenHavingInvalidArgument_ShouldThrowArgumentException()
         {
             // Arrange
-            Ticket reservation = null;
+            Ticket reservation = null!;
 
             // Act
             Func<OnlyPossibleToPurchaseOncePerTicketRule> constructor = () => new OnlyPossibleToPurchaseOncePerTicketRule(reservation);

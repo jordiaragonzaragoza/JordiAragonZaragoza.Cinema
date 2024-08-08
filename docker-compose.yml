@@ -11,10 +11,12 @@ services:
       - "postgres.cinema"
       - "eventstore.cinema"
       - "rabbitmq.cinema"
+      - "redis.cinema"
     links:
       - "postgres.cinema"
       - "eventstore.cinema"
       - "rabbitmq.cinema"
+      - "redis.cinema"
 
   postgres.cinema:
     image: postgres:15.1-alpine
@@ -40,3 +42,7 @@ services:
     image: rabbitmq:3.11.10-management
     container_name: rabbitmq.cinema
     hostname: rabbitmq
+
+  redis.cinema:
+    image: redis:7.2.5-alpine
+    container_name: redis.cinema

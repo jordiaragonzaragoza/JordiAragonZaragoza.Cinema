@@ -25,7 +25,9 @@
         [Fact]
         public void ScheduleShowtimeCommandValidator_WhenHavingInvalidArguments_ShouldThrowArgumentException()
         {
-            FluentActions.Invoking(() => new ScheduleShowtimeCommandValidator(null))
+            IDateTime dateTime = null!;
+
+            FluentActions.Invoking(() => new ScheduleShowtimeCommandValidator(dateTime))
             .Should().Throw<ArgumentNullException>();
         }
 

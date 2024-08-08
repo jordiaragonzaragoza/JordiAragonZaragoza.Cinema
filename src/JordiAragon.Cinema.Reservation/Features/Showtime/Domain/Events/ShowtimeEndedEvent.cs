@@ -4,6 +4,7 @@
     using JordiAragon.SharedKernel.Domain.Events;
 
     public sealed record class ShowtimeEndedEvent(
-        Guid AggregateId)
-        : BaseDomainEvent(AggregateId);
+        Guid AggregateId,
+        Guid AuditoriumId,
+        Guid MovieId) : BaseDomainEvent(AggregateId);
 }
