@@ -41,8 +41,8 @@
             var auditoriumRepository = Substitute.For<IReadRepository<Auditorium, AuditoriumId>>();
             var movieRepository = Substitute.For<IReadRepository<Movie, MovieId>>();
 
-            var auditoriumRepositoryValues = new object[] { null, auditoriumRepository };
-            var movieRepositoryValues = new object[] { null, movieRepository };
+            var auditoriumRepositoryValues = new object[] { default!, auditoriumRepository };
+            var movieRepositoryValues = new object[] { default!, movieRepository };
 
             foreach (var auditoriumRepositoryValue in auditoriumRepositoryValues)
             {
@@ -54,7 +54,7 @@
                         continue;
                     }
 
-                    yield return new object[] { auditoriumRepositoryValue, movieRepositoryValue };
+                    yield return new object[] { auditoriumRepositoryValue!, movieRepositoryValue! };
                 }
             }
         }
@@ -67,10 +67,10 @@
             var userId = Constants.Ticket.UserId;
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var showtimeValues = new object[] { null, showtime };
-            var desiredSeatIdsValues = new object[] { null, new List<SeatId>(), desiredSeatIds };
-            var newTicketIdValues = new object[] { null, newTicketId };
-            var userIdValues = new object[] { null, userId };
+            var showtimeValues = new object[] { default!, showtime };
+            var desiredSeatIdsValues = new object[] { default!, new List<SeatId>(), desiredSeatIds };
+            var newTicketIdValues = new object[] { default!, newTicketId };
+            var userIdValues = new object[] { default!, userId };
             var currentDateTimeOnUtcValues = new object[] { default(DateTimeOffset), currentDateTimeOnUtc };
 
             foreach (var showtimeValue in showtimeValues)
@@ -87,12 +87,12 @@
                                     desiredSeatIdsValue != null && desiredSeatIdsValue.Equals(desiredSeatIds) &&
                                     newTicketIdValue != null && newTicketIdValue.Equals(newTicketId) &&
                                     userIdValue != null && userIdValue.Equals(userId) &&
-                                    currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                                    currentDateTimeOnUtcValue != default && currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
                                 {
                                     continue;
                                 }
 
-                                yield return new object[] { showtimeValue, desiredSeatIdsValue, newTicketIdValue, userIdValue, currentDateTimeOnUtcValue };
+                                yield return new object[] { showtimeValue!, desiredSeatIdsValue!, newTicketIdValue!, userIdValue!, currentDateTimeOnUtcValue! };
                             }
                         }
                     }
@@ -105,7 +105,7 @@
             var showtime = ScheduleShowtimeUtils.Schedule();
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var showtimeValues = new object[] { null, showtime };
+            var showtimeValues = new object[] { default!, showtime };
             var currentDateTimeOnUtcValues = new object[] { default(DateTimeOffset), currentDateTimeOnUtc };
 
             foreach (var showtimeValue in showtimeValues)
@@ -113,12 +113,12 @@
                 foreach (var currentDateTimeOnUtcValue in currentDateTimeOnUtcValues)
                 {
                     if (showtimeValue != null && showtimeValue.Equals(showtime) &&
-                        currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                        currentDateTimeOnUtcValue != default && currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
                     {
                         continue;
                     }
 
-                    yield return new object[] { showtimeValue, currentDateTimeOnUtcValue };
+                    yield return new object[] { showtimeValue!, currentDateTimeOnUtcValue! };
                 }
             }
         }
@@ -194,7 +194,7 @@
         {
             // Arrange
             var auditorium = CreateAuditoriumUtils.Create();
-            Movie movie = null;
+            Movie movie = null!;
 
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
@@ -251,7 +251,7 @@
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
-                .Returns((Auditorium)null);
+                .Returns((Auditorium)null!);
 
             // Act
             Func<Task> sut = async () => await this.showtimeManager.ReserveSeatsAsync(
@@ -411,8 +411,10 @@
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
 
+            Movie movie = default!;
+
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
-                .Returns((Movie)null);
+                .Returns(movie);
 
             // Act
             Func<Task> sut = async () => await this.showtimeManager.HasShowtimeEndedAsync(

@@ -16,13 +16,13 @@
         {
             var id = Constants.Auditorium.Id;
             string name = Constants.Auditorium.Name;
-            ushort rows = 10;
-            ushort seatsPerRow = 10;
+            var rows = Constants.Auditorium.Rows;
+            var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
-            var idValues = new object[] { null, id };
-            var nameValues = new object[] { null, string.Empty, " ", name };
-            var rowsValues = new object[] { 0, rows };
-            var seatsPerRowValues = new object[] { 0, seatsPerRow };
+            var idValues = new object[] { default!, id };
+            var nameValues = new object[] { default!, string.Empty, " ", name };
+            var rowsValues = new object[] { default!, rows };
+            var seatsPerRowValues = new object[] { default!, seatsPerRow };
 
             foreach (var idValue in idValues)
             {
@@ -34,13 +34,13 @@
                         {
                             if (idValue != null && idValue.Equals(id) &&
                                 nameValue != null && nameValue.Equals(name) &&
-                                rowsValue.Equals(rows) &&
-                                seatsPerRowValue.Equals(seatsPerRow))
+                                rowsValue != null && rowsValue.Equals(rows) &&
+                                seatsPerRowValue != null && seatsPerRowValue.Equals(seatsPerRow))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { idValue, nameValue, rowsValue, seatsPerRowValue };
+                            yield return new object[] { idValue!, nameValue!, rowsValue!, seatsPerRowValue! };
                         }
                     }
                 }
@@ -53,8 +53,8 @@
             // Arrange
             var id = Constants.Auditorium.Id;
             string name = Constants.Auditorium.Name;
-            ushort rows = Constants.Auditorium.Rows;
-            ushort seatsPerRow = Constants.Auditorium.SeatsPerRow;
+            var rows = Constants.Auditorium.Rows;
+            var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             // Act
             var auditorium = Auditorium.Create(id, name, rows, seatsPerRow);
@@ -80,8 +80,8 @@
         public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(
             AuditoriumId id,
             string name,
-            ushort rows,
-            ushort seatsPerRow)
+            Rows rows,
+            SeatsPerRow seatsPerRow)
         {
             // Act
             Func<Auditorium> auditorium = () => Auditorium.Create(id, name, rows, seatsPerRow);
@@ -106,64 +106,64 @@
         }
 
         [Fact]
-        public void AddShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeAddedEvent()
+        public void AddActiveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeAddedEvent()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            auditorium.AddShowtime(showtimeId);
+            auditorium.AddActiveShowtime(showtimeId);
 
             // Assert.
-            auditorium.Showtimes.Should()
+            auditorium.ActiveShowtimes.Should()
                           .Contain(showtimeId)
                           .And
                           .HaveCount(1);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ShowtimeAddedEvent)
-                              .Which.Should().BeOfType<ShowtimeAddedEvent>()
-                              .Which.Should().Match<ShowtimeAddedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeAddedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeAddedEvent>()
+                              .Which.Should().Match<ActiveShowtimeAddedEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
 
         [Fact]
-        public void AddShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
+        public void AddActiveShowtimeToAuditorium_WhenShowtimeIdIsInvalid_ShouldThrowArgumentNullException()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
-            ShowtimeId showtimeId = null;
+            ShowtimeId showtimeId = null!;
 
             // Act.
-            Action addShowtime = () => auditorium.AddShowtime(showtimeId);
+            Action addShowtime = () => auditorium.AddActiveShowtime(showtimeId);
 
             // Assert.
             addShowtime.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
-        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddShowtimeRemovedEvent()
+        public void RemoveActiveShowtimeToAuditorium_WhenShowtimeIdIsValid_ShouldAddShowtimeIdAndAddActiveShowtimeRemovedEvent()
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             var showtimeId = Constants.Showtime.Id;
-            auditorium.AddShowtime(showtimeId);
+            auditorium.AddActiveShowtime(showtimeId);
 
             // Act.
-            auditorium.RemoveShowtime(showtimeId);
+            auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
-            auditorium.Showtimes.Should()
+            auditorium.ActiveShowtimes.Should()
                           .NotContain(showtimeId)
                           .And
                           .HaveCount(0);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ShowtimeRemovedEvent)
-                              .Which.Should().BeOfType<ShowtimeRemovedEvent>()
-                              .Which.Should().Match<ShowtimeRemovedEvent>(e =>
+                              .ContainSingle(x => x is ActiveShowtimeRemovedEvent)
+                              .Which.Should().BeOfType<ActiveShowtimeRemovedEvent>()
+                              .Which.Should().Match<ActiveShowtimeRemovedEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
@@ -173,10 +173,10 @@
         {
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
-            ShowtimeId showtimeId = null;
+            ShowtimeId showtimeId = default!;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<ArgumentNullException>();
@@ -190,7 +190,7 @@
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<NotFoundException>();

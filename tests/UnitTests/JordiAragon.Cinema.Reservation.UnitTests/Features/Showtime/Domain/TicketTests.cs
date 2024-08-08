@@ -18,9 +18,9 @@
             var seatIds = auditorium.Seats.Select(seat => seat.Id);
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var idValues = new object[] { null, Constants.Ticket.Id };
-            var userIdValues = new object[] { null, Constants.Ticket.UserId };
-            var seatIdsValues = new object[] { null, new List<SeatId>(), seatIds };
+            var idValues = new object[] { default!, Constants.Ticket.Id };
+            var userIdValues = new object[] { default!, Constants.Ticket.UserId };
+            var seatIdsValues = new object[] { default!, new List<SeatId>(), seatIds };
             var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
 
             foreach (var idValue in idValues)
@@ -33,13 +33,13 @@
                         {
                             if (idValue != null && idValue.Equals(Constants.Ticket.Id) &&
                                 userIdValue != null && userIdValue.Equals(Constants.Ticket.UserId) &&
-                                seatIdsValue == seatIds &&
-                                createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                                seatIdsValue != null && seatIdsValue == seatIds &&
+                                createdTimeOnUtcValue != default && createdTimeOnUtcValue.Equals(createdTimeOnUtc))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { idValue, userIdValue, seatIdsValue, createdTimeOnUtcValue };
+                            yield return new object[] { idValue!, userIdValue!, seatIdsValue!, createdTimeOnUtcValue! };
                         }
                     }
                 }

@@ -83,7 +83,7 @@
                     .RemoveAll<EventStoreDbSubscriptionToAll>()
                     .AddSharedKernelEventStoreServices(new ConfigurationBuilder().AddInMemoryCollection(new[]
                             {
-                                new KeyValuePair<string, string>("EventStore:ConnectionString", this.eventStoreDbConnectionString),
+                                new KeyValuePair<string, string?>("EventStore:ConnectionString", this.eventStoreDbConnectionString),
                             }).Build());
             });
         }

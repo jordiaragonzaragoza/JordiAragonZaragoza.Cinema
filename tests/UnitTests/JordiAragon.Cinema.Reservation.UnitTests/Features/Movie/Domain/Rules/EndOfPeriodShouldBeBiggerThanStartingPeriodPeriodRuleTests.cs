@@ -13,7 +13,7 @@
         public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingANullExhibitionPeriod_ShouldThrowArgumentNullException()
         {
             // Arrange
-            ExhibitionPeriod exhibitionPeriod = null;
+            ExhibitionPeriod exhibitionPeriod = null!;
 
             // Act
             Func<EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule> sut = () => new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(exhibitionPeriod);

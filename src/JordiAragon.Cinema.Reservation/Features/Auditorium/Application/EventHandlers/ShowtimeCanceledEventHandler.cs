@@ -26,7 +26,7 @@
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken)
                                     ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
 
-            existingAuditorium.RemoveShowtime(ShowtimeId.Create(@event.AggregateId));
+            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(@event.AggregateId));
 
             await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
         }

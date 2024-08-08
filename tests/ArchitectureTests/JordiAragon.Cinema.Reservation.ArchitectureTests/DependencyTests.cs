@@ -21,8 +21,8 @@
         private readonly IEnumerable<string> infrastructureEventStoreNamespaces;
         private readonly IEnumerable<string> httpRestfulApiNamespaces;
         private readonly string[] allNamespaces;
-        private readonly string httpRestfulApiContractsV1Namespace = HttpRestfulApiContractsV1AssemblyReference.Assembly.GetName().Name;
-        private readonly string httpRestfulApiContractsV2Namespace = HttpRestfulApiContractsV2AssemblyReference.Assembly.GetName().Name;
+        private readonly string httpRestfulApiContractsV1Namespace = HttpRestfulApiContractsV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty;
+        private readonly string httpRestfulApiContractsV2Namespace = HttpRestfulApiContractsV2AssemblyReference.Assembly.GetName().Name ?? string.Empty;
 
         public DependencyTests()
         {
@@ -434,7 +434,9 @@
                 .ResideInNamespaceContaining(fragmentNamespace)
                 .GetTypes();
 
-            return types.Select(type => type.Namespace).Distinct();
+            return types.Select(type => type.Namespace)
+                        .Where(@namespace => @namespace != null)
+                        .Distinct()!;
         }
     }
 }

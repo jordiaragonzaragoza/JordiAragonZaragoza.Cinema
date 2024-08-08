@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20240622121718_InitialReadStoreMigration")]
+    [Migration("20240807171006_InitialReadStoreMigration")]
     partial class InitialReadStoreMigration
     {
         /// <inheritdoc />
@@ -35,16 +35,17 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("uuid");
 
                     b.Property<string>("AuditoriumName")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<short>("Row")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Row")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uuid");
 
-                    b.Property<short>("SeatNumber")
-                        .HasColumnType("smallint");
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ShowtimeId")
                         .HasColumnType("uuid");
@@ -64,6 +65,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("uuid");
 
                     b.Property<string>("AuditoriumName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("MovieId")
@@ -73,6 +75,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("interval");
 
                     b.Property<string>("MovieTitle")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("SessionDateOnUtc")
@@ -90,6 +93,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("uuid");
 
                     b.Property<string>("AuditoriumName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedTimeOnUtc")
@@ -99,6 +103,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                         .HasColumnType("boolean");
 
                     b.Property<string>("MovieTitle")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("SessionDateOnUtc")
@@ -129,7 +134,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
 
                     b.HasKey("Id");
 
-                    b.ToTable("Checkpoints");
+                    b.ToTable("__Checkpoints", (string)null);
                 });
 
             modelBuilder.Entity("JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
@@ -143,11 +148,11 @@ namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.M
                             b1.Property<Guid>("TicketId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<short>("Row")
-                                .HasColumnType("smallint");
+                            b1.Property<int>("Row")
+                                .HasColumnType("integer");
 
-                            b1.Property<short>("SeatNumber")
-                                .HasColumnType("smallint");
+                            b1.Property<int>("SeatNumber")
+                                .HasColumnType("integer");
 
                             b1.HasKey("Id", "TicketId");
 

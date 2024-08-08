@@ -13,7 +13,7 @@
         public void CreateUser_WhenHavingInCorrectArguments_ShouldThrowArgumentNullException()
         {
             // Arrange
-            UserId id = null;
+            UserId id = null!;
 
             // Act
             Func<User> user = () => User.Create(id);
