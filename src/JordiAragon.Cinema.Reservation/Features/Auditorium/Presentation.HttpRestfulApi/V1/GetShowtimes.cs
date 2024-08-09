@@ -61,7 +61,7 @@
 
             if (!resultOutputDto.IsSuccess)
             {
-                return Result<IEnumerable<ShowtimeResponse>>.Error(resultOutputDto.Errors.ToArray());
+                return Result<IEnumerable<ShowtimeResponse>>.Error(new ErrorList(resultOutputDto.Errors));
             }
 
             var paginatedCollection = resultOutputDto.Value;
