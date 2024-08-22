@@ -7,16 +7,6 @@ services:
     build:
       context: .
       dockerfile: src/JordiAragon.Cinema.Reservation/Dockerfile
-    depends_on:
-      - "postgres.cinema"
-      - "eventstore.cinema"
-      - "rabbitmq.cinema"
-      - "redis.cinema"
-    links:
-      - "postgres.cinema"
-      - "eventstore.cinema"
-      - "rabbitmq.cinema"
-      - "redis.cinema"
 
   postgres.cinema:
     image: postgres:15.1-alpine
@@ -31,8 +21,6 @@ services:
   pgadmin.cinema:
     image: dpage/pgadmin4
     container_name: pgadmin.cinema
-    depends_on:
-      - "postgres.cinema"
 
   eventstore.cinema:
     image: eventstore/eventstore:23.10.1-alpha-arm64v8
