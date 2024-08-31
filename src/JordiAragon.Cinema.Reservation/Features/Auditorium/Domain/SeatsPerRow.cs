@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Auditorium.Domain
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
@@ -28,12 +29,22 @@
             return new SeatsPerRow(value);
         }
 
+        public static ushort FromSeatsPerRow(SeatsPerRow seatsPerRow)
+        {
+            return seatsPerRow;
+        }
+
+        public static SeatsPerRow ToSeatsPerRow(ushort value)
+        {
+            return (SeatsPerRow)value;
+        }
+
         public static SeatsPerRow Create(ushort value)
             => new(value);
 
         public override string ToString()
         {
-            return this.Value.ToString();
+            return this.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

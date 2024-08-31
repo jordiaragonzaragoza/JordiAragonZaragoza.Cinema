@@ -37,6 +37,8 @@
         {
             try
             {
+                Guard.Against.Null(context, nameof(context));
+
                 var dateTimeUtcNow = this.dateTime.UtcNow;
 
                 var expiredTickets = await this.ticketReadModelRepository.ListAsync(new GetExpiredTicketsSpec(dateTimeUtcNow), context.CancellationToken);
@@ -54,6 +56,7 @@
                     }
                 }
             }
+            #pragma warning disable CA1031
             catch (Exception exception)
             {
                 this.logger.LogError(
@@ -61,6 +64,7 @@
                    "Error sending: {@Name} Job Command.",
                    nameof(ExpireReservedSeatsCommand));
             }
+            #pragma warning restore CA1031
         }
     }
 }

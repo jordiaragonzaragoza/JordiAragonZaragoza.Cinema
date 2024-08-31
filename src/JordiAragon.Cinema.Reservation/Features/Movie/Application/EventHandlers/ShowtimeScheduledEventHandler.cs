@@ -21,12 +21,14 @@
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
         }
 
-        public async Task Handle(ShowtimeScheduledEvent @event, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeScheduledEvent notification, CancellationToken cancellationToken)
         {
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(@event.MovieId), cancellationToken)
-                                ?? throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());
+            Guard.Against.Null(notification, nameof(notification));
 
-            existingMovie.AddActiveShowtime(ShowtimeId.Create(@event.AggregateId));
+            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(notification.MovieId), cancellationToken)
+                                ?? throw new NotFoundException(nameof(Movie), notification.MovieId.ToString());
+
+            existingMovie.AddActiveShowtime(ShowtimeId.Create(notification.AggregateId));
 
             await this.movieRepository.UpdateAsync(existingMovie, cancellationToken);
         }

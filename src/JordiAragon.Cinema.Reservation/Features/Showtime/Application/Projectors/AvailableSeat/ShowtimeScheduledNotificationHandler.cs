@@ -31,6 +31,8 @@
 
         public async Task Handle(ShowtimeScheduledNotification notification, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(notification, nameof(notification));
+
             var @event = notification.Event;
 
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken);

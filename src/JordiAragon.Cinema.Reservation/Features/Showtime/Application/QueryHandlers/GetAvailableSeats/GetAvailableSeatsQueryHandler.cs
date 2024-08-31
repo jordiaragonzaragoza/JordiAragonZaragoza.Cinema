@@ -23,6 +23,8 @@
 
         public async Task<Result<IEnumerable<AvailableSeatReadModel>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(request, nameof(request));
+
             var specification = new GetAvailableSeatsByShowtimeIdSpec(request.ShowtimeId);
             var result = await this.readListRepository.ListAsync(specification, cancellationToken);
             if (!result.Any())

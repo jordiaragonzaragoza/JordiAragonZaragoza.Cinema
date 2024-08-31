@@ -18,12 +18,14 @@
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
         }
 
-        public override async Task<Result> Handle(RemoveMovieCommand command, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(RemoveMovieCommand request, CancellationToken cancellationToken)
         {
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(command.MovieId), cancellationToken);
+            Guard.Against.Null(request, nameof(request));
+
+            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
             if (existingMovie is null)
             {
-                return Result.NotFound($"{nameof(Movie)}: {command.MovieId} not found.");
+                return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
             }
 
             existingMovie.Remove();

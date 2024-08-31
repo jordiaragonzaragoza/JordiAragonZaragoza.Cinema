@@ -25,6 +25,8 @@
 
         public async Task Handle(ShowtimeCanceledNotification notification, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(notification, nameof(notification));
+
             var @event = notification.Event;
 
             var specification = new GetTicketsByShowtimeIdSpec(@event.AggregateId);

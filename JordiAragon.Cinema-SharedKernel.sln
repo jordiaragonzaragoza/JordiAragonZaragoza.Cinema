@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9FA-4575-A746-BC5F572AA12F}"
 	ProjectSection(SolutionItems) = preProject
 		src\Directory.Packages.props = src\Directory.Packages.props
+		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"

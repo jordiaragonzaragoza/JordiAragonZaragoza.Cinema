@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
@@ -28,12 +29,22 @@
             return new EndOfPeriod(value);
         }
 
+        public static DateTimeOffset FromEndOfPeriod(EndOfPeriod endOfPeriod)
+        {
+            return endOfPeriod;
+        }
+
+        public static EndOfPeriod ToEndOfPeriod(DateTimeOffset value)
+        {
+            return (EndOfPeriod)value;
+        }
+
         public static EndOfPeriod Create(DateTimeOffset value)
             => new(value);
 
         public override string ToString()
         {
-            return this.Value.ToString();
+            return this.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

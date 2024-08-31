@@ -2,19 +2,7 @@
 <Project>
 	<PropertyGroup>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<TargetFramework>net7.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
-		<Authors>Jordi Aragon Zaragoza</Authors>
-		<UseProjectReference>false</UseProjectReference>
 	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="..\..\GlobalSuppressions.cs">
-			<Link>GlobalSuppressions.cs</Link>
-		</Compile>
-	</ItemGroup>
 	<ItemGroup>
         <PackageVersion Include="JordiAragon.SharedKernel" Version="8.0.0" />
         <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="8.0.0" />
@@ -66,23 +54,4 @@
 		<PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="StyleCop.Analyzers">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="SonarAnalyzer.CSharp">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<DocumentationFile>DocumentationFile.xml</DocumentationFile>
-		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
-	</PropertyGroup>
 </Project>
