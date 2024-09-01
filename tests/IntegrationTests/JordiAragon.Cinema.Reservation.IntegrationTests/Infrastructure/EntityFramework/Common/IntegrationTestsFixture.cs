@@ -12,6 +12,7 @@
     using Testcontainers.PostgreSql;
     using Xunit;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Temporal suppresion")]
     public sealed class IntegrationTestsFixture : IAsyncLifetime
     {
         private readonly PostgreSqlContainer businessModelStoreContainer =
