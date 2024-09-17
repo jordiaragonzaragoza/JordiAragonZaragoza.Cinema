@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKernel", "{CFFE2114-8356-49BA-B755-3427D19DB42A}"
 	ProjectSection(SolutionItems) = preProject
 		..\JordiAragon.SharedKernel\src\Directory.Packages.props = ..\JordiAragon.SharedKernel\src\Directory.Packages.props
+		..\JordiAragon.SharedKernel\src\Directory.Build.props = ..\JordiAragon.SharedKernel\src\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.SharedKernel", "..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel\JordiAragon.SharedKernel.csproj", "{84257C80-3DED-428D-8554-6C028BDACC12}"
