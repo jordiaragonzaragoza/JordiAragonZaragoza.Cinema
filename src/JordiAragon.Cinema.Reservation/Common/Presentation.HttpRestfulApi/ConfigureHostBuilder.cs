@@ -1,5 +1,6 @@
 namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
 {
+    using System.Globalization;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Serilog;
@@ -30,8 +31,7 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
                 .Enrich.WithThreadName()
                 .Enrich.WithThreadId()
                 .AddConsoleLogger(context.Configuration)
-                .AddGraylogLogger(context.Configuration)
-                .AddAzureTableStorageLogger(context.Configuration);
+                .AddGraylogLogger(context.Configuration);
         }
 
         private static LoggerConfiguration AddConsoleLogger(
@@ -45,7 +45,8 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
             {
                 loggerConfiguration.WriteTo.Async(loggerSinkConfiguration =>
                 loggerSinkConfiguration.Console(
-                    restrictedToMinimumLevel: serilogConsoleOptions.MinimumLevel))
+                    restrictedToMinimumLevel: serilogConsoleOptions.MinimumLevel,
+                    formatProvider: CultureInfo.InvariantCulture))
                     .Destructure.ToMaximumStringLength(int.MaxValue);
             }
 
@@ -66,24 +67,6 @@ namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
                     port: serilogGraylogOptions.Port,
                     transportType: TransportType.Udp,
                     minimumLogEventLevel: serilogGraylogOptions.MinimumLevel)).Destructure.ToMaximumStringLength(int.MaxValue);
-            }
-
-            return loggerConfiguration;
-        }
-
-        private static LoggerConfiguration AddAzureTableStorageLogger(
-            this LoggerConfiguration loggerConfiguration,
-            IConfiguration configuration)
-        {
-            var serilogAzureTableStorageOptions = new SerilogAzureTableStorageOptions();
-            configuration.GetSection(SerilogAzureTableStorageOptions.Section).Bind(serilogAzureTableStorageOptions);
-
-            if (serilogAzureTableStorageOptions.Enabled)
-            {
-                loggerConfiguration.WriteTo.Async(loggerSinkConfiguration => loggerSinkConfiguration.AzureTableStorage(
-                    connectionString: serilogAzureTableStorageOptions.BuildConnectionString(),
-                    restrictedToMinimumLevel: serilogAzureTableStorageOptions.MinimumLevel,
-                    storageTableName: serilogAzureTableStorageOptions.StorageTableName)).Destructure.ToMaximumStringLength(int.MaxValue);
             }
 
             return loggerConfiguration;

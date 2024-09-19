@@ -2,11 +2,14 @@
 {
     using System;
     using System.Web;
+    using Ardalis.GuardClauses;
 
     public static class EndpointRouteHelpers
     {
-        public static string BuildUriWithQueryParameters(string basePath, params (string Key, string Value)[] queryParams)
+        public static Uri BuildUriWithQueryParameters(string basePath, params (string Key, string Value)[] queryParams)
         {
+            Guard.Against.Null(queryParams, nameof(queryParams));
+
             var uriBuilder = new UriBuilder
             {
                 Path = basePath,
@@ -24,7 +27,7 @@
 
             uriBuilder.Query = query.ToString();
 
-            return uriBuilder.Uri.PathAndQuery;
+            return uriBuilder.Uri;
         }
     }
 }

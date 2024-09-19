@@ -1,39 +1,42 @@
 What is the Cinema Project?
 =====================
-The Cinema Project is a HttpRestfulApi project written in .NET 7 following DDD and Clean Architecture.
-The reservation bounded context manage the cinema showtimes and ticket reservation.
+This project is a demonstration of a fictional Cinema Management Application. It is built on .NET, applying Domain-Driven Design and Clean Architecture principles. The solution leverages a Microservices Architecture, Event-Driven Architecture, Vertical Slice Architecture, and Event Sourcing for its foundation.
 
-## How to use:
+# Give it a star ⭐
+
+Loving it? Please show your support by giving this project a star!
+
+## Getting Started 🏃
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
 - You will need also Docker Desktop running on your machine.
 - To run the project just find and build the solution file JordiAragon.Cinema.Reservation.sln and select docker-compose as startup project.
 
-## Architecture:
+## Architecture: 🏗️
 
 - Full architecture with responsibility separation concerns, SOLID and clean code (including zero warnings policy)
 - Clean Architecture (Onion Architecture)
 - Vertical Slices Architecture.
 - Domain Driven-Design 
 - Rich Domain Model with Aggregates and Strong Ids
-- Domain/Application Events
+- Domain Events
 - Outbox Pattern with idempotent consumers
 - CQRS with DB physical separation using domain events. 
 - Unit of Work
 - Repository & Specification
 - Custom API Error Handling with Problems Details
 
-## Custom Shared Kernel:
+## Custom Shared Kernel: ⚙️
 - This project uses [JordiAragon.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragon.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
 
-## Diagram:
+## Diagram: 📍
 
 ![JordiAragon.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
 
-## Technologies implemented:
+## Technologies implemented: ⚒️
 
-- ASP.NET 7.0
-- Entity Framework Core 7.0
+- ASP.NET
+- Entity Framework Core
 - FastEndpoints
 - MediatR
 - AutoMapper
@@ -52,7 +55,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - StyleCop & SonarAnalyzer
 - xUnit & NetArchTest & Testcontainers & Ardalis.HttpClientTestExtensions
 
-## Cross-cutting concerns
+## Cross-cutting concerns 🏃
 
 - Outbox pattern to handle the domain event out side the source transaction with resilence idempotent consumers support.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
@@ -68,7 +71,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
  - DomainEventsDispatcherBehaviour. Deferred approach to raise and dispatch events before complete the transation.
  - PerformanceBehaviour to track the execution time performance.
 
-## Testing
+## Testing 🧪
 
 - Architecture Tests to ensure DDD rules required in Vertical Slices Arquitecture
 - Unit Tests: Domain and Application
@@ -78,9 +81,11 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
 
-## Reservation Bounded Context - Commands and queries.
+## Reservation Bounded Context Overview 🌍
 
-- Create/Cancel showtime
+The reservation bounded context manage the cinema showtimes and ticket reservation.
+
+- Schedule or cancel a showtime
     
 - Reserve seats
     - Reserving the seat response will contain a GUID of the reservation, also the number of seats, the auditorium used and the movie that will be played.
@@ -94,7 +99,7 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
     - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
     - It is not possible to purchase ticket reservation two times.
  
-## Resources and Inspiration
+## Resources and Inspiration 🙏
 
 Special thanks to all these authors for sharing their knowledge and expertise:
 
@@ -120,11 +125,11 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 - <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
 - <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
 
-## About:
+## About: 🧐
 
 The Cinema Project was developed by <a href="https://www.linkedin.com/in/jordiaragonzaragoza/" target="_blank">Jordi Aragón Zaragoza</a>
 
-## License:
+## License: 👮‍♂️
 
 [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).
 

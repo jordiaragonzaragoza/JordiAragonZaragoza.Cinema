@@ -32,25 +32,27 @@
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
-        public override async Task<Result<Guid>> Handle(ScheduleShowtimeCommand command, CancellationToken cancellationToken)
+        public override async Task<Result<Guid>> Handle(ScheduleShowtimeCommand request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(command.AuditoriumId), cancellationToken);
+            Guard.Against.Null(request, nameof(request));
+
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
-                return Result.NotFound($"{nameof(Auditorium)}: {command.AuditoriumId} not found.");
+                return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(command.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
             if (existingMovie is null)
             {
-                return Result.NotFound($"{nameof(Movie)}: {command.MovieId} not found.");
+                return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
             }
 
             // TODO: This is temporal. A scheduler manager with business rules is required.
             var newShowtime = Showtime.Schedule(
                 ShowtimeId.Create(this.guidGenerator.Create()),
                 MovieId.Create(existingMovie.Id),
-                command.SessionDateOnUtc,
+                request.SessionDateOnUtc,
                 AuditoriumId.Create(existingAuditorium.Id));
 
             await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);

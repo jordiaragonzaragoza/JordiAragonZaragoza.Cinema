@@ -38,6 +38,8 @@
 
         public async Task Handle(ExpiredReservedSeatsNotification notification, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(notification, nameof(notification));
+
             var @event = notification.Event;
 
             var existingShowtime = await this.showtimeReadRepository.GetByIdAsync(ShowtimeId.Create(@event.AggregateId), cancellationToken);

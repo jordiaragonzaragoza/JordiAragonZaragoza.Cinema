@@ -38,12 +38,12 @@
             var userId = SeedData.ExampleUser.Id;
 
             var route = $"api/v2/{GetUserTickets.Route}";
-            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(userId), userId.ToString()!));
 
             // Act
-            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<TicketResponse>>(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<TicketResponse>>(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
             response.Should().NotBeNull();
@@ -54,7 +54,7 @@
         private async Task<TicketResponse> ReserveSeatsAsync(Guid showtimeId)
         {
             var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
-            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString());
+            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
@@ -65,7 +65,7 @@
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
             var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
-            reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString());
+            reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 

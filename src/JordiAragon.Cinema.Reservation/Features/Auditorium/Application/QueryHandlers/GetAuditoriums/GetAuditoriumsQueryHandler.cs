@@ -30,7 +30,7 @@
         public async Task<Result<IEnumerable<AuditoriumOutputDto>>> Handle(GetAuditoriumsQuery request, CancellationToken cancellationToken)
         {
             var auditoriums = await this.auditoriumRepository.ListAsync(cancellationToken);
-            if (!auditoriums.Any())
+            if (auditoriums.Count == 0)
             {
                 return Result.NotFound($"{nameof(Auditorium)}/s not found.");
             }

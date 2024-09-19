@@ -24,6 +24,8 @@
 
         public async Task Handle(ShowtimeCanceledNotification notification, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(notification, nameof(notification));
+
             var @event = notification.Event;
 
             var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdSpec(@event.AggregateId), cancellationToken);

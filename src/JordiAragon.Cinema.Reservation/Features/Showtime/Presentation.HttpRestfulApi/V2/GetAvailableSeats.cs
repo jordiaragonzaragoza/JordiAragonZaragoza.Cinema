@@ -41,6 +41,8 @@
 
         public async override Task HandleAsync(GetAvailableSeatsRequest req, CancellationToken ct)
         {
+            Guard.Against.Null(req, nameof(req));
+
             var resultReadModels = await this.queryBus.SendAsync(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<SeatResponse>>>(resultReadModels);

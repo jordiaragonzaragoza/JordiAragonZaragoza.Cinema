@@ -37,7 +37,7 @@
             var endTimeOnUtc = DateTimeOffset.UtcNow.AddYears(2).ToString("O");
 
             var route = $"api/v2/{GetShowtimes.Route}";
-            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(movieId), movieId),
                 (nameof(auditoriumId), auditoriumId),
@@ -45,7 +45,7 @@
                 (nameof(endTimeOnUtc), endTimeOnUtc));
 
             // Act
-            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<ShowtimeResponse>>(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<ShowtimeResponse>>(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
             response.Should().NotBeNull();
