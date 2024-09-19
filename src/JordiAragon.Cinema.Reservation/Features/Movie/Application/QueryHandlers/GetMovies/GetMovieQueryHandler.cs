@@ -29,7 +29,7 @@
         public async Task<Result<IEnumerable<MovieOutputDto>>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
         {
             var projects = await this.movieRepository.ListAsync(cancellationToken);
-            if (!projects.Any())
+            if (projects.Count == 0)
             {
                 return Result.NotFound($"{nameof(Movie)}/s not found.");
             }

@@ -100,7 +100,7 @@
 
             this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, softDeleteEntitySaveChangesInterceptor);
 
-            this.BusinessModelContext.Database.Migrate();
+            await this.BusinessModelContext.Database.MigrateAsync();
             SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
 
             this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreConnection, new RespawnerOptions
@@ -127,7 +127,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            this.ReadModelContext.Database.Migrate();
+            await this.ReadModelContext.Database.MigrateAsync();
 
             this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
             {

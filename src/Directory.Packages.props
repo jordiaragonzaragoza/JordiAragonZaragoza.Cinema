@@ -2,20 +2,21 @@
 <Project>
 	<PropertyGroup>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<SharedKernelVersion>8.0.0</SharedKernelVersion>
 	</PropertyGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi" Version="8.0.0" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="8.0.0" />
+        <PackageVersion Include="JordiAragon.SharedKernel" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="$(SharedKernelVersion)" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />

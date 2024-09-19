@@ -31,7 +31,7 @@
 
             var specification = new GetTicketsByShowtimeIdSpec(@event.AggregateId);
             var existingTickets = await this.specificationRepository.ListAsync(specification, cancellationToken);
-            if (existingTickets.Any())
+            if (existingTickets.Count > 0)
             {
                 await this.ticketReadModelRepository.DeleteRangeAsync(existingTickets, cancellationToken);
             }

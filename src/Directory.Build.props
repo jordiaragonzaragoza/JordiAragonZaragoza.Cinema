@@ -7,7 +7,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
-		<UseProjectReference>false</UseProjectReference>
+		<UseProjectReference>true</UseProjectReference>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>All</AnalysisMode>
 		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
