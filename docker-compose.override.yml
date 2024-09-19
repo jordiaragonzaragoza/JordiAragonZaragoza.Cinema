@@ -48,6 +48,7 @@ services:
       - cinema-network
 
   eventstore.cinema:
+    user: root
     environment:
       - EVENTSTORE_CLUSTER_SIZE=1
       - EVENTSTORE_RUN_PROJECTIONS=All

@@ -35,7 +35,7 @@
             var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
             var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
-            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString());
+            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
@@ -46,7 +46,7 @@
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
             var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
-            reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString());
+            reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);

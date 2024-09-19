@@ -21,12 +21,14 @@
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public async Task Handle(ShowtimeEndedEvent @event, CancellationToken cancellationToken)
+        public async Task Handle(ShowtimeEndedEvent notification, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken)
-                                    ?? throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
+            Guard.Against.Null(notification, nameof(notification));
 
-            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(@event.AggregateId));
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(notification.AuditoriumId), cancellationToken)
+                                    ?? throw new NotFoundException(nameof(Auditorium), notification.AuditoriumId.ToString());
+
+            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(notification.AggregateId));
 
             await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
         }

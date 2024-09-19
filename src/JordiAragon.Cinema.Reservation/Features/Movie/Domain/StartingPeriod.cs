@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using Ardalis.GuardClauses;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
 
@@ -28,12 +29,22 @@
             return new StartingPeriod(value);
         }
 
+        public static DateTimeOffset FromStartingPeriod(StartingPeriod startingPeriod)
+        {
+            return startingPeriod;
+        }
+
+        public static StartingPeriod ToStartingPeriod(DateTimeOffset value)
+        {
+            return (StartingPeriod)value;
+        }
+
         public static StartingPeriod Create(DateTimeOffset value)
             => new(value);
 
         public override string ToString()
         {
-            return this.Value.ToString();
+            return this.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

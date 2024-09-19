@@ -24,6 +24,8 @@ services:
 
   eventstore.cinema:
     image: eventstore/eventstore:23.10.1-alpha-arm64v8
+    # use this image if you're running on x86 proc
+    # image: eventstore/eventstore:23.10.1-bookworm-slim
     container_name: eventstore.cinema
 
   rabbitmq.cinema:

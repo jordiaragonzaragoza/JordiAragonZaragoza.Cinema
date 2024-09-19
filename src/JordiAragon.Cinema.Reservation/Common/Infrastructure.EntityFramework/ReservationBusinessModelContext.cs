@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework
 {
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
@@ -35,6 +36,8 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Guard.Against.Null(modelBuilder, nameof(modelBuilder));
+
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new AuditoriumConfiguration());
             modelBuilder.ApplyConfiguration(new MovieConfiguration());

@@ -34,6 +34,8 @@
 
         public async override Task HandleAsync(CancelShowtimeRequest req, CancellationToken ct)
         {
+            Guard.Against.Null(req, nameof(req));
+
             var resultResponse = await this.commandBus.SendAsync(new CancelShowtimeCommand(req.ShowtimeId), ct);
 
             await this.SendResponseAsync(resultResponse, ct);

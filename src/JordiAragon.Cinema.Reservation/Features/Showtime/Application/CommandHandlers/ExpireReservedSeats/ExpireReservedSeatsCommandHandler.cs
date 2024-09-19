@@ -21,6 +21,8 @@
 
         public override async Task<Result> Handle(ExpireReservedSeatsCommand request, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(request, nameof(request));
+
             var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {

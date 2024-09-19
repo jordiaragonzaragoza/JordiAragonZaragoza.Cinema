@@ -34,6 +34,8 @@
 
         public async override Task HandleAsync(PurchaseTicketRequest req, CancellationToken ct)
         {
+            Guard.Against.Null(req, nameof(req));
+
             var result = await this.commandBus.SendAsync(new PurchaseTicketCommand(req.ShowtimeId, req.TicketId), ct);
 
             await this.SendResponseAsync(result, ct);
