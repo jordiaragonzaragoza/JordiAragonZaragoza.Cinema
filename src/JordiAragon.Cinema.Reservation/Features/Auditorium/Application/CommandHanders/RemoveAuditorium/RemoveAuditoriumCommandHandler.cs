@@ -18,12 +18,14 @@
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public override async Task<Result> Handle(RemoveAuditoriumCommand command, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(RemoveAuditoriumCommand request, CancellationToken cancellationToken)
         {
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(command.AuditoriumId), cancellationToken);
+            Guard.Against.Null(request, nameof(request));
+
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
-                return Result.NotFound($"{nameof(Auditorium)}: {command.AuditoriumId} not found.");
+                return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
             // TODO: Sagas. Before remove auditorium check if there is some scheduled showtime regarding to auditorium.

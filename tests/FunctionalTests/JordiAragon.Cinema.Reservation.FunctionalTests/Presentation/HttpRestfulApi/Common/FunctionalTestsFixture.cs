@@ -147,7 +147,9 @@
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {exceptionMessage}", exception.Message);
+                logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {ExceptionMessage}", exception.Message);
+
+                throw;
             }
         }
 

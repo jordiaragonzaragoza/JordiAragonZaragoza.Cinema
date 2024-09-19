@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using JordiAragon.Cinema.Reservation.User.Domain;
@@ -44,6 +45,8 @@
                 return;
             }
 
+            Guard.Against.Null(app, nameof(app));
+
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
@@ -57,7 +60,9 @@
             }
             catch (Exception exception)
             {
-                app.Logger.LogError(exception, "An error occurred seeding the database with test data. Error: {exceptionMessage}", exception.Message);
+                app.Logger.LogError(exception, "An error occurred seeding the database with test data. Error: {ExceptionMessage}", exception.Message);
+
+                throw;
             }
         }
 

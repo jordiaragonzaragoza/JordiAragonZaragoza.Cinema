@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Data.Common;
+    using Ardalis.GuardClauses;
     using EventStore.Client;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
     using JordiAragon.SharedKernel.Infrastructure.EventStore;
@@ -37,6 +38,8 @@
 
         protected override IHost CreateHost(IHostBuilder builder)
         {
+            Guard.Against.Null(builder, nameof(builder));
+
             builder.UseEnvironment("Development");
             var host = builder.Build();
             host.Start();

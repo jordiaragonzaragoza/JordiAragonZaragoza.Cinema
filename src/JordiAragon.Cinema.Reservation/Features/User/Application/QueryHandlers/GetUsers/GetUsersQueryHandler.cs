@@ -30,7 +30,7 @@
         public async Task<Result<IEnumerable<UserOutputDto>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await this.userRepository.ListAsync(cancellationToken);
-            if (!users.Any())
+            if (users.Count == 0)
             {
                 return Result.NotFound($"{nameof(User)}/s not found.");
             }

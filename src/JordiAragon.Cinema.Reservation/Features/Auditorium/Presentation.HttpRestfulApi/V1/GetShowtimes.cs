@@ -38,6 +38,8 @@
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)
         {
+            Guard.Against.Null(req, nameof(req));
+
             var query = new GetShowtimesQuery(
                 req.AuditoriumId,
                 AuditoriumName: null,

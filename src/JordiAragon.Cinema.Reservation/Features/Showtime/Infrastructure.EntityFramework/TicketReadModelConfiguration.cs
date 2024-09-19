@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
     using System;
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragon.Cinema.Reservation.Showtime.Domain;
@@ -12,6 +13,8 @@
     {
         public override void Configure(EntityTypeBuilder<TicketReadModel> builder)
         {
+            Guard.Against.Null(builder, nameof(builder));
+
             base.Configure(builder);
 
             ConfigureTicketsSeatsTable(builder);

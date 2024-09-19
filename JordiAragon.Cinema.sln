@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9FA-4575-A746-BC5F572AA12F}"
 	ProjectSection(SolutionItems) = preProject
 		src\Directory.Packages.props = src\Directory.Packages.props
+		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1", "src\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
@@ -26,7 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}"
 	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
 		tests\Directory.Packages.props = tests\Directory.Packages.props
+		tests\Directory.Build.props = tests\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{B7AA27C9-CBB9-40DC-86D5-B6224E693854}"
@@ -44,6 +47,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArchitectureTests", "ArchitectureTests", "{8140039B-A305-40E1-A5CC-A5E3982DBE5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.ArchitectureTests", "tests\ArchitectureTests\JordiAragon.Cinema.Reservation.ArchitectureTests\JordiAragon.Cinema.Reservation.ArchitectureTests.csproj", "{0E8A32A5-501D-44B1-8823-6671E05609C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestUtilities", "TestUtilities", "{A6B78886-51CB-4B7B-B383-384BA24CF38C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragon.Cinema.Reservation.TestUtilities", "tests\TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities\JordiAragon.Cinema.Reservation.TestUtilities.csproj", "{59B41220-D655-467A-931D-E7D6BAA68253}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +90,10 @@ Global
 		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +113,7 @@ Global
 		{51013E47-35CE-4280-A6C3-D25B402C0C1E} = {3663F1BD-7551-43FA-9A49-5703A63ADEB6}
 		{8140039B-A305-40E1-A5CC-A5E3982DBE5B} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
 		{0E8A32A5-501D-44B1-8823-6671E05609C0} = {8140039B-A305-40E1-A5CC-A5E3982DBE5B}
+		{A6B78886-51CB-4B7B-B383-384BA24CF38C} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{59B41220-D655-467A-931D-E7D6BAA68253} = {A6B78886-51CB-4B7B-B383-384BA24CF38C}
 	EndGlobalSection
 EndGlobal

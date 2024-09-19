@@ -30,7 +30,7 @@
             var showtimeId = await this.ScheduleNewShowtimeAsync();
 
             var route = $"api/v2/{GetAvailableSeats.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);

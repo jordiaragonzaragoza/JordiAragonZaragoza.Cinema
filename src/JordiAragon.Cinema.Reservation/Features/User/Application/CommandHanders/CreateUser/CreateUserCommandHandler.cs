@@ -18,10 +18,12 @@
             this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
         }
 
-        public override async Task<Result> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(request, nameof(request));
+
             var newUser = User.Create(
-                id: UserId.Create(command.UserId));
+                id: UserId.Create(request.UserId));
 
             await this.userRepository.AddAsync(newUser, cancellationToken);
 

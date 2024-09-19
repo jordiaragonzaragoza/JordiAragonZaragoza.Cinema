@@ -27,11 +27,13 @@
             var showtimeId = await this.CreateNewShowtimeAsync();
 
             var route = $"api/v2/{CancelShowtime.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
 
             // Act
             this.OutputHelper.WriteLine($"Requesting with DELETE {route}");
-            var response = await this.Fixture.HttpClient.DeleteAsync(route);
+            var response = await this.Fixture.HttpClient.DeleteAsync(fullUri);
 
             await AddEventualConsistencyDelayAsync();
 
@@ -55,12 +57,12 @@
         {
             // Arrange
             var getShowtimeRoute = $"api/v2/{GetShowtime.Route}";
-            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 getShowtimeRoute,
                 (nameof(showtimeId), showtimeId.ToString()));
 
             // Act
-            var showtimeResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(pathAndQuery, this.OutputHelper);
+            var showtimeResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
             showtimeResponse.StatusCode.Should()
@@ -71,7 +73,7 @@
         {
             // Arrange
             var route = $"api/v2/{GetAvailableSeats.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
@@ -85,7 +87,7 @@
         {
             // Arrange
             var route = $"api/v2/{GetShowtimeTickets.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var showtimeTicketsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);

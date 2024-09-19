@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.ArchitectureTests.Domain
 {
+    using System;
     using System.Reflection;
     using FluentAssertions;
     using JordiAragon.SharedKernel.Domain.Events;
@@ -56,7 +57,7 @@
                 .That()
                 .ResideInNamespaceContaining("Domain.Notifications")
                 .Should()
-                .HaveNameEndingWith("Notification")
+                .HaveNameEndingWith("Notification", StringComparison.Ordinal)
                 .GetResult();
 
             // Assert.

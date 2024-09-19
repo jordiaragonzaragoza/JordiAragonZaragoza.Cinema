@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
 {
+    using Ardalis.GuardClauses;
     using FastEndpoints;
     using FastEndpoints.Swagger;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
@@ -12,6 +13,8 @@
     {
         public static WebApplication AddWebApplicationConfigurations(WebApplication app)
         {
+            Guard.Against.Null(app, nameof(app));
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

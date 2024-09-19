@@ -18,12 +18,14 @@
             this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
         }
 
-        public override async Task<Result> Handle(RemoveUserCommand command, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await this.userRepository.GetByIdAsync(UserId.Create(command.UserId), cancellationToken);
+            Guard.Against.Null(request, nameof(request));
+
+            var existingUser = await this.userRepository.GetByIdAsync(UserId.Create(request.UserId), cancellationToken);
             if (existingUser is null)
             {
-                return Result.NotFound($"{nameof(User)}: {command.UserId} not found.");
+                return Result.NotFound($"{nameof(User)}: {request.UserId} not found.");
             }
 
             // TODO: Before remove user check if there is some scheduled showtime regarding to user via domain service.

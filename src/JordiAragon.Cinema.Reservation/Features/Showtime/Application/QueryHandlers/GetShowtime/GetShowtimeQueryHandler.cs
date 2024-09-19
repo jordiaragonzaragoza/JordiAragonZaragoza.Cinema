@@ -21,6 +21,8 @@
 
         public async Task<Result<ShowtimeReadModel>> Handle(GetShowtimeQuery request, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(request, nameof(request));
+
             var result = await this.showtimeReadModelRepository.GetByIdAsync(request.ShowtimeId, cancellationToken);
             if (result is null)
             {

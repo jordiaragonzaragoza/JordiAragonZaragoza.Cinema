@@ -37,7 +37,7 @@
             var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
             var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
-            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString());
+            routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
@@ -48,7 +48,7 @@
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
             var routeReserveSeats = $"api/v2/{ReserveSeats.Route}";
-            routeReserveSeats = routeReserveSeats.Replace("{showtimeId}", showtimeId.ToString());
+            routeReserveSeats = routeReserveSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var ticketReserveResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(routeReserveSeats, reserveSeatsContent, this.OutputHelper);
             await AddEventualConsistencyDelayAsync();
@@ -56,15 +56,17 @@
             var ticketId = ticketReserveResponse.Id;
 
             var routePurchaseTicket = $"api/v2/{PurchaseTicket.Route}";
-            routePurchaseTicket = routePurchaseTicket.Replace("{showtimeId}", showtimeId.ToString());
-            routePurchaseTicket = routePurchaseTicket.Replace("{ticketId}", ticketId.ToString());
+            routePurchaseTicket = routePurchaseTicket.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            routePurchaseTicket = routePurchaseTicket.Replace("{ticketId}", ticketId.ToString(), StringComparison.Ordinal);
+
+            var fullUriPurchaseTicket = new Uri(this.Fixture.HttpClient.BaseAddress!, routePurchaseTicket);
 
             var purchaseTicketRequest = new PurchaseTicketRequest(showtimeId, ticketReserveResponse.Id, true);
             var purchaseTicketContent = StringContentHelpers.FromModelAsJson(purchaseTicketRequest);
 
             // Act
             this.OutputHelper.WriteLine($"Requesting with PATCH {routePurchaseTicket}");
-            var response = await this.Fixture.HttpClient.PatchAsync(routePurchaseTicket, purchaseTicketContent);
+            var response = await this.Fixture.HttpClient.PatchAsync(fullUriPurchaseTicket, purchaseTicketContent);
             await AddEventualConsistencyDelayAsync();
 
             // Assert
@@ -83,9 +85,9 @@
         {
             var userId = SeedData.ExampleUser.Id;
             var routeUserTicket = $"api/v2/{GetUserTicket.Route}";
-            routeUserTicket = routeUserTicket.Replace("{userId}", userId.ToString());
-            routeUserTicket = routeUserTicket.Replace("{showtimeId}", showtimeId.ToString());
-            routeUserTicket = routeUserTicket.Replace("{ticketId}", ticketId.ToString());
+            routeUserTicket = routeUserTicket.Replace("{userId}", userId.ToString(), StringComparison.Ordinal);
+            routeUserTicket = routeUserTicket.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            routeUserTicket = routeUserTicket.Replace("{ticketId}", ticketId.ToString(), StringComparison.Ordinal);
 
             var ticketPurchasedResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<TicketResponse>(routeUserTicket, this.OutputHelper);
 

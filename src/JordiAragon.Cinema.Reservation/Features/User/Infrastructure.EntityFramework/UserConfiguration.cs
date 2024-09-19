@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.User.Infrastructure.EntityFramework
 {
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.User.Domain;
     using JordiAragon.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@
     {
         public override void Configure(EntityTypeBuilder<User> builder)
         {
+            Guard.Against.Null(builder, nameof(builder));
+
             this.ConfigureUsersTable(builder);
         }
 

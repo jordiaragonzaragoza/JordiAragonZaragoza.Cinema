@@ -64,12 +64,12 @@
         {
             // Arrange
             var getShowtimeRoute = $"api/v2/{GetShowtime.Route}";
-            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 getShowtimeRoute,
                 (nameof(showtimeId), showtimeId.ToString()));
 
             // Act
-            var showtimeResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(pathAndQuery, this.OutputHelper);
+            var showtimeResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
             showtimeResponse.Should().NotBeNull();
@@ -83,7 +83,7 @@
         {
             // Arrange
             var route = $"api/v2/{GetAvailableSeats.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString());
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);
