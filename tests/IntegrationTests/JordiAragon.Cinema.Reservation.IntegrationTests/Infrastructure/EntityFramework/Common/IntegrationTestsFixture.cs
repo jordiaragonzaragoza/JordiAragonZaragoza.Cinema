@@ -12,6 +12,7 @@
     using Testcontainers.PostgreSql;
     using Xunit;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Temporal suppresion")]
     public sealed class IntegrationTestsFixture : IAsyncLifetime
     {
         private readonly PostgreSqlContainer businessModelStoreContainer =
@@ -99,7 +100,7 @@
 
             this.BusinessModelContext = new ReservationBusinessModelContext(options, mockLoggerFactory, mockHostEnvironment, softDeleteEntitySaveChangesInterceptor);
 
-            this.BusinessModelContext.Database.Migrate();
+            await this.BusinessModelContext.Database.MigrateAsync();
             SeedData.PopulateBusinessModelTestData(this.BusinessModelContext);
 
             this.businessModelStoreRespawner = await Respawner.CreateAsync(this.businessModelStoreConnection, new RespawnerOptions
@@ -126,7 +127,7 @@
 
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
-            this.ReadModelContext.Database.Migrate();
+            await this.ReadModelContext.Database.MigrateAsync();
 
             this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
             {

@@ -31,12 +31,12 @@
             var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
             var route = $"api/v2/{GetShowtime.Route}";
-            string pathAndQuery = EndpointRouteHelpers.BuildUriWithQueryParameters(
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(showtimeId), showtimeId.ToString()));
 
             // Act
-            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(pathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<ShowtimeResponse>(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
             response.Should().NotBeNull();

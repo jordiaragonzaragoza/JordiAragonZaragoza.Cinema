@@ -19,12 +19,14 @@
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
-        public override async Task<Result> Handle(CancelShowtimeCommand command, CancellationToken cancellationToken)
+        public override async Task<Result> Handle(CancelShowtimeCommand request, CancellationToken cancellationToken)
         {
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(command.ShowtimeId), cancellationToken);
+            Guard.Against.Null(request, nameof(request));
+
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
-                return Result.NotFound($"{nameof(Showtime)}: {command.ShowtimeId} not found.");
+                return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
             existingShowtime.Cancel();

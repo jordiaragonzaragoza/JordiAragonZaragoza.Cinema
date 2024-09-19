@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Presentation.HttpRestfulApi
 {
+    using Ardalis.GuardClauses;
     using FastEndpoints;
     using FastEndpoints.Swagger;
     using Microsoft.Extensions.Configuration;
@@ -9,6 +10,8 @@
     {
         public static IServiceCollection AddHttpRestfulApiServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            Guard.Against.Null(configuration, nameof(configuration));
+
             serviceCollection.Configure<SerilogConsoleOptions>(configuration.GetSection(SerilogConsoleOptions.Section));
 
             serviceCollection.AddCors(options =>

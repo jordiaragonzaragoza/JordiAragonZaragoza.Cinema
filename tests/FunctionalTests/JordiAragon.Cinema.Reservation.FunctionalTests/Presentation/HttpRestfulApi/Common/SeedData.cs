@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
 {
     using System;
+    using Ardalis.GuardClauses;
     using JordiAragon.Cinema.Reservation.Auditorium.Domain;
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
@@ -31,6 +32,8 @@
 
         public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
         {
+            Guard.Against.Null(context, nameof(context));
+
             context.Movies.Add(ExampleMovie);
 
             context.Auditoriums.Add(ExampleAuditorium);

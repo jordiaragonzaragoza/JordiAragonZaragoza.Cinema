@@ -1,6 +1,7 @@
 ﻿namespace JordiAragon.Cinema.Reservation.UnitTests.Movie.Domain
 {
     using System;
+    using System.Globalization;
     using FluentAssertions;
     using JordiAragon.Cinema.Reservation.Movie.Domain;
     using Xunit;
@@ -72,7 +73,7 @@
             var result = startingPeriod.ToString();
 
             // Assert
-            result.Should().Be(value.ToString());
+            result.Should().Be(value.ToString(CultureInfo.InvariantCulture));
         }
 
         [Fact]

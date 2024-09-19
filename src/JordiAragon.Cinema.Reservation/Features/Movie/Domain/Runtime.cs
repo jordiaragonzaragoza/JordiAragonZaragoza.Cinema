@@ -28,6 +28,16 @@
             return new Runtime(value);
         }
 
+        public static TimeSpan FromRuntime(Runtime runtime)
+        {
+            return runtime;
+        }
+
+        public static Runtime ToRuntime(TimeSpan value)
+        {
+            return (Runtime)value;
+        }
+
         public static Runtime Create(TimeSpan value)
             => new(value);
 

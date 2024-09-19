@@ -23,6 +23,8 @@
 
         public async Task Handle(PurchasedTicketNotification notification, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(notification, nameof(notification));
+
             var @event = notification.Event;
 
             var existingTicket = await this.ticketReadModelRepository.GetByIdAsync(@event.TicketId, cancellationToken);

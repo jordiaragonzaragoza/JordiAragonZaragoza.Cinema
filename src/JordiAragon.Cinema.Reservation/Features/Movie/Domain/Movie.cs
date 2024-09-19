@@ -35,6 +35,8 @@
         {
             var movie = new Movie();
 
+            Guard.Against.Null(exhibitionPeriod, nameof(exhibitionPeriod));
+
             movie.Apply(new MovieAddedEvent(id, title, runtime, exhibitionPeriod.StartingPeriodOnUtc, exhibitionPeriod.EndOfPeriodOnUtc));
 
             return movie;

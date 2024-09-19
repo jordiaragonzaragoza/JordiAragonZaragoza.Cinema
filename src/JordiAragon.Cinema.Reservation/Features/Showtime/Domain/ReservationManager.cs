@@ -32,6 +32,9 @@
 
         public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
         {
+            Guard.Against.Null(auditorium, nameof(auditorium));
+            Guard.Against.Null(showtime, nameof(showtime));
+
             var reservedSeats = ReservedSeats(auditorium, showtime);
 
             return auditorium.Seats.Except(reservedSeats)

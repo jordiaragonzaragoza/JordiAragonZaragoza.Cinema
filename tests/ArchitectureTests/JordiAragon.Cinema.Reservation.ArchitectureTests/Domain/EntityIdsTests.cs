@@ -1,5 +1,6 @@
 ﻿namespace JordiAragon.Cinema.Reservation.ArchitectureTests.Domain
 {
+    using System;
     using System.Reflection;
     using FluentAssertions;
     using JordiAragon.SharedKernel.Domain.ValueObjects;
@@ -40,7 +41,7 @@
                 .That()
                 .Inherit(typeof(BaseEntityId<>))
                 .Should()
-                .HaveNameEndingWith("Id")
+                .HaveNameEndingWith("Id", StringComparison.Ordinal)
                 .GetResult();
 
             // Assert.
