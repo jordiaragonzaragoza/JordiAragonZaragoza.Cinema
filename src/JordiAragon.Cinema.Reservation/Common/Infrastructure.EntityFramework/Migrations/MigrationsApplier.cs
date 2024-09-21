@@ -28,7 +28,7 @@
             }
             catch (Exception exception)
             {
-                app.Logger.LogError(exception, "An error occurred applying migrations or creating database. Error: {exceptionMessage}", exception.Message);
+                app.Logger.LogError(exception, "An error occurred applying migrations or creating database. Error: {ExceptionMessage}", exception.Message);
             }
         }
 

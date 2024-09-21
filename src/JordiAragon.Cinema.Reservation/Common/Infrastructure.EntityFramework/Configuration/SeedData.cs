@@ -38,6 +38,7 @@
             User.Create(
                 id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2139:Exceptions should be either logged or rethrown but not both", Justification = "Ok for seeding data.")]
         public static void Initialize(WebApplication app, bool isDevelopment)
         {
             if (!isDevelopment)
