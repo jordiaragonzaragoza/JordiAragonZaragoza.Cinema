@@ -52,7 +52,7 @@
                 app.UseSwaggerGen();
             }
 
-            app.MapHealthChecks("/health");
+            ////app.MapHealthChecks("/health");
 
             return app;
         }

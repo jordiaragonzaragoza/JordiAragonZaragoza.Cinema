@@ -31,6 +31,7 @@
 		<InternalsVisibleTo Include="JordiAragon.Cinema.Reservation.TestUtilities" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
@@ -59,5 +60,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
+	  <ProjectReference Include="..\JordiAragon.Cinema.ServiceDefaults\JordiAragon.Cinema.ServiceDefaults.csproj" />
 	</ItemGroup>
 </Project>

@@ -5,6 +5,8 @@
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+
     using Quartz;
     using Volo.Abp.Guids;
 
@@ -20,21 +22,21 @@
 
             serviceCollection.AddDbContext<ReservationBusinessModelContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("BusinessModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("JordiAragonCinemaReservationBusinessModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
             });
 
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("ReadModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("JordiAragonCinemaReservationReadModelStore"))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationBusinessModelContext>();
+            ////serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationBusinessModelContext>();
 
-            serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationReadModelContext>();
+            ////serviceCollection.AddHealthChecks().AddDbContextCheck<ReservationReadModelContext>();
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -55,6 +57,15 @@
             });
 
             return serviceCollection;
+        }
+
+        public static IHostApplicationBuilder AddEntityFrameworkServices(this IHostApplicationBuilder hostApplicationBuilder)
+        {
+            hostApplicationBuilder.EnrichNpgsqlDbContext<ReservationBusinessModelContext>();
+
+            hostApplicationBuilder.EnrichNpgsqlDbContext<ReservationReadModelContext>();
+
+            return hostApplicationBuilder;
         }
     }
 }

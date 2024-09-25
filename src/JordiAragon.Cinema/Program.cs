@@ -1,0 +1,35 @@
+namespace JordiAragon.Cinema
+{
+    using Aspire.Hosting;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Program class should not have a protected constructor or the static keyword because is used in WebApplicationFactory for functional and integration test.")]
+    public sealed class Program
+    {
+        public static void Main(string[] args)
+        {
+              var builder = DistributedApplication.CreateBuilder(args);
+
+              var postgresServer = builder.AddPostgres("PostgresServer")
+                                          .WithDataVolume()
+                                          .WithPgAdmin();
+
+              var reservationBusinessModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationBusinessModelStore");
+              var reservationReadModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationReadModelStore");
+
+              builder.AddContainer("EventStoreDbServer", "eventstore/eventstore", "23.10.1-alpha-arm64v8")
+                     .WithEnvironment("EVENTSTORE_CLUSTER_SIZE", "1")
+                     .WithEnvironment("EVENTSTORE_RUN_PROJECTIONS", "All")
+                     .WithEnvironment("EVENTSTORE_START_STANDARD_PROJECTIONS", "true")
+                     .WithEnvironment("EVENTSTORE_INSECURE", "true")
+                     .WithEnvironment("EVENTSTORE_ENABLE_EXTERNAL_TCP", "true")
+                     .WithEnvironment("EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP", "true")
+                     .WithEndpoint(2113, 2113, scheme: "https");
+
+              builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
+                     .WithReference(reservationBusinessModelDb)
+                     .WithReference(reservationReadModelDb);
+
+              builder.Build().Run();
+        }
+    }
+}
