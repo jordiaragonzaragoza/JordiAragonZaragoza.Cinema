@@ -27,7 +27,8 @@ namespace JordiAragon.Cinema
 
               builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
                      .WithReference(reservationBusinessModelDb)
-                     .WithReference(reservationReadModelDb);
+                     .WithReference(reservationReadModelDb)
+                     .WithHttpsEndpoint(7001, 7001, isProxied: false);
 
               builder.Build().Run();
         }
