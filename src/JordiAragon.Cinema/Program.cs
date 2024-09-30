@@ -10,7 +10,7 @@ namespace JordiAragon.Cinema
               var builder = DistributedApplication.CreateBuilder(args);
 
               var postgresServer = builder.AddPostgres("PostgresServer")
-                                          .WithDataVolume()
+                                          .WithDataBindMount("../../containers/postgres/data")
                                           .WithPgAdmin();
 
               var reservationBusinessModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationBusinessModelStore");
@@ -23,6 +23,8 @@ namespace JordiAragon.Cinema
                      .WithEnvironment("EVENTSTORE_INSECURE", "true")
                      .WithEnvironment("EVENTSTORE_ENABLE_EXTERNAL_TCP", "true")
                      .WithEnvironment("EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP", "true")
+                     .WithBindMount("../../containers/eventstore/data/", "/var/lib/eventstore")
+                     .WithBindMount("../../containers/eventstore/logs/", "/var/log/eventstore")
                      .WithEndpoint(2113, 2113, scheme: "https");
 
               builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
