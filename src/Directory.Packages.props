@@ -21,6 +21,7 @@
 	<ItemGroup>
 		<PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.0" />
 		<PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.0" />
+		<PackageVersion Include="Aspire.Hosting.Seq" Version="8.2.1" />
 		<PackageVersion Include="Ardalis.GuardClauses" Version="4.6.0" />
 		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.8.0" />
 		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.2.0" />
@@ -30,6 +31,7 @@
 		<PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
 		<PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
 		<PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.0" />
+		<PackageVersion Include="Aspire.Seq" Version="8.2.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
@@ -58,9 +60,9 @@
 		<PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
 		<PackageVersion Include="Serilog.Enrichers.Thread" Version="4.0.0" />
 		<PackageVersion Include="Serilog.Sinks.Async" Version="2.0.0" />
-		<PackageVersion Include="Serilog.Sinks.AzureTableStorage" Version="10.0.1" />
 		<PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
-		<PackageVersion Include="Serilog.Sinks.Graylog" Version="3.1.1" />
+		<PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.1.1" />
+		<PackageVersion Include="Serilog.Sinks.Seq" Version="8.0.0" />
 		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
 		<PackageVersion Include="Swashbuckle.AspNetCore" Version="6.7.0" />
 		<PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.7.3" />

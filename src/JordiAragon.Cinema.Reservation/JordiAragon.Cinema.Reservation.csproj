@@ -32,6 +32,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Aspire.Seq" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
@@ -53,9 +54,9 @@
 		<PackageReference Include="Serilog.Enrichers.Environment" />
 		<PackageReference Include="Serilog.Enrichers.Thread" />
 		<PackageReference Include="Serilog.Sinks.Async" />
-		<PackageReference Include="Serilog.Sinks.AzureTableStorage" />
 		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="Serilog.Sinks.Graylog" />
+		<PackageReference Include="Serilog.Sinks.OpenTelemetry"  />
+		<PackageReference Include="Serilog.Sinks.Seq" />
     </ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />

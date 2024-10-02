@@ -12,8 +12,6 @@
         {
             Guard.Against.Null(configuration, nameof(configuration));
 
-            serviceCollection.Configure<SerilogConsoleOptions>(configuration.GetSection(SerilogConsoleOptions.Section));
-
             serviceCollection.AddCors(options =>
             {
                 options.AddPolicy(

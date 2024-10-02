@@ -29,6 +29,7 @@
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.AddServiceDefaults();
+            builder.AddSeqEndpoint("SeqServer");
 
             var configuration = builder.Configuration;
 
@@ -72,7 +73,7 @@
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
             MigrationsApplier.Initialize(app, builder.Environment.EnvironmentName == "Development");
-            ////SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

@@ -10,8 +10,9 @@ namespace JordiAragon.Cinema
               var builder = DistributedApplication.CreateBuilder(args);
 
               var postgresServer = builder.AddPostgres("PostgresServer")
-                                          .WithDataBindMount("../../containers/postgres/data")
-                                          .WithPgAdmin();
+                                          .WithImageTag("15.1-alpine")
+                                          .WithDataBindMount("../../containers/postgres/data");
+                                          ////.WithPgAdmin();
 
               var reservationBusinessModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationBusinessModelStore");
               var reservationReadModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationReadModelStore");
@@ -27,9 +28,14 @@ namespace JordiAragon.Cinema
                      .WithBindMount("../../containers/eventstore/logs/", "/var/log/eventstore")
                      .WithEndpoint(2113, 2113, scheme: "https");
 
+              var seqServer = builder.AddSeq("SeqServer")
+                                     .WithDataBindMount("../../containers/seq/data")
+                                     .ExcludeFromManifest();
+
               builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
                      .WithReference(reservationBusinessModelDb)
                      .WithReference(reservationReadModelDb)
+                     .WithReference(seqServer)
                      .WithHttpsEndpoint(7001, 7001, isProxied: false);
 
               builder.Build().Run();
