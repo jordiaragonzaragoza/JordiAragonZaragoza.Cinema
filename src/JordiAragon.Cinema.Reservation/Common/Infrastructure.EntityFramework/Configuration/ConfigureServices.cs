@@ -59,8 +59,9 @@
             return serviceCollection;
         }
 
-        public static IHostApplicationBuilder AddEntityFrameworkServices(this IHostApplicationBuilder hostApplicationBuilder)
+        public static IHostApplicationBuilder EnrichDbContexts(this IHostApplicationBuilder hostApplicationBuilder)
         {
+            // Configures retries, health check, logging and telemetry for the DbContext".
             hostApplicationBuilder.EnrichNpgsqlDbContext<ReservationBusinessModelContext>();
 
             hostApplicationBuilder.EnrichNpgsqlDbContext<ReservationReadModelContext>();

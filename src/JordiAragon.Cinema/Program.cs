@@ -28,14 +28,14 @@ namespace JordiAragon.Cinema
                      .WithBindMount("../../containers/eventstore/logs/", "/var/log/eventstore")
                      .WithEndpoint(2113, 2113, scheme: "https");
 
-              var seqServer = builder.AddSeq("SeqServer")
+              var seq = builder.AddSeq("seq", port: 5341)
                                      .WithDataBindMount("../../containers/seq/data")
                                      .ExcludeFromManifest();
 
               builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
                      .WithReference(reservationBusinessModelDb)
                      .WithReference(reservationReadModelDb)
-                     .WithReference(seqServer)
+                     .WithReference(seq)
                      .WithHttpsEndpoint(7001, 7001, isProxied: false);
 
               builder.Build().Run();

@@ -29,7 +29,7 @@
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.AddServiceDefaults();
-            builder.AddSeqEndpoint("SeqServer");
+            builder.AddSeqEndpoint("seq");
 
             var configuration = builder.Configuration;
 
@@ -43,11 +43,10 @@
 
             // Add services to the container.
             builder.Services.AddApplicationServices(configuration);
-            builder.Services.AddSharedKernelApplicationServices();
             builder.Services.AddHttpRestfulApiServices(configuration);
             builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
-            builder.AddEntityFrameworkServices();
+            builder.EnrichDbContexts();
             builder.Services.AddSharedKernelEventStoreServices(configuration);
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
