@@ -22,18 +22,9 @@
 		<PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.0" />
 		<PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="8.2.0" />
 		<PackageVersion Include="Aspire.Hosting.Seq" Version="8.2.1" />
-		<PackageVersion Include="Ardalis.GuardClauses" Version="4.6.0" />
-		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.8.0" />
-		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.2.0" />
-		<PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
-		<PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
-		<PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
-		<PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
-		<PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
 		<PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.0" />
 		<PackageVersion Include="Aspire.Seq" Version="8.2.1" />
-	</ItemGroup>
-	<ItemGroup>
+		<PackageVersion Include="Ardalis.GuardClauses" Version="4.6.0" />
 		<PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageVersion Include="FastEndpoints.Swagger" Version="5.29.0" />
 		<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
@@ -47,9 +38,16 @@
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8" />
 		<PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
 		<PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.8" />
+		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.8.0" />
 		<PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.2.0" />
 		<PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.11.20" />
 		<PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+		<PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
+		<PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
+		<PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
+		<PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
+		<PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
 		<PackageVersion Include="Quartz" Version="3.13.0" />
 		<PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="3.13.0" />
 		<PackageVersion Include="Quartz.Extensions.Hosting" Version="3.13.0" />
