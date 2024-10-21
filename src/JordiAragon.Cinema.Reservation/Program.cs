@@ -72,7 +72,7 @@
             ConfigureWebApplication.AddWebApplicationConfigurations(app);
 
             MigrationsApplier.Initialize(app, builder.Environment.EnvironmentName == "Development");
-            SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            ////SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

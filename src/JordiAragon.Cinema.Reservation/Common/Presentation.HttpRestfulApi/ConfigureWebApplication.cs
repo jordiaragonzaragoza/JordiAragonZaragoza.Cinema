@@ -3,6 +3,7 @@
     using Ardalis.GuardClauses;
     using FastEndpoints;
     using FastEndpoints.Swagger;
+    using JordiAragon.Cinema.ServiceDefaults;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Helpers;
     using JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Middlewares;
     using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,7 @@
             }
 
             ////app.MapHealthChecks("/health");
+            app.MapDefaultEndpoints();
 
             return app;
         }

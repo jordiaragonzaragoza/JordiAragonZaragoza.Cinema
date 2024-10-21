@@ -1,8 +1,8 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore
 {
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Entities;
-    using JordiAragon.SharedKernel.Infrastructure;
     using JordiAragon.SharedKernel.Infrastructure.EventStore;
 
     public sealed class ReservationRepository<TAggregate, TId> : BaseRepository<TAggregate, TId>

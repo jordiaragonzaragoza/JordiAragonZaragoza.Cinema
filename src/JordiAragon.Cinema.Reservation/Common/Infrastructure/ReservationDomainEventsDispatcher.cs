@@ -1,8 +1,8 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure
 {
+    using JordiAragon.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragon.SharedKernel.Domain.Events.Services;
     using JordiAragon.SharedKernel.Infrastructure;
-    using JordiAragon.SharedKernel.Infrastructure.Interfaces;
 
     public sealed class ReservationDomainEventsDispatcher : BaseDomainEventsDispatcher
     {
