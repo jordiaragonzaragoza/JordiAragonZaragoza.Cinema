@@ -47,7 +47,9 @@
             builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.EnrichDbContexts();
-            builder.Services.AddSharedKernelEventStoreServices(configuration);
+
+            // TODO: Temporal removed. Will be enabled on using event sourcing as a aggregates store.
+            ////builder.Services.AddSharedKernelEventStoreServices(configuration);
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
