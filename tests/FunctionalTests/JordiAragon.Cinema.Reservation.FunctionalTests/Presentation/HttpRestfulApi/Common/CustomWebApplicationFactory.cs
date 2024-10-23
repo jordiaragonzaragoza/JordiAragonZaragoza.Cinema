@@ -79,15 +79,6 @@
                     {
                         options.ConnectionString = this.eventStoreDbConnectionString;
                     });
-
-                services
-                    .RemoveAll<EventStoreClient>()
-                    .RemoveAll<EventTypeMapper>()
-                    .RemoveAll<EventStoreDbSubscriptionToAll>()
-                    .AddSharedKernelEventStoreServices(new ConfigurationBuilder().AddInMemoryCollection(new[]
-                            {
-                                new KeyValuePair<string, string?>("EventStore:ConnectionString", this.eventStoreDbConnectionString),
-                            }).Build());
             });
         }
     }

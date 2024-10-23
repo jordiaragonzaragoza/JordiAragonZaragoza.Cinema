@@ -29,7 +29,10 @@
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.AddServiceDefaults();
-            builder.AddSeqEndpoint("seq");
+            builder.AddSeqEndpoint("seq", static settings =>
+            {
+                settings.DisableHealthChecks = true;
+            });
 
             var configuration = builder.Configuration;
 
