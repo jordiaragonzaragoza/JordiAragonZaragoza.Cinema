@@ -1,6 +1,8 @@
 namespace JordiAragon.Cinema
 {
+    using System.Reflection.Metadata;
     using Aspire.Hosting;
+    using JordiAragon.Cinema.SharedKernel;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Program class should not have a protected constructor or the static keyword because is used for functional and integration test.")]
     public sealed class Program
@@ -9,15 +11,15 @@ namespace JordiAragon.Cinema
         {
               var builder = DistributedApplication.CreateBuilder(args);
 
-              var postgresServer = builder.AddPostgres("PostgresServer")
+              var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                           .WithImageTag("15.1-alpine")
                                           .WithDataBindMount("../../containers/postgres/data");
                                           ////.WithPgAdmin();
 
-              var reservationBusinessModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationBusinessModelStore");
-              var reservationReadModelDb = postgresServer.AddDatabase("JordiAragonCinemaReservationReadModelStore");
+              var reservationBusinessModelDb = postgresServer.AddDatabase(Constants.JordiAragonCinemaReservationBusinessModelStore);
+              var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonCinemaReservationReadModelStore);
 
-              builder.AddContainer("EventStoreDbServer", "eventstore/eventstore", "23.10.1-alpha-arm64v8")
+              builder.AddContainer(Constants.EventStoreDbServer, "eventstore/eventstore", "23.10.1-alpha-arm64v8")
                      .WithEnvironment("EVENTSTORE_CLUSTER_SIZE", "1")
                      .WithEnvironment("EVENTSTORE_RUN_PROJECTIONS", "All")
                      .WithEnvironment("EVENTSTORE_START_STANDARD_PROJECTIONS", "true")
@@ -28,11 +30,11 @@ namespace JordiAragon.Cinema
                      .WithBindMount("../../containers/eventstore/logs/", "/var/log/eventstore")
                      .WithEndpoint(2113, 2113, scheme: "https");
 
-              var seq = builder.AddSeq("seq", port: 5341)
+              var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
                                      .WithDataBindMount("../../containers/seq/data")
                                      .ExcludeFromManifest();
 
-              builder.AddProject<Projects.JordiAragon_Cinema_Reservation>("JordiAragonCinemaReservation")
+              builder.AddProject<Projects.JordiAragon_Cinema_Reservation>(Constants.JordiAragonCinemaReservation)
                      .WithReference(reservationBusinessModelDb)
                      .WithReference(reservationReadModelDb)
                      .WithReference(seq)

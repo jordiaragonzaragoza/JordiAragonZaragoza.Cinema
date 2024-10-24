@@ -14,6 +14,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Constants = JordiAragon.Cinema.SharedKernel.Constants;
     using EventStoreModule = JordiAragon.Cinema.Reservation.Common.Infrastructure.EventStore.Configuration.EventStoreModule;
     using SharedKernelApplicationModule = JordiAragon.SharedKernel.Application.AssemblyConfiguration.ApplicationModule;
     using SharedKernelDomainModule = JordiAragon.SharedKernel.Domain.AssemblyConfiguration.DomainModule;
@@ -29,7 +30,7 @@
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.AddServiceDefaults();
-            builder.AddSeqEndpoint("seq", static settings =>
+            builder.AddSeqEndpoint(Constants.SeqServer, static settings =>
             {
                 settings.DisableHealthChecks = true;
             });

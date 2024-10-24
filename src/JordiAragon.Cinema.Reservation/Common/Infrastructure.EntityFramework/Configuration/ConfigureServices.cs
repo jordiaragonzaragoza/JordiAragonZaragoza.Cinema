@@ -1,12 +1,12 @@
 ﻿namespace JordiAragon.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration
 {
     using JordiAragon.Cinema.Reservation.Common.Infrastructure.Outbox;
+    using JordiAragon.Cinema.SharedKernel;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
     using Quartz;
     using Volo.Abp.Guids;
 
@@ -22,13 +22,13 @@
 
             serviceCollection.AddDbContext<ReservationBusinessModelContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("JordiAragonCinemaReservationBusinessModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.JordiAragonCinemaReservationBusinessModelStore))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
             });
 
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("JordiAragonCinemaReservationReadModelStore"))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.JordiAragonCinemaReservationReadModelStore))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);

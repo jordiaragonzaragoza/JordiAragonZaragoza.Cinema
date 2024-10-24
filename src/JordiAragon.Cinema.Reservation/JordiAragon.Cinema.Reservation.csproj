@@ -62,5 +62,6 @@
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
 	  <ProjectReference Include="..\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragon.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
 	  <ProjectReference Include="..\JordiAragon.Cinema.ServiceDefaults\JordiAragon.Cinema.ServiceDefaults.csproj" />
+	  <ProjectReference Include="..\JordiAragon.Cinema.SharedKernel\JordiAragon.Cinema.SharedKernel.csproj" />
 	</ItemGroup>
 </Project>
