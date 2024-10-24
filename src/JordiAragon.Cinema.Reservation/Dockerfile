@@ -7,6 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+COPY ["src/Directory.Build.props", "src/"]
 COPY ["src/Directory.Packages.props", "src/"]
 COPY ["nuget.config", "."]
 COPY ["src/JordiAragon.Cinema/JordiAragon.Cinema.csproj", "src/JordiAragon.Cinema/"]
