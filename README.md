@@ -8,9 +8,9 @@ Loving it? Please show your support by giving this project a star!
 
 ## Getting Started 🏃
 
-- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 7 SDK).
-- You will need also Docker Desktop running on your machine.
-- To run the project just find and build the solution file JordiAragon.Cinema.Reservation.sln and select docker-compose as startup project.
+- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 8 SDK).
+- You will need also Docker Desktop running on your machine and NET Aspire Workload (installed either Visual Studio or the .NET CLI)
+- To run the project just find and build the solution file JordiAragon.Cinema.Reservation.sln and press F5
 
 ## Architecture: 🏗️
 
@@ -37,6 +37,7 @@ Loving it? Please show your support by giving this project a star!
 
 - ASP.NET
 - Entity Framework Core
+- .NET Aspire
 - FastEndpoints
 - MediatR
 - AutoMapper
@@ -47,6 +48,7 @@ Loving it? Please show your support by giving this project a star!
 - Ardalis.GuardClauses
 - FluentValidator
 - Serilog
+- Seq
 - Quartz
 - Polly
 - Swagger UI with JWT support
@@ -57,7 +59,7 @@ Loving it? Please show your support by giving this project a star!
 
 ## Cross-cutting concerns 🏃
 
-- Outbox pattern to handle the domain event out side the source transaction with resilence idempotent consumers support.
+- Outbox pattern to handle the domain event outside the source transaction with resilence idempotent consumers support.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
 - REPR Pattern using FastEndpoints
@@ -124,6 +126,11 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 - <a href="https://www.youtube.com/@CodeOpinion" target="_blank">CodeOpinion: Youtube Channel</a>
 - <a href="https://www.youtube.com/@amantinband" target="_blank">Amichai Mantinband: Youtube Channel</a>
 - <a href="https://www.youtube.com/@MilanJovanovicTech" target="_blank">Milan Jovanović: Youtube Channel</a>
+
+## Versions
+
+The main branch is now on .NET 8 The following previous versions are available:
+* [.NET 7](https://github.com/jordiaragonzaragoza/JordiAragon.Cinema/tree/net7.0)
 
 ## About: 🧐
 
