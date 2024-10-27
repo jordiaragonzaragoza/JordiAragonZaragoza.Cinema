@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragon.Cinema</RepositoryUrl>
+		<RepositoryUrl>https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema</RepositoryUrl>
 		<Authors>Jordi Aragon Zaragoza</Authors>
 		<UseProjectReference>false</UseProjectReference>
 		<AnalysisLevel>latest</AnalysisLevel>
