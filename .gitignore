@@ -381,3 +381,6 @@ containers/eventstore/logs
 
 # Postgresql
 containers/postgres/data
+
+# Seq
+containers/seq/data

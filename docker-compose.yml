@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  jordiaragon.cinema.reservation:
-    image: ${DOCKER_REGISTRY-}jordiaragon.cinema.reservation
-    container_name: jordiaragon.cinema.reservation
+  jordiaragonzaragoza.cinema.reservation:
+    image: ${DOCKER_REGISTRY-}jordiaragonzaragoza.cinema.reservation
+    container_name: jordiaragonzaragoza.cinema.reservation
     build:
       context: .
-      dockerfile: src/JordiAragon.Cinema.Reservation/Dockerfile
+      dockerfile: src/JordiAragonZaragoza.Cinema.Reservation/Dockerfile
 
   postgres.cinema:
     image: postgres:15.1-alpine

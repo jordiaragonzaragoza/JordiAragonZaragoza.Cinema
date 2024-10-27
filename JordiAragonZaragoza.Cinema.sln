@@ -1,0 +1,140 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E41A34A8-F363-4398-8EB3-66616320F2C8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		nuget.config = nuget.config
+		GlobalSuppressions.cs = GlobalSuppressions.cs
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9FA-4575-A746-BC5F572AA12F}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Packages.props = src\Directory.Packages.props
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj", "{FDB37218-D076-46AF-A9B2-BB73F330E70D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2", "src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj", "{FB21D050-710C-4432-A786-F369653E6D24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation", "src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj", "{38FECB83-906F-4B6C-B721-AC515C6EA2E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}"
+	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
+		tests\Directory.Packages.props = tests\Directory.Packages.props
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{B7AA27C9-CBB9-40DC-86D5-B6224E693854}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.UnitTests", "tests\UnitTests\JordiAragonZaragoza.Cinema.Reservation.UnitTests\JordiAragonZaragoza.Cinema.Reservation.UnitTests.csproj", "{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{2AB57345-0FA2-4944-84C8-973D8F0FD96D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.IntegrationTests", "tests\IntegrationTests\JordiAragonZaragoza.Cinema.Reservation.IntegrationTests\JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.csproj", "{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunctionalTests", "FunctionalTests", "{3663F1BD-7551-43FA-9A49-5703A63ADEB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.FunctionalTests", "tests\FunctionalTests\JordiAragonZaragoza.Cinema.Reservation.FunctionalTests\JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.csproj", "{51013E47-35CE-4280-A6C3-D25B402C0C1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArchitectureTests", "ArchitectureTests", "{8140039B-A305-40E1-A5CC-A5E3982DBE5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.ArchitectureTests", "tests\ArchitectureTests\JordiAragonZaragoza.Cinema.Reservation.ArchitectureTests\JordiAragonZaragoza.Cinema.Reservation.ArchitectureTests.csproj", "{0E8A32A5-501D-44B1-8823-6671E05609C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestUtilities", "TestUtilities", "{A6B78886-51CB-4B7B-B383-384BA24CF38C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.TestUtilities", "tests\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj", "{59B41220-D655-467A-931D-E7D6BAA68253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.SharedKernel", "src\JordiAragonZaragoza.Cinema.SharedKernel\JordiAragonZaragoza.Cinema.SharedKernel.csproj", "{43CB2786-1C95-4F9C-A69F-E9E8252E61CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema", "src\JordiAragonZaragoza.Cinema\JordiAragonZaragoza.Cinema.csproj", "{DEF7A234-8BE2-4B95-9380-B0BB3793DACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.ServiceDefaults", "src\JordiAragonZaragoza.Cinema.ServiceDefaults\JordiAragonZaragoza.Cinema.ServiceDefaults.csproj", "{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDB37218-D076-46AF-A9B2-BB73F330E70D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB37218-D076-46AF-A9B2-BB73F330E70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB37218-D076-46AF-A9B2-BB73F330E70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB37218-D076-46AF-A9B2-BB73F330E70D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB21D050-710C-4432-A786-F369653E6D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB21D050-710C-4432-A786-F369653E6D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB21D050-710C-4432-A786-F369653E6D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB21D050-710C-4432-A786-F369653E6D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38FECB83-906F-4B6C-B721-AC515C6EA2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38FECB83-906F-4B6C-B721-AC515C6EA2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38FECB83-906F-4B6C-B721-AC515C6EA2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38FECB83-906F-4B6C-B721-AC515C6EA2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51013E47-35CE-4280-A6C3-D25B402C0C1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8A32A5-501D-44B1-8823-6671E05609C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B41220-D655-467A-931D-E7D6BAA68253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43CB2786-1C95-4F9C-A69F-E9E8252E61CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43CB2786-1C95-4F9C-A69F-E9E8252E61CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43CB2786-1C95-4F9C-A69F-E9E8252E61CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43CB2786-1C95-4F9C-A69F-E9E8252E61CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEF7A234-8BE2-4B95-9380-B0BB3793DACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF7A234-8BE2-4B95-9380-B0BB3793DACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF7A234-8BE2-4B95-9380-B0BB3793DACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF7A234-8BE2-4B95-9380-B0BB3793DACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A82D7CB3-8FCC-470B-8AB9-2932F59BF4D9}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDB37218-D076-46AF-A9B2-BB73F330E70D} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{FB21D050-710C-4432-A786-F369653E6D24} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{38FECB83-906F-4B6C-B721-AC515C6EA2E7} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{B7AA27C9-CBB9-40DC-86D5-B6224E693854} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{0929F55F-4DA8-4BD2-AEA7-986B66CB93FA} = {B7AA27C9-CBB9-40DC-86D5-B6224E693854}
+		{2AB57345-0FA2-4944-84C8-973D8F0FD96D} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{E5E1CE24-0459-4B90-80AD-B34311DC8C8F} = {2AB57345-0FA2-4944-84C8-973D8F0FD96D}
+		{3663F1BD-7551-43FA-9A49-5703A63ADEB6} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{51013E47-35CE-4280-A6C3-D25B402C0C1E} = {3663F1BD-7551-43FA-9A49-5703A63ADEB6}
+		{8140039B-A305-40E1-A5CC-A5E3982DBE5B} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{0E8A32A5-501D-44B1-8823-6671E05609C0} = {8140039B-A305-40E1-A5CC-A5E3982DBE5B}
+		{A6B78886-51CB-4B7B-B383-384BA24CF38C} = {20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}
+		{59B41220-D655-467A-931D-E7D6BAA68253} = {A6B78886-51CB-4B7B-B383-384BA24CF38C}
+		{43CB2786-1C95-4F9C-A69F-E9E8252E61CE} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{DEF7A234-8BE2-4B95-9380-B0BB3793DACA} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{658B35D5-0B76-4908-9B03-5DE8CE3C2BAC} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+	EndGlobalSection
+EndGlobal
