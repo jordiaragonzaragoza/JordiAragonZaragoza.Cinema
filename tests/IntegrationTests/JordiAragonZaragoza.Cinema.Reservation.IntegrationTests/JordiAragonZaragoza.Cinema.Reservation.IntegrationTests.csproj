@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NSubstitute" />
+		<PackageReference Include="Respawn" />
+		<PackageReference Include="Testcontainers.PostgreSql" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.msbuild">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\AddTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\UpdateTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\DeleteTests.cs" />
+	  <Compile Remove="Infrastructure\EntityFramework\Repositories\BusinessModel\Showtime\GetTests.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
+	  <ProjectReference Include="..\..\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj" />
+	</ItemGroup>
+</Project>

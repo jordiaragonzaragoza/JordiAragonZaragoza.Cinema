@@ -1,0 +1,36 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.EventHandlers
+{
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+
+    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
+
+    public sealed class ShowtimeEndedEventHandler : IEventHandler<ShowtimeEndedEvent>
+    {
+        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
+
+        public ShowtimeEndedEventHandler(
+            IRepository<Auditorium, AuditoriumId> auditoriumRepository)
+        {
+            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+        }
+
+        public async Task Handle(ShowtimeEndedEvent notification, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(notification, nameof(notification));
+
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(notification.AuditoriumId), cancellationToken)
+                                    ?? throw new NotFoundException(nameof(Auditorium), notification.AuditoriumId.ToString());
+
+            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(notification.AggregateId));
+
+            await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
+        }
+    }
+}
