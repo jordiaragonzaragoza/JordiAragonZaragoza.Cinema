@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+	  <DockerComposeProjectPath>../../docker-compose.dcproj</DockerComposeProjectPath>
+	  <UserSecretsId>71462ee6-5b91-4419-9b35-a015de689fe0</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Domain\JordiAragonZaragoza.SharedKernel.Domain.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Application\JordiAragonZaragoza.SharedKernel.Application.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Domain.Contracts\JordiAragonZaragoza.SharedKernel.Domain.Contracts.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Application.Contracts\JordiAragonZaragoza.SharedKernel.Application.Contracts.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel\JordiAragonZaragoza.SharedKernel.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure\JordiAragonZaragoza.SharedKernel.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework\JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.csproj" />
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Domain" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Application" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Domain.Contracts" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Application.Contracts" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore" />
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" />
+	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.UnitTests" />
+		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.TestUtilities" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Aspire.Seq" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+		<PackageReference Include="Quartz" />
+		<PackageReference Include="Quartz.Extensions.DependencyInjection" />
+		<PackageReference Include="FastEndpoints.Swagger" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Quartz.Extensions.Hosting" />
+		<PackageReference Include="Quartz.Serialization.Json" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+		<PackageReference Include="Serilog.AspNetCore" />
+		<PackageReference Include="Serilog.Enrichers.Environment" />
+		<PackageReference Include="Serilog.Enrichers.Thread" />
+		<PackageReference Include="Serilog.Sinks.Async" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Sinks.OpenTelemetry"  />
+		<PackageReference Include="Serilog.Sinks.Seq" />
+    </ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
+	  <ProjectReference Include="..\JordiAragonZaragoza.Cinema.ServiceDefaults\JordiAragonZaragoza.Cinema.ServiceDefaults.csproj" />
+	  <ProjectReference Include="..\JordiAragonZaragoza.Cinema.SharedKernel\JordiAragonZaragoza.Cinema.SharedKernel.csproj" />
+	</ItemGroup>
+</Project>

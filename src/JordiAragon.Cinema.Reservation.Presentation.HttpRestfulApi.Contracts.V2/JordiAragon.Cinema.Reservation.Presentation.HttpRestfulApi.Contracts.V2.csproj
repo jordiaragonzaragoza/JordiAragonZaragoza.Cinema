@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
-		<ProjectReference Include="..\..\..\JordiAragon.SharedKernel\src\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts\JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
-		<PackageReference Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts" />
-	</ItemGroup>
-</Project>

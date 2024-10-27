@@ -10,7 +10,7 @@ Loving it? Please show your support by giving this project a star!
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 8 SDK).
 - You will need also Docker Desktop running on your machine and NET Aspire Workload (installed either Visual Studio or the .NET CLI)
-- To run the project just find and build the solution file JordiAragon.Cinema.Reservation.sln and press F5
+- To run the project just find and build the solution file JordiAragonZaragoza.Cinema.Reservation.sln and press F5
 
 ## Architecture: 🏗️
 
@@ -27,11 +27,11 @@ Loving it? Please show your support by giving this project a star!
 - Custom API Error Handling with Problems Details
 
 ## Custom Shared Kernel: ⚙️
-- This project uses [JordiAragon.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragon.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
+- This project uses [JordiAragonZaragoza.SharedKernel](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.SharedKernel) building blocks to follow DDD principles and Clean Architecture. 
 
 ## Diagram: 📍
 
-![JordiAragon.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
+![JordiAragonZaragoza.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
 
 ## Technologies implemented: ⚒️
 
@@ -130,7 +130,7 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 ## Versions
 
 The main branch is now on .NET 8 The following previous versions are available:
-* [.NET 7](https://github.com/jordiaragonzaragoza/JordiAragon.Cinema/tree/net7.0)
+* [.NET 7](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net7.0)
 
 ## About: 🧐
 

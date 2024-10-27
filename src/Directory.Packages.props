@@ -5,18 +5,18 @@
 		<SharedKernelVersion>8.0.4</SharedKernelVersion>
 	</PropertyGroup>
 	<ItemGroup>
-        <PackageVersion Include="JordiAragon.SharedKernel" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Application.Contracts.IntegrationMessages" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Contracts" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Domain.Contracts" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EntityFramework" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Infrastructure.EventStore" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragon.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application.Contracts.IntegrationMessages" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Domain" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Domain.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Infrastructure" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="$(SharedKernelVersion)" />
     </ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.1" />
