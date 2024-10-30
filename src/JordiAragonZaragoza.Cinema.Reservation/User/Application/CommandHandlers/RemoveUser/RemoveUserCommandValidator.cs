@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHanders.RemoveUser
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemoveUser
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;

@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHanders.AddUser
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.AddUser
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;

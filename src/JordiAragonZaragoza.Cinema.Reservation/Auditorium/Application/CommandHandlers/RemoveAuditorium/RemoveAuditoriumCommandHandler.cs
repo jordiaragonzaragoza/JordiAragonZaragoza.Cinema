@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHanders.RemoveAuditorium
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers.RemoveAuditorium
 {
     using System.Threading;
     using System.Threading.Tasks;

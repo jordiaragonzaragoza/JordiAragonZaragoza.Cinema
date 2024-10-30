@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHanders.RemoveMovie
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.RemoveMovie
 {
     using System.Threading;
     using System.Threading.Tasks;

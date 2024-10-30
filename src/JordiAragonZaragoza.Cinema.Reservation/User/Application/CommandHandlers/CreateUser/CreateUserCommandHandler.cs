@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHanders.CreateUser
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.CreateUser
 {
     using System.Threading;
     using System.Threading.Tasks;

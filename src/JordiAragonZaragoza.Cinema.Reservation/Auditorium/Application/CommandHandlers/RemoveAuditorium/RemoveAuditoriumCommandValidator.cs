@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHanders.RemoveAuditorium
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers.RemoveAuditorium
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Commands;

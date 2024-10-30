@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHanders.AddMovie
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.AddMovie
 {
     using System.Threading;
     using System.Threading.Tasks;
