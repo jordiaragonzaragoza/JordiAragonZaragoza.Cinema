@@ -37,6 +37,9 @@
 
                 case UserRemovedEvent:
                     break;
+
+                default:
+                    throw new EventCannotBeAppliedToAggregateException<User, UserId>(this, domainEvent);
             }
         }
 

@@ -69,6 +69,9 @@
                 case ActiveShowtimeRemovedEvent @event:
                     this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
                     break;
+
+                default:
+                    throw new EventCannotBeAppliedToAggregateException<Movie, MovieId>(this, domainEvent);
             }
         }
 

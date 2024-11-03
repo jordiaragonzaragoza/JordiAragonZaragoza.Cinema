@@ -72,6 +72,9 @@
                 case ActiveShowtimeRemovedEvent @event:
                     this.Applier(@event);
                     break;
+
+                default:
+                    throw new EventCannotBeAppliedToAggregateException<Auditorium, AuditoriumId>(this, domainEvent);
             }
         }
 

@@ -92,6 +92,9 @@
                 case ExpiredReservedSeatsEvent @event:
                     this.Applier(@event);
                     break;
+
+                default:
+                    throw new EventCannotBeAppliedToAggregateException<Showtime, ShowtimeId>(this, domainEvent);
             }
         }
 
