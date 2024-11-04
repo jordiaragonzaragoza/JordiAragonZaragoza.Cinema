@@ -196,7 +196,7 @@
                                                                             e.AggregateId == showtime.Id &&
                                                                             e.TicketId == ticketCreated.Id &&
                                                                             e.SeatIds.Count() == seatIds.Count &&
-                                                                            e.SeatIds.All(id => seatIds.Contains(SeatId.Create(id))) &&
+                                                                            e.SeatIds.All(id => seatIds.Contains(new SeatId(id))) &&
                                                                             e.CreatedTimeOnUtc == createdTimeOnUtc);
         }
 

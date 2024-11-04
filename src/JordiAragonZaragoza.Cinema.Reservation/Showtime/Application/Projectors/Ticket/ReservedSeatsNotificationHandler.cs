@@ -41,19 +41,19 @@
 
             var @event = notification.Event;
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(@event.AggregateId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)
             {
                 throw new NotFoundException(nameof(Showtime), @event.AggregateId.ToString());
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(existingShowtime.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(existingShowtime.MovieId), cancellationToken);
             if (existingMovie is null)
             {
                 throw new NotFoundException(nameof(Movie), existingShowtime.MovieId.ToString()!);
             }
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(existingShowtime.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString()!);

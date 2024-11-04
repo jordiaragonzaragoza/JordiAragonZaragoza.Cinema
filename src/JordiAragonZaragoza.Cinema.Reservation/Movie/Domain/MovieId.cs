@@ -5,12 +5,9 @@
 
     public sealed class MovieId : BaseAggregateRootId<Guid>
     {
-        private MovieId(Guid value)
+        public MovieId(Guid value)
             : base(value)
         {
         }
-
-        public static MovieId Create(Guid id)
-            => new(id);
     }
 }

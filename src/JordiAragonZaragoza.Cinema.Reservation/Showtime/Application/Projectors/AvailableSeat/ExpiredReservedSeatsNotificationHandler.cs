@@ -42,13 +42,13 @@
 
             var @event = notification.Event;
 
-            var existingShowtime = await this.showtimeReadRepository.GetByIdAsync(ShowtimeId.Create(@event.AggregateId), cancellationToken);
+            var existingShowtime = await this.showtimeReadRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)
             {
                 throw new NotFoundException(nameof(Showtime), @event.AggregateId.ToString());
             }
 
-            var existingAuditorium = await this.auditoriumReadRepository.GetByIdAsync(AuditoriumId.Create(existingShowtime.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString()!);

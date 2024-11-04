@@ -22,7 +22,7 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(request.MovieId), cancellationToken);
             if (existingMovie is null)
             {
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");

@@ -22,7 +22,7 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");

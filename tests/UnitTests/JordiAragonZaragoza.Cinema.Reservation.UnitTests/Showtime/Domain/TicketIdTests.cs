@@ -14,7 +14,7 @@
             var id = Guid.Empty;
 
             // Act
-            Func<TicketId> ticketId = () => TicketId.Create(id);
+            Func<TicketId> ticketId = () => new TicketId(id);
 
             // Assert
             ticketId.Should().Throw<ArgumentException>();

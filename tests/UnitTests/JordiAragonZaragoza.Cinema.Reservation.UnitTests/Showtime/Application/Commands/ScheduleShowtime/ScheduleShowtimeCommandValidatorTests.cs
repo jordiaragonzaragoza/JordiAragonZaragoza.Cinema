@@ -52,7 +52,7 @@
         {
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
-                AuditoriumId: AuditoriumId.Create(Guid.NewGuid()),
+                AuditoriumId: new AuditoriumId(Guid.NewGuid()),
                 MovieId: Guid.Empty,
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
@@ -73,7 +73,7 @@
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
                 AuditoriumId: Guid.Empty,
-                MovieId: MovieId.Create(Guid.NewGuid()),
+                MovieId: new MovieId(Guid.NewGuid()),
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
             this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
@@ -92,8 +92,8 @@
         {
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
-                AuditoriumId.Create(Guid.NewGuid()),
-                MovieId.Create(Guid.NewGuid()),
+                new AuditoriumId(Guid.NewGuid()),
+                new MovieId(Guid.NewGuid()),
                 DateTimeOffset.UtcNow.AddYears(-1));
 
             this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);

@@ -5,12 +5,9 @@
 
     public sealed class TicketId : BaseEntityId<Guid>
     {
-        private TicketId(Guid value)
+        public TicketId(Guid value)
             : base(value)
         {
         }
-
-        public static TicketId Create(Guid id)
-            => new(id);
     }
 }

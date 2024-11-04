@@ -66,7 +66,7 @@
                     break;
 
                 case ActiveShowtimeAddedEvent @event:
-                    this.activeShowtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                    this.activeShowtimes.Add(new ShowtimeId(@event.ShowtimeId));
                     break;
 
                 case ActiveShowtimeRemovedEvent @event:
@@ -100,7 +100,7 @@
             {
                 for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    generatedSeats.Add(Seat.Create(SeatId.Create(Guid.NewGuid()), Row.Create(row), SeatNumber.Create(seatNumber)));
+                    generatedSeats.Add(Seat.Create(new SeatId(Guid.NewGuid()), Row.Create(row), SeatNumber.Create(seatNumber)));
                 }
             }
 
@@ -109,7 +109,7 @@
 
         private void Applier(AuditoriumCreatedEvent @event)
         {
-            this.Id = AuditoriumId.Create(@event.AggregateId);
+            this.Id = new AuditoriumId(@event.AggregateId);
             this.Name = @event.Name;
             this.Rows = Rows.Create(@event.Rows);
             this.SeatsPerRow = SeatsPerRow.Create(@event.SeatsPerRow);
@@ -118,7 +118,7 @@
 
         private void Applier(ActiveShowtimeRemovedEvent @event)
         {
-            var isRemoved = this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+            var isRemoved = this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
             if (!isRemoved)
             {
                 throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());

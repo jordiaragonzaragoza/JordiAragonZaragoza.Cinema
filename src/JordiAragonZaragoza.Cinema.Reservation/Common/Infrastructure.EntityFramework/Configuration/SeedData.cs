@@ -19,7 +19,7 @@
     {
         public static readonly Movie ExampleMovie =
             Movie.Add(
-                id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
+                id: new MovieId(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
                 title: "Inception",
                 runtime: Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)),
                 exhibitionPeriod: ExhibitionPeriod.Create(
@@ -29,14 +29,14 @@
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
-                id: AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
+                id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
                 name: "Auditorium One",
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
 
         public static readonly User ExampleUser =
             User.Create(
-                id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
+                id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2139:Exceptions should be either logged or rethrown but not both", Justification = "Ok for seeding data.")]
         public static void Initialize(WebApplication app, bool isDevelopment)

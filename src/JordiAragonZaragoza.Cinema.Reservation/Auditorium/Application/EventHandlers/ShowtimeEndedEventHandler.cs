@@ -25,10 +25,10 @@
         {
             Guard.Against.Null(notification, nameof(notification));
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(notification.AuditoriumId), cancellationToken)
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(notification.AuditoriumId), cancellationToken)
                                     ?? throw new NotFoundException(nameof(Auditorium), notification.AuditoriumId.ToString());
 
-            existingAuditorium.RemoveActiveShowtime(ShowtimeId.Create(notification.AggregateId));
+            existingAuditorium.RemoveActiveShowtime(new ShowtimeId(notification.AggregateId));
 
             await this.auditoriumRepository.UpdateAsync(existingAuditorium, cancellationToken);
         }

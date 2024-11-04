@@ -36,13 +36,13 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(request.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 return Result.NotFound($"{nameof(Auditorium)}: {request.AuditoriumId} not found.");
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(request.MovieId), cancellationToken);
             if (existingMovie is null)
             {
                 return Result.NotFound($"{nameof(Movie)}: {request.MovieId} not found.");
@@ -50,10 +50,10 @@
 
             // TODO: This is temporal. A scheduler manager with business rules is required.
             var newShowtime = Showtime.Schedule(
-                ShowtimeId.Create(this.guidGenerator.Create()),
-                MovieId.Create(existingMovie.Id),
+                new ShowtimeId(this.guidGenerator.Create()),
+                new MovieId(existingMovie.Id),
                 request.SessionDateOnUtc,
-                AuditoriumId.Create(existingAuditorium.Id));
+                new AuditoriumId(existingAuditorium.Id));
 
             await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);
 

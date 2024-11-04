@@ -36,10 +36,10 @@
                 tb.Property(ticket => ticket.Id)
                   .HasColumnName(nameof(Ticket.Id))
                   .ValueGeneratedNever()
-                  .HasConversion(ticketId => ticketId.Value, guidValue => TicketId.Create(guidValue));
+                  .HasConversion(ticketId => ticketId.Value, guidValue => new TicketId(guidValue));
 
                 tb.Property(ticket => ticket.UserId)
-                .HasConversion(id => id.Value, value => UserId.Create(value))
+                .HasConversion(id => id.Value, value => new UserId(value))
                 .HasColumnName(nameof(UserId));
 
                 tb.OwnsMany(ticket => ticket.Seats, ticketSeatBuilder =>
@@ -69,13 +69,13 @@
 
             builder.Property(showtime => showtime.Id)
                 .ValueGeneratedNever()
-                .HasConversion(showtimeId => showtimeId.Value, intValue => ShowtimeId.Create(intValue));
+                .HasConversion(showtimeId => showtimeId.Value, intValue => new ShowtimeId(intValue));
 
             builder.Property(showtime => showtime.AuditoriumId)
-                .HasConversion(id => id.Value, value => AuditoriumId.Create(value));
+                .HasConversion(id => id.Value, value => new AuditoriumId(value));
 
             builder.Property(showtime => showtime.MovieId)
-                .HasConversion(id => id.Value, value => MovieId.Create(value));
+                .HasConversion(id => id.Value, value => new MovieId(value));
         }
     }
 }

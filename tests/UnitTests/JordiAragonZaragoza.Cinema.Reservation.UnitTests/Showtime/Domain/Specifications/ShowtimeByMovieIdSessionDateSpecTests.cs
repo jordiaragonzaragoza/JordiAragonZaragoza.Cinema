@@ -23,13 +23,13 @@
         {
             // Arrange
             var showtime1 = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
+                new ShowtimeId(Guid.NewGuid()),
                 Constants.Showtime.MovieId,
                 Constants.Showtime.SessionDateOnUtc,
                 Constants.Showtime.AuditoriumId);
 
             var showtime2 = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
+                new ShowtimeId(Guid.NewGuid()),
                 Constants.Showtime.MovieId,
                 Constants.Showtime.SessionDateOnUtc.AddYears(-1),
                 Constants.Showtime.AuditoriumId);
@@ -57,7 +57,7 @@
 
             var showtimes = new List<Showtime>() { showtime1 };
 
-            var specification = new ShowtimeByMovieIdSessionDateSpec(MovieId.Create(Guid.NewGuid()), Constants.Showtime.SessionDateOnUtc);
+            var specification = new ShowtimeByMovieIdSessionDateSpec(new MovieId(Guid.NewGuid()), Constants.Showtime.SessionDateOnUtc);
 
             // Act
             var evaluatedList = specification.Evaluate(showtimes);

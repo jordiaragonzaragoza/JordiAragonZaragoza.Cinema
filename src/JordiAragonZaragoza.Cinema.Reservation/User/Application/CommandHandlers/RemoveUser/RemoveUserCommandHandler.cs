@@ -22,7 +22,7 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingUser = await this.userRepository.GetByIdAsync(UserId.Create(request.UserId), cancellationToken);
+            var existingUser = await this.userRepository.GetByIdAsync(new UserId(request.UserId), cancellationToken);
             if (existingUser is null)
             {
                 return Result.NotFound($"{nameof(User)}: {request.UserId} not found.");

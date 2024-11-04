@@ -5,12 +5,9 @@
 
     public sealed class UserId : BaseAggregateRootId<Guid>
     {
-        private UserId(Guid value)
+        public UserId(Guid value)
             : base(value)
         {
         }
-
-        public static UserId Create(Guid id)
-            => new(id);
     }
 }

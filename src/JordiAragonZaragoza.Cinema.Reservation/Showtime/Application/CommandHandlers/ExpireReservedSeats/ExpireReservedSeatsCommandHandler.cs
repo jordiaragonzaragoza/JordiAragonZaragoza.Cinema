@@ -23,13 +23,13 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(new ShowtimeId(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
-            existingShowtime.ExpireReservedSeats(TicketId.Create(request.TicketId));
+            existingShowtime.ExpireReservedSeats(new TicketId(request.TicketId));
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 

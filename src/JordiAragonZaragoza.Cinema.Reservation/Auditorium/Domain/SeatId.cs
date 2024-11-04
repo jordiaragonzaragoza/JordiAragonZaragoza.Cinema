@@ -5,12 +5,9 @@
 
     public sealed class SeatId : BaseEntityId<Guid>
     {
-        private SeatId(Guid value)
+        public SeatId(Guid value)
             : base(value)
         {
         }
-
-        public static SeatId Create(Guid id)
-            => new(id);
     }
 }

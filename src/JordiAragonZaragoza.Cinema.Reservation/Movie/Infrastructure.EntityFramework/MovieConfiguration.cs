@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EntityFramework
 {
-    using Ardalis.GuardClauses;
+    using System;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Configuration;
@@ -11,7 +11,7 @@
     {
         public override void Configure(EntityTypeBuilder<Movie> builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             this.ConfigureMoviesTable(builder);
 
@@ -43,12 +43,12 @@
 
             builder.Property(movie => movie.Id)
                 .ValueGeneratedNever()
-                .HasConversion(id => id.Value, value => MovieId.Create(value));
+                .HasConversion(id => id.Value, value => new MovieId(value));
 
             builder.Property(movie => movie.Runtime)
                 .HasConversion(
                     runtime => runtime.Value,
-                    value => Runtime.Create(value));
+                    value => new Runtime(value));
 
             builder.OwnsOne(movie => movie.ExhibitionPeriod, exhibitionBuilder =>
             {
@@ -56,13 +56,13 @@
                 .HasColumnName("StartingExhibitionPeriodOnUtc")
                 .HasConversion(
                     startingPeriod => startingPeriod.Value,
-                    value => StartingPeriod.Create(value));
+                    value => new StartingPeriod(value));
 
                 exhibitionBuilder.Property(x => x.EndOfPeriodOnUtc)
                 .HasColumnName("EndOfExhibitionPeriodOnUtc")
                 .HasConversion(
                     endPeriod => endPeriod.Value,
-                    value => EndOfPeriod.Create(value));
+                    value => new EndOfPeriod(value));
             }).Navigation(movie => movie.ExhibitionPeriod).IsRequired();
         }
     }

@@ -23,7 +23,7 @@
 
             builder.Property(user => user.Id)
                 .ValueGeneratedNever()
-                .HasConversion(id => id.Value, value => UserId.Create(value));
+                .HasConversion(id => id.Value, value => new UserId(value));
         }
     }
 }

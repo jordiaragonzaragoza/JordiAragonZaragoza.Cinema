@@ -5,12 +5,9 @@
 
     public sealed class AuditoriumId : BaseAggregateRootId<Guid>
     {
-        private AuditoriumId(Guid value)
+        public AuditoriumId(Guid value)
             : base(value)
         {
         }
-
-        public static AuditoriumId Create(Guid id)
-            => new(id);
     }
 }

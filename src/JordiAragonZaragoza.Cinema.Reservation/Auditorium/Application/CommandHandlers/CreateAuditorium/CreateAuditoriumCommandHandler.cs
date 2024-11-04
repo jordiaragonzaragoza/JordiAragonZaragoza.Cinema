@@ -25,7 +25,7 @@
             // TODO: There cannot be two Auditoriums with the same name and same cinema id.
             // This rule is part from cinema manager bounded context using a domain service.
             var newAuditorium = Auditorium.Create(
-                id: AuditoriumId.Create(request.AuditoriumId),
+                id: new AuditoriumId(request.AuditoriumId),
                 name: request.Name,
                 rows: Rows.Create(request.Rows),
                 seatsPerRow: SeatsPerRow.Create(request.SeatsPerRow));

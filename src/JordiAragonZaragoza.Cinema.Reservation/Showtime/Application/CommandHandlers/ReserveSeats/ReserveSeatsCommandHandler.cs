@@ -55,13 +55,13 @@
         {
             Guard.Against.Null(request, nameof(request));
 
-            var existingUser = await this.userRepository.GetByIdAsync(UserId.Create(request.UserId), cancellationToken);
+            var existingUser = await this.userRepository.GetByIdAsync(new UserId(request.UserId), cancellationToken);
             if (existingUser is null)
             {
                 return Result.NotFound($"{nameof(User)}: {request.UserId} not found.");
             }
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(ShowtimeId.Create(request.ShowtimeId), cancellationToken);
+            var existingShowtime = await this.showtimeRepository.GetByIdAsync(new ShowtimeId(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
             {
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
@@ -73,8 +73,8 @@
             var newticket = await this.showtimeManager.ReserveSeatsAsync(
                 existingShowtime,
                 desiredSeatsIds,
-                TicketId.Create(this.guidGenerator.Create()),
-                UserId.Create(request.UserId),
+                new TicketId(this.guidGenerator.Create()),
+                new UserId(request.UserId),
                 this.dateTime.UtcNow,
                 cancellationToken);
 

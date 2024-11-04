@@ -23,7 +23,7 @@
             Guard.Against.Null(request, nameof(request));
 
             var newUser = User.Create(
-                id: UserId.Create(request.UserId));
+                id: new UserId(request.UserId));
 
             await this.userRepository.AddAsync(newUser, cancellationToken);
 

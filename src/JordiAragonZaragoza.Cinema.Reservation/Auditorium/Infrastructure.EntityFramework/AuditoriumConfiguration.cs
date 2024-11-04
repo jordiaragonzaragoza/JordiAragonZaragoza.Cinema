@@ -50,7 +50,7 @@
                 sb.Property(seat => seat.Id)
                 .HasColumnName(nameof(Seat.Id))
                 .ValueGeneratedNever()
-                .HasConversion(id => id.Value, value => SeatId.Create(value));
+                .HasConversion(id => id.Value, value => new SeatId(value));
 
                 sb.Property(seat => seat.Row)
                 .HasConversion(
@@ -75,7 +75,7 @@
 
             builder.Property(auditorium => auditorium.Id)
                 .ValueGeneratedNever()
-                .HasConversion(id => id.Value, value => AuditoriumId.Create(value));
+                .HasConversion(id => id.Value, value => new AuditoriumId(value));
 
             builder.Property(auditorium => auditorium.Rows)
                 .HasConversion(

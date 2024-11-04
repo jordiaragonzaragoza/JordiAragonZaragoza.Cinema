@@ -5,12 +5,9 @@
 
     public sealed class ShowtimeId : BaseAggregateRootId<Guid>
     {
-        private ShowtimeId(Guid value)
+        public ShowtimeId(Guid value)
             : base(value)
         {
         }
-
-        public static ShowtimeId Create(Guid id)
-            => new(id);
     }
 }

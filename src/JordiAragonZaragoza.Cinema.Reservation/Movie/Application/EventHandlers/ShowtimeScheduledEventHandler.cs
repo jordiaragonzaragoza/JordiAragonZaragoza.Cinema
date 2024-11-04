@@ -25,10 +25,10 @@
         {
             Guard.Against.Null(notification, nameof(notification));
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(notification.MovieId), cancellationToken)
+            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(notification.MovieId), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), notification.MovieId.ToString());
 
-            existingMovie.AddActiveShowtime(ShowtimeId.Create(notification.AggregateId));
+            existingMovie.AddActiveShowtime(new ShowtimeId(notification.AggregateId));
 
             await this.movieRepository.UpdateAsync(existingMovie, cancellationToken);
         }

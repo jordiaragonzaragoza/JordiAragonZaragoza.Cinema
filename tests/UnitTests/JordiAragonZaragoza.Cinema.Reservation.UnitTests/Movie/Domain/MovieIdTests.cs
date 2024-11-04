@@ -14,7 +14,7 @@
             var id = Guid.Empty;
 
             // Act
-            Func<MovieId> movieId = () => MovieId.Create(id);
+            Func<MovieId> movieId = () => new MovieId(id);
 
             // Assert
             movieId.Should().Throw<ArgumentException>();
@@ -27,7 +27,7 @@
             var id = Guid.NewGuid();
 
             // Act
-            var movieId = MovieId.Create(id);
+            var movieId = new MovieId(id);
 
             // Assert
             movieId.Should().NotBeNull();

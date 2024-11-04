@@ -57,7 +57,7 @@
 
         private void Applier(UserCreatedEvent @event)
         {
-            this.Id = UserId.Create(@event.AggregateId);
+            this.Id = new UserId(@event.AggregateId);
         }
     }
 }

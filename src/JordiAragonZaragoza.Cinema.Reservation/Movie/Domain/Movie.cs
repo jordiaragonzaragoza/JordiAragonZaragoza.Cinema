@@ -63,11 +63,11 @@
                     break;
 
                 case ActiveShowtimeAddedEvent @event:
-                    this.activeShowtimes.Add(ShowtimeId.Create(@event.ShowtimeId));
+                    this.activeShowtimes.Add(new ShowtimeId(@event.ShowtimeId));
                     break;
 
                 case ActiveShowtimeRemovedEvent @event:
-                    this.activeShowtimes.Remove(ShowtimeId.Create(@event.ShowtimeId));
+                    this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
                     break;
 
                 default:
@@ -92,13 +92,12 @@
 
         private void Applier(MovieAddedEvent @event)
         {
-            this.Id = MovieId.Create(@event.AggregateId);
+            this.Id = new MovieId(@event.AggregateId);
             this.Title = @event.Title;
-            this.Runtime = Runtime.Create(@event.Runtime);
-            this.ExhibitionPeriod = ExhibitionPeriod.Create(
-                StartingPeriod.Create(@event.StartingExhibitionPeriodOnUtc),
-                EndOfPeriod.Create(@event.EndOfExhibitionPeriodOnUtc),
-                Runtime.Create(@event.Runtime));
+            this.Runtime = new Runtime(@event.Runtime);
+            this.ExhibitionPeriod = new ExhibitionPeriod(
+                new StartingPeriod(@event.StartingExhibitionPeriodOnUtc),
+                new EndOfPeriod(@event.EndOfExhibitionPeriodOnUtc));
         }
     }
 }

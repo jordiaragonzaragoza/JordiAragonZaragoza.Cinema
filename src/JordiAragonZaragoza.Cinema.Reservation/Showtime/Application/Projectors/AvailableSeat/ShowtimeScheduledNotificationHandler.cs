@@ -35,7 +35,7 @@
 
             var @event = notification.Event;
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());

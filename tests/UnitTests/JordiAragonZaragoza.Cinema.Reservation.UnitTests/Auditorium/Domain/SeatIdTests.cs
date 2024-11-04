@@ -14,7 +14,7 @@
             var id = Guid.Empty;
 
             // Act
-            Func<SeatId> seatId = () => SeatId.Create(id);
+            Func<SeatId> seatId = () => new SeatId(id);
 
             // Assert
             seatId.Should().Throw<ArgumentException>();
@@ -27,7 +27,7 @@
             var id = Guid.NewGuid();
 
             // Act
-            var seatId = SeatId.Create(id);
+            var seatId = new SeatId(id);
 
             // Assert
             seatId.Should().NotBeNull();

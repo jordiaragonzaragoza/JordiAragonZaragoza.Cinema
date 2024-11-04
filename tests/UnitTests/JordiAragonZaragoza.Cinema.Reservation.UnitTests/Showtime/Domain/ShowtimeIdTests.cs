@@ -14,7 +14,7 @@
             var id = Guid.Empty;
 
             // Act
-            Func<ShowtimeId> showtimeId = () => ShowtimeId.Create(id);
+            Func<ShowtimeId> showtimeId = () => new ShowtimeId(id);
 
             // Assert
             showtimeId.Should().Throw<ArgumentException>();
@@ -27,7 +27,7 @@
             var id = Guid.NewGuid();
 
             // Act
-            var showtimeId = ShowtimeId.Create(id);
+            var showtimeId = new ShowtimeId(id);
 
             // Assert
             showtimeId.Should().NotBeNull();

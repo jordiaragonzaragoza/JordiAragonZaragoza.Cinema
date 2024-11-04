@@ -35,13 +35,13 @@
 
             var @event = notification.Event;
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(AuditoriumId.Create(@event.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(MovieId.Create(@event.MovieId), cancellationToken);
+            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(@event.MovieId), cancellationToken);
             if (existingMovie is null)
             {
                 throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());

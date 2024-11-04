@@ -115,10 +115,10 @@
 
         private void Applier(ShowtimeScheduledEvent @event)
         {
-            this.Id = ShowtimeId.Create(@event.AggregateId);
-            this.MovieId = MovieId.Create(@event.MovieId);
+            this.Id = new ShowtimeId(@event.AggregateId);
+            this.MovieId = new MovieId(@event.MovieId);
             this.SessionDateOnUtc = @event.SessionDateOnUtc;
-            this.AuditoriumId = AuditoriumId.Create(@event.AuditoriumId);
+            this.AuditoriumId = new AuditoriumId(@event.AuditoriumId);
         }
 
         private void Applier()
@@ -126,11 +126,11 @@
 
         private void Applier(ReservedSeatsEvent @event)
         {
-            var seatIds = @event.SeatIds.Select(SeatId.Create);
+            var seatIds = @event.SeatIds.Select(i => new SeatId(i));
 
             var newTicket = Ticket.Create(
-                 TicketId.Create(@event.TicketId),
-                 UserId.Create(@event.UserId),
+                 new TicketId(@event.TicketId),
+                 new UserId(@event.UserId),
                  seatIds,
                  @event.CreatedTimeOnUtc);
 
@@ -139,7 +139,7 @@
 
         private void Applier(PurchasedTicketEvent @event)
         {
-            var ticketId = TicketId.Create(@event.TicketId);
+            var ticketId = new TicketId(@event.TicketId);
 
             var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
                 ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
@@ -151,7 +151,7 @@
 
         private void Applier(ExpiredReservedSeatsEvent @event)
         {
-            var ticketToRemove = TicketId.Create(@event.TicketId);
+            var ticketToRemove = new TicketId(@event.TicketId);
 
             var existingTicket = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
                                    ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value.ToString());

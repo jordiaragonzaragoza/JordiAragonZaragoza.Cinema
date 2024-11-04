@@ -14,7 +14,7 @@
             var id = Guid.Empty;
 
             // Act
-            Func<AuditoriumId> auditoriumId = () => AuditoriumId.Create(id);
+            Func<AuditoriumId> auditoriumId = () => new AuditoriumId(id);
 
             // Assert
             auditoriumId.Should().Throw<ArgumentException>();
@@ -27,7 +27,7 @@
             var id = Guid.NewGuid();
 
             // Act
-            var auditoriumId = AuditoriumId.Create(id);
+            var auditoriumId = new AuditoriumId(id);
 
             // Assert
             auditoriumId.Should().NotBeNull();
