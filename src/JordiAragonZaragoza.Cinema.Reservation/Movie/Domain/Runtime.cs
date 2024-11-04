@@ -7,44 +7,30 @@
 
     public sealed class Runtime : BaseValueObject
     {
-        private Runtime(TimeSpan value)
-        {
-            Guard.Against.Default(value, nameof(value));
-
-            this.Value = value;
-        }
+        internal Runtime(TimeSpan value)
+            => this.Value = value;
 
         public TimeSpan Value { get; init; }
 
         public static implicit operator TimeSpan(Runtime runtime)
         {
-            Guard.Against.Null(runtime, nameof(runtime));
+            ArgumentNullException.ThrowIfNull(runtime, nameof(runtime));
 
             return runtime.Value;
         }
 
-        public static explicit operator Runtime(TimeSpan value)
+        public static TimeSpan FromRuntime(Runtime runtime)
+            => runtime;
+
+        public static Runtime Create(TimeSpan value)
         {
+            Guard.Against.Default(value, nameof(value));
+
             return new Runtime(value);
         }
 
-        public static TimeSpan FromRuntime(Runtime runtime)
-        {
-            return runtime;
-        }
-
-        public static Runtime ToRuntime(TimeSpan value)
-        {
-            return (Runtime)value;
-        }
-
-        public static Runtime Create(TimeSpan value)
-            => new(value);
-
         public override string ToString()
-        {
-            return this.Value.ToString();
-        }
+            => this.Value.ToString();
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

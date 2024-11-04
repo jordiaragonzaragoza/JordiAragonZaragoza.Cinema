@@ -5,13 +5,15 @@
 
     public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRule : IBusinessRule
     {
-        private readonly ExhibitionPeriod exhibitionPeriod;
+        private readonly StartingPeriod startingPeriod;
+        private readonly EndOfPeriod endOfPeriod;
         private readonly Runtime runtime;
 
-        public ExhibitionPeriodMustExceedOrEqualRuntimeRule(ExhibitionPeriod exhibitionPeriod, Runtime runtime)
+        public ExhibitionPeriodMustExceedOrEqualRuntimeRule(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {
-            this.exhibitionPeriod = Guard.Against.Null(exhibitionPeriod, nameof(exhibitionPeriod));
-            this.runtime = Guard.Against.Default(runtime, nameof(runtime));
+            this.startingPeriod = Guard.Against.Null(startingPeriod, nameof(startingPeriod));
+            this.endOfPeriod = Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
+            this.runtime = Guard.Against.Null(runtime, nameof(runtime));
         }
 
         public string Message => "The exhibition period must exceed or equal the runtime to be valid.";
@@ -19,12 +21,12 @@
         public bool IsBroken()
         {
             // TODO: Review check rule using implicit operators.
-            if (this.exhibitionPeriod.EndOfPeriodOnUtc.Value - this.exhibitionPeriod.StartingPeriodOnUtc.Value >= this.runtime.Value)
+            if (this.endOfPeriod.Value - this.startingPeriod.Value < this.runtime.Value)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

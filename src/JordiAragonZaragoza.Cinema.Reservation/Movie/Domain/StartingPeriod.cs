@@ -8,25 +8,16 @@
 
     public sealed class StartingPeriod : BaseValueObject
     {
-        private StartingPeriod(DateTimeOffset value)
-        {
-            Guard.Against.Default(value, nameof(value));
-
-            this.Value = value;
-        }
+        internal StartingPeriod(DateTimeOffset value)
+            => this.Value = value;
 
         public DateTimeOffset Value { get; init; }
 
         public static implicit operator DateTimeOffset(StartingPeriod startingPeriod)
         {
-            Guard.Against.Null(startingPeriod, nameof(startingPeriod));
+            ArgumentNullException.ThrowIfNull(startingPeriod, nameof(startingPeriod));
 
             return startingPeriod.Value;
-        }
-
-        public static explicit operator StartingPeriod(DateTimeOffset value)
-        {
-            return new StartingPeriod(value);
         }
 
         public static DateTimeOffset FromStartingPeriod(StartingPeriod startingPeriod)
@@ -34,18 +25,15 @@
             return startingPeriod;
         }
 
-        public static StartingPeriod ToStartingPeriod(DateTimeOffset value)
-        {
-            return (StartingPeriod)value;
-        }
-
         public static StartingPeriod Create(DateTimeOffset value)
-            => new(value);
+        {
+            Guard.Against.Default(value, nameof(value));
+
+            return new StartingPeriod(value);
+        }
 
         public override string ToString()
-        {
-            return this.Value.ToString(CultureInfo.InvariantCulture);
-        }
+            => this.Value.ToString(CultureInfo.InvariantCulture);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

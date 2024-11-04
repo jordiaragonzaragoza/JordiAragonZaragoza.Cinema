@@ -1,25 +1,19 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain
 {
+    using System;
     using System.Collections.Generic;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
 
     public sealed class ExhibitionPeriod : BaseValueObject
     {
-        private ExhibitionPeriod(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
+        internal ExhibitionPeriod(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod)
         {
-            Guard.Against.Null(startingPeriod, nameof(startingPeriod));
-            Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
-            Guard.Against.Null(runtime, nameof(runtime));
-
             this.StartingPeriodOnUtc = startingPeriod;
             this.EndOfPeriodOnUtc = endOfPeriod;
-
-            ExhibitionPeriod.CheckRule(new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(this));
-            ExhibitionPeriod.CheckRule(new ExhibitionPeriodMustExceedOrEqualRuntimeRule(this, runtime));
         }
 
+        // Required by EF.
         private ExhibitionPeriod()
         {
         }
@@ -30,13 +24,18 @@
 
         public static ExhibitionPeriod Create(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {
-            return new ExhibitionPeriod(startingPeriod, endOfPeriod, runtime);
+            ArgumentNullException.ThrowIfNull(startingPeriod, nameof(startingPeriod));
+            ArgumentNullException.ThrowIfNull(endOfPeriod, nameof(endOfPeriod));
+            ArgumentNullException.ThrowIfNull(runtime, nameof(runtime));
+
+            CheckRule(new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(endOfPeriod, startingPeriod));
+            CheckRule(new ExhibitionPeriodMustExceedOrEqualRuntimeRule(startingPeriod, endOfPeriod, runtime));
+
+            return new ExhibitionPeriod(startingPeriod, endOfPeriod);
         }
 
         public override string ToString()
-        {
-            return $"StartingPeriodOnUtc: {this.StartingPeriodOnUtc} EndOfPeriodOnUtc: {this.EndOfPeriodOnUtc}";
-        }
+            => $"StartingPeriodOnUtc: {this.StartingPeriodOnUtc} EndOfPeriodOnUtc: {this.EndOfPeriodOnUtc}";
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

@@ -8,44 +8,31 @@
 
     public sealed class EndOfPeriod : BaseValueObject
     {
-        private EndOfPeriod(DateTimeOffset value)
-        {
-            Guard.Against.Default(value, nameof(value));
-
-            this.Value = value;
-        }
+        // TODO: Restrict via ArchTest to only accessible  on current aggregate.
+        internal EndOfPeriod(DateTimeOffset value)
+            => this.Value = value;
 
         public DateTimeOffset Value { get; init; }
 
         public static implicit operator DateTimeOffset(EndOfPeriod endOfPeriod)
         {
-            Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
+            ArgumentNullException.ThrowIfNull(endOfPeriod, nameof(endOfPeriod));
 
             return endOfPeriod.Value;
         }
 
-        public static explicit operator EndOfPeriod(DateTimeOffset value)
+        public static DateTimeOffset FromEndOfPeriod(EndOfPeriod endOfPeriod)
+            => endOfPeriod;
+
+        public static EndOfPeriod Create(DateTimeOffset value)
         {
+            Guard.Against.Default(value, nameof(value));
+
             return new EndOfPeriod(value);
         }
 
-        public static DateTimeOffset FromEndOfPeriod(EndOfPeriod endOfPeriod)
-        {
-            return endOfPeriod;
-        }
-
-        public static EndOfPeriod ToEndOfPeriod(DateTimeOffset value)
-        {
-            return (EndOfPeriod)value;
-        }
-
-        public static EndOfPeriod Create(DateTimeOffset value)
-            => new(value);
-
         public override string ToString()
-        {
-            return this.Value.ToString(CultureInfo.InvariantCulture);
-        }
+            => this.Value.ToString(CultureInfo.InvariantCulture);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

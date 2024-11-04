@@ -5,23 +5,25 @@
 
     public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule : IBusinessRule
     {
-        private readonly ExhibitionPeriod exhibitionPeriod;
+        private readonly EndOfPeriod endOfPeriod;
+        private readonly StartingPeriod startingPeriod;
 
-        public EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(ExhibitionPeriod exhibitionPeriod)
+        public EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(EndOfPeriod endOfPeriod, StartingPeriod startingPeriod)
         {
-            this.exhibitionPeriod = Guard.Against.Null(exhibitionPeriod, nameof(exhibitionPeriod));
+            this.endOfPeriod = Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
+            this.startingPeriod = Guard.Against.Null(startingPeriod, nameof(startingPeriod));
         }
 
         public string Message => "The end of period must be bigger than starting period to be valid.";
 
         public bool IsBroken()
         {
-            if (this.exhibitionPeriod.EndOfPeriodOnUtc.Value > this.exhibitionPeriod.StartingPeriodOnUtc.Value)
+            if (this.endOfPeriod.Value <= this.startingPeriod.Value)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }
