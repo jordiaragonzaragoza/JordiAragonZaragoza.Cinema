@@ -12,7 +12,7 @@
     {
         private readonly List<SeatId> seats = new();
 
-        private Ticket(
+        internal Ticket(
             TicketId id,
             UserId userId,
             IEnumerable<SeatId> seatIds,
@@ -36,15 +36,6 @@
         public DateTimeOffset CreatedTimeOnUtc { get; private set; }
 
         public bool IsPurchased { get; private set; }
-
-        internal static Ticket Create(
-            TicketId id,
-            UserId userId,
-            IEnumerable<SeatId> seatIds,
-            DateTimeOffset createdTimeOnUtc)
-        {
-            return new Ticket(id, userId, seatIds, createdTimeOnUtc);
-        }
 
         internal void MarkAsPurchased()
         {

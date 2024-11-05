@@ -38,6 +38,10 @@
             Rows rows,
             SeatsPerRow seatsPerRow)
         {
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(rows, nameof(rows));
+            ArgumentNullException.ThrowIfNull(seatsPerRow, nameof(seatsPerRow));
+
             var auditorium = new Auditorium();
 
             auditorium.Apply(new AuditoriumCreatedEvent(id, name, rows, seatsPerRow));
@@ -49,10 +53,18 @@
             => this.Apply(new AuditoriumRemovedEvent(this.Id));
 
         public void AddActiveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
+        }
 
         public void RemoveActiveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
+        }
 
         protected override void When(IDomainEvent domainEvent)
         {
@@ -100,7 +112,7 @@
             {
                 for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    generatedSeats.Add(Seat.Create(new SeatId(Guid.NewGuid()), Row.Create(row), SeatNumber.Create(seatNumber)));
+                    generatedSeats.Add(new Seat(new SeatId(Guid.NewGuid()), new Row(row), new SeatNumber(seatNumber)));
                 }
             }
 
@@ -111,8 +123,8 @@
         {
             this.Id = new AuditoriumId(@event.AggregateId);
             this.Name = @event.Name;
-            this.Rows = Rows.Create(@event.Rows);
-            this.SeatsPerRow = SeatsPerRow.Create(@event.SeatsPerRow);
+            this.Rows = new Rows(@event.Rows);
+            this.SeatsPerRow = new SeatsPerRow(@event.SeatsPerRow);
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
         }
 

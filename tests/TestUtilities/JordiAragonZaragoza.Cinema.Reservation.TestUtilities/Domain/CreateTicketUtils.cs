@@ -5,7 +5,7 @@
     public static class CreateTicketUtils
     {
         public static Ticket Create()
-            => Ticket.Create(
+            => new Ticket(
                 Constants.Ticket.Id,
                 Constants.Ticket.UserId,
                 Constants.Ticket.SeatIds,

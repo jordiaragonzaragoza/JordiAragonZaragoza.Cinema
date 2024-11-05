@@ -55,7 +55,7 @@
             DateTimeOffset createdTimeOnUtc)
         {
             // Act
-            Func<Ticket> createTicket = () => Ticket.Create(id, userId, seatIds, createdTimeOnUtc);
+            Func<Ticket> createTicket = () => new Ticket(id, userId, seatIds, createdTimeOnUtc);
 
             // Assert
             createTicket.Should().Throw<ArgumentException>();

@@ -5,7 +5,7 @@
 
     public sealed class Seat : BaseEntity<SeatId>
     {
-        private Seat(
+        internal Seat(
             SeatId id,
             Row row,
             SeatNumber seatNumber)
@@ -23,13 +23,5 @@
         public Row Row { get; private set; } = default!;
 
         public SeatNumber SeatNumber { get; private set; } = default!;
-
-        internal static Seat Create(
-            SeatId seatId,
-            Row row,
-            SeatNumber seatNumber)
-        {
-            return new Seat(seatId, row, seatNumber);
-        }
     }
 }

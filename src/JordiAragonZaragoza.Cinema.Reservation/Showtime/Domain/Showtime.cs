@@ -26,6 +26,7 @@
 
         public MovieId MovieId { get; private set; } = default!;
 
+        // TODO: Use a Value Object
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 
         public AuditoriumId AuditoriumId { get; private set; } = default!;
@@ -40,6 +41,11 @@
             DateTimeOffset sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(movieId, nameof(movieId));
+            ////ArgumentNullException.ThrowIfNull(sessionDateOnUtc, nameof(sessionDateOnUtc));
+            ArgumentNullException.ThrowIfNull(auditoriumId, nameof(auditoriumId));
+
             var showtime = new Showtime();
 
             showtime.Apply(new ShowtimeScheduledEvent(id, movieId, sessionDateOnUtc, auditoriumId));
@@ -55,16 +61,37 @@
 
         public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
         {
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+            ////CheckRule(new SeatIdsRule());
+            ////CheckRule(new createdTimeOnUtcRule());
+
             this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), createdTimeOnUtc));
 
-            return this.tickets[this.tickets.Count - 1];
+            return this.tickets[^1];
         }
 
         public void PurchaseTicket(TicketId ticketId)
-            => this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
+        {
+            ArgumentNullException.ThrowIfNull(ticketId, nameof(ticketId));
+
+            var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
+                         ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
+
+            CheckRule(new OnlyPossibleToPurchaseOncePerTicketRule(ticket));
+
+            this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
+        }
 
         public void ExpireReservedSeats(TicketId ticketToRemove)
-            => this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
+        {
+            ArgumentNullException.ThrowIfNull(ticketToRemove, nameof(ticketToRemove));
+
+            _ = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
+                ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value);
+
+            this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
+        }
 
         protected override void When(IDomainEvent domainEvent)
         {
@@ -128,7 +155,7 @@
         {
             var seatIds = @event.SeatIds.Select(i => new SeatId(i));
 
-            var newTicket = Ticket.Create(
+            var newTicket = new Ticket(
                  new TicketId(@event.TicketId),
                  new UserId(@event.UserId),
                  seatIds,
@@ -141,22 +168,18 @@
         {
             var ticketId = new TicketId(@event.TicketId);
 
-            var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
-                ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
+            var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId);
 
-            CheckRule(new OnlyPossibleToPurchaseOncePerTicketRule(ticket));
-
-            ticket.MarkAsPurchased();
+            ticket?.MarkAsPurchased();
         }
 
         private void Applier(ExpiredReservedSeatsEvent @event)
         {
             var ticketToRemove = new TicketId(@event.TicketId);
 
-            var existingTicket = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
-                                   ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value.ToString());
+            var existingTicket = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove);
 
-            this.tickets.Remove(existingTicket);
+            this.tickets.Remove(existingTicket!);
         }
     }
 }

@@ -42,7 +42,7 @@
             SeatNumber seatNumber)
         {
             // Act
-            Func<Seat> createSeat = () => Seat.Create(seatId, row, seatNumber);
+            Func<Seat> createSeat = () => new Seat(seatId, row, seatNumber);
 
             // Assert
             createSeat.Should().Throw<ArgumentException>();
@@ -56,7 +56,7 @@
             SeatNumber seatNumber = Constants.Seat.SeatNumber;
 
             // Act
-            var seat = Seat.Create(seatId, row, seatNumber);
+            var seat = new Seat(seatId, row, seatNumber);
 
             // Assert
             seat.Should().NotBeNull();

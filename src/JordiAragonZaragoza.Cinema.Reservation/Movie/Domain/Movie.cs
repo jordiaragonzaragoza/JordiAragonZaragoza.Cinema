@@ -19,6 +19,7 @@
         }
 
         // It belongs to the catalog bounded context but title is inmutable.
+        // It will be removed on view model composition implementation.
         public string Title { get; private set; } = default!;
 
         public Runtime Runtime { get; private set; } = default!;
@@ -33,9 +34,11 @@
             Runtime runtime,
             ExhibitionPeriod exhibitionPeriod)
         {
-            var movie = new Movie();
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(runtime, nameof(runtime));
+            ArgumentNullException.ThrowIfNull(exhibitionPeriod, nameof(exhibitionPeriod));
 
-            Guard.Against.Null(exhibitionPeriod, nameof(exhibitionPeriod));
+            var movie = new Movie();
 
             movie.Apply(new MovieAddedEvent(id, title, runtime, exhibitionPeriod.StartingPeriodOnUtc, exhibitionPeriod.EndOfPeriodOnUtc));
 
@@ -46,10 +49,18 @@
             => this.Apply(new MovieRemovedEvent(this.Id));
 
         public void AddActiveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
+        }
 
         public void RemoveActiveShowtime(ShowtimeId showtimeId)
-            => this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
+        }
 
         protected override void When(IDomainEvent domainEvent)
         {
