@@ -28,7 +28,7 @@
             ArgumentNullException.ThrowIfNull(endOfPeriod, nameof(endOfPeriod));
             ArgumentNullException.ThrowIfNull(runtime, nameof(runtime));
 
-            CheckRule(new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(endOfPeriod, startingPeriod));
+            CheckRule(new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(endOfPeriod, startingPeriod));
             CheckRule(new ExhibitionPeriodMustExceedOrEqualRuntimeRule(startingPeriod, endOfPeriod, runtime));
 
             return new ExhibitionPeriod(startingPeriod, endOfPeriod);

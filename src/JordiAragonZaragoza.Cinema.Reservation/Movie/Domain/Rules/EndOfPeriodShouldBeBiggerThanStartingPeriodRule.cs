@@ -3,12 +3,12 @@
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule : IBusinessRule
+    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodRule : IBusinessRule
     {
         private readonly EndOfPeriod endOfPeriod;
         private readonly StartingPeriod startingPeriod;
 
-        public EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(EndOfPeriod endOfPeriod, StartingPeriod startingPeriod)
+        public EndOfPeriodShouldBeBiggerThanStartingPeriodRule(EndOfPeriod endOfPeriod, StartingPeriod startingPeriod)
         {
             this.endOfPeriod = Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
             this.startingPeriod = Guard.Against.Null(startingPeriod, nameof(startingPeriod));

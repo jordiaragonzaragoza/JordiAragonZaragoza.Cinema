@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
 
     public sealed class EndOfPeriod : BaseValueObject
@@ -26,7 +26,7 @@
 
         public static EndOfPeriod Create(DateTimeOffset value)
         {
-            Guard.Against.Default(value, nameof(value));
+            CheckRule(new MinimumEndOfPeriodRule(value));
 
             return new EndOfPeriod(value);
         }

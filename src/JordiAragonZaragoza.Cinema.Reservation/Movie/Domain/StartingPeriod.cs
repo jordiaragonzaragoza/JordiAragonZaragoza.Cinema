@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
 
     public sealed class StartingPeriod : BaseValueObject
@@ -27,7 +27,7 @@
 
         public static StartingPeriod Create(DateTimeOffset value)
         {
-            Guard.Against.Default(value, nameof(value));
+            CheckRule(new MinimumStartingPeriodRule(value));
 
             return new StartingPeriod(value);
         }

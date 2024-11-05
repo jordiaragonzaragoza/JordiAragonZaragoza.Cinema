@@ -7,7 +7,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
 
-    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRuleTests
+    public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodRuleTests
     {
         [Fact]
         public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingANullExhibitionPeriod_ShouldThrowArgumentNullException()
@@ -16,7 +16,7 @@
             ExhibitionPeriod exhibitionPeriod = null!;
 
             // Act
-            Func<EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule> sut = () => new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(exhibitionPeriod);
+            Func<EndOfPeriodShouldBeBiggerThanStartingPeriodRule> sut = () => new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
 
             // Assert
             sut.Should().Throw<ArgumentNullException>();
@@ -29,7 +29,7 @@
             var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
 
             // Act
-            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(exhibitionPeriod);
+            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
 
             // Assert
             rule.Should().NotBeNull();
@@ -49,7 +49,7 @@
                     runtime);
 
             // Act
-            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule(exhibitionPeriod);
+            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
 
             // Assert
             rule.IsBroken().Should().Be(false);

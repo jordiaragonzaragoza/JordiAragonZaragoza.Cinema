@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
 
     public sealed class Runtime : BaseValueObject
@@ -24,7 +24,7 @@
 
         public static Runtime Create(TimeSpan value)
         {
-            Guard.Against.Default(value, nameof(value));
+            CheckRule(new MinimumRuntimeRule(value));
 
             return new Runtime(value);
         }
