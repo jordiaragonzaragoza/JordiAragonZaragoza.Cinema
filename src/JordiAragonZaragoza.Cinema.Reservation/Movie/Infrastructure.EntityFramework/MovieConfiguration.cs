@@ -50,6 +50,11 @@
                     runtime => runtime.Value,
                     value => new Runtime(value));
 
+            builder.Property(movie => movie.Title)
+                .HasConversion(
+                    title => title.Value,
+                    value => new Title(value));
+
             builder.OwnsOne(movie => movie.ExhibitionPeriod, exhibitionBuilder =>
             {
                 exhibitionBuilder.Property(x => x.StartingPeriodOnUtc)

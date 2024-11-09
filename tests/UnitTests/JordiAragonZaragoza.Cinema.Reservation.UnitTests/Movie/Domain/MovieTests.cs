@@ -18,7 +18,7 @@
             var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
 
             var idValues = new object[] { default!, id };
-            var titleValues = new object[] { default!, string.Empty, " ", title };
+            var titleValues = new object[] { default!, title };
             var runtimeValues = new object[] { default!, runtime };
             var exhibitionPeriodValues = new object[] { default!, exhibitionPeriod };
 
@@ -79,7 +79,7 @@
         [MemberData(nameof(InvalidArgumentsAddMovie))]
         public void AddMovie_WhenHavingInvalidArguments_ShouldThrowException(
             MovieId id,
-            string title,
+            Title title,
             Runtime runtime,
             ExhibitionPeriod exhibitionPeriod)
         {

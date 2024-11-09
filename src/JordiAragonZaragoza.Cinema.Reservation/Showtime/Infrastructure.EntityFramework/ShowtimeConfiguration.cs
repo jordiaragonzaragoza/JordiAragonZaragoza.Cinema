@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
-    using Ardalis.GuardClauses;
+    using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
@@ -11,13 +11,13 @@
 
     /// <summary>
     /// This configuration is obsolete when using showtime as event sourced aggregate.
-    /// Its conserved as future reference.
+    /// It is conserved as future reference.
     /// </summary>
     public sealed class ShowtimeConfiguration : BaseAggregateRootTypeConfiguration<Showtime, ShowtimeId>
     {
         public override void Configure(EntityTypeBuilder<Showtime> builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             this.ConfigureShowtimesTable(builder);
             ConfigureShowtimesTicketsTable(builder);

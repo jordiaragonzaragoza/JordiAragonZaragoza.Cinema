@@ -26,7 +26,7 @@
             // Check will be done via domain service.
             var newMovie = Movie.Add(
                 id: new MovieId(request.MovieId),
-                title: request.Title,
+                title: Title.Create(request.Title),
                 runtime: Runtime.Create(request.Runtime),
                 exhibitionPeriod: ExhibitionPeriod.Create(
                     StartingPeriod.Create(request.StartingPeriod),

@@ -134,7 +134,7 @@
             var runtime = Constants.Movie.Runtime;
 
             DateTimeOffset newStartingPeriod = Constants.Movie.StartingPeriod;
-            var startingPeriod2 = (StartingPeriod)newStartingPeriod.AddDays(1);
+            var startingPeriod2 = StartingPeriod.Create(newStartingPeriod.AddDays(1));
 
             var exhibitionPeriod1 = ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);
             var exhibitionPeriod2 = ExhibitionPeriod.Create(startingPeriod, endOfPeriod, runtime);

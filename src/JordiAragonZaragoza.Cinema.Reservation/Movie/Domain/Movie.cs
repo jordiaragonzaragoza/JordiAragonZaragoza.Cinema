@@ -18,9 +18,9 @@
         {
         }
 
+        // TODO: It will be removed on view model composition implementation.
         // It belongs to the catalog bounded context but title is inmutable.
-        // It will be removed on view model composition implementation.
-        public string Title { get; private set; } = default!;
+        public Title Title { get; private set; } = default!;
 
         public Runtime Runtime { get; private set; } = default!;
 
@@ -30,11 +30,12 @@
 
         public static Movie Add(
             MovieId id,
-            string title,
+            Title title,
             Runtime runtime,
             ExhibitionPeriod exhibitionPeriod)
         {
             ArgumentNullException.ThrowIfNull(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(title, nameof(title));
             ArgumentNullException.ThrowIfNull(runtime, nameof(runtime));
             ArgumentNullException.ThrowIfNull(exhibitionPeriod, nameof(exhibitionPeriod));
 
@@ -91,7 +92,7 @@
             try
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
-                Guard.Against.NullOrWhiteSpace(this.Title, nameof(this.Title));
+                Guard.Against.Null(this.Title, nameof(this.Title));
                 Guard.Against.Null(this.Runtime, nameof(this.Runtime));
                 Guard.Against.Null(this.ExhibitionPeriod, nameof(this.ExhibitionPeriod));
             }
@@ -104,7 +105,7 @@
         private void Applier(MovieAddedEvent @event)
         {
             this.Id = new MovieId(@event.AggregateId);
-            this.Title = @event.Title;
+            this.Title = new Title(@event.Title);
             this.Runtime = new Runtime(@event.Runtime);
             this.ExhibitionPeriod = new ExhibitionPeriod(
                 new StartingPeriod(@event.StartingExhibitionPeriodOnUtc),

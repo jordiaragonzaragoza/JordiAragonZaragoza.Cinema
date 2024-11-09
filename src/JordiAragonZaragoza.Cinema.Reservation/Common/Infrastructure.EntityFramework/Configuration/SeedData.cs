@@ -13,14 +13,14 @@
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Seeds the data base. This file should only be used in the development environment.
+    /// Seeds the database. This file should only be used in the development environment.
     /// </summary>
     public static class SeedData
     {
         public static readonly Movie ExampleMovie =
             Movie.Add(
                 id: new MovieId(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
-                title: "Inception",
+                title: Title.Create("Inception"),
                 runtime: Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)),
                 exhibitionPeriod: ExhibitionPeriod.Create(
                     StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),

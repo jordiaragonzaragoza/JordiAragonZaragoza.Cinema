@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework
 {
-    using Ardalis.GuardClauses;
+    using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Configuration;
@@ -11,7 +11,7 @@
     {
         public override void Configure(EntityTypeBuilder<Auditorium> builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             this.ConfigureAuditoriumsTable(builder);
 
@@ -55,12 +55,12 @@
                 sb.Property(seat => seat.Row)
                 .HasConversion(
                     row => row.Value,
-                    value => Row.Create(value));
+                    value => new Row(value));
 
                 sb.Property(seat => seat.SeatNumber)
                 .HasConversion(
                     seatNumber => seatNumber.Value,
-                    value => SeatNumber.Create(value));
+                    value => new SeatNumber(value));
             });
 
             builder.Metadata.FindNavigation(nameof(Auditorium.Seats))
@@ -80,12 +80,12 @@
             builder.Property(auditorium => auditorium.Rows)
                 .HasConversion(
                     rows => rows.Value,
-                    value => Rows.Create(value));
+                    value => new Rows(value));
 
             builder.Property(auditorium => auditorium.SeatsPerRow)
                 .HasConversion(
                     seatsPerRow => seatsPerRow.Value,
-                    value => SeatsPerRow.Create(value));
+                    value => new SeatsPerRow(value));
         }
     }
 }

@@ -49,20 +49,6 @@
         }
 
         [Fact]
-        public void ExplicitConversion_WhenHavingADateTimeOffset_ShouldReturnStartingPeriod()
-        {
-            // Arrange
-            var dateTimeOffsetValue = DateTimeOffset.UtcNow;
-
-            // Act
-            StartingPeriod startingPeriod = (StartingPeriod)dateTimeOffsetValue;
-
-            // Assert
-            startingPeriod.Should().NotBeNull();
-            startingPeriod.Value.Should().Be(dateTimeOffsetValue);
-        }
-
-        [Fact]
         public void ToString_ShouldReturnStringRepresentationOfStartingPeriod()
         {
             // Arrange

@@ -12,23 +12,29 @@
     {
         public static IEnumerable<object[]> InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule()
         {
-            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
+            var startingPeriod = Constants.Movie.StartingPeriod;
+            var endOfPeriod = Constants.Movie.EndOfPeriod;
             var runtime = Constants.Movie.Runtime;
 
-            var exhibitionPeriodValues = new object[] { default!, exhibitionPeriod };
+            var startingPeriodValues = new object[] { default!, startingPeriod };
+            var endOfPeriodValues = new object[] { default!, endOfPeriod };
             var runtimeValues = new object[] { default!, runtime };
 
-            foreach (var exhibitionPeriodValue in exhibitionPeriodValues)
+            foreach (var startingPeriodValue in startingPeriodValues)
             {
-                foreach (var runtimeValue in runtimeValues)
+                foreach (var endOfPeriodValue in endOfPeriodValues)
                 {
-                    if (exhibitionPeriodValue != null && exhibitionPeriodValue.Equals(exhibitionPeriod) &&
-                        runtimeValue != null && runtimeValue.Equals(runtime))
+                    foreach (var runtimeValue in runtimeValues)
                     {
-                        continue;
-                    }
+                        if (startingPeriodValue != null && startingPeriodValue.Equals(startingPeriod) &&
+                            endOfPeriodValue != null && endOfPeriodValue.Equals(endOfPeriod) &&
+                            runtimeValue != null && runtimeValue.Equals(runtime))
+                        {
+                            continue;
+                        }
 
-                    yield return new object[] { exhibitionPeriodValue!, runtimeValue! };
+                        yield return new object[] { startingPeriodValue!, endOfPeriodValue!, runtimeValue! };
+                    }
                 }
             }
         }
@@ -36,11 +42,12 @@
         [Theory]
         [MemberData(nameof(InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule))]
         public void ConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule_WhenHavingInvalidArguments_ShouldThrowArgumentException(
-            ExhibitionPeriod exhibitionPeriod,
+            StartingPeriod startingPeriod,
+            EndOfPeriod endOfPeriod,
             Runtime runtime)
         {
             // Act
-            Func<ExhibitionPeriodMustExceedOrEqualRuntimeRule> constructor = () => new ExhibitionPeriodMustExceedOrEqualRuntimeRule(exhibitionPeriod, runtime);
+            Func<ExhibitionPeriodMustExceedOrEqualRuntimeRule> constructor = () => new ExhibitionPeriodMustExceedOrEqualRuntimeRule(startingPeriod, endOfPeriod, runtime);
 
             // Assert
             constructor.Should().Throw<ArgumentException>();
@@ -50,11 +57,12 @@
         public void ConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule_WhenHavingAValidArguments_ShouldReturnExhibitionPeriodMustExceedOrEqualRuntimeRule()
         {
             // Arrange
-            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
+            var startingPeriod = Constants.Movie.StartingPeriod;
+            var endOfPeriod = Constants.Movie.EndOfPeriod;
             var runtime = Constants.Movie.Runtime;
 
             // Act
-            var rule = new ExhibitionPeriodMustExceedOrEqualRuntimeRule(exhibitionPeriod, runtime);
+            var rule = new ExhibitionPeriodMustExceedOrEqualRuntimeRule(startingPeriod, endOfPeriod, runtime);
 
             // Assert
             rule.Should().NotBeNull();
@@ -68,13 +76,8 @@
             var endOfPeriod = EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2));
             var runtime = Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28));
 
-            var exhibitionPeriod = ExhibitionPeriod.Create(
-                    startingPeriod,
-                    endOfPeriod,
-                    runtime);
-
             // Act
-            var rule = new ExhibitionPeriodMustExceedOrEqualRuntimeRule(exhibitionPeriod, runtime);
+            var rule = new ExhibitionPeriodMustExceedOrEqualRuntimeRule(startingPeriod, endOfPeriod, runtime);
 
             // Assert
             rule.IsBroken().Should().Be(false);

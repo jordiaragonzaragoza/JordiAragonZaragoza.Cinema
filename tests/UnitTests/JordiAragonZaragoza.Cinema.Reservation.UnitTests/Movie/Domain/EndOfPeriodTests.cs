@@ -49,20 +49,6 @@
         }
 
         [Fact]
-        public void ExplicitConversion_WhenHavingADateTimeOffset_ShouldReturnEndOfPeriod()
-        {
-            // Arrange
-            var dateTimeOffsetValue = DateTimeOffset.UtcNow;
-
-            // Act
-            EndOfPeriod endOfPeriod = (EndOfPeriod)dateTimeOffsetValue;
-
-            // Assert
-            endOfPeriod.Should().NotBeNull();
-            endOfPeriod.Value.Should().Be(dateTimeOffsetValue);
-        }
-
-        [Fact]
         public void ToString_ShouldReturnStringRepresentationOfEndOfPeriod()
         {
             // Arrange

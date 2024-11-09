@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.Movie.Domain.Rules
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
@@ -9,14 +10,37 @@
 
     public sealed class EndOfPeriodShouldBeBiggerThanStartingPeriodRuleTests
     {
-        [Fact]
-        public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingANullExhibitionPeriod_ShouldThrowArgumentNullException()
+        public static IEnumerable<object[]> InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule()
         {
-            // Arrange
-            ExhibitionPeriod exhibitionPeriod = null!;
+            var startingPeriod = Constants.Movie.StartingPeriod;
+            var endOfPeriod = Constants.Movie.EndOfPeriod;
 
+            var startingPeriodValues = new object[] { default!, startingPeriod };
+            var endOfPeriodValues = new object[] { default!, endOfPeriod };
+
+            foreach (var startingPeriodValue in startingPeriodValues)
+            {
+                foreach (var endOfPeriodValue in endOfPeriodValues)
+                {
+                    if (startingPeriodValue != null && startingPeriodValue.Equals(startingPeriod) &&
+                        endOfPeriodValue != null && endOfPeriodValue.Equals(endOfPeriod))
+                    {
+                        continue;
+                    }
+
+                    yield return new object[] { startingPeriodValue!, endOfPeriodValue! };
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsConstructorConstructorExhibitionPeriodMustExceedOrEqualRuntimeRule))]
+        public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+            StartingPeriod startingPeriod,
+            EndOfPeriod endOfPeriod)
+        {
             // Act
-            Func<EndOfPeriodShouldBeBiggerThanStartingPeriodRule> sut = () => new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
+            Func<EndOfPeriodShouldBeBiggerThanStartingPeriodRule> sut = () => new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(endOfPeriod, startingPeriod);
 
             // Assert
             sut.Should().Throw<ArgumentNullException>();
@@ -26,10 +50,11 @@
         public void ConstructorEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule_WhenHavingAValidExhibitionPeriod_ShouldReturnEndOfPeriodShouldBeBiggerThanStartingPeriodPeriodRule()
         {
             // Arrange
-            var exhibitionPeriod = Constants.Movie.ExhibitionPeriod;
+            var endOfPeriod = Constants.Movie.EndOfPeriod;
+            var startingPeriod = Constants.Movie.StartingPeriod;
 
             // Act
-            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
+            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(endOfPeriod, startingPeriod);
 
             // Assert
             rule.Should().NotBeNull();
@@ -41,15 +66,9 @@
             // Arrange
             var startingPeriod = StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, 1, TimeSpan.Zero));
             var endOfPeriod = EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2));
-            var runtime = Constants.Movie.Runtime;
-
-            var exhibitionPeriod = ExhibitionPeriod.Create(
-                    startingPeriod,
-                    endOfPeriod,
-                    runtime);
 
             // Act
-            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(exhibitionPeriod);
+            var rule = new EndOfPeriodShouldBeBiggerThanStartingPeriodRule(endOfPeriod, startingPeriod);
 
             // Assert
             rule.IsBroken().Should().Be(false);
