@@ -9,6 +9,6 @@
                 Constants.Ticket.Id,
                 Constants.Ticket.UserId,
                 Constants.Ticket.SeatIds,
-                Constants.Ticket.CreatedTimeOnUtc);
+                Constants.Ticket.ReservationDateOnUtc);
     }
 }

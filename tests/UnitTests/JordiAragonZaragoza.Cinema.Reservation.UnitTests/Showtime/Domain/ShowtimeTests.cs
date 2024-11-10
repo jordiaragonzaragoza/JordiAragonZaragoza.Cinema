@@ -25,7 +25,7 @@
 
             var showtimeIdValues = new object[] { default!, showtimeId };
             var movieIdValues = new object[] { default!, movieId };
-            var sessionDateOnUtcValues = new object[] { default(DateTimeOffset), sessionDateOnUtc };
+            var sessionDateOnUtcValues = new object[] { default!, sessionDateOnUtc };
             var auditoriumIdValues = new object[] { default!, auditoriumId };
 
             foreach (var showtimeIdValue in showtimeIdValues)
@@ -56,12 +56,12 @@
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
             var seatIds = new List<SeatId> { Constants.Seat.Id };
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             var ticketIdValues = new object[] { default!, ticketId };
             var userIdValues = new object[] { default!, userId };
             var seatIdsValues = new object[] { default!, new List<SeatId>(), seatIds };
-            var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
+            var createdTimeOnUtcValues = new object[] { default!, reservationDateOnUtc };
 
             foreach (var ticketIdValue in ticketIdValues)
             {
@@ -74,7 +74,7 @@
                             if (ticketIdValue != null && ticketIdValue.Equals(ticketId) &&
                                 userIdValue != null && userIdValue.Equals(userId) &&
                                 seatIdsValue != null && seatIdsValue.Equals(seatIds) &&
-                                createdTimeOnUtcValue != default && createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                                createdTimeOnUtcValue != null && createdTimeOnUtcValue.Equals(reservationDateOnUtc))
                             {
                                 continue;
                             }
@@ -117,7 +117,7 @@
         public void ScheduleShowtime_WhenHavingInvalidArguments_ShouldThrowException(
             ShowtimeId id,
             MovieId movieId,
-            DateTimeOffset sessionDateOnUtc,
+            SessionDate sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
             // Act
@@ -176,15 +176,15 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             // Act
-            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
+            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, reservationDateOnUtc);
 
             // Assert
             ticketCreated.Should().NotBeNull();
             ticketCreated.Seats.Should().BeEquivalentTo(seatIds);
-            ticketCreated.CreatedTimeOnUtc.Should().Be(createdTimeOnUtc);
+            ticketCreated.ReservationDateOnUtc.Should().Be(reservationDateOnUtc);
             ticketCreated.IsPurchased.Should().Be(false);
 
             showtime.Tickets.Should().HaveCount(1).And.Contain(ticketCreated);
@@ -197,7 +197,7 @@
                                                                             e.TicketId == ticketCreated.Id &&
                                                                             e.SeatIds.Count() == seatIds.Count &&
                                                                             e.SeatIds.All(id => seatIds.Contains(new SeatId(id))) &&
-                                                                            e.CreatedTimeOnUtc == createdTimeOnUtc);
+                                                                            e.CreatedTimeOnUtc == reservationDateOnUtc);
         }
 
         [Theory]
@@ -206,13 +206,13 @@
             TicketId tickedId,
             UserId userId,
             IEnumerable<SeatId> seatIds,
-            DateTimeOffset createdTimeOnUtc)
+            ReservationDate reservationDateOnUtc)
         {
             // Arrange
             var showtime = ScheduleShowtimeUtils.Schedule();
 
             // Act
-            Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, userId, seatIds, createdTimeOnUtc);
+            Func<Ticket> ticketCreated = () => showtime.ReserveSeats(tickedId, userId, seatIds, reservationDateOnUtc);
 
             // Assert
             ticketCreated.Should().Throw<ArgumentException>();
@@ -238,9 +238,9 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
-            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
+            var ticketCreated = showtime.ReserveSeats(ticketId, userId, seatIds, reservationDateOnUtc);
 
             // Act
             showtime.PurchaseTicket(ticketId);
@@ -307,9 +307,9 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
-            showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
+            showtime.ReserveSeats(ticketId, userId, seatIds, reservationDateOnUtc);
 
             showtime.PurchaseTicket(ticketId);
 
@@ -335,9 +335,9 @@
                 Constants.Seat.Id,
             };
 
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
-            showtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
+            showtime.ReserveSeats(ticketId, userId, seatIds, reservationDateOnUtc);
 
             // Act
             showtime.ExpireReservedSeats(ticketId);

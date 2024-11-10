@@ -65,13 +65,13 @@
             var desiredSeatIds = new List<SeatId> { Constants.Seat.Id };
             var newTicketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
-            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDate = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             var showtimeValues = new object[] { default!, showtime };
             var desiredSeatIdsValues = new object[] { default!, new List<SeatId>(), desiredSeatIds };
             var newTicketIdValues = new object[] { default!, newTicketId };
             var userIdValues = new object[] { default!, userId };
-            var currentDateTimeOnUtcValues = new object[] { default(DateTimeOffset), currentDateTimeOnUtc };
+            var currentDateTimeOnUtcValues = new object[] { default!, reservationDate };
 
             foreach (var showtimeValue in showtimeValues)
             {
@@ -87,7 +87,7 @@
                                     desiredSeatIdsValue != null && desiredSeatIdsValue.Equals(desiredSeatIds) &&
                                     newTicketIdValue != null && newTicketIdValue.Equals(newTicketId) &&
                                     userIdValue != null && userIdValue.Equals(userId) &&
-                                    currentDateTimeOnUtcValue != default && currentDateTimeOnUtcValue.Equals(currentDateTimeOnUtc))
+                                    currentDateTimeOnUtcValue != null && currentDateTimeOnUtcValue.Equals(reservationDate))
                                 {
                                     continue;
                                 }
@@ -140,7 +140,7 @@
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
             UserId userId,
-            DateTimeOffset currentDateTimeOnUtc)
+            ReservationDate currentDateTimeOnUtc)
         {
             FluentActions.Invoking(async () => await this.showtimeManager.ReserveSeatsAsync(
                 showtime,
@@ -166,7 +166,7 @@
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var createdTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(movie);
@@ -186,7 +186,7 @@
             // Assert
             ticketCreated.Should().NotBeNull();
             ticketCreated.Seats.Should().BeEquivalentTo(desiredSeatIds);
-            ticketCreated.CreatedTimeOnUtc.Should().Be(createdTimeOnUtc);
+            ticketCreated.ReservationDateOnUtc.Should().Be(createdTimeOnUtc);
         }
 
         [Fact]
@@ -199,7 +199,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow.AddDays(-1),
+                SessionDate.Create(DateTimeOffset.UtcNow.AddDays(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
@@ -210,7 +210,7 @@
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
 
-            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+            var currentDateTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(movie);
@@ -237,7 +237,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow.AddDays(-1),
+                SessionDate.Create(DateTimeOffset.UtcNow.AddDays(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
@@ -248,7 +248,7 @@
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
 
-            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+            var currentDateTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
                 .Returns((Auditorium)null!);
@@ -276,7 +276,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow.AddDays(-1),
+                SessionDate.Create(DateTimeOffset.UtcNow.AddDays(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
@@ -286,7 +286,7 @@
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
-            var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
+            var currentDateTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(movie);
@@ -322,7 +322,7 @@
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var createdTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(movie);
@@ -357,7 +357,7 @@
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var createdTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(movie);
@@ -406,7 +406,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow.AddDays(-1),
+                SessionDate.Create(DateTimeOffset.UtcNow.AddDays(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
@@ -433,7 +433,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow.AddDays(-1),
+                SessionDate.Create(DateTimeOffset.UtcNow.AddDays(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow;
@@ -457,7 +457,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow,
+                SessionDate.Create(DateTimeOffset.UtcNow),
                 Constants.Showtime.AuditoriumId);
 
             var currentDateTimeOnUtc = DateTimeOffset.UtcNow.AddDays(-1);

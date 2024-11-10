@@ -15,12 +15,12 @@
         public static IEnumerable<object[]> InvalidArgumentsCreateAuditorium()
         {
             var id = Constants.Auditorium.Id;
-            string name = Constants.Auditorium.Name;
+            var name = Constants.Auditorium.Name;
             var rows = Constants.Auditorium.Rows;
             var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             var idValues = new object[] { default!, id };
-            var nameValues = new object[] { default!, string.Empty, " ", name };
+            var nameValues = new object[] { default!, name };
             var rowsValues = new object[] { default!, rows };
             var seatsPerRowValues = new object[] { default!, seatsPerRow };
 
@@ -52,7 +52,7 @@
         {
             // Arrange
             var id = Constants.Auditorium.Id;
-            string name = Constants.Auditorium.Name;
+            var name = Constants.Auditorium.Name;
             var rows = Constants.Auditorium.Rows;
             var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
@@ -79,7 +79,7 @@
         [MemberData(nameof(InvalidArgumentsCreateAuditorium))]
         public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(
             AuditoriumId id,
-            string name,
+            Name name,
             Rows rows,
             SeatsPerRow seatsPerRow)
         {

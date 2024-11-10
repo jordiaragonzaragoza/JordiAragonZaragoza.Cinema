@@ -16,12 +16,12 @@
         {
             var auditorium = CreateAuditoriumUtils.Create();
             var seatIds = auditorium.Seats.Select(seat => seat.Id);
-            var createdTimeOnUtc = DateTimeOffset.UtcNow;
+            var reservationDate = ReservationDate.Create(DateTimeOffset.UtcNow);
 
             var idValues = new object[] { default!, Constants.Ticket.Id };
             var userIdValues = new object[] { default!, Constants.Ticket.UserId };
             var seatIdsValues = new object[] { default!, new List<SeatId>(), seatIds };
-            var createdTimeOnUtcValues = new object[] { default(DateTimeOffset), createdTimeOnUtc };
+            var createdTimeOnUtcValues = new object[] { default!, reservationDate };
 
             foreach (var idValue in idValues)
             {
@@ -34,7 +34,7 @@
                             if (idValue != null && idValue.Equals(Constants.Ticket.Id) &&
                                 userIdValue != null && userIdValue.Equals(Constants.Ticket.UserId) &&
                                 seatIdsValue != null && seatIdsValue == seatIds &&
-                                createdTimeOnUtcValue != default && createdTimeOnUtcValue.Equals(createdTimeOnUtc))
+                                createdTimeOnUtcValue != null && createdTimeOnUtcValue.Equals(reservationDate))
                             {
                                 continue;
                             }
@@ -52,7 +52,7 @@
             TicketId id,
             UserId userId,
             IEnumerable<SeatId> seatIds,
-            DateTimeOffset createdTimeOnUtc)
+            ReservationDate createdTimeOnUtc)
         {
             // Act
             Func<Ticket> createTicket = () => new Ticket(id, userId, seatIds, createdTimeOnUtc);

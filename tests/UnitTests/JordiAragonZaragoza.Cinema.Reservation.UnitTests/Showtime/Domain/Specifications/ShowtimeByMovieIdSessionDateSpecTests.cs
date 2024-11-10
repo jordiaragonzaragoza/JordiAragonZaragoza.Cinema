@@ -31,7 +31,7 @@
             var showtime2 = Showtime.Schedule(
                 new ShowtimeId(Guid.NewGuid()),
                 Constants.Showtime.MovieId,
-                Constants.Showtime.SessionDateOnUtc.AddYears(-1),
+                SessionDate.Create(Constants.Showtime.SessionDateOnUtc.Value.AddYears(-1)),
                 Constants.Showtime.AuditoriumId);
 
             var showtimes = new List<Showtime>() { showtime1, showtime2 };

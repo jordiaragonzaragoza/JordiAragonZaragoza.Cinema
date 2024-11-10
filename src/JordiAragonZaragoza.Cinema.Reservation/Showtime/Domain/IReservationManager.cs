@@ -15,7 +15,7 @@
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
             UserId userId,
-            DateTimeOffset currentDateTimeOnUtc,
+            ReservationDate reservationDateOnUtc,
             CancellationToken cancellationToken);
 
         Task<bool> HasShowtimeEndedAsync(Showtime showtime, DateTimeOffset currentDateTimeOnUtc, CancellationToken cancellationToken);

@@ -30,7 +30,7 @@
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
                 id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
-                name: "Auditorium One",
+                name: Name.Create("Auditorium One"),
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
 

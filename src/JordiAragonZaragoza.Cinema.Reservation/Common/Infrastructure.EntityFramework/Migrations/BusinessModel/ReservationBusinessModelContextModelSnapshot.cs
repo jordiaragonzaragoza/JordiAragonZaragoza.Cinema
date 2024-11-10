@@ -298,11 +298,12 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                             b1.Property<Guid>("ShowtimeId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("CreatedTimeOnUtc")
-                                .HasColumnType("timestamp with time zone");
-
                             b1.Property<bool>("IsPurchased")
                                 .HasColumnType("boolean");
+
+                            b1.Property<DateTimeOffset>("ReservationDateOnUtc")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("ReservationDate");
 
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid")

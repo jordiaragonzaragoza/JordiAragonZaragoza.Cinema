@@ -1,6 +1,5 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Ardalis.GuardClauses;
@@ -16,12 +15,12 @@
             TicketId id,
             UserId userId,
             IEnumerable<SeatId> seatIds,
-            DateTimeOffset createdTimeOnUtc)
+            ReservationDate reservationDateOnUtc)
             : base(id)
         {
-            this.UserId = Guard.Against.Null(userId, nameof(userId));
-            this.seats = Guard.Against.NullOrEmpty(seatIds, nameof(seatIds)).ToList();
-            this.CreatedTimeOnUtc = Guard.Against.Default(createdTimeOnUtc, nameof(createdTimeOnUtc));
+            this.UserId = userId;
+            this.seats = seatIds.ToList();
+            this.ReservationDateOnUtc = reservationDateOnUtc;
         }
 
         // Required by EF.
@@ -33,7 +32,7 @@
 
         public IEnumerable<SeatId> Seats => this.seats.AsReadOnly();
 
-        public DateTimeOffset CreatedTimeOnUtc { get; private set; }
+        public ReservationDate ReservationDateOnUtc { get; private set; } = default!;
 
         public bool IsPurchased { get; private set; }
 

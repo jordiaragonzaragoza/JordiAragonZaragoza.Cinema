@@ -70,12 +70,12 @@
             var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
 
             // Make the reserve.
-            var newticket = await this.showtimeManager.ReserveSeatsAsync(
+            var newTicket = await this.showtimeManager.ReserveSeatsAsync(
                 existingShowtime,
                 desiredSeatsIds,
                 new TicketId(this.guidGenerator.Create()),
                 new UserId(request.UserId),
-                this.dateTime.UtcNow,
+                ReservationDate.Create(this.dateTime.UtcNow),
                 cancellationToken);
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
@@ -100,14 +100,14 @@
                 => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber));
 
             var ticketOutputDto = new TicketOutputDto(
-                newticket.Id,
+                newTicket.Id,
                 request.UserId,
                 existingShowtime.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Name,
                 existingMovie.Title,
                 seatsOutputDto,
-                newticket.IsPurchased);
+                newTicket.IsPurchased);
 
             return Result.Success(ticketOutputDto);
         }

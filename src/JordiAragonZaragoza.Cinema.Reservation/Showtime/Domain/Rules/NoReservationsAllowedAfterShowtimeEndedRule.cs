@@ -26,7 +26,7 @@
 
         public bool IsBroken()
         {
-            var showtimeEndedOnUtc = this.showtime.SessionDateOnUtc + this.movie.Runtime;
+            var showtimeEndedOnUtc = (DateTimeOffset)this.showtime.SessionDateOnUtc + this.movie.Runtime;
             if (this.currentDateTimeOnUtc > showtimeEndedOnUtc)
             {
                 return true;

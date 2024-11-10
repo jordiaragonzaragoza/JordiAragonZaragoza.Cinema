@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
@@ -21,8 +22,8 @@
         {
         }
 
-        // TODO: It belongs to the cinema manager bounded context.
-        public string Name { get; private set; } = default!;
+        // TODO: It belongs to the cinema manager bounded context. Not required.
+        public Name Name { get; private set; } = default!;
 
         public Rows Rows { get; private set; } = default!;
 
@@ -34,7 +35,7 @@
 
         public static Auditorium Create(
             AuditoriumId id,
-            string name,
+            Name name,
             Rows rows,
             SeatsPerRow seatsPerRow)
         {
@@ -63,6 +64,9 @@
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
 
+            _ = this.activeShowtimes.Find(showtime => showtime.Equals(showtimeId))
+                ?? throw new NotFoundException(nameof(ShowtimeId), showtimeId.Value);
+
             this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
         }
 
@@ -82,7 +86,7 @@
                     break;
 
                 case ActiveShowtimeRemovedEvent @event:
-                    this.Applier(@event);
+                    this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
                     break;
 
                 default:
@@ -95,7 +99,7 @@
             try
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
-                Guard.Against.NullOrWhiteSpace(this.Name, nameof(this.Name));
+                Guard.Against.Null(this.Name, nameof(this.Name));
                 Guard.Against.Null(this.Rows, nameof(this.Rows));
                 Guard.Against.Null(this.SeatsPerRow, nameof(this.SeatsPerRow));
             }
@@ -122,19 +126,10 @@
         private void Applier(AuditoriumCreatedEvent @event)
         {
             this.Id = new AuditoriumId(@event.AggregateId);
-            this.Name = @event.Name;
+            this.Name = new Name(@event.Name);
             this.Rows = new Rows(@event.Rows);
             this.SeatsPerRow = new SeatsPerRow(@event.SeatsPerRow);
             this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
-        }
-
-        private void Applier(ActiveShowtimeRemovedEvent @event)
-        {
-            var isRemoved = this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
-            if (!isRemoved)
-            {
-                throw new NotFoundException(nameof(Showtime), @event.ShowtimeId.ToString());
-            }
         }
     }
 }

@@ -39,8 +39,12 @@
                   .HasConversion(ticketId => ticketId.Value, guidValue => new TicketId(guidValue));
 
                 tb.Property(ticket => ticket.UserId)
-                .HasConversion(id => id.Value, value => new UserId(value))
+                .HasConversion(userId => userId.Value, value => new UserId(value))
                 .HasColumnName(nameof(UserId));
+
+                tb.Property(ticket => ticket.ReservationDateOnUtc)
+                    .HasConversion(reservationDate => reservationDate.Value, value => new ReservationDate(value))
+                    .HasColumnName(nameof(ReservationDate));
 
                 tb.OwnsMany(ticket => ticket.Seats, ticketSeatBuilder =>
                 {
@@ -76,6 +80,11 @@
 
             builder.Property(showtime => showtime.MovieId)
                 .HasConversion(id => id.Value, value => new MovieId(value));
+
+            builder.Property(showtime => showtime.SessionDateOnUtc)
+                .HasConversion(
+                    sessionDate => sessionDate.Value,
+                    value => new SessionDate(value));
         }
     }
 }

@@ -77,6 +77,11 @@
                 .ValueGeneratedNever()
                 .HasConversion(id => id.Value, value => new AuditoriumId(value));
 
+            builder.Property(auditorium => auditorium.Name)
+                .HasConversion(
+                    title => title.Value,
+                    value => new Name(value));
+
             builder.Property(auditorium => auditorium.Rows)
                 .HasConversion(
                     rows => rows.Value,

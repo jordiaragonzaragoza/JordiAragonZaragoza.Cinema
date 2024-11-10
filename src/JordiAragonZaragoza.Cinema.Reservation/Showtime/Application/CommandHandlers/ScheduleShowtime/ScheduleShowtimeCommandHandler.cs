@@ -52,7 +52,7 @@
             var newShowtime = Showtime.Schedule(
                 new ShowtimeId(this.guidGenerator.Create()),
                 new MovieId(existingMovie.Id),
-                request.SessionDateOnUtc,
+                SessionDate.Create(request.SessionDateOnUtc),
                 new AuditoriumId(existingAuditorium.Id));
 
             await this.showtimeRepository.AddAsync(newShowtime, cancellationToken);

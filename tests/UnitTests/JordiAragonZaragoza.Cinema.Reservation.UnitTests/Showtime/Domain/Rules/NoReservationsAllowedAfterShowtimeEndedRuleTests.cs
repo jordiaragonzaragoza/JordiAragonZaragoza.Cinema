@@ -61,7 +61,7 @@
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
                 Constants.Showtime.MovieId,
-                DateTimeOffset.UtcNow,
+                SessionDate.Create(DateTimeOffset.UtcNow),
                 Constants.Showtime.AuditoriumId);
 
             var movie = CreateMovieUtils.Create();

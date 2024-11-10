@@ -47,14 +47,14 @@
             IEnumerable<SeatId> desiredSeatIds,
             TicketId newTicketId,
             UserId userId,
-            DateTimeOffset currentDateTimeOnUtc,
+            ReservationDate reservationDateOnUtc,
             CancellationToken cancellationToken)
         {
             Guard.Against.Null(showtime);
             Guard.Against.NullOrEmpty(desiredSeatIds);
             Guard.Against.Null(newTicketId);
             Guard.Against.Null(userId);
-            Guard.Against.Default(currentDateTimeOnUtc);
+            Guard.Against.Default(reservationDateOnUtc);
 
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
             if (existingMovie is null)
@@ -68,7 +68,7 @@
                 throw new NotFoundException(nameof(Auditorium), showtime.AuditoriumId.ToString()!);
             }
 
-            CheckRule(new NoReservationsAllowedAfterShowtimeEndedRule(showtime, existingMovie, currentDateTimeOnUtc));
+            CheckRule(new NoReservationsAllowedAfterShowtimeEndedRule(showtime, existingMovie, reservationDateOnUtc));
 
             var desiredSeats = existingAuditorium.Seats.Where(seat => desiredSeatIds.Contains(seat.Id));
 
@@ -78,7 +78,7 @@
 
             CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
 
-            return showtime.ReserveSeats(newTicketId, userId, desiredSeatIds, currentDateTimeOnUtc);
+            return showtime.ReserveSeats(newTicketId, userId, desiredSeatIds, reservationDateOnUtc);
         }
 
         // TODO: This method will gone out on using sagas with timeout messages to mark showtimes as ended.

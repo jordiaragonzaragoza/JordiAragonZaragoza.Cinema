@@ -172,7 +172,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ReservationDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsPurchased = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>

@@ -26,8 +26,7 @@
 
         public MovieId MovieId { get; private set; } = default!;
 
-        // TODO: Use a Value Object
-        public DateTimeOffset SessionDateOnUtc { get; private set; }
+        public SessionDate SessionDateOnUtc { get; private set; } = default!;
 
         public AuditoriumId AuditoriumId { get; private set; } = default!;
 
@@ -38,12 +37,12 @@
         public static Showtime Schedule(
             ShowtimeId id,
             MovieId movieId,
-            DateTimeOffset sessionDateOnUtc,
+            SessionDate sessionDateOnUtc,
             AuditoriumId auditoriumId)
         {
             ArgumentNullException.ThrowIfNull(id, nameof(id));
             ArgumentNullException.ThrowIfNull(movieId, nameof(movieId));
-            ////ArgumentNullException.ThrowIfNull(sessionDateOnUtc, nameof(sessionDateOnUtc));
+            ArgumentNullException.ThrowIfNull(sessionDateOnUtc, nameof(sessionDateOnUtc));
             ArgumentNullException.ThrowIfNull(auditoriumId, nameof(auditoriumId));
 
             var showtime = new Showtime();
@@ -59,14 +58,14 @@
         public void End()
             => this.Apply(new ShowtimeEndedEvent(this.Id, this.AuditoriumId, this.MovieId));
 
-        public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, DateTimeOffset createdTimeOnUtc)
+        public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, ReservationDate reservationDateOnUtc)
         {
             ArgumentNullException.ThrowIfNull(id, nameof(id));
             ArgumentNullException.ThrowIfNull(userId, nameof(userId));
-            ////CheckRule(new SeatIdsRule());
-            ////CheckRule(new createdTimeOnUtcRule());
+            Guard.Against.NullOrEmpty(seatIds, nameof(seatIds));
+            ArgumentNullException.ThrowIfNull(reservationDateOnUtc, nameof(reservationDateOnUtc));
 
-            this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), createdTimeOnUtc));
+            this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), reservationDateOnUtc));
 
             return this.tickets[^1];
         }
@@ -131,7 +130,7 @@
             {
                 Guard.Against.Null(this.Id, nameof(this.Id));
                 Guard.Against.Null(this.MovieId, nameof(this.MovieId));
-                Guard.Against.Default(this.SessionDateOnUtc, nameof(this.SessionDateOnUtc));
+                Guard.Against.Null(this.SessionDateOnUtc, nameof(this.SessionDateOnUtc));
                 Guard.Against.Null(this.AuditoriumId, nameof(this.AuditoriumId));
             }
             catch (Exception exception)
@@ -144,7 +143,7 @@
         {
             this.Id = new ShowtimeId(@event.AggregateId);
             this.MovieId = new MovieId(@event.MovieId);
-            this.SessionDateOnUtc = @event.SessionDateOnUtc;
+            this.SessionDateOnUtc = new SessionDate(@event.SessionDateOnUtc);
             this.AuditoriumId = new AuditoriumId(@event.AuditoriumId);
         }
 
@@ -159,7 +158,7 @@
                  new TicketId(@event.TicketId),
                  new UserId(@event.UserId),
                  seatIds,
-                 @event.CreatedTimeOnUtc);
+                 new ReservationDate(@event.CreatedTimeOnUtc));
 
             this.tickets.Add(newTicket);
         }

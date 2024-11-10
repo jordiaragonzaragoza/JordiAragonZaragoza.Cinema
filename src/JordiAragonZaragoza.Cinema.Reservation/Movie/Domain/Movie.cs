@@ -2,12 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
+
+    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public sealed class Movie : BaseAggregateRoot<MovieId, Guid>
     {
@@ -59,6 +62,9 @@
         public void RemoveActiveShowtime(ShowtimeId showtimeId)
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            _ = this.activeShowtimes.Find(showtime => showtime.Equals(showtimeId))
+                ?? throw new NotFoundException(nameof(ShowtimeId), showtimeId.Value);
 
             this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
         }

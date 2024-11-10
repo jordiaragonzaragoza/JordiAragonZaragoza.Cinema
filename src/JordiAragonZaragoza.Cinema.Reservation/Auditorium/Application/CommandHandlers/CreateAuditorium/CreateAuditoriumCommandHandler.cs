@@ -26,7 +26,7 @@
             // This rule is part from cinema manager bounded context using a domain service.
             var newAuditorium = Auditorium.Create(
                 id: new AuditoriumId(request.AuditoriumId),
-                name: request.Name,
+                name: Name.Create(request.Name),
                 rows: Rows.Create(request.Rows),
                 seatsPerRow: SeatsPerRow.Create(request.SeatsPerRow));
 
