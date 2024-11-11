@@ -63,8 +63,10 @@
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
 
-            _ = this.activeShowtimes.Find(showtime => showtime.Equals(showtimeId))
-                ?? throw new NotFoundException(nameof(ShowtimeId), showtimeId.Value);
+            if (!this.activeShowtimes.Exists(showtime => showtime.Equals(showtimeId)))
+            {
+                throw new NotFoundException(nameof(ShowtimeId), showtimeId.Value);
+            }
 
             this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
         }

@@ -4,6 +4,7 @@
     using System.Globalization;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public sealed class EndOfPeriodTests
@@ -18,7 +19,7 @@
             Func<EndOfPeriod> endOfPeriod = () => EndOfPeriod.Create(value);
 
             // Assert
-            endOfPeriod.Should().Throw<ArgumentException>();
+            endOfPeriod.Should().Throw<BusinessRuleValidationException>().WithMessage("The minimum end of period must be valid.");
         }
 
         [Fact]

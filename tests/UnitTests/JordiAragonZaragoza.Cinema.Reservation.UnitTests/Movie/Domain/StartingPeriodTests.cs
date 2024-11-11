@@ -4,6 +4,7 @@
     using System.Globalization;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public sealed class StartingPeriodTests
@@ -18,7 +19,7 @@
             Func<StartingPeriod> startingPeriod = () => StartingPeriod.Create(value);
 
             // Assert
-            startingPeriod.Should().Throw<ArgumentException>();
+            startingPeriod.Should().Throw<BusinessRuleValidationException>().WithMessage("The minimum starting period must be valid.");
         }
 
         [Fact]

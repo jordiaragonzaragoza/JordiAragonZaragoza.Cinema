@@ -3,6 +3,7 @@
     using System;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public sealed class SeatNumberTests
@@ -17,7 +18,7 @@
             Func<SeatNumber> rows = () => SeatNumber.Create(value);
 
             // Assert
-            rows.Should().Throw<ArgumentException>();
+            rows.Should().Throw<BusinessRuleValidationException>().WithMessage("The minimum seat number value must be valid.");
         }
 
         [Fact]

@@ -3,6 +3,7 @@
     using System;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public sealed class RowsTests
@@ -17,7 +18,7 @@
             Func<Rows> rows = () => Rows.Create(value);
 
             // Assert
-            rows.Should().Throw<ArgumentException>();
+            rows.Should().Throw<BusinessRuleValidationException>().WithMessage("The minimum rows value must be valid.");
         }
 
         [Fact]

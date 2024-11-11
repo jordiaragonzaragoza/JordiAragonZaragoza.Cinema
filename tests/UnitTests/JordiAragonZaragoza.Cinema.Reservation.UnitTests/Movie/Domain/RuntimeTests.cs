@@ -3,6 +3,7 @@
     using System;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;
 
     public sealed class RuntimeTests
@@ -17,7 +18,7 @@
             Func<Runtime> runtime = () => Runtime.Create(value);
 
             // Assert
-            runtime.Should().Throw<ArgumentException>();
+            runtime.Should().Throw<BusinessRuleValidationException>().WithMessage("The runtime must be greater than zero to be valid.");
         }
 
         [Fact]
