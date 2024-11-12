@@ -10,7 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 
         public MinimumStartingPeriodRule(DateTimeOffset minimumStartingPeriod)
         {
-            this.minimumStartingPeriod = Guard.Against.Null(minimumStartingPeriod, nameof(minimumStartingPeriod));
+            this.minimumStartingPeriod = minimumStartingPeriod;
         }
 
         public string Message => "The minimum starting period must be valid.";

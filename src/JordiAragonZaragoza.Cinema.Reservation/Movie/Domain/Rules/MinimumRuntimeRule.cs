@@ -10,7 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 
         public MinimumRuntimeRule(TimeSpan minimumRuntime)
         {
-            this.minimumRuntime = Guard.Against.Null(minimumRuntime, nameof(minimumRuntime));
+            this.minimumRuntime = minimumRuntime;
         }
 
         public string Message => "The runtime must be greater than zero to be valid.";

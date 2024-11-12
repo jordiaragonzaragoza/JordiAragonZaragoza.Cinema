@@ -1,7 +1,6 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 {
     using System;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
     public sealed class MinimumEndOfPeriodRule : IBusinessRule
@@ -10,7 +9,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 
         public MinimumEndOfPeriodRule(DateTimeOffset minimumEndOfPeriod)
         {
-            this.minimumEndOfPeriod = Guard.Against.Null(minimumEndOfPeriod, nameof(minimumEndOfPeriod));
+            this.minimumEndOfPeriod = minimumEndOfPeriod;
         }
 
         public string Message => "The minimum end of period must be valid.";
