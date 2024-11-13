@@ -21,16 +21,47 @@
         }
 
         [Fact]
-        public void CreateAuditoriumId_WhenHavingAValidGuid_ShouldReturnAuditoriumId()
+        public void ImplicitConversion_WhenHavingAAuditoriumId_ShouldReturnGuid()
         {
             // Arrange
-            var id = Guid.NewGuid();
+            var value = Guid.NewGuid();
+            var auditoriumId = new AuditoriumId(value);
 
             // Act
-            var auditoriumId = new AuditoriumId(id);
+            Guid result = auditoriumId;
 
             // Assert
-            auditoriumId.Should().NotBeNull();
+            result.Should().Be(value);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnStringRepresentationOfAuditoriumId()
+        {
+            // Arrange
+            var value = Guid.NewGuid();
+            var auditoriumId = new AuditoriumId(value);
+
+            // Act
+            var result = auditoriumId.ToString();
+
+            // Assert
+            result.Should().Be(value.ToString());
+        }
+
+        [Fact]
+        public void Equality_Checks_ShouldWorkAsExpected()
+        {
+            // Arrange
+            var value1 = Guid.NewGuid();
+            var value2 = Guid.NewGuid();
+
+            var auditoriumId1 = new AuditoriumId(value1);
+            var auditoriumId2 = new AuditoriumId(value1);
+            var auditoriumId3 = new AuditoriumId(value2);
+
+            // Act & Assert
+            auditoriumId1.Should().Be(auditoriumId2);
+            auditoriumId1.Should().NotBe(auditoriumId3);
         }
     }
 }

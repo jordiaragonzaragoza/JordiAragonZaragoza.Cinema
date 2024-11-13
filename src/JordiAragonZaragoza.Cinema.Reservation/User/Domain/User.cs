@@ -17,6 +17,8 @@
         public static User Create(
             UserId id)
         {
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
+
             var user = new User();
 
             user.Apply(new UserCreatedEvent(id));

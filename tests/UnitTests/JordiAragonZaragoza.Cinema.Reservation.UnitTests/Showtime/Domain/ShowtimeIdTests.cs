@@ -21,16 +21,47 @@
         }
 
         [Fact]
-        public void CreateShowtimeId_WhenHavingAValidGuid_ShouldReturnShowtimeId()
+        public void ImplicitConversion_WhenHavingAShowtimeId_ShouldReturnGuid()
         {
             // Arrange
-            var id = Guid.NewGuid();
+            var value = Guid.NewGuid();
+            var showtimeId = new ShowtimeId(value);
 
             // Act
-            var showtimeId = new ShowtimeId(id);
+            Guid result = showtimeId;
 
             // Assert
-            showtimeId.Should().NotBeNull();
+            result.Should().Be(value);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnStringRepresentationOfShowtimeId()
+        {
+            // Arrange
+            var value = Guid.NewGuid();
+            var showtimeId = new ShowtimeId(value);
+
+            // Act
+            var result = showtimeId.ToString();
+
+            // Assert
+            result.Should().Be(value.ToString());
+        }
+
+        [Fact]
+        public void Equality_Checks_ShouldWorkAsExpected()
+        {
+            // Arrange
+            var value1 = Guid.NewGuid();
+            var value2 = Guid.NewGuid();
+
+            var showtimeId1 = new ShowtimeId(value1);
+            var showtimeId2 = new ShowtimeId(value1);
+            var showtimeId3 = new ShowtimeId(value2);
+
+            // Act & Assert
+            showtimeId1.Should().Be(showtimeId2);
+            showtimeId1.Should().NotBe(showtimeId3);
         }
     }
 }

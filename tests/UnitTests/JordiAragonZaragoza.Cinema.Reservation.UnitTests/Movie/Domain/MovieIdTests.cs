@@ -21,16 +21,47 @@
         }
 
         [Fact]
-        public void CreateMovieId_WhenHavingAValidGuid_ShouldReturnMovieId()
+        public void ImplicitConversion_WhenHavingAMovieId_ShouldReturnGuid()
         {
             // Arrange
-            var id = Guid.NewGuid();
+            var value = Guid.NewGuid();
+            var movieId = new MovieId(value);
 
             // Act
-            var movieId = new MovieId(id);
+            Guid result = movieId;
 
             // Assert
-            movieId.Should().NotBeNull();
+            result.Should().Be(value);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnStringRepresentationOfMovieId()
+        {
+            // Arrange
+            var value = Guid.NewGuid();
+            var movieId = new MovieId(value);
+
+            // Act
+            var result = movieId.ToString();
+
+            // Assert
+            result.Should().Be(value.ToString());
+        }
+
+        [Fact]
+        public void Equality_Checks_ShouldWorkAsExpected()
+        {
+            // Arrange
+            var value1 = Guid.NewGuid();
+            var value2 = Guid.NewGuid();
+
+            var movieId1 = new MovieId(value1);
+            var movieId2 = new MovieId(value1);
+            var movieId3 = new MovieId(value2);
+
+            // Act & Assert
+            movieId1.Should().Be(movieId2);
+            movieId1.Should().NotBe(movieId3);
         }
     }
 }

@@ -21,16 +21,47 @@
         }
 
         [Fact]
-        public void CreateSeatId_WhenHavingAValidGuid_ShouldReturnSeatId()
+        public void ImplicitConversion_WhenHavingASeatId_ShouldReturnGuid()
         {
             // Arrange
-            var id = Guid.NewGuid();
+            var value = Guid.NewGuid();
+            var seatId = new SeatId(value);
 
             // Act
-            var seatId = new SeatId(id);
+            Guid result = seatId;
 
             // Assert
-            seatId.Should().NotBeNull();
+            result.Should().Be(value);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnStringRepresentationOfSeatId()
+        {
+            // Arrange
+            var value = Guid.NewGuid();
+            var seatId = new SeatId(value);
+
+            // Act
+            var result = seatId.ToString();
+
+            // Assert
+            result.Should().Be(value.ToString());
+        }
+
+        [Fact]
+        public void Equality_Checks_ShouldWorkAsExpected()
+        {
+            // Arrange
+            var value1 = Guid.NewGuid();
+            var value2 = Guid.NewGuid();
+
+            var seatId1 = new SeatId(value1);
+            var seatId2 = new SeatId(value1);
+            var seatId3 = new SeatId(value2);
+
+            // Act & Assert
+            seatId1.Should().Be(seatId2);
+            seatId1.Should().NotBe(seatId3);
         }
     }
 }
