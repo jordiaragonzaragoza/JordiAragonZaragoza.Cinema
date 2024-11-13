@@ -51,9 +51,9 @@
         [Fact]
         public void CreateSeat_WhenHavingValidArguments_ShouldCreateSeat()
         {
-            SeatId seatId = Constants.Seat.Id;
-            Row row = Constants.Seat.Row;
-            SeatNumber seatNumber = Constants.Seat.SeatNumber;
+            var seatId = Constants.Seat.Id;
+            var row = Constants.Seat.Row;
+            var seatNumber = Constants.Seat.SeatNumber;
 
             // Act
             var seat = new Seat(seatId, row, seatNumber);
