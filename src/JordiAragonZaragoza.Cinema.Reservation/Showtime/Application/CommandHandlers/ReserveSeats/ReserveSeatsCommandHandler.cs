@@ -53,7 +53,7 @@
 
         public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
 
             var existingUser = await this.userRepository.GetByIdAsync(new UserId(request.UserId), cancellationToken);
             if (existingUser is null)
@@ -109,7 +109,7 @@
                 seatsOutputDto,
                 newTicket.IsPurchased);
 
-            return Result.Success(ticketOutputDto);
+            return Result.Created(ticketOutputDto);
         }
     }
 }

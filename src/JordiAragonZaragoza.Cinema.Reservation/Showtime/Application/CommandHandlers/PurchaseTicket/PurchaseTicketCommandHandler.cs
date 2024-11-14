@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers.PurchaseTicket
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -21,7 +22,7 @@
 
         public override async Task<Result> Handle(PurchaseTicketCommand request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
 
             var existingShowtime = await this.showtimeRepository.GetByIdAsync(new ShowtimeId(request.ShowtimeId), cancellationToken);
             if (existingShowtime is null)
@@ -33,7 +34,7 @@
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

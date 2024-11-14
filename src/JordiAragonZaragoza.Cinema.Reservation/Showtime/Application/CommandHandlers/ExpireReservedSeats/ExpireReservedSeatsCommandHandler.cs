@@ -33,7 +33,7 @@
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

@@ -32,7 +32,7 @@
             existingShowtime.Cancel();
             await this.showtimeRepository.DeleteAsync(existingShowtime, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

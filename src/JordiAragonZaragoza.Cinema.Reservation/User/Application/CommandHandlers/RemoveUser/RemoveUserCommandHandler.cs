@@ -33,7 +33,7 @@
 
             await this.userRepository.DeleteAsync(existingUser, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

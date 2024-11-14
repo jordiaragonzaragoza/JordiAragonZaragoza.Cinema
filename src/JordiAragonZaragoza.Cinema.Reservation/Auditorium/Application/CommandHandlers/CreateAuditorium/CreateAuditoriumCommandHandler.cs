@@ -32,7 +32,7 @@
 
             await this.auditoriumRepository.AddAsync(newAuditorium, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

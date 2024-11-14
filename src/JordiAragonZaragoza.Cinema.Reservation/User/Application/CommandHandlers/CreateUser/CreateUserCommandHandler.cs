@@ -27,7 +27,7 @@
 
             await this.userRepository.AddAsync(newUser, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }

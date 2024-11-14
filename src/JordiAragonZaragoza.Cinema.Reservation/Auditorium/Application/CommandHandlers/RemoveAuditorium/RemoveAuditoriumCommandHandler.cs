@@ -33,7 +33,7 @@
 
             await this.auditoriumRepository.DeleteAsync(existingAuditorium, cancellationToken);
 
-            return Result.Success();
+            return Result.NoContent();
         }
     }
 }
