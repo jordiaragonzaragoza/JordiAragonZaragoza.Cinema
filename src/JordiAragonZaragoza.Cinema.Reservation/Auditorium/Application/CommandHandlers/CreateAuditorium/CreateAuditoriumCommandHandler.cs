@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers.CreateAuditorium
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -20,7 +21,7 @@
 
         public override async Task<Result> Handle(CreateAuditoriumCommand request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
 
             // TODO: There cannot be two Auditoriums with the same name and same cinema id.
             // This rule is part from cinema manager bounded context using a domain service.

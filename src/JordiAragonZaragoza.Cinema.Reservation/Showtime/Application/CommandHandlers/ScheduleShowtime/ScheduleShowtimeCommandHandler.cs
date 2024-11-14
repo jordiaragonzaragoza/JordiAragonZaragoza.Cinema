@@ -34,7 +34,7 @@
 
         public override async Task<Result<Guid>> Handle(ScheduleShowtimeCommand request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
 
             var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(request.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)

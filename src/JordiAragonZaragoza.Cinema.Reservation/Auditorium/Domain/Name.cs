@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
 
     public sealed class Name : BaseValueObject
@@ -24,7 +23,7 @@
 
         public static Name Create(string value)
         {
-            Guard.Against.NullOrWhiteSpace(value, nameof(value));
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(value, nameof(value));
 
             return new Name(value);
         }

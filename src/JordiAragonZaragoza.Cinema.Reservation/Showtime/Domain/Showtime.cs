@@ -128,10 +128,10 @@
         {
             try
             {
-                Guard.Against.Null(this.Id, nameof(this.Id));
-                Guard.Against.Null(this.MovieId, nameof(this.MovieId));
-                Guard.Against.Null(this.SessionDateOnUtc, nameof(this.SessionDateOnUtc));
-                Guard.Against.Null(this.AuditoriumId, nameof(this.AuditoriumId));
+                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
+                ArgumentNullException.ThrowIfNull(this.MovieId, nameof(this.MovieId));
+                ArgumentNullException.ThrowIfNull(this.SessionDateOnUtc, nameof(this.SessionDateOnUtc));
+                ArgumentNullException.ThrowIfNull(this.AuditoriumId, nameof(this.AuditoriumId));
             }
             catch (Exception exception)
             {

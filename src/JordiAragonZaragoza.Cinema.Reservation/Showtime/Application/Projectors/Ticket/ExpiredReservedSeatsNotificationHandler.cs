@@ -23,7 +23,7 @@
 
         public async Task Handle(ExpiredReservedSeatsNotification notification, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(notification, nameof(notification));
+            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
 
             var @event = notification.Event;
 

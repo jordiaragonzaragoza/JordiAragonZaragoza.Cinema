@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Projectors.Ticket
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -25,7 +24,7 @@
 
         public async Task Handle(ShowtimeCanceledNotification notification, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(notification, nameof(notification));
+            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
 
             var @event = notification.Event;
 

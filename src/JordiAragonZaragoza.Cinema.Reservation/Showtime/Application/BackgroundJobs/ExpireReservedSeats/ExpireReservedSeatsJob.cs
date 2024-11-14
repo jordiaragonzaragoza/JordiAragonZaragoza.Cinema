@@ -37,7 +37,7 @@
         {
             try
             {
-                Guard.Against.Null(context, nameof(context));
+                ArgumentNullException.ThrowIfNull(context, nameof(context));
 
                 var dateTimeUtcNow = this.dateTime.UtcNow;
 

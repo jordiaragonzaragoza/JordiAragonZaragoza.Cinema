@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemoveUser
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -20,7 +21,7 @@
 
         public override async Task<Result> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
 
             var existingUser = await this.userRepository.GetByIdAsync(new UserId(request.UserId), cancellationToken);
             if (existingUser is null)

@@ -32,8 +32,8 @@
 
         public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)
         {
-            Guard.Against.Null(auditorium, nameof(auditorium));
-            Guard.Against.Null(showtime, nameof(showtime));
+            ArgumentNullException.ThrowIfNull(auditorium, nameof(auditorium));
+            ArgumentNullException.ThrowIfNull(showtime, nameof(showtime));
 
             var reservedSeats = ReservedSeats(auditorium, showtime);
 
@@ -50,10 +50,10 @@
             ReservationDate reservationDateOnUtc,
             CancellationToken cancellationToken)
         {
-            Guard.Against.Null(showtime);
+            ArgumentNullException.ThrowIfNull(showtime);
             Guard.Against.NullOrEmpty(desiredSeatIds);
-            Guard.Against.Null(newTicketId);
-            Guard.Against.Null(userId);
+            ArgumentNullException.ThrowIfNull(newTicketId);
+            ArgumentNullException.ThrowIfNull(userId);
             Guard.Against.Default(reservationDateOnUtc);
 
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);
@@ -84,7 +84,7 @@
         // TODO: This method will gone out on using sagas with timeout messages to mark showtimes as ended.
         public async Task<bool> HasShowtimeEndedAsync(Showtime showtime, DateTimeOffset currentDateTimeOnUtc, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(showtime);
+            ArgumentNullException.ThrowIfNull(showtime);
             Guard.Against.Default(currentDateTimeOnUtc);
 
             var existingMovie = await this.movieRepository.GetByIdAsync(showtime.MovieId, cancellationToken);

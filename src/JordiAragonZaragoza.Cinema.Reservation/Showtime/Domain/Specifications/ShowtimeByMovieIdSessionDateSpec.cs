@@ -10,7 +10,7 @@
     {
         public ShowtimeByMovieIdSessionDateSpec(MovieId movieId, DateTimeOffset sessionDateOnUtc)
         {
-            Guard.Against.Null(movieId);
+            ArgumentNullException.ThrowIfNull(movieId);
             Guard.Against.Default(sessionDateOnUtc);
 
             this.Query

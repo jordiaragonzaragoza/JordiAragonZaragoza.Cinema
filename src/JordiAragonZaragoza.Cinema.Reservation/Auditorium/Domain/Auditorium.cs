@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
@@ -99,10 +98,10 @@
         {
             try
             {
-                Guard.Against.Null(this.Id, nameof(this.Id));
-                Guard.Against.Null(this.Name, nameof(this.Name));
-                Guard.Against.Null(this.Rows, nameof(this.Rows));
-                Guard.Against.Null(this.SeatsPerRow, nameof(this.SeatsPerRow));
+                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
+                ArgumentNullException.ThrowIfNull(this.Name, nameof(this.Name));
+                ArgumentNullException.ThrowIfNull(this.Rows, nameof(this.Rows));
+                ArgumentNullException.ThrowIfNull(this.SeatsPerRow, nameof(this.SeatsPerRow));
             }
             catch (Exception exception)
             {

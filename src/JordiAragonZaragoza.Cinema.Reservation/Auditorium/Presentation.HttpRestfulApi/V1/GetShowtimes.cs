@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Presentation.HttpRestfulApi.V1
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -38,7 +39,7 @@
 
         public async override Task HandleAsync(GetShowtimesRequest req, CancellationToken ct)
         {
-            Guard.Against.Null(req, nameof(req));
+            ArgumentNullException.ThrowIfNull(req, nameof(req));
 
             var query = new GetShowtimesQuery(
                 req.AuditoriumId,
@@ -59,7 +60,7 @@
 
         private static Result<IEnumerable<ShowtimeResponse>> MapToResultResponse(Result<PaginatedCollectionOutputDto<ShowtimeReadModel>> resultOutputDto)
         {
-            Guard.Against.Null(resultOutputDto, nameof(resultOutputDto));
+            ArgumentNullException.ThrowIfNull(resultOutputDto, nameof(resultOutputDto));
 
             if (!resultOutputDto.IsSuccess)
             {

@@ -24,7 +24,7 @@
 
         public async Task Handle(ShowtimeEndedNotification notification, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(notification, nameof(notification));
+            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
 
             var @event = notification.Event;
 

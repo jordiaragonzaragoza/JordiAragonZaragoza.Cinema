@@ -46,7 +46,7 @@
                 return;
             }
 
-            Guard.Against.Null(app, nameof(app));
+            ArgumentNullException.ThrowIfNull(app, nameof(app));
 
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();

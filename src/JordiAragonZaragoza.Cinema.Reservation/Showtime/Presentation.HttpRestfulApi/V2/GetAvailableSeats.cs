@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -41,7 +42,7 @@
 
         public async override Task HandleAsync(GetAvailableSeatsRequest req, CancellationToken ct)
         {
-            Guard.Against.Null(req, nameof(req));
+            ArgumentNullException.ThrowIfNull(req, nameof(req));
 
             var resultReadModels = await this.queryBus.SendAsync(new GetAvailableSeatsQuery(req.ShowtimeId), ct);
 

@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.EventHandlers
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -23,7 +24,7 @@
 
         public async Task Handle(ShowtimeScheduledEvent notification, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(notification, nameof(notification));
+            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
 
             var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(notification.MovieId), cancellationToken)
                                 ?? throw new NotFoundException(nameof(Movie), notification.MovieId.ToString());

@@ -49,7 +49,7 @@
         {
             try
             {
-                Guard.Against.Null(this.Id, nameof(this.Id));
+                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
             }
             catch (Exception exception)
             {

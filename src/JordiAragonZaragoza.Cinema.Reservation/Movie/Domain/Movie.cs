@@ -99,10 +99,10 @@
         {
             try
             {
-                Guard.Against.Null(this.Id, nameof(this.Id));
-                Guard.Against.Null(this.Title, nameof(this.Title));
-                Guard.Against.Null(this.Runtime, nameof(this.Runtime));
-                Guard.Against.Null(this.ExhibitionPeriod, nameof(this.ExhibitionPeriod));
+                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
+                ArgumentNullException.ThrowIfNull(this.Title, nameof(this.Title));
+                ArgumentNullException.ThrowIfNull(this.Runtime, nameof(this.Runtime));
+                ArgumentNullException.ThrowIfNull(this.ExhibitionPeriod, nameof(this.ExhibitionPeriod));
             }
             catch (Exception exception)
             {
