@@ -205,7 +205,6 @@
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id).ToList();
-            desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
@@ -233,6 +232,7 @@
         {
             // Arrange
             var auditorium = CreateAuditoriumUtils.Create();
+            var movie = CreateMovieUtils.Create();
 
             var showtime = Showtime.Schedule(
                 Constants.Showtime.Id,
@@ -243,12 +243,14 @@
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id).ToList();
-            desiredSeatIds.RemoveAt(1);
 
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
 
             var currentDateTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
+
+            this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
+                .Returns(movie);
 
             this.mockAuditoriumRepository.GetByIdAsync(Arg.Any<AuditoriumId>(), Arg.Any<CancellationToken>())
                 .Returns((Auditorium)null!);
@@ -282,8 +284,6 @@
             var desiredSeatIds = auditorium.Seats.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3)
                                                  .Select(seat => seat.Id).ToList();
-            desiredSeatIds.RemoveAt(1);
-
             var ticketId = Constants.Ticket.Id;
             var userId = Constants.Ticket.UserId;
             var currentDateTimeOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
