@@ -126,17 +126,8 @@
 
         protected override void EnsureValidState()
         {
-            try
-            {
-                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
-                ArgumentNullException.ThrowIfNull(this.MovieId, nameof(this.MovieId));
-                ArgumentNullException.ThrowIfNull(this.SessionDateOnUtc, nameof(this.SessionDateOnUtc));
-                ArgumentNullException.ThrowIfNull(this.AuditoriumId, nameof(this.AuditoriumId));
-            }
-            catch (Exception exception)
-            {
-                throw new InvalidAggregateStateException<Showtime, ShowtimeId>(this, exception.Message);
-            }
+            // Not required validation post apply events. This is a deterministic aggregate.
+            // All the validations are done on public methods.
         }
 
         private void Applier(ShowtimeScheduledEvent @event)

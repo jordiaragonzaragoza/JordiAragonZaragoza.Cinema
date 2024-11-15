@@ -96,17 +96,8 @@
 
         protected override void EnsureValidState()
         {
-            try
-            {
-                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
-                ArgumentNullException.ThrowIfNull(this.Name, nameof(this.Name));
-                ArgumentNullException.ThrowIfNull(this.Rows, nameof(this.Rows));
-                ArgumentNullException.ThrowIfNull(this.SeatsPerRow, nameof(this.SeatsPerRow));
-            }
-            catch (Exception exception)
-            {
-                throw new InvalidAggregateStateException<Auditorium, AuditoriumId>(this, exception.Message);
-            }
+            // Not required validation post apply events. This is a deterministic aggregate.
+            // All the validations are done on public methods.
         }
 
         private static List<Seat> GenerateSeats(ushort rows, ushort seatsPerRow)

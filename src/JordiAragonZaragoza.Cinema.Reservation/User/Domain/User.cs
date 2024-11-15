@@ -47,14 +47,8 @@
 
         protected override void EnsureValidState()
         {
-            try
-            {
-                ArgumentNullException.ThrowIfNull(this.Id, nameof(this.Id));
-            }
-            catch (Exception exception)
-            {
-                throw new InvalidAggregateStateException<User, UserId>(this, exception.Message);
-            }
+            // Not required validation post apply events. This is a deterministic aggregate.
+            // All the validations are done on public methods.
         }
 
         private void Applier(UserCreatedEvent @event)
