@@ -1,6 +1,6 @@
 namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +19,7 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
     {
         public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             builder.ConfigureOpenTelemetry();
 
@@ -47,7 +47,7 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 
         public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             builder.Logging.AddOpenTelemetry(logging =>
             {
@@ -83,7 +83,7 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 
         public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
         {
-            Guard.Against.Null(builder, nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             builder.Services.AddHealthChecks()
                 //// Add a default liveness check to ensure app is responsive
@@ -94,7 +94,7 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 
         public static WebApplication MapDefaultEndpoints(this WebApplication app)
         {
-            Guard.Against.Null(app, nameof(app));
+            ArgumentNullException.ThrowIfNull(app, nameof(app));
 
             //// Uncomment the following line to enable the Prometheus endpoint
             //// (requires the OpenTelemetry.Exporter.Prometheus.AspNetCore package)

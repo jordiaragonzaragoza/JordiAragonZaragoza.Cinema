@@ -9,12 +9,7 @@
 
     public sealed class NotificationsTests
     {
-        private readonly Assembly assembly;
-
-        public NotificationsTests()
-        {
-            this.assembly = AssemblyReference.Assembly;
-        }
+        private readonly Assembly assembly = AssemblyReference.Assembly;
 
         [Fact]
         public void DomainNotifications_Should_Be_Sealed()

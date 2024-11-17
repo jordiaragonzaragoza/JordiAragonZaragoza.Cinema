@@ -9,12 +9,7 @@
 
     public sealed class EntityIdsTests
     {
-        private readonly Assembly assembly;
-
-        public EntityIdsTests()
-        {
-            this.assembly = AssemblyReference.Assembly;
-        }
+        private readonly Assembly assembly = AssemblyReference.Assembly;
 
         [Fact]
         public void EntityIds_Should_Be_Sealed()

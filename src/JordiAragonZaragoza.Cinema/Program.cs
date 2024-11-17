@@ -20,6 +20,7 @@ namespace JordiAragonZaragoza.Cinema
               var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);
 
               builder.AddContainer(Constants.EventStoreDbServer, "eventstore/eventstore", "23.10.1-alpha-arm64v8")
+              ////builder.AddContainer(Constants.EventStoreDbServer, "eventstore/eventstore", "23.10.1-bookworm-slim") // use this image if you're running on x86 proc
                      .WithEnvironment("EVENTSTORE_CLUSTER_SIZE", "1")
                      .WithEnvironment("EVENTSTORE_RUN_PROJECTIONS", "All")
                      .WithEnvironment("EVENTSTORE_START_STANDARD_PROJECTIONS", "true")

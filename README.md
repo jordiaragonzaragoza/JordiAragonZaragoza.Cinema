@@ -10,7 +10,7 @@ Loving it? Please show your support by giving this project a star!
 
 - You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 8 SDK).
 - You will need also Docker Desktop running on your machine and NET Aspire Workload (installed either Visual Studio or the .NET CLI)
-- To run the project just find and build the solution file JordiAragonZaragoza.Cinema.Reservation.sln and press F5
+- To run the project just find and build the solution file JordiAragonZaragoza.Cinema.sln and press F5
 
 ## Architecture: 🏗️
 
@@ -87,8 +87,6 @@ Loving it? Please show your support by giving this project a star!
 
 The reservation bounded context manage the cinema showtimes and ticket reservation.
 
-- Schedule or cancel a showtime
-    
 - Reserve seats
     - Reserving the seat response will contain a GUID of the reservation, also the number of seats, the auditorium used and the movie that will be played.
     - It should not be possible to reserve the same seats two times.
@@ -100,6 +98,8 @@ The reservation bounded context manage the cinema showtimes and ticket reservati
 - Purchase ticket reservation
     - We will need the GUID of the ticket reservation, it is only possible to do it while the seats are reserved.
     - It is not possible to purchase ticket reservation two times.
+
+- Schedule or cancel a showtime (in progress only basic functionality, not completed yet)
  
 ## Resources and Inspiration 🙏
 
