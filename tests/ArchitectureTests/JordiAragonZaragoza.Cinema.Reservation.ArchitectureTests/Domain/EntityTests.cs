@@ -11,12 +11,7 @@
 
     public sealed class EntityTests
     {
-        private readonly Assembly assembly;
-
-        public EntityTests()
-        {
-            this.assembly = AssemblyReference.Assembly;
-        }
+        private readonly Assembly assembly = AssemblyReference.Assembly;
 
         [Fact]
         public void Entities_Should_OnlyHaveOnePrivateParameterlessConstructor()

@@ -13,14 +13,14 @@
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Seeds the data base. This file should only be used in the development environment.
+    /// Seeds the database. This file should only be used in the development environment.
     /// </summary>
     public static class SeedData
     {
         public static readonly Movie ExampleMovie =
             Movie.Add(
-                id: MovieId.Create(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
-                title: "Inception",
+                id: new MovieId(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
+                title: Title.Create("Inception"),
                 runtime: Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)),
                 exhibitionPeriod: ExhibitionPeriod.Create(
                     StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
@@ -29,14 +29,14 @@
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
-                id: AuditoriumId.Create(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
-                name: "Auditorium One",
+                id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
+                name: Name.Create("Auditorium One"),
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
 
         public static readonly User ExampleUser =
             User.Create(
-                id: UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
+                id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2139:Exceptions should be either logged or rethrown but not both", Justification = "Ok for seeding data.")]
         public static void Initialize(WebApplication app, bool isDevelopment)
@@ -46,7 +46,7 @@
                 return;
             }
 
-            Guard.Against.Null(app, nameof(app));
+            ArgumentNullException.ThrowIfNull(app, nameof(app));
 
             using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();

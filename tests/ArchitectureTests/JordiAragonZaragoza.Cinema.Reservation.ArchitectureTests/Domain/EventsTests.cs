@@ -9,12 +9,7 @@
 
     public sealed class EventsTests
     {
-        private readonly Assembly assembly;
-
-        public EventsTests()
-        {
-            this.assembly = AssemblyReference.Assembly;
-        }
+        private readonly Assembly assembly = AssemblyReference.Assembly;
 
         [Fact]
         public void DomainEvents_Should_Be_Sealed()

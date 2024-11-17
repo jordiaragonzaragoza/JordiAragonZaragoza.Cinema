@@ -32,15 +32,15 @@
 
             var newShowtime = await AddNewShowtimeAsync(repository);
 
-            var existingShowtime = await repository.GetByIdAsync(ShowtimeId.Create(newShowtime.Id));
+            var existingShowtime = await repository.GetByIdAsync(new ShowtimeId(newShowtime.Id));
 
-            var ticketId = TicketId.Create(Guid.NewGuid());
+            var ticketId = new TicketId(Guid.NewGuid());
 
-            var userId = UserId.Create(Guid.NewGuid());
+            var userId = new UserId(Guid.NewGuid());
 
             var seatIds = new List<SeatId>
             {
-                SeatId.Create(Guid.NewGuid()),
+                new SeatId(Guid.NewGuid()),
             };
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
@@ -51,7 +51,7 @@
             await repository.UpdateAsync(existingShowtime);
 
             // Assert
-            var result = await repository.GetByIdAsync(ShowtimeId.Create(existingShowtime.Id));
+            var result = await repository.GetByIdAsync(new ShowtimeId(existingShowtime.Id));
 
             result.Should().NotBeNull();
             result.Tickets.Should().Contain(ticket);
@@ -62,10 +62,10 @@
         {
             // Arrange
             var newShowtime = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(Constants.Movie.Id),
+                new ShowtimeId(Guid.NewGuid()),
+                new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(Constants.Auditorium.Id));
+                new AuditoriumId(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
@@ -79,10 +79,10 @@
         private static async Task<Showtime> AddNewShowtimeAsync(ReservationRepository<Showtime, ShowtimeId> repository)
         {
             var newShowtime = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(Constants.Movie.Id),
+                new ShowtimeId(Guid.NewGuid()),
+                new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(Constants.Auditorium.Id));
+                new AuditoriumId(Constants.Auditorium.Id));
 
             await repository.AddAsync(newShowtime);
 

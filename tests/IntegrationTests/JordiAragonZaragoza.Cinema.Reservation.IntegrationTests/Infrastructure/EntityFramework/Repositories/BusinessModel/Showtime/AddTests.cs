@@ -26,10 +26,10 @@
         {
             // Arrange
             var newShowtime = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(Constants.Movie.Id),
+                new ShowtimeId(Guid.NewGuid()),
+                new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(Constants.Auditorium.Id));
+                new AuditoriumId(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
@@ -50,10 +50,10 @@
         {
             // Arrange
             var existingShowtime = Showtime.Schedule(
-                ShowtimeId.Create(Guid.NewGuid()),
-                MovieId.Create(Constants.Movie.Id),
+                new ShowtimeId(Guid.NewGuid()),
+                new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
-                AuditoriumId.Create(Constants.Auditorium.Id));
+                new AuditoriumId(Constants.Auditorium.Id));
 
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
