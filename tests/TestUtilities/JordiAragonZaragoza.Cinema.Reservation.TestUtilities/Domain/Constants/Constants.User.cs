@@ -7,7 +7,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain
     {
         public static class User
         {
-            public static readonly UserId Id = UserId.Create(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8"));
+            public static readonly UserId Id = new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8"));
         }
     }
 }
