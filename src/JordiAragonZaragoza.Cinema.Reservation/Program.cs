@@ -48,7 +48,7 @@
             // Add services to the container.
             builder.Services.AddApplicationServices(configuration);
             builder.Services.AddHttpRestfulApiServices(configuration);
-            builder.Services.AddSharedKernelInfrastructureServices(configuration, builder.Environment.EnvironmentName == "Development");
+            builder.Services.AddSharedKernelInfrastructureServices(configuration);
             builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
             builder.EnrichDbContexts();
 
