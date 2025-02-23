@@ -7,7 +7,16 @@
     {
         public static Uri BuildUriWithQueryParameters(string basePath, params (string Key, string Value)[] queryParams)
         {
+            ArgumentNullException.ThrowIfNull(basePath, nameof(basePath));
             ArgumentNullException.ThrowIfNull(queryParams, nameof(queryParams));
+
+            foreach (var (key, value) in queryParams)
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    basePath = basePath.Replace($"{{{key}}}", value, StringComparison.OrdinalIgnoreCase);
+                }
+            }
 
             var uriBuilder = new UriBuilder
             {
@@ -18,7 +27,7 @@
 
             foreach (var (key, value) in queryParams)
             {
-                if (!string.IsNullOrWhiteSpace(value))
+                if (!string.IsNullOrWhiteSpace(value) && !basePath.Contains($"{{{key}}}", StringComparison.OrdinalIgnoreCase))
                 {
                     query[key] = value;
                 }
