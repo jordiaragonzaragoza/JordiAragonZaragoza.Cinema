@@ -33,10 +33,14 @@ dotnet_diagnostic.CA1848.severity = none
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
 
+# CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
+
 # Csharp settings
 csharp_style_prefer_primary_constructors = false
 csharp_style_var_when_type_is_apparent = true
 csharp_using_directive_placement = inside_namespace
+csharp_style_var_for_built_in_types = true
 
 # Resharper settings
 resharper_redundant_name_qualifier_highlighting = none
