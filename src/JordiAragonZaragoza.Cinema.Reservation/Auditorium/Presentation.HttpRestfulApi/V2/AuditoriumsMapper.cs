@@ -7,6 +7,8 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
     public sealed class AuditoriumsMapper : Profile
     {
@@ -16,8 +18,11 @@
             this.CreateMap<SeatOutputDto, SeatResponse>();
             this.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
 
-            this.CreateMap<AuditoriumOutputDto, AuditoriumResponse>();
-            this.CreateMap<Result<IEnumerable<AuditoriumOutputDto>>, Result<IEnumerable<AuditoriumResponse>>>();
+            this.CreateMap<AuditoriumReadModel, AuditoriumResponse>();
+            this.CreateMap<Result<AuditoriumReadModel>, Result<AuditoriumResponse>>();
+
+            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, PaginatedCollectionResponse<AuditoriumResponse>>();
+            this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<PaginatedCollectionResponse<AuditoriumResponse>>>();
 
             this.CreateMap<SeatReadModel, SeatResponse>();
 

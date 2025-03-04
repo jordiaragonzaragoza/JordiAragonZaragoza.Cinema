@@ -12,6 +12,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
 
     public sealed class AuditoriumsMapper : Profile
     {
@@ -21,11 +22,16 @@
             this.CreateMap<ScheduleShowtimeRequest, ScheduleShowtimeCommand>();
             this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
 
-            // OutputDtos to responses.
+            // ReadModels to responses.
             this.CreateMap<SeatOutputDto, SeatResponse>();
             this.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
-            this.CreateMap<AuditoriumOutputDto, AuditoriumResponse>();
-            this.CreateMap<Result<IEnumerable<AuditoriumOutputDto>>, Result<IEnumerable<AuditoriumResponse>>>();
+
+            this.CreateMap<AuditoriumReadModel, AuditoriumResponse>();
+
+            // TODO: Add transformation for PaginatedCollectionOutputDto<AuditoriumReadModel> to PaginatedCollectionResponse<AuditoriumResponse>.
+            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, IEnumerable<AuditoriumResponse>>();
+            this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<IEnumerable<AuditoriumResponse>>>();
+
             this.CreateMap<TicketOutputDto, TicketResponse>();
             this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
 
