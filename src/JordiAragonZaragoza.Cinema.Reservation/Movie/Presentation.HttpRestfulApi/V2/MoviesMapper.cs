@@ -2,7 +2,9 @@
 {
     using Ardalis.Result;
     using AutoMapper;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Movie.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Movie.Responses;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
@@ -12,6 +14,7 @@
         public MoviesMapper()
         {
             // Requests to queries or commands.
+            this.CreateMap<GetMoviesRequest, GetMoviesQuery>();
 
             // ReadModels to responses.
             this.CreateMap<MovieReadModel, MovieResponse>();

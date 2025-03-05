@@ -5,6 +5,7 @@
     using AutoMapper;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
@@ -14,6 +15,9 @@
     {
         public AuditoriumsMapper()
         {
+            // Requests to Queries or commands
+            this.CreateMap<GetAuditoriumsRequest, GetAuditoriumsQuery>();
+
             // OutputDtos to responses.
             this.CreateMap<SeatOutputDto, SeatResponse>();
             this.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
