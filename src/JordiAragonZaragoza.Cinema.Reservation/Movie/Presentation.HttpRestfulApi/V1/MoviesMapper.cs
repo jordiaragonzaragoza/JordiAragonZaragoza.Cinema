@@ -16,8 +16,9 @@
             // ReadModels to responses.
             this.CreateMap<MovieReadModel, MovieResponse>();
 
-            // TODO: Add transformation for PaginatedCollectionOutputDto<MovieReadModel> to PaginatedCollectionResponse<MovieResponse>.
-            this.CreateMap<PaginatedCollectionOutputDto<MovieReadModel>, IEnumerable<MovieResponse>>();
+            this.CreateMap<PaginatedCollectionOutputDto<MovieReadModel>, IEnumerable<MovieResponse>>()
+                .ConvertUsing((src, dest, context) => context.Mapper.Map<IEnumerable<MovieResponse>>(src.Items));
+
             this.CreateMap<Result<PaginatedCollectionOutputDto<MovieReadModel>>, Result<IEnumerable<MovieResponse>>>();
         }
     }

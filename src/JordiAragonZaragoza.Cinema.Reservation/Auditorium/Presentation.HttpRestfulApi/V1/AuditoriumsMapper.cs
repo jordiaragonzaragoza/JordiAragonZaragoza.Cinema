@@ -28,8 +28,9 @@
 
             this.CreateMap<AuditoriumReadModel, AuditoriumResponse>();
 
-            // TODO: Add transformation for PaginatedCollectionOutputDto<AuditoriumReadModel> to PaginatedCollectionResponse<AuditoriumResponse>.
-            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, IEnumerable<AuditoriumResponse>>();
+            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, IEnumerable<AuditoriumResponse>>()
+                .ConvertUsing((src, dest, context) => context.Mapper.Map<IEnumerable<AuditoriumResponse>>(src.Items));
+
             this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<IEnumerable<AuditoriumResponse>>>();
 
             this.CreateMap<TicketOutputDto, TicketResponse>();
