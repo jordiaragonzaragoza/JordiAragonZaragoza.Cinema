@@ -6,7 +6,7 @@
 
     public sealed record class ExpiredReservedSeatsEvent(
         Guid AggregateId,
-        Guid TicketId,
+        Guid ReservationId,
         IEnumerable<Guid> SeatIds)
         : BaseDomainEvent(AggregateId);
 }

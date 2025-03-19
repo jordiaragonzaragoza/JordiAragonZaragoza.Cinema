@@ -3,5 +3,5 @@
     using System;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
-    public sealed record class ExpireReservedSeatsCommand(Guid ShowtimeId, Guid TicketId) : ICommand;
+    public sealed record class ExpireReservedSeatsCommand(Guid ShowtimeId, Guid ReservationId) : ICommand;
 }

@@ -20,7 +20,7 @@
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
+    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, ReservationOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;
@@ -51,7 +51,7 @@
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
@@ -70,10 +70,10 @@
             var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
 
             // Make the reserve.
-            var newTicket = await this.showtimeManager.ReserveSeatsAsync(
+            var newReservation = await this.showtimeManager.ReserveSeatsAsync(
                 existingShowtime,
                 desiredSeatsIds,
-                new TicketId(this.guidGenerator.Create()),
+                new ReservationId(this.guidGenerator.Create()),
                 new UserId(request.UserId),
                 ReservationDate.Create(this.dateTime.UtcNow),
                 cancellationToken);
@@ -99,17 +99,17 @@
             var seatsOutputDto = seats.Select(seat
                 => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber));
 
-            var ticketOutputDto = new TicketOutputDto(
-                newTicket.Id,
+            var reservationOutputDto = new ReservationOutputDto(
+                newReservation.Id,
                 request.UserId,
                 existingShowtime.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Name,
                 existingMovie.Title,
                 seatsOutputDto,
-                newTicket.IsPurchased);
+                newReservation.IsPurchased);
 
-            return Result.Created(ticketOutputDto);
+            return Result.Created(reservationOutputDto);
         }
     }
 }

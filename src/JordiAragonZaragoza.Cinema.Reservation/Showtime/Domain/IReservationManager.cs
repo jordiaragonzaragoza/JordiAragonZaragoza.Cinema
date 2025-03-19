@@ -10,10 +10,10 @@
     // TODO: Review. This interface probably is not required. Inject implementation instead.
     public interface IReservationManager
     {
-        Task<Ticket> ReserveSeatsAsync(
+        Task<Reservation> ReserveSeatsAsync(
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
-            TicketId newTicketId,
+            ReservationId newReservationId,
             UserId userId,
             ReservationDate reservationDateOnUtc,
             CancellationToken cancellationToken);

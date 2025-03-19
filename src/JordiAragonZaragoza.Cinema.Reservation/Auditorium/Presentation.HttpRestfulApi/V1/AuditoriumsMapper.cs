@@ -7,8 +7,8 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -33,8 +33,8 @@
 
             this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<IEnumerable<AuditoriumResponse>>>();
 
-            this.CreateMap<TicketOutputDto, TicketResponse>();
-            this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
+            this.CreateMap<ReservationOutputDto, ReservationResponse>();
+            this.CreateMap<Result<ReservationOutputDto>, Result<ReservationResponse>>();
 
             this.CreateMap<AvailableSeatReadModel, SeatResponse>()
                 .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));

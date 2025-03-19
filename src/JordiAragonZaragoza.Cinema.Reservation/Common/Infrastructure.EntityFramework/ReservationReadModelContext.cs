@@ -30,7 +30,7 @@
 
         public DbSet<AvailableSeatReadModel> AvailableSeats => this.Set<AvailableSeatReadModel>();
 
-        public DbSet<TicketReadModel> Tickets => this.Set<TicketReadModel>();
+        public DbSet<ReservationReadModel> Reservations => this.Set<ReservationReadModel>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,7 @@
             modelBuilder.ApplyConfiguration(new AuditoriumReadModelConfiguration());
             modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration());
             modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new TicketReadModelConfiguration());
+            modelBuilder.ApplyConfiguration(new ReservationReadModelConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

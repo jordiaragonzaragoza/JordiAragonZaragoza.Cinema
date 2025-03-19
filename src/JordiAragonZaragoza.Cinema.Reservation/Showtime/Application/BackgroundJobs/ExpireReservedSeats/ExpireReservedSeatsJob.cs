@@ -17,18 +17,18 @@
     public sealed class ExpireReservedSeatsJob : IJob
     {
         private readonly IDateTime dateTime;
-        private readonly ISpecificationReadRepository<TicketReadModel, Guid> ticketReadModelRepository;
+        private readonly ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository;
         private readonly ICommandBus commandBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
-            ISpecificationReadRepository<TicketReadModel, Guid> ticketReadModelRepository,
+            ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository,
             ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger)
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
-            this.ticketReadModelRepository = Guard.Against.Null(ticketReadModelRepository, nameof(ticketReadModelRepository));
+            this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
             this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
             this.logger = Guard.Against.Null(logger, nameof(logger));
         }
@@ -41,10 +41,10 @@
 
                 var dateTimeUtcNow = this.dateTime.UtcNow;
 
-                var expiredTickets = await this.ticketReadModelRepository.ListAsync(new GetExpiredTicketsSpec(dateTimeUtcNow), context.CancellationToken);
-                foreach (var ticket in expiredTickets)
+                var expiredReservations = await this.reservationReadModelRepository.ListAsync(new GetExpiredReservationsSpec(dateTimeUtcNow), context.CancellationToken);
+                foreach (var reservation in expiredReservations)
                 {
-                    var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(ticket.ShowtimeId, ticket.Id), context.CancellationToken);
+                    var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
                     if (!result.IsSuccess)
                     {
                         var errorDetails = result.ResultDetails();

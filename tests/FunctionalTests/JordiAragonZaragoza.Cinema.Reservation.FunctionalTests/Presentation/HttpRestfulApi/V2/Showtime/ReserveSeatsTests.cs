@@ -27,7 +27,7 @@
         }
 
         [Fact]
-        public async Task CreateTicket_WhenHavingValidArguments_ShouldCreateRequiredTicket()
+        public async Task CreateReservation_WhenHavingValidArguments_ShouldCreateRequiredReservation()
         {
             // Arrange
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
@@ -49,28 +49,28 @@
             reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
-            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+            var reservationResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<ReservationResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
             await AddEventualConsistencyDelayAsync();
 
             var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
             // Assert
-            ticketResponse.SessionDateOnUtc.Should()
+            reservationResponse.SessionDateOnUtc.Should()
                 .Be(sessionDateOnUtc);
 
-            ticketResponse.AuditoriumName.Should()
+            reservationResponse.AuditoriumName.Should()
                 .Be(SeedData.ExampleAuditorium.Name);
 
-            ticketResponse.MovieTitle.Should()
+            reservationResponse.MovieTitle.Should()
                 .Be(SeedData.ExampleMovie.Title);
 
-            ticketResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
+            reservationResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(seatsIds);
 
-            ticketResponse.IsPurchased.Should().BeFalse();
+            reservationResponse.IsPurchased.Should().BeFalse();
 
-            availableSeatsAfterReservation.Should().NotContain(ticketResponse.Seats);
+            availableSeatsAfterReservation.Should().NotContain(reservationResponse.Seats);
         }
 
         private async Task<Guid> ScheduleNewShowtimeAsync(DateTimeOffset sessionDateOnUtc)

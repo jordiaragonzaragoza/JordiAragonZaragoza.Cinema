@@ -19,16 +19,16 @@
             this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
             this.CreateMap<GetShowtimesRequest, GetShowtimesQuery>();
             this.CreateMap<GetShowtimeRequest, GetShowtimeQuery>();
-            this.CreateMap<GetShowtimeTicketsRequest, GetShowtimeTicketsQuery>();
+            this.CreateMap<GetShowtimeReservationsRequest, GetShowtimeReservationsQuery>();
 
             // OutputDtos to responses.
-            this.CreateMap<TicketOutputDto, TicketResponse>();
-            this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
+            this.CreateMap<ReservationOutputDto, ReservationResponse>();
+            this.CreateMap<Result<ReservationOutputDto>, Result<ReservationResponse>>();
 
-            this.CreateMap<TicketReadModel, TicketResponse>();
-            this.CreateMap<Result<TicketReadModel>, Result<TicketResponse>>();
-            this.CreateMap<PaginatedCollectionOutputDto<TicketReadModel>, PaginatedCollectionResponse<TicketResponse>>();
-            this.CreateMap<Result<PaginatedCollectionOutputDto<TicketReadModel>>, Result<PaginatedCollectionResponse<TicketResponse>>>();
+            this.CreateMap<ReservationReadModel, ReservationResponse>();
+            this.CreateMap<Result<ReservationReadModel>, Result<ReservationResponse>>();
+            this.CreateMap<PaginatedCollectionOutputDto<ReservationReadModel>, PaginatedCollectionResponse<ReservationResponse>>();
+            this.CreateMap<Result<PaginatedCollectionOutputDto<ReservationReadModel>>, Result<PaginatedCollectionResponse<ReservationResponse>>>();
 
             this.CreateMap<ShowtimeReadModel, ShowtimeResponse>();
             this.CreateMap<Result<ShowtimeReadModel>, Result<ShowtimeResponse>>();

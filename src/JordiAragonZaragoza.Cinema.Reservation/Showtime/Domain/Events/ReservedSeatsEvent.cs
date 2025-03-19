@@ -6,7 +6,7 @@
 
     public sealed record class ReservedSeatsEvent(
         Guid AggregateId,
-        Guid TicketId,
+        Guid ReservationId,
         Guid UserId,
         IEnumerable<Guid> SeatIds,
         DateTimeOffset CreatedTimeOnUtc)

@@ -50,7 +50,7 @@
 
             await this.GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
-            await this.GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
+            await this.GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
         }
 
         private async Task GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
@@ -83,17 +83,17 @@
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 
-        private async Task GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
+        private async Task GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
-            var route = $"api/v2/{GetShowtimeTickets.Route}";
+            var route = $"api/v2/{GetShowtimeReservations.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
-            var showtimeTicketsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
+            var showtimeReservationsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
 
             // Assert
-            showtimeTicketsResponse.StatusCode.Should()
+            showtimeReservationsResponse.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 

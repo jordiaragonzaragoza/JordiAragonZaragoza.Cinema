@@ -13,9 +13,9 @@
 
     using IMapper = AutoMapper.IMapper;
 
-    public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, TicketResponse>
+    public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, ReservationResponse>
     {
-        public const string Route = "showtimes/{showtimeId}/tickets";
+        public const string Route = "showtimes/{showtimeId}/reservations";
 
         private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
@@ -44,7 +44,7 @@
 
             var resultOutputDto = await this.commandBus.SendAsync(command, ct);
 
-            var resultResponse = this.mapper.Map<Result<TicketResponse>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<ReservationResponse>>(resultOutputDto);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

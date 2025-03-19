@@ -84,7 +84,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Reservations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -98,7 +98,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,21 +122,21 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketsSeats",
+                name: "ReservationsSeats",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TicketId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReservationId = table.Column<Guid>(type: "uuid", nullable: false),
                     Row = table.Column<int>(type: "integer", nullable: false),
                     SeatNumber = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketsSeats", x => new { x.Id, x.TicketId });
+                    table.PrimaryKey("PK_ReservationsSeats", x => new { x.Id, x.ReservationId });
                     table.ForeignKey(
-                        name: "FK_TicketsSeats_Tickets_TicketId",
-                        column: x => x.TicketId,
-                        principalTable: "Tickets",
+                        name: "FK_ReservationsSeats_Reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalTable: "Reservations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -147,9 +147,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 column: "AuditoriumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketsSeats_TicketId",
-                table: "TicketsSeats",
-                column: "TicketId");
+                name: "IX_ReservationsSeats_ReservationId",
+                table: "ReservationsSeats",
+                column: "ReservationId");
         }
 
         /// <inheritdoc />
@@ -171,13 +171,13 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Showtimes");
 
             migrationBuilder.DropTable(
-                name: "TicketsSeats");
+                name: "ReservationsSeats");
 
             migrationBuilder.DropTable(
                 name: "Auditoriums");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "Reservations");
         }
     }
 }

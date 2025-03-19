@@ -116,7 +116,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("Showtimes");
                 });
 
-            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,7 +147,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint.Checkpoint", b =>
@@ -197,7 +197,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.Navigation("Seats");
                 });
 
-            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
                 {
                     b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
                         {
@@ -205,7 +205,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("TicketId")
+                            b1.Property<Guid>("ReservationId")
                                 .HasColumnType("uuid");
 
                             b1.Property<int>("Row")
@@ -214,14 +214,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                             b1.Property<int>("SeatNumber")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("Id", "TicketId");
+                            b1.HasKey("Id", "ReservationId");
 
-                            b1.HasIndex("TicketId");
+                            b1.HasIndex("ReservationId");
 
-                            b1.ToTable("TicketsSeats", (string)null);
+                            b1.ToTable("ReservationsSeats", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("TicketId");
+                                .HasForeignKey("ReservationId");
                         });
 
                     b.Navigation("Seats");
