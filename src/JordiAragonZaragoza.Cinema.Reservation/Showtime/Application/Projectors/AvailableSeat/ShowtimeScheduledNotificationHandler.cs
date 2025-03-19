@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Notifications;
@@ -15,16 +16,16 @@
 
     public sealed class ShowtimeScheduledNotificationHandler : IEventNotificationHandler<ShowtimeScheduledNotification>
     {
-        private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
+        private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly IIdGenerator guidGenerator;
 
         public ShowtimeScheduledNotificationHandler(
-            IRepository<Auditorium, AuditoriumId> auditoriumRepository,
+            IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository,
             IIdGenerator guidGenerator)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
             this.availableReadModelRepository = Guard.Against.Null(availableReadModelRepository, nameof(availableReadModelRepository));
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
@@ -35,7 +36,7 @@
 
             var @event = notification.Event;
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadModelRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());

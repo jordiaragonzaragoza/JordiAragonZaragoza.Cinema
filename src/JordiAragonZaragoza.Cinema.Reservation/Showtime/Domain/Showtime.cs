@@ -86,10 +86,12 @@
         {
             ArgumentNullException.ThrowIfNull(ticketToRemove, nameof(ticketToRemove));
 
-            _ = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
+            var ticket = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
                 ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value);
 
-            this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
+            var seatIds = ticket.Seats.Select(seatId => seatId.Value);
+
+            this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove, seatIds));
         }
 
         protected override void When(IDomainEvent domainEvent)

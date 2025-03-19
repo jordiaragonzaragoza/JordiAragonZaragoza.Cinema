@@ -26,6 +26,6 @@
 
         public string Name { get; private set; } = default!;
 
-        public IEnumerable<SeatReadModel> Seats { get; private set; } = [];
+        public IEnumerable<SeatReadModel> Seats { get; private set; } = new List<SeatReadModel>();
     }
 }

@@ -167,6 +167,36 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("__Checkpoints", (string)null);
                 });
 
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.AuditoriumReadModel", b =>
+                {
+                    b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("AuditoriumId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Row")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("SeatNumber")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("Id", "AuditoriumId");
+
+                            b1.HasIndex("AuditoriumId");
+
+                            b1.ToTable("AuditoriumSeats", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("AuditoriumId");
+                        });
+
+                    b.Navigation("Seats");
+                });
+
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
                 {
                     b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>

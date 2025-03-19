@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore
 {
     [DbContext(typeof(ReservationBusinessModelContext))]
-    [Migration("20241110184533_InitialBusinessModelStoreMigration")]
+    [Migration("20250319161914_InitialBusinessModelStoreMigration")]
     partial class InitialBusinessModelStoreMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -37,10 +37,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<ushort>("Rows")
+                    b.Property<int>("Rows")
                         .HasColumnType("integer");
 
-                    b.Property<ushort>("SeatsPerRow")
+                    b.Property<int>("SeatsPerRow")
                         .HasColumnType("integer");
 
                     b.Property<uint>("Version")
@@ -217,10 +217,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<ushort>("Row")
+                            b1.Property<int>("Row")
                                 .HasColumnType("integer");
 
-                            b1.Property<ushort>("SeatNumber")
+                            b1.Property<int>("SeatNumber")
                                 .HasColumnType("integer");
 
                             b1.HasKey("Id", "AuditoriumId");

@@ -30,7 +30,7 @@
                 sb.HasKey(nameof(SeatReadModel.Id), nameof(TicketId));
             });
 
-            builder.Metadata.FindNavigation(nameof(Ticket.Seats))
+            builder.Metadata.FindNavigation(nameof(TicketReadModel.Seats))
                 ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }

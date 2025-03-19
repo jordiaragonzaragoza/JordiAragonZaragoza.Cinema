@@ -102,6 +102,26 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuditoriumSeats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Row = table.Column<int>(type: "integer", nullable: false),
+                    SeatNumber = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditoriumSeats", x => new { x.Id, x.AuditoriumId });
+                    table.ForeignKey(
+                        name: "FK_AuditoriumSeats_Auditoriums_AuditoriumId",
+                        column: x => x.AuditoriumId,
+                        principalTable: "Auditoriums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TicketsSeats",
                 columns: table => new
                 {
@@ -122,6 +142,11 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuditoriumSeats_AuditoriumId",
+                table: "AuditoriumSeats",
+                column: "AuditoriumId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TicketsSeats_TicketId",
                 table: "TicketsSeats",
                 column: "TicketId");
@@ -134,7 +159,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "__Checkpoints");
 
             migrationBuilder.DropTable(
-                name: "Auditoriums");
+                name: "AuditoriumSeats");
 
             migrationBuilder.DropTable(
                 name: "AvailableSeats");
@@ -147,6 +172,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
             migrationBuilder.DropTable(
                 name: "TicketsSeats");
+
+            migrationBuilder.DropTable(
+                name: "Auditoriums");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

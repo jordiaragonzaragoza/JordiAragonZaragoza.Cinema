@@ -30,9 +30,9 @@
 
         public static readonly MovieReadModel ExampleMovieReadModel =
            new(
-            ExampleMovie.Id.Value,
-            ExampleMovie.Title.Value,
-            ExampleMovie.Runtime.Value);
+            ExampleMovie.Id,
+            ExampleMovie.Title,
+            ExampleMovie.Runtime);
 
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
@@ -43,8 +43,12 @@
 
         public static readonly AuditoriumReadModel ExampleAuditoriumReadModel =
             new(
-                ExampleAuditorium.Id.Value,
-                ExampleAuditorium.Name.Value);
+                ExampleAuditorium.Id,
+                ExampleAuditorium.Name,
+                ExampleAuditorium.Seats.Select(seat => new SeatReadModel(
+                    seat.Id,
+                    seat.Row,
+                    seat.SeatNumber)).ToList());
 
         public static readonly User ExampleUser =
             User.Create(

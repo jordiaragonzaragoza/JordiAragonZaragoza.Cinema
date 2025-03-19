@@ -1,6 +1,8 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Projectors.Auditorium
 {
     using System;
+    using System.Linq;
+
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -25,9 +27,17 @@
 
             var @event = notification.Event;
 
+            var seats = @event.SeatIds
+                .Select((seatId, index) => new SeatReadModel(
+                    seatId,
+                    @event.SeatRows[index],
+                    @event.SeatNumbers[index]))
+                .ToList();
+
             var auditoriumReadModel = new AuditoriumReadModel(
                 @event.AggregateId,
-                @event.Name);
+                @event.Name,
+                seats);
 
             await this.auditoriumReadModelRepository.AddAsync(auditoriumReadModel, cancellationToken);
         }

@@ -7,6 +7,8 @@
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
+
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
@@ -18,20 +20,20 @@
 
     public sealed class ReservedSeatsNotificationHandler : IEventNotificationHandler<ReservedSeatsNotification>
     {
-        private readonly IReadRepository<Showtime, ShowtimeId> showtimeRepository;
-        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly IReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
+        private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
+        private readonly IReadRepository<MovieReadModel, Guid> movieReadModelRepository;
         private readonly IRepository<TicketReadModel, Guid> ticketReadModelRepository;
 
         public ReservedSeatsNotificationHandler(
-            IReadRepository<Showtime, ShowtimeId> showtimeRepository,
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Movie, MovieId> movieRepository,
+            IReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository,
+            IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
+            IReadRepository<MovieReadModel, Guid> movieReadModelRepository,
             IRepository<TicketReadModel, Guid> ticketReadModelRepository)
         {
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
+            this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
+            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.movieReadModelRepository = Guard.Against.Null(movieReadModelRepository, nameof(movieReadModelRepository));
             this.ticketReadModelRepository = Guard.Against.Null(ticketReadModelRepository, nameof(ticketReadModelRepository));
         }
 
@@ -41,19 +43,19 @@
 
             var @event = notification.Event;
 
-            var existingShowtime = await this.showtimeRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
+            var existingShowtime = await this.showtimeReadModelRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)
             {
                 throw new NotFoundException(nameof(Showtime), @event.AggregateId.ToString());
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(existingShowtime.MovieId), cancellationToken);
+            var existingMovie = await this.movieReadModelRepository.GetByIdAsync(new MovieId(existingShowtime.MovieId), cancellationToken);
             if (existingMovie is null)
             {
                 throw new NotFoundException(nameof(Movie), existingShowtime.MovieId.ToString()!);
             }
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadModelRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString()!);

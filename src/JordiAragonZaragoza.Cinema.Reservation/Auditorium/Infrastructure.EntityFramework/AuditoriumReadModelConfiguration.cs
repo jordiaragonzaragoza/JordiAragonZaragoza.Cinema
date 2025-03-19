@@ -29,7 +29,7 @@
                 sb.HasKey(nameof(SeatReadModel.Id), nameof(AuditoriumId));
             });
 
-            builder.Metadata.FindNavigation(nameof(Auditorium.Seats))
+            builder.Metadata.FindNavigation(nameof(AuditoriumReadModel.Seats))
                 ?.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
