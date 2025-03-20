@@ -15,7 +15,7 @@
 
     public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, ReservationResponse>
     {
-        public const string Route = "showtimes/{showtimeId}/reservations";
+        public const string Route = "showtimes/{showtimeId}/reservations/{reservationId}";
 
         private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
@@ -29,7 +29,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Post(ReserveSeats.Route);
+            this.Put(ReserveSeats.Route);
             this.Version(2);
             this.Summary(summary =>
             {

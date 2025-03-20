@@ -57,14 +57,15 @@
 
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
-
-            var reserveSeatsRequest = new ReserveSeatsRequest(showtimeId, seatsIds);
+            var reservationId = Guid.NewGuid();
+            var reserveSeatsRequest = new ReserveSeatsRequest(reservationId, showtimeId, seatsIds);
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
             var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
             reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            reserveSeatsRoute = reserveSeatsRoute.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
 
-            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<ReservationResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.PutAndDeserializeAsync<ReservationResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
             await AddEventualConsistencyDelayAsync();
 
@@ -73,22 +74,29 @@
 
         private async Task<Guid> ScheduleNewShowtimeAsync()
         {
-            var url = $"api/v2/{ScheduleShowtime.Route}";
+            var showtimeId = Guid.NewGuid();
+
+            var route = $"api/v2/{ScheduleShowtime.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeRequest(
+                showtimeId,
                 Constants.Auditorium.Id,
                 Constants.Movie.Id,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
 
             await AddEventualConsistencyDelayAsync();
 
-            return response;
+            return showtimeId;
         }
     }
 }
