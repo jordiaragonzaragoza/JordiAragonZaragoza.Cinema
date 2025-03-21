@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
   <diagram name="Página-1" id="z6vTRzj0kmzRLpqOFKyu">
     <mxGraphModel dx="1434" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="16540" pageHeight="11690" math="0" shadow="0">
       <root>
@@ -116,8 +116,8 @@
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-22" value="EventStore DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
           <mxGeometry x="970" y="440" width="60" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-25" value="Tx Api Command" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="180" y="300" width="170" height="30" as="geometry" />
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-25" value="Api.Command" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="165" y="306.25" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-69" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="fKZ0gMgpDoCXiPcIjgYh-28" target="fKZ0gMgpDoCXiPcIjgYh-47" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -174,7 +174,7 @@
             <mxPoint x="640" y="600" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-44" value="Tx Projection Worker (Only one instance per view/read model or related views).&amp;nbsp;&lt;div&gt;Transactional boundary&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-44" value="Worker.Projector (Only one instance per view/read model or related views).&amp;nbsp;&lt;div&gt;Transactional boundary&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="290" y="520" width="500" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-45" value="Event" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
@@ -228,8 +228,8 @@
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-60" value="Query Handler" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="635" y="857.5" width="85" height="85" as="geometry" />
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-61" value="Api Query" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="150" y="825" width="170" height="30" as="geometry" />
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-61" value="Api.Query" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="170" y="825" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-62" value="ReadModel 1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="780" y="860" width="80" height="80" as="geometry" />
@@ -273,7 +273,7 @@
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-80" value="Event" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="1817" y="427.5" width="85" height="85" as="geometry" />
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-85" value="Worker Reactor&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;(Una suscripción por stream o partición)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-85" value="Worker.Reactor&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;(Una suscripción por stream o partición)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1090" y="363.75" width="320" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-91" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="fKZ0gMgpDoCXiPcIjgYh-86" target="fKZ0gMgpDoCXiPcIjgYh-87" edge="1">
@@ -300,7 +300,7 @@
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-89" value="Enricher Policy" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="1460" y="670" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-90" value="Worker Event Gateway (Una suscripción por stream / partition&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-90" value="Worker.Event&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Gateway (Una suscripción por stream / partition&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1060" y="605" width="400" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-106" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="fKZ0gMgpDoCXiPcIjgYh-98" target="fKZ0gMgpDoCXiPcIjgYh-105" edge="1">
@@ -393,7 +393,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-135" value="Worker Integration" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="fKZ0gMgpDoCXiPcIjgYh-135" value="Worker.Integration" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1070" y="980" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="fKZ0gMgpDoCXiPcIjgYh-137" value="External Sagas" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">

@@ -8,7 +8,7 @@ Loving it? Please show your support by giving this project a star!
 
 ## Getting Started 🏃
 
-- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 8 SDK).
+- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 9 SDK).
 - You will need also Docker Desktop running on your machine and NET Aspire Workload (installed either Visual Studio or the .NET CLI)
 - To run the project just find and build the solution file JordiAragonZaragoza.Cinema.sln and press F5
 
