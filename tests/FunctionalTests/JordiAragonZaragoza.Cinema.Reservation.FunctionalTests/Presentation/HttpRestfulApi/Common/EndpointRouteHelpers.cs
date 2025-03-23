@@ -10,32 +10,27 @@
             ArgumentNullException.ThrowIfNull(basePath, nameof(basePath));
             ArgumentNullException.ThrowIfNull(queryParams, nameof(queryParams));
 
+            var query = HttpUtility.ParseQueryString(string.Empty);
+
             foreach (var (key, value) in queryParams)
             {
-                if (!string.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    basePath = basePath.Replace($"{{{key}}}", value, StringComparison.OrdinalIgnoreCase);
+                    continue;
                 }
-            }
 
-            var uriBuilder = new UriBuilder
-            {
-                Path = basePath,
-            };
+                string placeholder = $"{{{key}}}";
+                bool wasReplaced = basePath.Contains(placeholder, StringComparison.OrdinalIgnoreCase);
 
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+                basePath = basePath.Replace(placeholder, value, StringComparison.OrdinalIgnoreCase);
 
-            foreach (var (key, value) in queryParams)
-            {
-                if (!string.IsNullOrWhiteSpace(value) && !basePath.Contains($"{{{key}}}", StringComparison.OrdinalIgnoreCase))
+                if (!wasReplaced)
                 {
                     query[key] = value;
                 }
             }
 
-            uriBuilder.Query = query.ToString();
-
-            return uriBuilder.Uri;
+            return new UriBuilder { Path = basePath, Query = query.ToString() }.Uri;
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
@@ -31,6 +32,7 @@
 
         public IEnumerable<Seat> Seats => this.seats.AsReadOnly();
 
+        // TODO: Review. Will API changed passing the seats as a parameter?.
         public static Auditorium Create(
             AuditoriumId id,
             Name name,
@@ -43,7 +45,16 @@
 
             var auditorium = new Auditorium();
 
-            auditorium.Apply(new AuditoriumCreatedEvent(id, name, rows, seatsPerRow));
+            var (seatIds, seatRows, seatNumbers) = GenerateSeats(rows, seatsPerRow);
+
+            auditorium.Apply(new AuditoriumCreatedEvent(
+                id,
+                name,
+                rows,
+                seatsPerRow,
+                seatIds.AsReadOnly(),
+                seatRows.AsReadOnly(),
+                seatNumbers.AsReadOnly()));
 
             return auditorium;
         }
@@ -100,18 +111,25 @@
             // All the validations are done on public methods.
         }
 
-        private static List<Seat> GenerateSeats(ushort rows, ushort seatsPerRow)
+        private static (List<Guid> SeatIds, List<ushort> SeatRows, List<ushort> SeatNumbers) GenerateSeats(
+            ushort rows,
+            ushort seatsPerRow)
         {
-            var generatedSeats = new List<Seat>();
+            var seatIds = new List<Guid>();
+            var seatRows = new List<ushort>();
+            var seatNumbers = new List<ushort>();
+
             for (ushort row = 1; row <= rows; row++)
             {
                 for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    generatedSeats.Add(new Seat(new SeatId(Guid.NewGuid()), new Row(row), new SeatNumber(seatNumber)));
+                    seatIds.Add(Guid.NewGuid());
+                    seatRows.Add(row);
+                    seatNumbers.Add(seatNumber);
                 }
             }
 
-            return generatedSeats;
+            return (seatIds, seatRows, seatNumbers);
         }
 
         private void Applier(AuditoriumCreatedEvent @event)
@@ -120,7 +138,13 @@
             this.Name = new Name(@event.Name);
             this.Rows = new Rows(@event.Rows);
             this.SeatsPerRow = new SeatsPerRow(@event.SeatsPerRow);
-            this.seats = GenerateSeats(this.Rows, this.SeatsPerRow);
+
+            this.seats = @event.SeatIds
+                .Select((seatId, index) => new Seat(
+                    new SeatId(seatId),
+                    new Row(@event.SeatRows[index]),
+                    new SeatNumber(@event.SeatNumbers[index])))
+                .ToList();
         }
     }
 }

@@ -27,7 +27,7 @@
         }
 
         [Fact]
-        public async Task CreateTicket_WhenHavingValidArguments_ShouldCreateRequiredTicket()
+        public async Task CreateReservation_WhenHavingValidArguments_ShouldCreateRequiredReservation()
         {
             // Arrange
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
@@ -42,53 +42,62 @@
             var seatsIds = availableSeatsResponse.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id);
 
-            var reserveSeatsRequest = new ReserveSeatsRequest(showtimeId, seatsIds);
+            var reservationId = Guid.NewGuid();
+            var reserveSeatsRequest = new ReserveSeatsRequest(reservationId, showtimeId, seatsIds);
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
             var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
             reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            reserveSeatsRoute = reserveSeatsRoute.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
 
             // Act
-            var ticketResponse = await this.Fixture.HttpClient.PostAndDeserializeAsync<TicketResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
+            var reservationResponse = await this.Fixture.HttpClient.PutAndDeserializeAsync<ReservationResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
             await AddEventualConsistencyDelayAsync();
 
             var availableSeatsAfterReservation = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
 
             // Assert
-            ticketResponse.SessionDateOnUtc.Should()
+            reservationResponse.SessionDateOnUtc.Should()
                 .Be(sessionDateOnUtc);
 
-            ticketResponse.AuditoriumName.Should()
+            reservationResponse.AuditoriumName.Should()
                 .Be(SeedData.ExampleAuditorium.Name);
 
-            ticketResponse.MovieTitle.Should()
+            reservationResponse.MovieTitle.Should()
                 .Be(SeedData.ExampleMovie.Title);
 
-            ticketResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
+            reservationResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(seatsIds);
 
-            ticketResponse.IsPurchased.Should().BeFalse();
+            reservationResponse.IsPurchased.Should().BeFalse();
 
-            availableSeatsAfterReservation.Should().NotContain(ticketResponse.Seats);
+            availableSeatsAfterReservation.Should().NotContain(reservationResponse.Seats);
         }
 
         private async Task<Guid> ScheduleNewShowtimeAsync(DateTimeOffset sessionDateOnUtc)
         {
-            var url = $"api/v2/{ScheduleShowtime.Route}";
+            var showtimeId = Guid.NewGuid();
+
+            var route = $"api/v2/{ScheduleShowtime.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var request = new ScheduleShowtimeRequest(
+                showtimeId,
                 Constants.Auditorium.Id,
                 Constants.Movie.Id,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
 
             await AddEventualConsistencyDelayAsync();
 
-            return response;
+            return showtimeId;
         }
     }
 }

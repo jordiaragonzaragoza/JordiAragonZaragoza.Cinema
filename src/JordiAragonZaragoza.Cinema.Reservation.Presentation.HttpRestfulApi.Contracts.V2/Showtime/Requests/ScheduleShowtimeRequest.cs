@@ -2,5 +2,5 @@
 {
     using System;
 
-    public sealed record class ScheduleShowtimeRequest(Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc);
+    public sealed record class ScheduleShowtimeRequest(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc);
 }

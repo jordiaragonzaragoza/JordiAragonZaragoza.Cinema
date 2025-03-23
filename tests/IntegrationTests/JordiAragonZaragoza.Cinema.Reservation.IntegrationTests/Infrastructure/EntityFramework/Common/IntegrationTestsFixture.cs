@@ -128,6 +128,7 @@
             this.ReadModelContext = new ReservationReadModelContext(options, mockLoggerFactory, mockHostEnvironment);
 
             await this.ReadModelContext.Database.MigrateAsync();
+            SeedData.PopulateReadModelTestData(this.ReadModelContext);
 
             this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
             {

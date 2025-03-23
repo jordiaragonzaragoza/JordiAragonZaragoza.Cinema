@@ -2,8 +2,6 @@
 {
     using System;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
@@ -48,11 +46,33 @@
         }
 
         [Fact]
+        public void ValidateScheduleShowtimeCommand_WhenShowtimeIdIsEmpty_ShouldHaveAnError()
+        {
+            // Arrange.
+            var createShowtimeCommand = new ScheduleShowtimeCommand(
+                ShowtimeId: Guid.Empty,
+                AuditoriumId: Guid.NewGuid(),
+                MovieId: Guid.NewGuid(),
+                SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
+
+            this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
+
+            // Act.
+            var validationResult = this.validator.Validate(createShowtimeCommand);
+
+            // Assert.
+            validationResult.IsValid.Should().BeFalse();
+            validationResult.Errors.Should().ContainSingle();
+            validationResult.Errors.Should().ContainSingle(error => error.ErrorMessage == "ShowtimeId is required.");
+        }
+
+        [Fact]
         public void ValidateScheduleShowtimeCommand_WhenMovieIdIsEmpty_ShouldHaveAnError()
         {
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
-                AuditoriumId: new AuditoriumId(Guid.NewGuid()),
+                ShowtimeId: Guid.NewGuid(),
+                AuditoriumId: Guid.NewGuid(),
                 MovieId: Guid.Empty,
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
@@ -72,8 +92,9 @@
         {
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
+                ShowtimeId: Guid.NewGuid(),
                 AuditoriumId: Guid.Empty,
-                MovieId: new MovieId(Guid.NewGuid()),
+                MovieId: Guid.NewGuid(),
                 SessionDateOnUtc: DateTimeOffset.UtcNow.AddYears(1));
 
             this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);
@@ -92,8 +113,9 @@
         {
             // Arrange.
             var createShowtimeCommand = new ScheduleShowtimeCommand(
-                new AuditoriumId(Guid.NewGuid()),
-                new MovieId(Guid.NewGuid()),
+                ShowtimeId: Guid.NewGuid(),
+                AuditoriumId: Guid.NewGuid(),
+                MovieId: Guid.NewGuid(),
                 DateTimeOffset.UtcNow.AddYears(-1));
 
             this.mockDatetime.UtcNow.Returns(DateTimeOffset.UtcNow);

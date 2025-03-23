@@ -39,7 +39,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(new GetMoviesQuery(), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(new GetMoviesQuery(PageNumber: 1, PageSize: 1), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<MovieResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

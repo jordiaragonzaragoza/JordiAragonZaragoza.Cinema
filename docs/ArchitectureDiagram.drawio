@@ -338,10 +338,10 @@
         <mxCell id="v0G2Z9NGi26eHXqidksN-16" value="Auditorium" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0G2Z9NGi26eHXqidksN-12" vertex="1">
           <mxGeometry y="104" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="v0G2Z9NGi26eHXqidksN-17" value="Tickets" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0G2Z9NGi26eHXqidksN-12" vertex="1">
+        <mxCell id="v0G2Z9NGi26eHXqidksN-17" value="Reservations" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0G2Z9NGi26eHXqidksN-12" vertex="1">
           <mxGeometry y="130" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="v0G2Z9NGi26eHXqidksN-18" value="Ticket" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+        <mxCell id="v0G2Z9NGi26eHXqidksN-18" value="Reservation" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
           <mxGeometry x="800" y="464" width="160" height="160" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
@@ -375,7 +375,7 @@
         <mxCell id="v0G2Z9NGi26eHXqidksN-27" value="Seats" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-24" vertex="1">
           <mxGeometry y="78" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="v0G2Z9NGi26eHXqidksN-28" value="TicketSeat" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
+        <mxCell id="v0G2Z9NGi26eHXqidksN-28" value="ReservationSeat" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
           <mxGeometry x="450" y="564" width="160" height="110" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
@@ -383,7 +383,7 @@
         <mxCell id="v0G2Z9NGi26eHXqidksN-29" value="Id" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="v0G2Z9NGi26eHXqidksN-28" vertex="1">
           <mxGeometry y="26" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="v0G2Z9NGi26eHXqidksN-30" value="Ticket" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-28" vertex="1">
+        <mxCell id="v0G2Z9NGi26eHXqidksN-30" value="Reservation" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-28" vertex="1">
           <mxGeometry y="52" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="v0G2Z9NGi26eHXqidksN-31" value="Seat" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-28" vertex="1">
@@ -412,7 +412,7 @@
         <mxCell id="v0G2Z9NGi26eHXqidksN-71" value="SeatNumber" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-61" vertex="1">
           <mxGeometry y="114" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="v0G2Z9NGi26eHXqidksN-64" value="Tickets" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-61" vertex="1">
+        <mxCell id="v0G2Z9NGi26eHXqidksN-64" value="Reservations" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="v0G2Z9NGi26eHXqidksN-61" vertex="1">
           <mxGeometry y="140" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="v0G2Z9NGi26eHXqidksN-66" value="1" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="v0G2Z9NGi26eHXqidksN-27" target="v0G2Z9NGi26eHXqidksN-65" edge="1">
@@ -596,7 +596,7 @@
             <mxRectangle width="120" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mpYXoafy_Qid3BUJsaue-77" value="Ticket" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;whiteSpace=wrap;" parent="4sLvS9dzIjC9J2s6rB9a-1" vertex="1">
+        <mxCell id="mpYXoafy_Qid3BUJsaue-77" value="Reservation" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;whiteSpace=wrap;" parent="4sLvS9dzIjC9J2s6rB9a-1" vertex="1">
           <mxGeometry x="790" y="428" width="180" height="150" as="geometry" />
         </mxCell>
         <mxCell id="mpYXoafy_Qid3BUJsaue-78" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;html=1;" parent="mpYXoafy_Qid3BUJsaue-77" vertex="1">
@@ -651,7 +651,7 @@
             <mxRectangle width="120" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mpYXoafy_Qid3BUJsaue-90" value="TicketSeat" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;whiteSpace=wrap;" parent="4sLvS9dzIjC9J2s6rB9a-1" vertex="1">
+        <mxCell id="mpYXoafy_Qid3BUJsaue-90" value="ReservationSeat" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;whiteSpace=wrap;" parent="4sLvS9dzIjC9J2s6rB9a-1" vertex="1">
           <mxGeometry x="500" y="564" width="180" height="120" as="geometry" />
         </mxCell>
         <mxCell id="mpYXoafy_Qid3BUJsaue-91" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;html=1;" parent="mpYXoafy_Qid3BUJsaue-90" vertex="1">
@@ -675,7 +675,7 @@
             <mxRectangle width="60" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mpYXoafy_Qid3BUJsaue-105" value="TicketId" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;overflow=hidden;html=1;whiteSpace=wrap;" parent="mpYXoafy_Qid3BUJsaue-103" vertex="1">
+        <mxCell id="mpYXoafy_Qid3BUJsaue-105" value="ReservationId" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;overflow=hidden;html=1;whiteSpace=wrap;" parent="mpYXoafy_Qid3BUJsaue-103" vertex="1">
           <mxGeometry x="60" width="120" height="30" as="geometry">
             <mxRectangle width="120" height="30" as="alternateBounds" />
           </mxGeometry>

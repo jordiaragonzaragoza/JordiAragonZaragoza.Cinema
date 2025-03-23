@@ -8,8 +8,8 @@
     {
         public ExpireReservedSeatsCommandValidator()
         {
-            this.RuleFor(x => x.TicketId)
-              .NotEmpty().WithMessage("TicketId is required.");
+            this.RuleFor(x => x.ReservationId)
+              .NotEmpty().WithMessage("ReservationId is required.");
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
@@ -12,9 +11,9 @@
 
     using IMapper = AutoMapper.IMapper;
 
-    public sealed class ScheduleShowtime : Endpoint<ScheduleShowtimeRequest, Guid>
+    public sealed class ScheduleShowtime : Endpoint<ScheduleShowtimeRequest>
     {
-        public const string Route = "showtimes";
+        public const string Route = "showtimes/{showtimeId}";
 
         private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
@@ -28,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Post(ScheduleShowtime.Route);
+            this.Put(ScheduleShowtime.Route);
             this.Version(2);
             this.Summary(summary =>
             {
