@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using Microsoft.AspNetCore.Builder;
@@ -27,12 +28,27 @@
                     EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2)),
                     Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28))));
 
+        public static readonly MovieReadModel ExampleMovieReadModel =
+           new(
+            ExampleMovie.Id,
+            ExampleMovie.Title,
+            ExampleMovie.Runtime);
+
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
                 id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
                 name: Name.Create("Auditorium One"),
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
+
+        public static readonly AuditoriumReadModel ExampleAuditoriumReadModel =
+            new(
+                ExampleAuditorium.Id,
+                ExampleAuditorium.Name,
+                ExampleAuditorium.Seats.Select(seat => new SeatReadModel(
+                    seat.Id,
+                    seat.Row,
+                    seat.SeatNumber)).ToList());
 
         public static readonly User ExampleUser =
             User.Create(
@@ -85,7 +101,16 @@
 
         private static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
-            // Intentionally empty. Will be used to populate test data on read model.
+            if (HasAnyData(context))
+            {
+                return;
+            }
+
+            context.Movies.Add(ExampleMovieReadModel);
+
+            context.Auditoriums.Add(ExampleAuditoriumReadModel);
+
+            context.SaveChanges();
         }
 
         private static bool HasAnyData(DbContext context)

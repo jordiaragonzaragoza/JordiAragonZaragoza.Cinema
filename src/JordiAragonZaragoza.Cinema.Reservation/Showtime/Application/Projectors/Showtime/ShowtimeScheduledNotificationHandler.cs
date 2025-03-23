@@ -4,7 +4,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Notifications;
@@ -15,17 +17,17 @@
 
     public sealed class ShowtimeScheduledNotificationHandler : IEventNotificationHandler<ShowtimeScheduledNotification>
     {
-        private readonly IReadRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IReadRepository<Movie, MovieId> movieRepository;
+        private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
+        private readonly IReadRepository<MovieReadModel, Guid> movieReadModelRepository;
         private readonly IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
 
         public ShowtimeScheduledNotificationHandler(
-            IReadRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IReadRepository<Movie, MovieId> movieRepository,
+            IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
+            IReadRepository<MovieReadModel, Guid> movieReadModelRepository,
             IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
+            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.movieReadModelRepository = Guard.Against.Null(movieReadModelRepository, nameof(movieReadModelRepository));
             this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
         }
 
@@ -35,13 +37,13 @@
 
             var @event = notification.Event;
 
-            var existingAuditorium = await this.auditoriumRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
+            var existingAuditorium = await this.auditoriumReadModelRepository.GetByIdAsync(@event.AuditoriumId, cancellationToken);
             if (existingAuditorium is null)
             {
                 throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
             }
 
-            var existingMovie = await this.movieRepository.GetByIdAsync(new MovieId(@event.MovieId), cancellationToken);
+            var existingMovie = await this.movieReadModelRepository.GetByIdAsync(@event.MovieId, cancellationToken);
             if (existingMovie is null)
             {
                 throw new NotFoundException(nameof(Movie), @event.MovieId.ToString());

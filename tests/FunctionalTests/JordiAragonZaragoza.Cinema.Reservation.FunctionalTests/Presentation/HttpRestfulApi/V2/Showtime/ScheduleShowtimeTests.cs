@@ -30,26 +30,30 @@
         public async Task ScheduleShowtime_WhenHavingValidArguments_ShouldCreateRequiredShowtime()
         {
             // Arrange
-            var url = $"api/v2/{ScheduleShowtime.Route}";
+            var showtimeId = Guid.NewGuid();
+
+            var route = $"api/v2/{ScheduleShowtime.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeRequest(
+                showtimeId,
                 Constants.Auditorium.Id,
                 Constants.Movie.Id,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
             // Act
-            var showtimeId = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
 
             await AddEventualConsistencyDelayAsync();
 
             // Assert
-            showtimeId.Should()
-                .NotBeEmpty();
-
             await this.TestProjectionsAsync(sessionDateOnUtc, showtimeId);
         }
 

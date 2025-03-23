@@ -34,7 +34,7 @@
 
             var existingShowtime = await repository.GetByIdAsync(new ShowtimeId(newShowtime.Id));
 
-            var ticketId = new TicketId(Guid.NewGuid());
+            var reservationId = new ReservationId(Guid.NewGuid());
 
             var userId = new UserId(Guid.NewGuid());
 
@@ -45,7 +45,7 @@
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
 
-            var ticket = existingShowtime.ReserveSeats(ticketId, userId, seatIds, createdTimeOnUtc);
+            var reservation = existingShowtime.ReserveSeats(reservationId, userId, seatIds, createdTimeOnUtc);
 
             // Act
             await repository.UpdateAsync(existingShowtime);
@@ -54,7 +54,7 @@
             var result = await repository.GetByIdAsync(new ShowtimeId(existingShowtime.Id));
 
             result.Should().NotBeNull();
-            result.Tickets.Should().Contain(ticket);
+            result.Reservations.Should().Contain(reservation);
         }
 
         [Fact]

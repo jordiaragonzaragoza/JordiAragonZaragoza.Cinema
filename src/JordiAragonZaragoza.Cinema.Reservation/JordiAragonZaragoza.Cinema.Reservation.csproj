@@ -55,7 +55,7 @@
 		<PackageReference Include="Serilog.Enrichers.Thread" />
 		<PackageReference Include="Serilog.Sinks.Async" />
 		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="Serilog.Sinks.OpenTelemetry"  />
+		<PackageReference Include="Serilog.Sinks.OpenTelemetry" />
 		<PackageReference Include="Serilog.Sinks.Seq" />
     </ItemGroup>
 	<ItemGroup>

@@ -13,7 +13,7 @@
 
     using IMapper = AutoMapper.IMapper;
 
-    // TODO: It belongs to the cinema manager bounded context.
+    // TODO: Will be removed. It belongs to the cinema manager bounded context.
     public sealed class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";
@@ -40,7 +40,7 @@
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(new GetAuditoriumsQuery(), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(new GetAuditoriumsQuery(PageNumber: 1, PageSize: 1), ct);
 
             var resultResponse = this.mapper.Map<Result<IEnumerable<AuditoriumResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);

@@ -21,16 +21,16 @@
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadStoreMigration">
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">

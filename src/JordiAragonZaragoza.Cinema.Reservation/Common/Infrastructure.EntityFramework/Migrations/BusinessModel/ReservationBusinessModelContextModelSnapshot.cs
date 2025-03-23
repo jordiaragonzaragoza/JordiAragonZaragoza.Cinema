@@ -17,7 +17,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -34,10 +34,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<ushort>("Rows")
+                    b.Property<int>("Rows")
                         .HasColumnType("integer");
 
-                    b.Property<ushort>("SeatsPerRow")
+                    b.Property<int>("SeatsPerRow")
                         .HasColumnType("integer");
 
                     b.Property<uint>("Version")
@@ -214,10 +214,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                             b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<ushort>("Row")
+                            b1.Property<int>("Row")
                                 .HasColumnType("integer");
 
-                            b1.Property<ushort>("SeatNumber")
+                            b1.Property<int>("SeatNumber")
                                 .HasColumnType("integer");
 
                             b1.HasKey("Id", "AuditoriumId");
@@ -289,7 +289,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Showtime", b =>
                 {
-                    b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Ticket", "Tickets", b1 =>
+                    b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Reservation", "Reservations", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -313,14 +313,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
                             b1.HasIndex("ShowtimeId");
 
-                            b1.ToTable("ShowtimesTickets", (string)null);
+                            b1.ToTable("ShowtimesReservations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ShowtimeId");
 
                             b1.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.SeatId", "Seats", b2 =>
                                 {
-                                    b2.Property<Guid>("TicketId")
+                                    b2.Property<Guid>("ReservationId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<Guid>("ShowtimeId")
@@ -336,18 +336,18 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                         .HasColumnType("uuid")
                                         .HasColumnName("SeatId");
 
-                                    b2.HasKey("TicketId", "ShowtimeId", "Id");
+                                    b2.HasKey("ReservationId", "ShowtimeId", "Id");
 
-                                    b2.ToTable("ShowtimeTicketSeatIds", (string)null);
+                                    b2.ToTable("ShowtimeReservationSeatIds", (string)null);
 
                                     b2.WithOwner()
-                                        .HasForeignKey("TicketId", "ShowtimeId");
+                                        .HasForeignKey("ReservationId", "ShowtimeId");
                                 });
 
                             b1.Navigation("Seats");
                         });
 
-                    b.Navigation("Tickets");
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

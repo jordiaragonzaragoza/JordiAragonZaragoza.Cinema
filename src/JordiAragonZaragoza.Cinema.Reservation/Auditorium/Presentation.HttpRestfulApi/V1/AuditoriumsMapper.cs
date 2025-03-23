@@ -7,11 +7,12 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
 
     public sealed class AuditoriumsMapper : Profile
     {
@@ -21,13 +22,19 @@
             this.CreateMap<ScheduleShowtimeRequest, ScheduleShowtimeCommand>();
             this.CreateMap<ReserveSeatsRequest, ReserveSeatsCommand>();
 
-            // OutputDtos to responses.
+            // ReadModels to responses.
             this.CreateMap<SeatOutputDto, SeatResponse>();
             this.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
-            this.CreateMap<AuditoriumOutputDto, AuditoriumResponse>();
-            this.CreateMap<Result<IEnumerable<AuditoriumOutputDto>>, Result<IEnumerable<AuditoriumResponse>>>();
-            this.CreateMap<TicketOutputDto, TicketResponse>();
-            this.CreateMap<Result<TicketOutputDto>, Result<TicketResponse>>();
+
+            this.CreateMap<AuditoriumReadModel, AuditoriumResponse>();
+
+            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, IEnumerable<AuditoriumResponse>>()
+                .ConvertUsing((src, dest, context) => context.Mapper.Map<IEnumerable<AuditoriumResponse>>(src.Items));
+
+            this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<IEnumerable<AuditoriumResponse>>>();
+
+            this.CreateMap<ReservationOutputDto, ReservationResponse>();
+            this.CreateMap<Result<ReservationOutputDto>, Result<ReservationResponse>>();
 
             this.CreateMap<AvailableSeatReadModel, SeatResponse>()
                 .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));

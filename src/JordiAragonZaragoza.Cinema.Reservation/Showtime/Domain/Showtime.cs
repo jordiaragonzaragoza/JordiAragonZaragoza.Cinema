@@ -17,7 +17,7 @@
 
     public sealed class Showtime : BaseAggregateRoot<ShowtimeId, Guid>
     {
-        private readonly List<Ticket> tickets = new();
+        private readonly List<Reservation> reservations = new();
 
         // Required by EF.
         private Showtime()
@@ -32,7 +32,7 @@
 
         public bool IsEnded { get; private set; } // TODO: Review. Probably this property is not required.
 
-        public IEnumerable<Ticket> Tickets => this.tickets.AsReadOnly();
+        public IEnumerable<Reservation> Reservations => this.reservations.AsReadOnly();
 
         public static Showtime Schedule(
             ShowtimeId id,
@@ -58,7 +58,7 @@
         public void End()
             => this.Apply(new ShowtimeEndedEvent(this.Id, this.AuditoriumId, this.MovieId));
 
-        public Ticket ReserveSeats(TicketId id, UserId userId, IEnumerable<SeatId> seatIds, ReservationDate reservationDateOnUtc)
+        public Reservation ReserveSeats(ReservationId id, UserId userId, IEnumerable<SeatId> seatIds, ReservationDate reservationDateOnUtc)
         {
             ArgumentNullException.ThrowIfNull(id, nameof(id));
             ArgumentNullException.ThrowIfNull(userId, nameof(userId));
@@ -67,29 +67,31 @@
 
             this.Apply(new ReservedSeatsEvent(this.Id, id, userId, seatIds.Select(x => x.Value), reservationDateOnUtc));
 
-            return this.tickets[^1];
+            return this.reservations[^1];
         }
 
-        public void PurchaseTicket(TicketId ticketId)
+        public void PurchaseReservation(ReservationId reservationId)
         {
-            ArgumentNullException.ThrowIfNull(ticketId, nameof(ticketId));
+            ArgumentNullException.ThrowIfNull(reservationId, nameof(reservationId));
 
-            var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId)
-                         ?? throw new NotFoundException(nameof(Ticket), ticketId.Value);
+            var reservation = this.Reservations.FirstOrDefault(reservation => reservation.Id == reservationId)
+                         ?? throw new NotFoundException(nameof(Reservation), reservationId.Value);
 
-            CheckRule(new OnlyPossibleToPurchaseOncePerTicketRule(ticket));
+            CheckRule(new OnlyPossibleToPurchaseOncePerReservationRule(reservation));
 
-            this.Apply(new PurchasedTicketEvent(this.Id, ticketId));
+            this.Apply(new PurchasedReservationEvent(this.Id, reservationId));
         }
 
-        public void ExpireReservedSeats(TicketId ticketToRemove)
+        public void ExpireReservedSeats(ReservationId reservationToRemove)
         {
-            ArgumentNullException.ThrowIfNull(ticketToRemove, nameof(ticketToRemove));
+            ArgumentNullException.ThrowIfNull(reservationToRemove, nameof(reservationToRemove));
 
-            _ = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove)
-                ?? throw new NotFoundException(nameof(Ticket), ticketToRemove.Value);
+            var reservation = this.Reservations.FirstOrDefault(item => item.Id == reservationToRemove)
+                ?? throw new NotFoundException(nameof(Reservation), reservationToRemove.Value);
 
-            this.Apply(new ExpiredReservedSeatsEvent(this.Id, ticketToRemove));
+            var seatIds = reservation.Seats.Select(seatId => seatId.Value);
+
+            this.Apply(new ExpiredReservedSeatsEvent(this.Id, reservationToRemove, seatIds));
         }
 
         protected override void When(IDomainEvent domainEvent)
@@ -111,7 +113,7 @@
                     this.Applier(@event);
                     break;
 
-                case PurchasedTicketEvent @event:
+                case PurchasedReservationEvent @event:
                     this.Applier(@event);
                     break;
 
@@ -145,31 +147,31 @@
         {
             var seatIds = @event.SeatIds.Select(i => new SeatId(i));
 
-            var newTicket = new Ticket(
-                 new TicketId(@event.TicketId),
+            var newReservation = new Reservation(
+                 new ReservationId(@event.ReservationId),
                  new UserId(@event.UserId),
                  seatIds,
                  new ReservationDate(@event.CreatedTimeOnUtc));
 
-            this.tickets.Add(newTicket);
+            this.reservations.Add(newReservation);
         }
 
-        private void Applier(PurchasedTicketEvent @event)
+        private void Applier(PurchasedReservationEvent @event)
         {
-            var ticketId = new TicketId(@event.TicketId);
+            var reservationId = new ReservationId(@event.ReservationId);
 
-            var ticket = this.Tickets.FirstOrDefault(ticket => ticket.Id == ticketId);
+            var reservation = this.Reservations.FirstOrDefault(reservation => reservation.Id == reservationId);
 
-            ticket?.MarkAsPurchased();
+            reservation?.MarkAsPurchased();
         }
 
         private void Applier(ExpiredReservedSeatsEvent @event)
         {
-            var ticketToRemove = new TicketId(@event.TicketId);
+            var reservationToRemove = new ReservationId(@event.ReservationId);
 
-            var existingTicket = this.Tickets.FirstOrDefault(item => item.Id == ticketToRemove);
+            var existingReservation = this.Reservations.FirstOrDefault(item => item.Id == reservationToRemove);
 
-            this.tickets.Remove(existingTicket!);
+            this.reservations.Remove(existingReservation!);
         }
     }
 }
