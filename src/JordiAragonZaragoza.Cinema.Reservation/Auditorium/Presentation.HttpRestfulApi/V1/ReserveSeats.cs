@@ -1,19 +1,20 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Presentation.HttpRestfulApi.V1
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Ticket.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
     using IMapper = AutoMapper.IMapper;
 
-    public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, TicketResponse>
+    public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, ReservationResponse>
     {
         private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
@@ -27,7 +28,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Post("auditoriums/{auditoriumId}/showtimes/{showtimeId}/tickets");
+            this.Post("auditoriums/{auditoriumId}/showtimes/{showtimeId}/reservations");
             this.Version(1, 2);
             this.Summary(summary =>
             {
@@ -38,11 +39,16 @@
 
         public async override Task HandleAsync(ReserveSeatsRequest req, CancellationToken ct)
         {
-            var command = this.mapper.Map<ReserveSeatsCommand>(req);
+            ArgumentNullException.ThrowIfNull(req, nameof(req));
+
+            var command = new ReserveSeatsCommand(
+                ReservationId: Guid.NewGuid(),
+                ShowtimeId: req.ShowtimeId,
+                SeatsIds: req.SeatsIds);
 
             var resultOutputDto = await this.commandBus.SendAsync(command, ct);
 
-            var resultResponse = this.mapper.Map<Result<TicketResponse>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<ReservationResponse>>(resultOutputDto);
 
             await this.SendResponseAsync(resultResponse, ct);
         }

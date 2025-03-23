@@ -20,39 +20,39 @@
             ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
             this.ConfigureShowtimesTable(builder);
-            ConfigureShowtimesTicketsTable(builder);
+            ConfigureShowtimesReservationsTable(builder);
         }
 
-        private static void ConfigureShowtimesTicketsTable(EntityTypeBuilder<Showtime> builder)
+        private static void ConfigureShowtimesReservationsTable(EntityTypeBuilder<Showtime> builder)
         {
-            builder.OwnsMany(showtime => showtime.Tickets, tb =>
+            builder.OwnsMany(showtime => showtime.Reservations, tb =>
             {
-                tb.ToTable("ShowtimesTickets");
+                tb.ToTable("ShowtimesReservations");
 
                 tb.WithOwner().HasForeignKey(nameof(ShowtimeId));
 
-                tb.HasKey(nameof(Ticket.Id), nameof(ShowtimeId));
+                tb.HasKey(nameof(Reservation.Id), nameof(ShowtimeId));
 
-                tb.Property(ticket => ticket.Id)
-                  .HasColumnName(nameof(Ticket.Id))
+                tb.Property(reservation => reservation.Id)
+                  .HasColumnName(nameof(Reservation.Id))
                   .ValueGeneratedNever()
-                  .HasConversion(ticketId => ticketId.Value, guidValue => new TicketId(guidValue));
+                  .HasConversion(reservationId => reservationId.Value, guidValue => new ReservationId(guidValue));
 
-                tb.Property(ticket => ticket.UserId)
+                tb.Property(reservation => reservation.UserId)
                 .HasConversion(userId => userId.Value, value => new UserId(value))
                 .HasColumnName(nameof(UserId));
 
-                tb.Property(ticket => ticket.ReservationDateOnUtc)
+                tb.Property(reservation => reservation.ReservationDateOnUtc)
                     .HasConversion(reservationDate => reservationDate.Value, value => new ReservationDate(value))
                     .HasColumnName(nameof(ReservationDate));
 
-                tb.OwnsMany(ticket => ticket.Seats, ticketSeatBuilder =>
+                tb.OwnsMany(reservation => reservation.Seats, reservationSeatBuilder =>
                 {
-                    ticketSeatBuilder.ToTable("ShowtimeTicketSeatIds");
+                    reservationSeatBuilder.ToTable("ShowtimeReservationSeatIds");
 
-                    ticketSeatBuilder.WithOwner().HasForeignKey(nameof(TicketId), nameof(ShowtimeId));
+                    reservationSeatBuilder.WithOwner().HasForeignKey(nameof(ReservationId), nameof(ShowtimeId));
 
-                    ticketSeatBuilder.Property(seatId => seatId.Value)
+                    reservationSeatBuilder.Property(seatId => seatId.Value)
                         .HasColumnName(nameof(SeatId))
                         .ValueGeneratedNever();
                 });
@@ -61,7 +61,7 @@
                 tb.Navigation(x => x.Seats).UsePropertyAccessMode(PropertyAccessMode.Field);
             });
 
-            builder.Metadata.FindNavigation(nameof(Showtime.Tickets))!
+            builder.Metadata.FindNavigation(nameof(Showtime.Reservations))!
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 

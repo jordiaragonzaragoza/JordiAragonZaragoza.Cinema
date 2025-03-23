@@ -11,7 +11,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using NSubstitute;
     using Xunit;
@@ -23,20 +22,17 @@
         private readonly IRepository<Auditorium, AuditoriumId> mockAuditoriumRepository;
         private readonly IRepository<Movie, MovieId> mockMovieRepository;
         private readonly IRepository<Showtime, ShowtimeId> mockShowtimeRepository;
-        private readonly IIdGenerator mockGuidGenerator;
 
         public ScheduleShowtimeCommandHandlerTests()
         {
             this.mockAuditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             this.mockMovieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             this.mockShowtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
-            this.mockGuidGenerator = Substitute.For<IIdGenerator>();
 
             this.handler = new ScheduleShowtimeCommandHandler(
                 this.mockAuditoriumRepository,
                 this.mockMovieRepository,
-                this.mockShowtimeRepository,
-                this.mockGuidGenerator);
+                this.mockShowtimeRepository);
         }
 
         public static IEnumerable<object[]> InvalidArgumentsCreateHandleScheduleShowtimeCommand()
@@ -44,12 +40,10 @@
             var auditoriumRepository = Substitute.For<IRepository<Auditorium, AuditoriumId>>();
             var movieRepository = Substitute.For<IRepository<Movie, MovieId>>();
             var showtimeRepository = Substitute.For<IRepository<Showtime, ShowtimeId>>();
-            var guidGenerator = Substitute.For<IIdGenerator>();
 
             var auditoriumRepositoryValues = new object[] { default!, auditoriumRepository };
             var movieRepositoryValues = new object[] { default!, movieRepository };
             var showtimeRepositoryValues = new object[] { default!, showtimeRepository };
-            var guidGeneratorValues = new object[] { default!, guidGenerator };
 
             foreach (var auditoriumRepositoryValue in auditoriumRepositoryValues)
             {
@@ -57,18 +51,14 @@
                 {
                     foreach (var showtimeRepositoryValue in showtimeRepositoryValues)
                     {
-                        foreach (var guidGeneratorValue in guidGeneratorValues)
-                        {
-                            if (auditoriumRepositoryValue != null && auditoriumRepositoryValue.Equals(auditoriumRepository) &&
+                        if (auditoriumRepositoryValue != null && auditoriumRepositoryValue.Equals(auditoriumRepository) &&
                                     movieRepositoryValue != null && movieRepositoryValue.Equals(movieRepository) &&
-                                    showtimeRepositoryValue != null && showtimeRepositoryValue.Equals(showtimeRepository) &&
-                                    guidGeneratorValue != null && guidGeneratorValue.Equals(guidGenerator))
+                                    showtimeRepositoryValue != null && showtimeRepositoryValue.Equals(showtimeRepository))
                             {
                                 continue;
                             }
 
-                            yield return new object[] { auditoriumRepositoryValue!, movieRepositoryValue!, showtimeRepositoryValue!, guidGeneratorValue! };
-                        }
+                        yield return new object[] { auditoriumRepositoryValue!, movieRepositoryValue!, showtimeRepositoryValue! };
                     }
                 }
             }
@@ -79,10 +69,9 @@
         public void CreateHandleScheduleShowtimeCommand_WhenHavingInvalidArguments_ShouldThrowArgumentException(
             IRepository<Auditorium, AuditoriumId> auditoriumRepository,
             IRepository<Movie, MovieId> movieRepository,
-            IRepository<Showtime, ShowtimeId> showtimeRepository,
-            IIdGenerator guidGenerator)
+            IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
-            FluentActions.Invoking(() => new ScheduleShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository, guidGenerator))
+            FluentActions.Invoking(() => new ScheduleShowtimeCommandHandler(auditoriumRepository, movieRepository, showtimeRepository))
             .Should().Throw<ArgumentNullException>();
         }
 
@@ -101,15 +90,12 @@
             this.mockMovieRepository.GetByIdAsync(Arg.Any<MovieId>(), Arg.Any<CancellationToken>())
                 .Returns(existingMovie);
 
-            this.mockGuidGenerator.Create().Returns(Guid.NewGuid());
-
             // Act
             var result = await this.handler.Handle(createShowtimeCommand, default);
 
             // Assert
             // 1. Validate correct showtime created based on command.
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeEmpty();
             result.Should().NotBeNull();
 
             // 2. Some showtime was added to the repository.
@@ -133,7 +119,6 @@
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
-            result.Value.Should().BeEmpty();
             result.Should().NotBeNull();
 
             await this.mockShowtimeRepository.Received(0).AddAsync(Arg.Any<Showtime>(), Arg.Any<CancellationToken>());
@@ -161,7 +146,6 @@
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
-            result.Value.Should().BeEmpty();
             result.Should().NotBeNull();
 
             await this.mockShowtimeRepository.Received(0).AddAsync(Arg.Any<Showtime>(), Arg.Any<CancellationToken>());

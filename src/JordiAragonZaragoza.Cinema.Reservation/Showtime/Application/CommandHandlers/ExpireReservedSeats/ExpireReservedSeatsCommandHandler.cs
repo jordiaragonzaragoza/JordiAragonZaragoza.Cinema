@@ -30,7 +30,7 @@
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
-            existingShowtime.ExpireReservedSeats(new TicketId(request.TicketId));
+            existingShowtime.ExpireReservedSeats(new ReservationId(request.ReservationId));
 
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 

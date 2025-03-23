@@ -50,7 +50,7 @@
 
             await this.GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
 
-            await this.GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
+            await this.GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
         }
 
         private async Task GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
@@ -83,38 +83,45 @@
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 
-        private async Task GetShowtimeTickets_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
+        private async Task GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
-            var route = $"api/v2/{GetShowtimeTickets.Route}";
+            var route = $"api/v2/{GetShowtimeReservations.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
-            var showtimeTicketsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
+            var showtimeReservationsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
 
             // Assert
-            showtimeTicketsResponse.StatusCode.Should()
+            showtimeReservationsResponse.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NotFound);
         }
 
         private async Task<Guid> CreateNewShowtimeAsync()
         {
-            var url = $"api/v2/{ScheduleShowtime.Route}";
+            var showtimeId = Guid.NewGuid();
+
+            var route = $"api/v2/{ScheduleShowtime.Route}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeRequest(
+                showtimeId,
                 SeedData.ExampleAuditorium.Id,
                 SeedData.ExampleMovie.Id,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);
 
-            var response = await this.Fixture.HttpClient.PostAndDeserializeAsync<Guid>(url, content, this.OutputHelper);
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
 
             await AddEventualConsistencyDelayAsync();
 
-            return response;
+            return showtimeId;
         }
     }
 }

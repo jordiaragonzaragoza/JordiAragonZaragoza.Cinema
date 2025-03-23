@@ -13,8 +13,8 @@
         public UsersMapper()
         {
             // Requests to queries or commands.
-            this.CreateMap<UserTicketRequest, GetUserTicketQuery>();
-            this.CreateMap<UserTicketsRequest, GetUserTicketsQuery>();
+            this.CreateMap<UserReservationRequest, GetUserReservationQuery>();
+            this.CreateMap<UserReservationsRequest, GetUserReservationsQuery>();
 
             // OutputDtos to responses.
             this.CreateMap<UserOutputDto, UserResponse>();

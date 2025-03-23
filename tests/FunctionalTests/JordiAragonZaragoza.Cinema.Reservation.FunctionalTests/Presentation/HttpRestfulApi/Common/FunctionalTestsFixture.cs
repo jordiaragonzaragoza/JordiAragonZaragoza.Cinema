@@ -155,11 +155,26 @@
 
         private async Task InitReadModelStoreDatabaseAsync()
         {
-            this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
+            using var readModelScope = this.scopeFactory.CreateScope();
+            var readContext = readModelScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            var logger = readModelScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
+
+            try
             {
-                DbAdapter = DbAdapter.Postgres,
-                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
-            });
+                SeedData.PopulateReadModelTestData(readContext);
+
+                this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
+                {
+                    DbAdapter = DbAdapter.Postgres,
+                    TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+                });
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(exception, "An error occurred seeding the read model database with test data. Error: {ExceptionMessage}", exception.Message);
+
+                throw;
+            }
         }
     }
 }

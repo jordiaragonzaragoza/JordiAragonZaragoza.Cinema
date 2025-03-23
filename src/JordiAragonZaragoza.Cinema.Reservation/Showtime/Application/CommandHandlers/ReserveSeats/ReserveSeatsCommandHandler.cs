@@ -16,15 +16,13 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Application.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, TicketOutputDto>
+    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, ReservationOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;
-        private readonly IIdGenerator guidGenerator;
         private readonly IMapper mapper;
         private readonly IDateTime dateTime;
         private readonly IReservationManager showtimeManager;
@@ -36,7 +34,6 @@
             IReadRepository<User, UserId> userRepository,
             IReservationManager showtimeManager,
             IMapper mapper,
-            IIdGenerator guidGenerator,
             IDateTime dateTime,
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
@@ -45,13 +42,12 @@
             this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
             this.showtimeManager = Guard.Against.Null(showtimeManager, nameof(showtimeManager));
             this.mapper = Guard.Against.Null(mapper, nameof(mapper));
-            this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public override async Task<Result<TicketOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
@@ -70,10 +66,10 @@
             var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
 
             // Make the reserve.
-            var newTicket = await this.showtimeManager.ReserveSeatsAsync(
+            var newReservation = await this.showtimeManager.ReserveSeatsAsync(
                 existingShowtime,
                 desiredSeatsIds,
-                new TicketId(this.guidGenerator.Create()),
+                new ReservationId(request.ReservationId),
                 new UserId(request.UserId),
                 ReservationDate.Create(this.dateTime.UtcNow),
                 cancellationToken);
@@ -99,17 +95,17 @@
             var seatsOutputDto = seats.Select(seat
                 => new SeatOutputDto(seat.Id, seat.Row, seat.SeatNumber));
 
-            var ticketOutputDto = new TicketOutputDto(
-                newTicket.Id,
+            var reservationOutputDto = new ReservationOutputDto(
+                newReservation.Id,
                 request.UserId,
                 existingShowtime.Id,
                 existingShowtime.SessionDateOnUtc,
                 existingAuditorium.Name,
                 existingMovie.Title,
                 seatsOutputDto,
-                newTicket.IsPurchased);
+                newReservation.IsPurchased);
 
-            return Result.Created(ticketOutputDto);
+            return Result.Created(reservationOutputDto);
         }
     }
 }

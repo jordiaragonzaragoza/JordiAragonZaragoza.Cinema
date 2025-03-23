@@ -13,8 +13,8 @@ namespace JordiAragonZaragoza.Cinema
 
               var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                           .WithImageTag("15.1-alpine")
-                                          .WithDataBindMount("../../containers/postgres/data");
-                                          ////.WithPgAdmin();
+                                          .WithDataBindMount("../../containers/postgres/data")
+                                          .WithPgAdmin();
 
               var reservationBusinessModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore);
               var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);

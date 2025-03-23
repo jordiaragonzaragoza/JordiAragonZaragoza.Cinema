@@ -1,20 +1,22 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Presentation.HttpRestfulApi.V2
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
+
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
     using IMapper = AutoMapper.IMapper;
 
     // TODO: It belongs to the management bounded context.
-    public sealed class GetAuditoriums : EndpointWithoutRequest<IEnumerable<AuditoriumResponse>>
+    public sealed class GetAuditoriums : Endpoint<GetAuditoriumsRequest, PaginatedCollectionResponse<AuditoriumResponse>>
     {
         public const string Route = "auditoriums";
 
@@ -39,11 +41,11 @@
             });
         }
 
-        public override async Task HandleAsync(CancellationToken ct)
+        public override async Task HandleAsync(GetAuditoriumsRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(new GetAuditoriumsQuery(), ct);
+            var resultOutputDto = await this.queryBus.SendAsync(this.mapper.Map<GetAuditoriumsQuery>(req), ct);
 
-            var resultResponse = this.mapper.Map<Result<IEnumerable<AuditoriumResponse>>>(resultOutputDto);
+            var resultResponse = this.mapper.Map<Result<PaginatedCollectionResponse<AuditoriumResponse>>>(resultOutputDto);
             await this.SendResponseAsync(resultResponse, ct);
         }
     }

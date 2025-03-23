@@ -15,6 +15,9 @@
         {
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
 
+            this.RuleFor(x => x.ShowtimeId)
+              .NotEmpty().WithMessage("ShowtimeId is required.");
+
             this.RuleFor(x => x.MovieId)
               .NotEmpty().WithMessage("MovieId is required.");
 

@@ -42,17 +42,17 @@
                                         .ThenBy(s => s.SeatNumber);
         }
 
-        public async Task<Ticket> ReserveSeatsAsync(
+        public async Task<Reservation> ReserveSeatsAsync(
             Showtime showtime,
             IEnumerable<SeatId> desiredSeatIds,
-            TicketId newTicketId,
+            ReservationId newReservationId,
             UserId userId,
             ReservationDate reservationDateOnUtc,
             CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(showtime);
             Guard.Against.NullOrEmpty(desiredSeatIds);
-            ArgumentNullException.ThrowIfNull(newTicketId);
+            ArgumentNullException.ThrowIfNull(newReservationId);
             ArgumentNullException.ThrowIfNull(userId);
             Guard.Against.Default(reservationDateOnUtc);
 
@@ -78,7 +78,7 @@
 
             CheckRule(new OnlyAvailableSeatsCanBeReservedRule(desiredSeats, availableSeats));
 
-            return showtime.ReserveSeats(newTicketId, userId, desiredSeatIds, reservationDateOnUtc);
+            return showtime.ReserveSeats(newReservationId, userId, desiredSeatIds, reservationDateOnUtc);
         }
 
         // TODO: This method will gone out on using sagas with timeout messages to mark showtimes as ended.
@@ -104,7 +104,7 @@
 
         private static IEnumerable<Seat> ReservedSeats(Auditorium auditorium, Showtime showtime)
         {
-            var seatIds = showtime.Tickets.SelectMany(ticket => ticket.Seats);
+            var seatIds = showtime.Reservations.SelectMany(reservation => reservation.Seats);
 
             return auditorium.Seats.Where(seat => seatIds.Contains(seat.Id))
                                         .OrderBy(s => s.Row)

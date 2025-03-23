@@ -17,10 +17,43 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.AuditoriumReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Auditoriums");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels.MovieReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("Runtime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Movies");
+                });
 
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.AvailableSeatReadModel", b =>
                 {
@@ -83,7 +116,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("Showtimes");
                 });
 
-            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,7 +147,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint.Checkpoint", b =>
@@ -134,7 +167,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("__Checkpoints", (string)null);
                 });
 
-            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.TicketReadModel", b =>
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.AuditoriumReadModel", b =>
                 {
                     b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
                         {
@@ -142,7 +175,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("TicketId")
+                            b1.Property<Guid>("AuditoriumId")
                                 .HasColumnType("uuid");
 
                             b1.Property<int>("Row")
@@ -151,14 +184,44 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                             b1.Property<int>("SeatNumber")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("Id", "TicketId");
+                            b1.HasKey("Id", "AuditoriumId");
 
-                            b1.HasIndex("TicketId");
+                            b1.HasIndex("AuditoriumId");
 
-                            b1.ToTable("TicketsSeats", (string)null);
+                            b1.ToTable("AuditoriumSeats", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("TicketId");
+                                .HasForeignKey("AuditoriumId");
+                        });
+
+                    b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
+                {
+                    b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels.SeatReadModel", "Seats", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("ReservationId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Row")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("SeatNumber")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("Id", "ReservationId");
+
+                            b1.HasIndex("ReservationId");
+
+                            b1.ToTable("ReservationsSeats", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationId");
                         });
 
                     b.Navigation("Seats");

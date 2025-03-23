@@ -7,6 +7,6 @@
     public static class ScheduleShowtimeCommandUtils
     {
         public static ScheduleShowtimeCommand CreateCommand()
-            => new(Constants.Auditorium.Id, Constants.Movie.Id, DateTimeOffset.UtcNow.AddYears(1));
+            => new(Guid.NewGuid(), Constants.Auditorium.Id, Constants.Movie.Id, DateTimeOffset.UtcNow.AddYears(1));
     }
 }

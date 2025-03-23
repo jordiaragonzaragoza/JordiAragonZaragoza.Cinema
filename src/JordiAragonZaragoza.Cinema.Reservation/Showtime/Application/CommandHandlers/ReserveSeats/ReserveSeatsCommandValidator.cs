@@ -8,6 +8,9 @@
     {
         public ReserveSeatsCommandValidator()
         {
+            this.RuleFor(x => x.ReservationId)
+                .NotEmpty().WithMessage("ReservationId is required.");
+
             this.RuleFor(x => x.ShowtimeId)
                 .NotEmpty().WithMessage("ShowtimeId is required.");
 

@@ -1,41 +1,35 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.QueryHandlers.GetAuditoriums
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    // TODO: Temporal. Move. This query is part of other bounded context. (Management Bounded Context)
-    public sealed class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, IEnumerable<AuditoriumOutputDto>>
+    // TODO: Temporal. Move. This query is part of other bounded context(Cinema Management)
+    public sealed class GetAuditoriumsQueryHandler : IQueryHandler<GetAuditoriumsQuery, PaginatedCollectionOutputDto<AuditoriumReadModel>>
     {
-        private readonly IReadListRepository<Auditorium, AuditoriumId> auditoriumRepository;
-        private readonly IMapper mapper;
+        private readonly IPaginatedSpecificationReadRepository<AuditoriumReadModel> auditoriumReadModelRepository;
 
-        public GetAuditoriumsQueryHandler(
-            IReadListRepository<Auditorium, AuditoriumId> auditoriumRepository,
-            IMapper mapper)
+        public GetAuditoriumsQueryHandler(IPaginatedSpecificationReadRepository<AuditoriumReadModel> auditoriumReadModelRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
+            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
         }
 
-        public async Task<Result<IEnumerable<AuditoriumOutputDto>>> Handle(GetAuditoriumsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>> Handle(GetAuditoriumsQuery request, CancellationToken cancellationToken)
         {
-            var auditoriums = await this.auditoriumRepository.ListAsync(cancellationToken);
-            if (auditoriums.Count == 0)
+            var specification = new GetAuditoriumsSpec(request);
+            var result = await this.auditoriumReadModelRepository.PaginatedListAsync(specification, cancellationToken);
+            if (!result.Items.Any())
             {
-                return Result.NotFound($"{nameof(Auditorium)}/s not found.");
+                return Result.NotFound("Auditorium/s not found.");
             }
 
-            return Result.Success(this.mapper.Map<IEnumerable<AuditoriumOutputDto>>(auditoriums));
+            return Result.Success(result);
         }
     }
 }
