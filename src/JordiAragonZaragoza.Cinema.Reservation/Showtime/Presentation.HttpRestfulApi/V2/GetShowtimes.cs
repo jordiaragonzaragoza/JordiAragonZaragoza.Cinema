@@ -16,8 +16,6 @@
 
     public sealed class GetShowtimes : Endpoint<GetShowtimesRequest, PaginatedCollectionResponse<ShowtimeResponse>>
     {
-        public const string Route = "showtimes";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -30,7 +28,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetShowtimes.Route);
+            this.Get(GetShowtimesRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

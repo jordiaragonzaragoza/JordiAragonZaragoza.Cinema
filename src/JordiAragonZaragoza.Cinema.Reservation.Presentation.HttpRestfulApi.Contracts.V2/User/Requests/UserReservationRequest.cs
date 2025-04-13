@@ -2,5 +2,8 @@
 {
     using System;
 
-    public sealed record class UserReservationRequest(Guid UserId, Guid ShowtimeId, Guid ReservationId);
+    public sealed record class UserReservationRequest(Guid UserId, Guid ShowtimeId, Guid ReservationId)
+    {
+        public const string Route = "users/{userId}/showtimes/{showtimeId}/reservations/{reservationId}";
+    }
 }

@@ -13,8 +13,6 @@
 
     public sealed class ScheduleShowtime : Endpoint<ScheduleShowtimeRequest>
     {
-        public const string Route = "showtimes/{showtimeId}";
-
         private readonly ICommandBus commandBus;
         private readonly IMapper mapper;
 
@@ -27,7 +25,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Put(ScheduleShowtime.Route);
+            this.Put(ScheduleShowtimeRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

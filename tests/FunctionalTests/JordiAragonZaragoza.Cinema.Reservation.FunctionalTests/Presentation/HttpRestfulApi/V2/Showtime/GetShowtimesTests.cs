@@ -7,7 +7,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
@@ -36,7 +35,7 @@
             var startTimeOnUtc = sessionDateOnUtc.ToString("O");
             var endTimeOnUtc = DateTimeOffset.UtcNow.AddYears(2).ToString("O");
 
-            var route = $"api/v2/{GetShowtimes.Route}";
+            var route = $"api/v2/{GetShowtimesRequest.Route}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(movieId), movieId),
@@ -56,7 +55,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var request = new ScheduleShowtimeRequest(

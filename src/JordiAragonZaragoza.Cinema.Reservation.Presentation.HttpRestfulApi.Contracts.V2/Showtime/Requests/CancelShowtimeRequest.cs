@@ -2,5 +2,8 @@
 {
     using System;
 
-    public sealed record class CancelShowtimeRequest(Guid ShowtimeId);
+    public sealed record class CancelShowtimeRequest(Guid ShowtimeId)
+    {
+        public const string Route = "showtimes/{showtimeId}";
+    }
 }

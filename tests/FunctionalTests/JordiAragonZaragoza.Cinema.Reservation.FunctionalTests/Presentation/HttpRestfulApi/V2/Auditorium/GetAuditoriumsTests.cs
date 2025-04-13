@@ -3,8 +3,8 @@
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Presentation.HttpRestfulApi.V2;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
@@ -23,7 +23,7 @@
         public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnOneAuditorium()
         {
             // Arrange
-            var url = $"api/v2/{GetAuditoriums.Route}";
+            var url = $"api/v2/{GetAuditoriumsRequest.Route}";
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<AuditoriumResponse>>(url, this.OutputHelper);
