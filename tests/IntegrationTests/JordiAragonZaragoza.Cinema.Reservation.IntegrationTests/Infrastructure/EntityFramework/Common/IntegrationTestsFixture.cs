@@ -17,13 +17,13 @@
     {
         private readonly PostgreSqlContainer businessModelStoreContainer =
             new PostgreSqlBuilder()
-            .WithImage("postgres:15.14-alpine3.22")
+            .WithImage("postgres:15-alpine")
             .WithName("postgres.cinema.reservation.businessmodelstore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder()
-            .WithImage("postgres:15.14-alpine3.22")
+            .WithImage("postgres:15-alpine")
             .WithName("postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
