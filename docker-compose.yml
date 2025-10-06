@@ -9,7 +9,7 @@ services:
       dockerfile: src/JordiAragonZaragoza.Cinema.Reservation/Dockerfile
 
   postgres.cinema:
-    image: postgres:15-alpine
+    image: postgres:15.14-alpine3.22
     container_name: postgres.cinema
     command:
       - "postgres"
