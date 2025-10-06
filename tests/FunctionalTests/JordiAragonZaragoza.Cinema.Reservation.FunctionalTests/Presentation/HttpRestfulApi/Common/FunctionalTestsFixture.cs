@@ -18,7 +18,7 @@
     {
         private readonly PostgreSqlContainer businessModelStoreContainer =
             new PostgreSqlBuilder()
-            .WithImage("postgres:15.14-alpine")
+            .WithImage("postgres:15-alpine")
             .WithName("postgres.cinema.reservation.businessmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
@@ -30,7 +30,7 @@
 
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder()
-            .WithImage("postgres:15.14-alpine")
+            .WithImage("postgres:15-alpine")
             .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.presentation.httprestfulapi")
             .WithAutoRemove(true).Build();
 
