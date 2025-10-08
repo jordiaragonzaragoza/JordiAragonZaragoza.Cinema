@@ -10,5 +10,8 @@
         DateTimeOffset? EndTimeOnUtc,
         string? MovieTitle,
         string? AuditoriumName)
-        : PaginatedRequest;
+        : PaginatedRequest
+        {
+            public const string Route = "showtimes";
+        }
 }

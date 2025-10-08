@@ -36,10 +36,9 @@ namespace JordiAragonZaragoza.Cinema
                                      .ExcludeFromManifest();
 
               builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation>(Constants.JordiAragonZaragozaCinemaReservation)
-                     .WithReference(reservationBusinessModelDb)
-                     .WithReference(reservationReadModelDb)
-                     .WithReference(seq)
-                     .WithHttpsEndpoint(7001, 7001, isProxied: false);
+                 .WithReference(reservationBusinessModelDb)
+                 .WithReference(reservationReadModelDb)
+                 .WithReference(seq);
 
               builder.Build().Run();
         }

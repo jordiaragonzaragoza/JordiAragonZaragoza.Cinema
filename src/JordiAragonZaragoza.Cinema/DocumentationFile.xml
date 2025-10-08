@@ -4,5 +4,25 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation project.
+            </summary>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema">
+            <summary>
+            Metadata for the Aspire Host project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema.ProjectPath">
+            <summary>
+            The path to the Aspire Host project.
+            </summary>
+        </member>
     </members>
 </doc>

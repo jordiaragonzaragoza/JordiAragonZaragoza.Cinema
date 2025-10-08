@@ -16,8 +16,6 @@
 
     public sealed class GetUserReservations : Endpoint<UserReservationsRequest, PaginatedCollectionResponse<ReservationResponse>>
     {
-        public const string Route = "users/{userId}/reservations";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -30,7 +28,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetUserReservations.Route);
+            this.Get(UserReservationsRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

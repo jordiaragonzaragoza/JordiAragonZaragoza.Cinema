@@ -5,5 +5,8 @@
 
     public sealed record class GetShowtimeReservationsRequest(
         Guid ShowtimeId)
-        : PaginatedRequest;
+        : PaginatedRequest
+        {
+            public const string Route = "showtimes/{showtimeId}/reservations";
+        }
 }

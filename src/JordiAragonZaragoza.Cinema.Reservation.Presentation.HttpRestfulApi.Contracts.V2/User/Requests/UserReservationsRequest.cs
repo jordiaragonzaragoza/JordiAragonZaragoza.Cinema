@@ -10,5 +10,8 @@
         DateTimeOffset? EndIntervalTimeOnUtc,
         string? AuditoriumName,
         string? MovieTitle,
-        bool? IsPurchased) : PaginatedRequest;
+        bool? IsPurchased) : PaginatedRequest
+        {
+            public const string Route = "users/{userId}/reservations";
+        }
 }

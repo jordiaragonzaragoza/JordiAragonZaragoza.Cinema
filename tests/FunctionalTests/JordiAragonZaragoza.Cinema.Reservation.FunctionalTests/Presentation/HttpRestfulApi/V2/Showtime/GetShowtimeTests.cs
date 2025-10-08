@@ -7,7 +7,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -30,7 +29,7 @@
 
             var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
-            var route = $"api/v2/{GetShowtime.Route}";
+            var route = $"api/v2/{GetShowtimeRequest.Route}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(showtimeId), showtimeId.ToString()));
@@ -50,7 +49,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var request = new ScheduleShowtimeRequest(
