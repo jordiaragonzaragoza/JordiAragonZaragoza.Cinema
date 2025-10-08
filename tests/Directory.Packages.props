@@ -6,7 +6,7 @@
 	<ItemGroup>
 		<PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
         <PackageVersion Include="Ardalis.HttpClientTestExtensions" Version="4.2.0" />
-        <PackageVersion Include="Aspire.Hosting.Testing" Version="9.5.0" />
+        <PackageVersion Include="Aspire.Hosting.Testing" Version="9.5.1" />
         <PackageVersion Include="coverlet.collector" Version="6.0.4"/>
         <PackageVersion Include="coverlet.msbuild" Version="6.0.4"/>
         <PackageVersion Include="FluentAssertions" Version="8.7.1" />
