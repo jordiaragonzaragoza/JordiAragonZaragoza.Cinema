@@ -2,5 +2,8 @@
 {
     using System;
 
-    public sealed record class ScheduleShowtimeRequest(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc);
+    public sealed record class ScheduleShowtimeRequest(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc)
+    {
+        public const string Route = "showtimes/{showtimeId}";
+    }
 }

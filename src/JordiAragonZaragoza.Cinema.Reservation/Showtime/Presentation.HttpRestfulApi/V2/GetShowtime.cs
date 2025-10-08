@@ -15,8 +15,6 @@
 
     public sealed class GetShowtime : Endpoint<GetShowtimeRequest, ShowtimeResponse>
     {
-        public const string Route = "showtimes/{showtimeId}";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -29,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetShowtime.Route);
+            this.Get(GetShowtimeRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

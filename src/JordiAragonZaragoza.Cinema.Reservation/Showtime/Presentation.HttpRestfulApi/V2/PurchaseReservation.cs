@@ -12,8 +12,6 @@
 
     public sealed class PurchaseReservation : Endpoint<PurchaseReservationRequest>
     {
-        public const string Route = "showtimes/{showtimeId}/reservations/{reservationId}/purchase";
-
         private readonly ICommandBus commandBus;
 
         public PurchaseReservation(ICommandBus queryBus)
@@ -24,7 +22,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Patch(PurchaseReservation.Route);
+            this.Patch(PurchaseReservationRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

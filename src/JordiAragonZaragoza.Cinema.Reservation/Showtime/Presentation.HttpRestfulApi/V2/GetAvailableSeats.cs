@@ -17,8 +17,6 @@
 
     public sealed class GetAvailableSeats : Endpoint<GetAvailableSeatsRequest, IEnumerable<SeatResponse>>
     {
-        public const string Route = "showtimes/{showtimeId}/seats/available";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -31,7 +29,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetAvailableSeats.Route);
+            this.Get(GetAvailableSeatsRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

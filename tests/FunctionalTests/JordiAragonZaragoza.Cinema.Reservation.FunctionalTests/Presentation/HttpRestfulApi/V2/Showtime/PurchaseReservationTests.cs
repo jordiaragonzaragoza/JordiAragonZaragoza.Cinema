@@ -12,8 +12,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Presentation.HttpRestfulApi.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Requests;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -36,7 +35,7 @@
 
             var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
 
-            var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
+            var routeAvailableSeats = $"api/v2/{GetAvailableSeatsRequest.Route}";
             routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
@@ -48,14 +47,14 @@
             var reserveSeatsRequest = new ReserveSeatsRequest(reservationId, showtimeId, seatsIds);
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
-            var routeReserveSeats = $"api/v2/{ReserveSeats.Route}";
+            var routeReserveSeats = $"api/v2/{ReserveSeatsRequest.Route}";
             routeReserveSeats = routeReserveSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
             routeReserveSeats = routeReserveSeats.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
 
             var reservationReserveResponse = await this.Fixture.HttpClient.PutAndDeserializeAsync<ReservationResponse>(routeReserveSeats, reserveSeatsContent, this.OutputHelper);
             await AddEventualConsistencyDelayAsync();
 
-            var routePurchaseReservation = $"api/v2/{PurchaseReservation.Route}";
+            var routePurchaseReservation = $"api/v2/{PurchaseReservationRequest.Route}";
             routePurchaseReservation = routePurchaseReservation.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
             routePurchaseReservation = routePurchaseReservation.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
 
@@ -84,7 +83,7 @@
         private async Task GetUserReservation_WhenReservationPurchased_ShouldReturnReservationPurchased(Guid showtimeId, IEnumerable<Guid> seatsIds, Guid reservationId, DateTimeOffset sessionDateOnUtc)
         {
             var userId = SeedData.ExampleUser.Id;
-            var routeUserReservation = $"api/v2/{GetUserReservation.Route}";
+            var routeUserReservation = $"api/v2/{UserReservationRequest.Route}";
             routeUserReservation = routeUserReservation.Replace("{userId}", userId.ToString(), StringComparison.Ordinal);
             routeUserReservation = routeUserReservation.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
             routeUserReservation = routeUserReservation.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
@@ -110,7 +109,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var request = new ScheduleShowtimeRequest(

@@ -16,8 +16,6 @@
 
     public sealed class GetShowtimeReservations : Endpoint<GetShowtimeReservationsRequest, PaginatedCollectionResponse<ReservationResponse>>
     {
-        public const string Route = "showtimes/{showtimeId}/reservations";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -30,7 +28,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetShowtimeReservations.Route);
+            this.Get(GetShowtimeReservationsRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

@@ -2,5 +2,8 @@
 {
     using System;
 
-    public sealed record class PurchaseReservationRequest(Guid ShowtimeId, Guid ReservationId, bool IsPurchased);
+    public sealed record class PurchaseReservationRequest(Guid ShowtimeId, Guid ReservationId, bool IsPurchased)
+    {
+        public const string Route = "showtimes/{showtimeId}/reservations/{reservationId}/purchase";
+    }
 }

@@ -10,7 +10,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
@@ -34,7 +33,7 @@
 
             var reservationResponse = await this.ReserveSeatsAsync(showtimeId);
 
-            var route = $"api/v2/{GetShowtimeReservations.Route}";
+            var route = $"api/v2/{GetShowtimeReservationsRequest.Route}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(showtimeId), showtimeId.ToString()));
@@ -50,7 +49,7 @@
 
         private async Task<ReservationResponse> ReserveSeatsAsync(Guid showtimeId)
         {
-            var routeAvailableSeats = $"api/v2/{GetAvailableSeats.Route}";
+            var routeAvailableSeats = $"api/v2/{GetAvailableSeatsRequest.Route}";
             routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var availableSeatsResponse = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(routeAvailableSeats, this.OutputHelper);
@@ -61,7 +60,7 @@
             var reserveSeatsRequest = new ReserveSeatsRequest(reservationId, showtimeId, seatsIds);
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 
-            var reserveSeatsRoute = $"api/v2/{ReserveSeats.Route}";
+            var reserveSeatsRoute = $"api/v2/{ReserveSeatsRequest.Route}";
             reserveSeatsRoute = reserveSeatsRoute.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
             reserveSeatsRoute = reserveSeatsRoute.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
 
@@ -76,7 +75,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);

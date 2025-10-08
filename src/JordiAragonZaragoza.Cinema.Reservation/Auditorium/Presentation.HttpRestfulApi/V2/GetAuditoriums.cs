@@ -18,8 +18,6 @@
     // TODO: It belongs to the management bounded context.
     public sealed class GetAuditoriums : Endpoint<GetAuditoriumsRequest, PaginatedCollectionResponse<AuditoriumResponse>>
     {
-        public const string Route = "auditoriums";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -32,7 +30,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetAuditoriums.Route);
+            this.Get(GetAuditoriumsRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {
