@@ -3,5 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    public sealed record class ReserveSeatsRequest(Guid ReservationId, Guid ShowtimeId, IEnumerable<Guid> SeatsIds);
+    public sealed record class ReserveSeatsRequest(Guid ReservationId, Guid ShowtimeId, IEnumerable<Guid> SeatsIds)
+    {
+        public const string Route = "showtimes/{showtimeId}/reservations/{reservationId}";
+    }
 }

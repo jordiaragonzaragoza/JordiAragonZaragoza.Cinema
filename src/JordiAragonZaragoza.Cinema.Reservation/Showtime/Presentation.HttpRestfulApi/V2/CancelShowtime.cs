@@ -12,8 +12,6 @@
 
     public sealed class CancelShowtime : Endpoint<CancelShowtimeRequest>
     {
-        public const string Route = "showtimes/{showtimeId}";
-
         private readonly ICommandBus commandBus;
 
         public CancelShowtime(ICommandBus queryBus)
@@ -24,7 +22,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Delete(CancelShowtime.Route);
+            this.Delete(CancelShowtimeRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

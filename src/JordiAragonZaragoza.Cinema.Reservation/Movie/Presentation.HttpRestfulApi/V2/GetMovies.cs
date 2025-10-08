@@ -17,8 +17,6 @@
     // TODO: It belongs to the cinema management bounded context.
     public sealed class GetMovies : Endpoint<GetMoviesRequest, PaginatedCollectionResponse<MovieResponse>>
     {
-        public const string Route = "movies";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -31,7 +29,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetMovies.Route);
+            this.Get(GetMoviesRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

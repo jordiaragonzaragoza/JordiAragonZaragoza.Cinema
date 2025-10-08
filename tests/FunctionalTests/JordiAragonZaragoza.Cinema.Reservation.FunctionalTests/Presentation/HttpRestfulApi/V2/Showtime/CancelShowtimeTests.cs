@@ -7,7 +7,6 @@
     using JordiAragonZaragoza.Cinema.Reservation;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -26,7 +25,7 @@
             // Arrange
             var showtimeId = await this.CreateNewShowtimeAsync();
 
-            var route = $"api/v2/{CancelShowtime.Route}";
+            var route = $"api/v2/{CancelShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
@@ -56,7 +55,7 @@
         private async Task GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
-            var getShowtimeRoute = $"api/v2/{GetShowtime.Route}";
+            var getShowtimeRoute = $"api/v2/{GetShowtimeRequest.Route}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 getShowtimeRoute,
                 (nameof(showtimeId), showtimeId.ToString()));
@@ -72,7 +71,7 @@
         private async Task GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
-            var route = $"api/v2/{GetAvailableSeats.Route}";
+            var route = $"api/v2/{GetAvailableSeatsRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
@@ -86,7 +85,7 @@
         private async Task GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
         {
             // Arrange
-            var route = $"api/v2/{GetShowtimeReservations.Route}";
+            var route = $"api/v2/{GetShowtimeReservationsRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
@@ -101,7 +100,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);

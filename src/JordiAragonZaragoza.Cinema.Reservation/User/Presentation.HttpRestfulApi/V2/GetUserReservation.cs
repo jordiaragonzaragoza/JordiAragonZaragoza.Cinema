@@ -15,8 +15,6 @@
 
     public sealed class GetUserReservation : Endpoint<UserReservationRequest, ReservationResponse>
     {
-        public const string Route = "users/{userId}/showtimes/{showtimeId}/reservations/{reservationId}";
-
         private readonly IQueryBus queryBus;
         private readonly IMapper mapper;
 
@@ -29,7 +27,7 @@
         public override void Configure()
         {
             this.AllowAnonymous();
-            this.Get(GetUserReservation.Route);
+            this.Get(UserReservationRequest.Route);
             this.Version(2);
             this.Summary(summary =>
             {

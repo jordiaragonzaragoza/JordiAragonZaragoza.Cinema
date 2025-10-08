@@ -8,7 +8,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -29,7 +28,7 @@
             // Arrange
             var showtimeId = await this.ScheduleNewShowtimeAsync();
 
-            var route = $"api/v2/{GetAvailableSeats.Route}";
+            var route = $"api/v2/{GetAvailableSeatsRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
@@ -44,7 +43,7 @@
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtime.Route}";
+            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);

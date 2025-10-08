@@ -2,5 +2,8 @@
 {
     using System;
 
-    public sealed record class GetAvailableSeatsRequest(Guid ShowtimeId);
+    public sealed record class GetAvailableSeatsRequest(Guid ShowtimeId)
+    {
+        public const string Route = "showtimes/{showtimeId}/seats/available";
+    }
 }

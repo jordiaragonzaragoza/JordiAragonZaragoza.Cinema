@@ -2,6 +2,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Con
 {
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
-    public sealed record class GetMoviesRequest()
-        : PaginatedRequest;
+    public sealed record class GetMoviesRequest() : PaginatedRequest
+    {
+        public const string Route = "movies";
+    }
 }
