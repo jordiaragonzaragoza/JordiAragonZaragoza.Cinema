@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserReservations
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -16,7 +17,7 @@
         public GetUserReservationsQueryHandler(
             IPaginatedSpecificationReadRepository<ReservationReadModel> reservationReadModelRepository)
         {
-            this.reservationReadModelRepository = reservationReadModelRepository;
+            this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
         }
 
         public async Task<Result<PaginatedCollectionOutputDto<ReservationReadModel>>> Handle(GetUserReservationsQuery request, CancellationToken cancellationToken)

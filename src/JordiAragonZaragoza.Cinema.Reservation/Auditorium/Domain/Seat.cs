@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain
 {
-    using Ardalis.GuardClauses;
+    using System;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
 
     public sealed class Seat : BaseEntity<SeatId>
@@ -11,8 +11,8 @@
             SeatNumber seatNumber)
             : base(id)
         {
-            this.Row = Guard.Against.Null(row, nameof(row));
-            this.SeatNumber = Guard.Against.Null(seatNumber, nameof(seatNumber));
+            this.Row = row ?? throw new ArgumentNullException(nameof(row));
+            this.SeatNumber = seatNumber ?? throw new ArgumentNullException(nameof(seatNumber));
         }
 
         // Required by EF

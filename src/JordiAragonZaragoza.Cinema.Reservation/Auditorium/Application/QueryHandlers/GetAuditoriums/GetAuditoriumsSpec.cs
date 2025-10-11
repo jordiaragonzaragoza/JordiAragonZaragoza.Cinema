@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.QueryHandlers.GetAuditoriums
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Ardalis.Specification;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
@@ -13,7 +13,7 @@
 
         public GetAuditoriumsSpec(GetAuditoriumsQuery request)
         {
-            this.request = Guard.Against.Null(request);
+            this.request = request ?? throw new ArgumentNullException(nameof(request));
         }
 
         public IPaginatedQuery Request

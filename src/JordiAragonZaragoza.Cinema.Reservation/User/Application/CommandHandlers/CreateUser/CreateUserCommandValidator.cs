@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class CreateUserCommandValidator : BaseValidator<CreateUserCommand>
+    public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         public CreateUserCommandValidator()
         {

@@ -8,17 +8,16 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
-
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Notifications;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ReservedSeatsNotificationHandler : IEventNotificationHandler<ReservedSeatsNotification>
+    public sealed class ReservedSeatsNotificationHandler : BaseEventHandler<ReservedSeatsEvent>
     {
         private readonly IReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
         private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
@@ -37,11 +36,9 @@
             this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
         }
 
-        public async Task Handle(ReservedSeatsNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(ReservedSeatsEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event);
 
             var existingShowtime = await this.showtimeReadModelRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)

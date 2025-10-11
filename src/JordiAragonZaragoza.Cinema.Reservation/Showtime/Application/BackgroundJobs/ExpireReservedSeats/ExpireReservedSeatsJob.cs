@@ -2,13 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Application.Helpers;
+    using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
-    using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using Microsoft.Extensions.Logging;
     using Quartz;
 
@@ -27,10 +26,10 @@
             ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger)
         {
-            this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
-            this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
-            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
-            this.logger = Guard.Against.Null(logger, nameof(logger));
+            this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+            this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task Execute(IJobExecutionContext context)

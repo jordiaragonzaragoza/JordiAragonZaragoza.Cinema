@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
@@ -15,11 +14,10 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
-    using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, ReservationOutputDto>
+    public sealed class ReserveSeatsCommandHandler : ICommandHandler<ReserveSeatsCommand, ReservationOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;
@@ -47,7 +45,7 @@
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public override async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 

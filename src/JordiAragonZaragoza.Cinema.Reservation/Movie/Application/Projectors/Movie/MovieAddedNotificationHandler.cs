@@ -3,27 +3,24 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Notifications;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class MovieAddedNotificationHandler : IEventNotificationHandler<MovieAddedNotification>
+    public sealed class MovieAddedNotificationHandler : BaseEventHandler<MovieAddedEvent>
     {
         private readonly IRepository<MovieReadModel, Guid> movieReadModelRepository;
 
         public MovieAddedNotificationHandler(
             IRepository<MovieReadModel, Guid> movieReadModelRepository)
         {
-            this.movieReadModelRepository = Guard.Against.Null(movieReadModelRepository, nameof(movieReadModelRepository));
+            this.movieReadModelRepository = movieReadModelRepository ?? throw new ArgumentNullException(nameof(movieReadModelRepository));
         }
 
-        public async Task Handle(MovieAddedNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(MovieAddedEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event);
 
             var movieReadModel = new MovieReadModel(
                 @event.AggregateId,

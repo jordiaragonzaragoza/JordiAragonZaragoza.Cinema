@@ -9,13 +9,14 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Notifications;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ExpiredReservedSeatsNotificationHandler : IEventNotificationHandler<ExpiredReservedSeatsNotification>
+    public sealed class ExpiredReservedSeatsNotificationHandler : BaseEventHandler<ExpiredReservedSeatsEvent>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly IReadRepository<ShowtimeReadModel, Guid> showtimeReadRepository;
@@ -35,11 +36,9 @@
             this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
         }
 
-        public async Task Handle(ExpiredReservedSeatsNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(ExpiredReservedSeatsEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event);
 
             var existingShowtime = await this.showtimeReadRepository.GetByIdAsync(new ShowtimeId(@event.AggregateId), cancellationToken);
             if (existingShowtime is null)

@@ -3,29 +3,26 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Notifications;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class AuditoriumRemovedNotificationHandler : IEventNotificationHandler<AuditoriumRemovedNotification>
+    public sealed class AuditoriumRemovedNotificationHandler : BaseEventHandler<AuditoriumRemovedEvent>
     {
         private readonly IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
 
         public AuditoriumRemovedNotificationHandler(
             IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository)
         {
-            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));
         }
 
-        public async Task Handle(AuditoriumRemovedNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(AuditoriumRemovedEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event, nameof(@event));
 
             var readModel = await this.auditoriumReadModelRepository.GetByIdAsync(@event.AggregateId, cancellationToken);
             if (readModel is null)

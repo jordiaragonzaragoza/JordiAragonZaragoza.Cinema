@@ -5,11 +5,11 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Notifications;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class ReservedSeatsNotificationHandler : IEventNotificationHandler<ReservedSeatsNotification>
+    public sealed class ReservedSeatsNotificationHandler : BaseEventHandler<ReservedSeatsEvent>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;
@@ -22,11 +22,9 @@
             this.availableReadModelSpecificationRepository = Guard.Against.Null(availableReadModelSpecificationRepository, nameof(availableReadModelSpecificationRepository));
         }
 
-        public async Task Handle(ReservedSeatsNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(ReservedSeatsEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event);
 
             var availableSeats = await this.availableReadModelSpecificationRepository.ListAsync(new GetAvailableSeatsByShowtimeIdAndSeatIdsSpec(@event.AggregateId, @event.SeatIds), cancellationToken);
 

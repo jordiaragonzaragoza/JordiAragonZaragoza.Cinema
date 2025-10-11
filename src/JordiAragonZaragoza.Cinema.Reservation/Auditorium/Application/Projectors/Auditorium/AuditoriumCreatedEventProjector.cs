@@ -4,27 +4,24 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Notifications;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class AuditoriumCreatedNotificationHandler : IEventNotificationHandler<AuditoriumCreatedNotification>
+    public sealed class AuditoriumCreatedEventProjector : BaseEventHandler<AuditoriumCreatedEvent>
     {
         private readonly IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
 
-        public AuditoriumCreatedNotificationHandler(
+        public AuditoriumCreatedEventProjector(
             IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository)
         {
-            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));
         }
 
-        public async Task Handle(AuditoriumCreatedNotification notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(AuditoriumCreatedEvent @event, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(notification, nameof(notification));
-
-            var @event = notification.Event;
+            ArgumentNullException.ThrowIfNull(@event, nameof(@event));
 
             var seats = @event.SeatIds
                 .Select((seatId, index) => new SeatReadModel(

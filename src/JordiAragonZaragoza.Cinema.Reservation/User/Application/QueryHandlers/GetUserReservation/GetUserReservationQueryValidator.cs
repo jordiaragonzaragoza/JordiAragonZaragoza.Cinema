@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class GetUserReservationQueryValidator : BaseValidator<GetUserReservationQuery>
+    public sealed class GetUserReservationQueryValidator : AbstractValidator<GetUserReservationQuery>
     {
         public GetUserReservationQueryValidator()
         {

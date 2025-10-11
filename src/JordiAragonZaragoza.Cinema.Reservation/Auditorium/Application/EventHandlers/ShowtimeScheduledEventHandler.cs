@@ -3,26 +3,25 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeScheduledEventHandler : IEventHandler<ShowtimeScheduledEvent>
+    public sealed class ShowtimeScheduledEventHandler : BaseEventHandler<ShowtimeScheduledEvent>
     {
         private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public ShowtimeScheduledEventHandler(
             IRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.auditoriumRepository = auditoriumRepository ?? throw new ArgumentNullException(nameof(auditoriumRepository));
         }
 
-        public async Task Handle(ShowtimeScheduledEvent notification, CancellationToken cancellationToken)
+        public override async Task HandleAsync(ShowtimeScheduledEvent notification, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(notification, nameof(notification));
 

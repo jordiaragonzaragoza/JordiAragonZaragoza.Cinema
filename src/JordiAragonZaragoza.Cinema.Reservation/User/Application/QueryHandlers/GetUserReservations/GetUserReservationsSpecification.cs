@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserReservations
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Ardalis.Specification;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
@@ -13,7 +13,7 @@
 
         public GetUserReservationsSpecification(GetUserReservationsQuery request)
         {
-            this.request = Guard.Against.Null(request);
+            this.request = request ?? throw new ArgumentNullException(nameof(request));
 
             this.Query
                 .Where(t => t.UserId == request.UserId)
