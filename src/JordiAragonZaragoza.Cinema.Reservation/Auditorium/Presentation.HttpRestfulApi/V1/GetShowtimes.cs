@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
@@ -22,7 +20,7 @@
 
         public GetShowtimes(IQueryBus queryBus)
         {
-            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
+            this.queryBus = queryBus ?? throw new ArgumentNullException(nameof(queryBus));
         }
 
         public override void Configure()
@@ -51,31 +49,11 @@
                 PageNumber: 1,
                 PageSize: 0);
 
-            var resultOutputDto = await this.queryBus.SendAsync(query, ct);
+            Result<PaginatedCollectionOutputDto<ShowtimeReadModel>> resultReadModel = await this.queryBus.SendAsync(query, ct);
 
-            var resultResponse = MapToResultResponse(resultOutputDto);
+            var resultResponse = resultReadModel.ToResponse();
 
             await this.SendResponseAsync(resultResponse, ct);
-        }
-
-        private static Result<IEnumerable<ShowtimeResponse>> MapToResultResponse(Result<PaginatedCollectionOutputDto<ShowtimeReadModel>> resultOutputDto)
-        {
-            ArgumentNullException.ThrowIfNull(resultOutputDto, nameof(resultOutputDto));
-
-            if (!resultOutputDto.IsSuccess)
-            {
-                return Result<IEnumerable<ShowtimeResponse>>.Error(new ErrorList(resultOutputDto.Errors));
-            }
-
-            var paginatedCollection = resultOutputDto.Value;
-            var showtimeResponses = paginatedCollection.Items
-                .Select(showtime => new ShowtimeResponse(
-                    showtime.Id,
-                    showtime.MovieTitle,
-                    showtime.SessionDateOnUtc,
-                    showtime.AuditoriumId));
-
-            return Result<IEnumerable<ShowtimeResponse>>.Success(showtimeResponses);
         }
     }
 }

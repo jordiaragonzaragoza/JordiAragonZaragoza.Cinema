@@ -3,8 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
-    using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Responses;
@@ -12,17 +10,13 @@
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
-    using IMapper = AutoMapper.IMapper;
-
     public sealed class PurchaseReservation : Endpoint<PurchaseReservationRequest, ReservationResponse>
     {
         private readonly ICommandBus commandBus;
-        private readonly IMapper mapper;
 
-        public PurchaseReservation(ICommandBus commandBus, IMapper mapper)
+        public PurchaseReservation(ICommandBus commandBus)
         {
-            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
         }
 
         public override void Configure()
@@ -41,11 +35,9 @@
         {
             ArgumentNullException.ThrowIfNull(req, nameof(req));
 
-            var resultOutputDto = await this.commandBus.SendAsync(new PurchaseReservationCommand(req.ShowtimeId, req.ReservationId), ct);
+            var result = await this.commandBus.SendAsync(new PurchaseReservationCommand(req.ShowtimeId, req.ReservationId), ct);
 
-            var resultResponse = this.mapper.Map<Result<ReservationResponse>>(resultOutputDto);
-
-            await this.SendResponseAsync(resultResponse, ct);
+            await this.SendResponseAsync(result, ct);
         }
     }
 }

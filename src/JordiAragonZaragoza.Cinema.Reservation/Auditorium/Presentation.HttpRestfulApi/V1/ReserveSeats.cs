@@ -3,26 +3,19 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
-    using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Reservation.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-
-    using IMapper = AutoMapper.IMapper;
 
     public sealed class ReserveSeats : Endpoint<ReserveSeatsRequest, ReservationResponse>
     {
         private readonly ICommandBus commandBus;
-        private readonly IMapper mapper;
 
-        public ReserveSeats(ICommandBus commandBus, IMapper mapper)
+        public ReserveSeats(ICommandBus commandBus)
         {
-            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
         }
 
         public override void Configure()
@@ -41,14 +34,12 @@
         {
             ArgumentNullException.ThrowIfNull(req, nameof(req));
 
-            var command = new ReserveSeatsCommand(
-                ReservationId: Guid.NewGuid(),
-                ShowtimeId: req.ShowtimeId,
-                SeatsIds: req.SeatsIds);
+            // This generated Id is done here to support compatibility with the current implementation which client provides the Id.
+            var reservationId = Guid.NewGuid();
 
-            var resultOutputDto = await this.commandBus.SendAsync(command, ct);
+            var resultOutputDto = await this.commandBus.SendAsync(req.ToCommand(reservationId), ct);
 
-            var resultResponse = this.mapper.Map<Result<ReservationResponse>>(resultOutputDto);
+            var resultResponse = resultOutputDto.ToResponse();
 
             await this.SendResponseAsync(resultResponse, ct);
         }

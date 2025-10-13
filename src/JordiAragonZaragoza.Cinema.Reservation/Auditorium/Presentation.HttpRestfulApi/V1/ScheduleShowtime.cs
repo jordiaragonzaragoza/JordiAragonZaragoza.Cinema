@@ -3,11 +3,9 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Auditorium.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
@@ -17,7 +15,7 @@
 
         public ScheduleShowtime(ICommandBus commandBus)
         {
-            this.commandBus = Guard.Against.Null(commandBus, nameof(commandBus));
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
         }
 
         public override void Configure()
@@ -39,13 +37,7 @@
             // This generated Id is done here to support compatibility with the current implementation which client provides the Id.
             var showtimeId = Guid.NewGuid();
 
-            var command = new ScheduleShowtimeCommand(
-                showtimeId,
-                AuditoriumId: req.AuditoriumId,
-                MovieId: req.MovieId,
-                SessionDateOnUtc: req.SessionDateOnUtc);
-
-            var resultResponse = await this.commandBus.SendAsync(command, ct);
+            var resultResponse = await this.commandBus.SendAsync(req.ToCommand(showtimeId), ct);
             if (resultResponse.IsSuccess)
             {
                 await this.SendResponseAsync(Result.Created(showtimeId), ct);
