@@ -1,25 +1,40 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Presentation.HttpRestfulApi.V1
 {
+    using System;
     using System.Collections.Generic;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.Movie.Responses;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
 
-    public sealed class MoviesMapper : Profile
+    public static class MoviesMapper
     {
-        public MoviesMapper()
+        public static Result<IEnumerable<MovieResponse>> ToResponse(
+            this Result<PaginatedCollectionOutputDto<MovieReadModel>> result)
         {
-            // Requests to queries or commands.
+            ArgumentNullException.ThrowIfNull(result);
 
-            // ReadModels to responses.
-            this.CreateMap<MovieReadModel, MovieResponse>();
+            return result.Map(paginatedCollection => paginatedCollection.Items.ToResponse());
+        }
 
-            this.CreateMap<PaginatedCollectionOutputDto<MovieReadModel>, IEnumerable<MovieResponse>>()
-                .ConvertUsing((src, dest, context) => context.Mapper.Map<IEnumerable<MovieResponse>>(src.Items));
+        private static IEnumerable<MovieResponse> ToResponse(
+            this IEnumerable<MovieReadModel> movieReadModels)
+        {
+            ArgumentNullException.ThrowIfNull(movieReadModels);
 
-            this.CreateMap<Result<PaginatedCollectionOutputDto<MovieReadModel>>, Result<IEnumerable<MovieResponse>>>();
+            return ToResponseIterator(movieReadModels);
+        }
+
+        private static IEnumerable<MovieResponse> ToResponseIterator(
+            IEnumerable<MovieReadModel> movieReadModels)
+        {
+            foreach (var movieReadModel in movieReadModels)
+            {
+                yield return new MovieResponse(
+                    movieReadModel.Id,
+                    movieReadModel.Title,
+                    movieReadModel.Runtime);
+            }
         }
     }
 }

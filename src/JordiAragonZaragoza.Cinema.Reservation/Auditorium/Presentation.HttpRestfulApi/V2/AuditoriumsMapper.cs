@@ -52,27 +52,5 @@
                     auditoriumReadModel.Name);
             }
         }
-
-        /*public AuditoriumsMapper()
-        {
-            // Requests to Queries or commands
-            this.CreateMap<GetAuditoriumsRequest, GetAuditoriumsQuery>();
-
-            // OutputDtos to responses.
-            this.CreateMap<SeatOutputDto, SeatResponse>();
-            this.CreateMap<Result<IEnumerable<SeatOutputDto>>, Result<IEnumerable<SeatResponse>>>();
-
-            this.CreateMap<AuditoriumReadModel, AuditoriumResponse>();
-            this.CreateMap<Result<AuditoriumReadModel>, Result<AuditoriumResponse>>();
-
-            this.CreateMap<PaginatedCollectionOutputDto<AuditoriumReadModel>, PaginatedCollectionResponse<AuditoriumResponse>>();
-            this.CreateMap<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>, Result<PaginatedCollectionResponse<AuditoriumResponse>>>();
-
-            this.CreateMap<SeatReadModel, SeatResponse>();
-
-            this.CreateMap<AvailableSeatReadModel, SeatResponse>()
-                .ForCtorParam(nameof(AvailableSeatReadModel.Id), opt => opt.MapFrom(src => src.SeatId));
-            this.CreateMap<Result<IEnumerable<AvailableSeatReadModel>>, Result<IEnumerable<SeatResponse>>>();
-        }*/
     }
 }

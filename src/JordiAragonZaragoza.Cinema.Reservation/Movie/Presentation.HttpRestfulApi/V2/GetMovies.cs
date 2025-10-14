@@ -1,29 +1,23 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Presentation.HttpRestfulApi.V2
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
-    using Ardalis.Result;
     using FastEndpoints;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Movie.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Movie.Responses;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
-    using IMapper = AutoMapper.IMapper;
-
     // TODO: It belongs to the cinema management bounded context.
     public sealed class GetMovies : Endpoint<GetMoviesRequest, PaginatedCollectionResponse<MovieResponse>>
     {
         private readonly IQueryBus queryBus;
-        private readonly IMapper mapper;
 
-        public GetMovies(IQueryBus queryBus, IMapper mapper)
+        public GetMovies(IQueryBus queryBus)
         {
-            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
+            this.queryBus = queryBus ?? throw new ArgumentNullException(nameof(queryBus));
         }
 
         public override void Configure()
@@ -40,9 +34,9 @@
 
         public override async Task HandleAsync(GetMoviesRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(this.mapper.Map<GetMoviesQuery>(req), ct);
+            var resultReadModel = await this.queryBus.SendAsync(req.ToQuery(), ct);
 
-            var resultResponse = this.mapper.Map<Result<PaginatedCollectionResponse<MovieResponse>>>(resultOutputDto);
+            var resultResponse = resultReadModel.ToResponse();
             await this.SendResponseAsync(resultResponse, ct);
         }
     }
