@@ -1,9 +1,9 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Presentation.HttpRestfulApi.V2
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
-    using Ardalis.Result;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
@@ -11,17 +11,13 @@
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
-    using IMapper = AutoMapper.IMapper;
-
     public sealed class GetShowtime : Endpoint<GetShowtimeRequest, ShowtimeResponse>
     {
         private readonly IQueryBus queryBus;
-        private readonly IMapper mapper;
 
-        public GetShowtime(IQueryBus queryBus, IMapper mapper)
+        public GetShowtime(IQueryBus queryBus)
         {
             this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public override void Configure()
@@ -38,9 +34,11 @@
 
         public async override Task HandleAsync(GetShowtimeRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(this.mapper.Map<GetShowtimeQuery>(req), ct);
+            ArgumentNullException.ThrowIfNull(req);
 
-            var resultResponse = this.mapper.Map<Result<ShowtimeResponse>>(resultOutputDto);
+            var resultReadModel = await this.queryBus.SendAsync(new GetShowtimeQuery(req.ShowtimeId), ct);
+
+            var resultResponse = resultReadModel.ToResponse();
 
             await this.SendResponseAsync(resultResponse, ct);
         }

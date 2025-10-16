@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using FastEndpoints;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
@@ -14,9 +13,9 @@
     {
         private readonly ICommandBus commandBus;
 
-        public CancelShowtime(ICommandBus queryBus)
+        public CancelShowtime(ICommandBus commandBus)
         {
-            this.commandBus = Guard.Against.Null(queryBus, nameof(queryBus));
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
         }
 
         public override void Configure()
