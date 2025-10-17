@@ -9,12 +9,12 @@
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class ReservedSeatsNotificationHandler : BaseEventHandler<ReservedSeatsEvent>
+    public sealed class ReservedSeatsEventProjector : BaseEventHandler<ReservedSeatsEvent>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;
 
-        public ReservedSeatsNotificationHandler(
+        public ReservedSeatsEventProjector(
             ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository,
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository)
         {

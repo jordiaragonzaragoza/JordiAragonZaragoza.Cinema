@@ -11,17 +11,17 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ExpiredReservedSeatsNotificationHandler : BaseEventHandler<ExpiredReservedSeatsEvent>
+    public sealed class PurchasedReservationEventProjector : BaseEventHandler<PurchasedReservationEvent>
     {
         private readonly IRepository<ReservationReadModel, Guid> reservationReadModelRepository;
 
-        public ExpiredReservedSeatsNotificationHandler(
+        public PurchasedReservationEventProjector(
             IRepository<ReservationReadModel, Guid> reservationReadModelRepository)
         {
             this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
         }
 
-        public override async Task HandleAsync(ExpiredReservedSeatsEvent @event, CancellationToken cancellationToken)
+        public override async Task HandleAsync(PurchasedReservationEvent @event, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(@event);
 
@@ -31,7 +31,9 @@
                 throw new NotFoundException(nameof(ReservationReadModel), @event.ReservationId.ToString());
             }
 
-            await this.reservationReadModelRepository.DeleteAsync(existingReservation, cancellationToken);
+            existingReservation.IsPurchased = true;
+
+            await this.reservationReadModelRepository.UpdateAsync(existingReservation, cancellationToken);
         }
     }
 }

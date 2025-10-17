@@ -10,11 +10,11 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class AuditoriumRemovedNotificationHandler : BaseEventHandler<AuditoriumRemovedEvent>
+    public sealed class AuditoriumRemovedEventProjector : BaseEventHandler<AuditoriumRemovedEvent>
     {
         private readonly IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
 
-        public AuditoriumRemovedNotificationHandler(
+        public AuditoriumRemovedEventProjector(
             IRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository)
         {
             this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));

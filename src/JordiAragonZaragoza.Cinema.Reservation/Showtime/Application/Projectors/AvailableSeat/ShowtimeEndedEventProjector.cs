@@ -9,12 +9,12 @@
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class ShowtimeCanceledNotificationHandler : BaseEventHandler<ShowtimeCanceledEvent>
+    public sealed class ShowtimeEndedEventProjector : BaseEventHandler<ShowtimeEndedEvent>
     {
         private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
         private readonly ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository;
 
-        public ShowtimeCanceledNotificationHandler(
+        public ShowtimeEndedEventProjector(
             ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository,
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository)
         {
@@ -22,7 +22,7 @@
             this.availableReadModelSpecificationRepository = Guard.Against.Null(availableReadModelSpecificationRepository, nameof(availableReadModelSpecificationRepository));
         }
 
-        public override async Task HandleAsync(ShowtimeCanceledEvent @event, CancellationToken cancellationToken)
+        public override async Task HandleAsync(ShowtimeEndedEvent @event, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(@event);
 

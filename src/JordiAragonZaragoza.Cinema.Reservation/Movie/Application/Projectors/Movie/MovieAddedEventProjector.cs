@@ -8,29 +8,26 @@
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
-
-    public sealed class MovieRemovedNotificationHandler : BaseEventHandler<MovieRemovedEvent>
+    public sealed class MovieAddedEventProjector : BaseEventHandler<MovieAddedEvent>
     {
         private readonly IRepository<MovieReadModel, Guid> movieReadModelRepository;
 
-        public MovieRemovedNotificationHandler(
+        public MovieAddedEventProjector(
             IRepository<MovieReadModel, Guid> movieReadModelRepository)
         {
             this.movieReadModelRepository = movieReadModelRepository ?? throw new ArgumentNullException(nameof(movieReadModelRepository));
         }
 
-        public override async Task HandleAsync(MovieRemovedEvent @event, CancellationToken cancellationToken)
+        public override async Task HandleAsync(MovieAddedEvent @event, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(@event);
 
-            var readModel = await this.movieReadModelRepository.GetByIdAsync(@event.AggregateId, cancellationToken);
-            if (readModel is null)
-            {
-                throw new NotFoundException(nameof(MovieReadModel), @event.AggregateId.ToString());
-            }
+            var movieReadModel = new MovieReadModel(
+                @event.AggregateId,
+                @event.Title,
+                @event.Runtime);
 
-            await this.movieReadModelRepository.DeleteAsync(readModel, cancellationToken);
+            await this.movieReadModelRepository.AddAsync(movieReadModel, cancellationToken);
         }
     }
 }

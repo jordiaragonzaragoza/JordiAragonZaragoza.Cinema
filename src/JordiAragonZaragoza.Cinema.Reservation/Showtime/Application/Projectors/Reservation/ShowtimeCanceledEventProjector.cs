@@ -8,12 +8,12 @@
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class ShowtimeCanceledNotificationHandler : BaseEventHandler<ShowtimeCanceledEvent>
+    public sealed class ShowtimeCanceledEventProjector : BaseEventHandler<ShowtimeCanceledEvent>
     {
         private readonly IRangeableRepository<ReservationReadModel, Guid> reservationReadModelRepository;
         private readonly ISpecificationReadRepository<ReservationReadModel, Guid> specificationRepository;
 
-        public ShowtimeCanceledNotificationHandler(
+        public ShowtimeCanceledEventProjector(
             IRangeableRepository<ReservationReadModel, Guid> reservationReadModelRepository,
             ISpecificationReadRepository<ReservationReadModel, Guid> specificationRepository)
         {

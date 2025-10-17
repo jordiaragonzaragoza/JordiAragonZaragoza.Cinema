@@ -14,13 +14,13 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ShowtimeScheduledNotificationHandler : BaseEventHandler<ShowtimeScheduledEvent>
+    public sealed class ShowtimeScheduledEventProjector : BaseEventHandler<ShowtimeScheduledEvent>
     {
         private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
         private readonly IReadRepository<MovieReadModel, Guid> movieReadModelRepository;
         private readonly IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
 
-        public ShowtimeScheduledNotificationHandler(
+        public ShowtimeScheduledEventProjector(
             IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
             IReadRepository<MovieReadModel, Guid> movieReadModelRepository,
             IRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository)

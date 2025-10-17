@@ -17,14 +17,14 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class ReservedSeatsNotificationHandler : BaseEventHandler<ReservedSeatsEvent>
+    public sealed class ReservedSeatsEventProjector : BaseEventHandler<ReservedSeatsEvent>
     {
         private readonly IReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository;
         private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
         private readonly IReadRepository<MovieReadModel, Guid> movieReadModelRepository;
         private readonly IRepository<ReservationReadModel, Guid> reservationReadModelRepository;
 
-        public ReservedSeatsNotificationHandler(
+        public ReservedSeatsEventProjector(
             IReadRepository<ShowtimeReadModel, Guid> showtimeReadModelRepository,
             IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
             IReadRepository<MovieReadModel, Guid> movieReadModelRepository,
