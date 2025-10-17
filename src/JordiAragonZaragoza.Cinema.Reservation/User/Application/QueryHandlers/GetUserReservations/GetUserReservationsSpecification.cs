@@ -18,8 +18,8 @@
             this.Query
                 .Where(t => t.UserId == request.UserId)
                 .Where(t => t.ShowtimeId == request.ShowtimeId, request.ShowtimeId is not null)
-                .Where(t => t.AuditoriumName.Contains(request.AuditoriumName), !string.IsNullOrWhiteSpace(request.AuditoriumName))
-                .Where(t => t.MovieTitle.Contains(request.MovieTitle), !string.IsNullOrWhiteSpace(request.MovieTitle))
+                .Where(t => request.AuditoriumName == null || t.AuditoriumName.Contains(request.AuditoriumName))
+                .Where(t => request.MovieTitle == null || t.MovieTitle.Contains(request.MovieTitle))
                 .Where(s => s.SessionDateOnUtc >= request.StartIntervalTimeOnUtc, request.StartIntervalTimeOnUtc is not null)
                 .Where(s => s.SessionDateOnUtc <= request.EndIntervalTimeOnUtc, request.EndIntervalTimeOnUtc is not null)
                 .AsNoTracking()

@@ -1,30 +1,28 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Presentation.HttpRestfulApi.V2
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using FastEndpoints;
+    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.User.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
+
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
 
-    using IMapper = AutoMapper.IMapper;
-
     // TODO: It belongs to the management bounded context.
-    public sealed class GetUsers : EndpointWithoutRequest<IEnumerable<UserResponse>>
+    public sealed class GetUsers : Endpoint<GetUsersRequest, PaginatedCollectionResponse<UserResponse>>
     {
         public const string Route = "users";
 
         private readonly IQueryBus queryBus;
-        private readonly IMapper mapper;
 
-        public GetUsers(IQueryBus queryBus, IMapper mapper)
+        public GetUsers(IQueryBus queryBus)
         {
-            this.queryBus = Guard.Against.Null(queryBus, nameof(queryBus));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
+            this.queryBus = queryBus ?? throw new ArgumentNullException(nameof(queryBus));
         }
 
         public override void Configure()
@@ -39,11 +37,11 @@
             });
         }
 
-        public override async Task HandleAsync(CancellationToken ct)
+        public override async Task HandleAsync(GetUsersRequest req, CancellationToken ct)
         {
-            var resultOutputDto = await this.queryBus.SendAsync(new GetUsersQuery(), ct);
+            var resultReadModel = await this.queryBus.SendAsync(req.ToQuery(), ct);
 
-            var resultResponse = this.mapper.Map<Result<IEnumerable<UserResponse>>>(resultOutputDto);
+            var resultResponse = resultReadModel.ToResponse();
 
             await this.SendResponseAsync(resultResponse, ct);
         }
