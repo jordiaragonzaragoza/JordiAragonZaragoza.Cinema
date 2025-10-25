@@ -6,7 +6,7 @@
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
 
-    public sealed class User : BaseAggregateRoot<UserId, Guid>
+    public sealed class User : BaseEventSourcedAggregateRoot<UserId, Guid>
     {
         // Required by EF.
         private User()

@@ -12,7 +12,7 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class Movie : BaseAggregateRoot<MovieId, Guid>
+    public sealed class Movie : BaseEventSourcedAggregateRoot<MovieId, Guid>
     {
         private readonly List<ShowtimeId> activeShowtimes = new();
 

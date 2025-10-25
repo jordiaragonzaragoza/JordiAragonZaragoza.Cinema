@@ -11,7 +11,7 @@
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
-    public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
+    public sealed class Auditorium : BaseEventSourcedAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> activeShowtimes = new();
         private List<Seat> seats = new();
