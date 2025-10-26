@@ -1,6 +1,5 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore
 {
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
