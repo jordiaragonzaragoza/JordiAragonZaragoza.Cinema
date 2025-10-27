@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation
+﻿/*namespace JordiAragonZaragoza.Cinema.Reservation
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
@@ -53,7 +53,7 @@
             builder.EnrichDbContexts();
 
             // TODO: Temporal removed. Will be enabled on using event sourcing as a aggregates store.
-            ////builder.Services.AddSharedKernelEventStoreServices(configuration);
+            ////builder.Services.AddSharedKernelInfrastructureEventStoreDbBusiness(configuration);
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -83,4 +83,4 @@
             app.Run();
         }
     }
-}
+}*/

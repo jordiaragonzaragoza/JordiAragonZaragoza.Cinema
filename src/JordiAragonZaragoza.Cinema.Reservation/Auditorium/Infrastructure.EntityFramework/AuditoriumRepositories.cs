@@ -1,29 +1,20 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework
 {
-    using Autofac;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class AuditoriumRepositories
     {
-        public static void RegisterBusinessModelRepositories(ContainerBuilder builder)
+        public static IServiceCollection AddAuditoriumBusinessModelRepositories(this IServiceCollection services)
         {
-            builder.RegisterType<ReservationRepository<Auditorium, AuditoriumId>>()
-                    .As<IRepository<Auditorium, AuditoriumId>>()
-                    .InstancePerLifetimeScope();
+            services.AddScoped<IRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();
+            services.AddScoped<IReadRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();
+            services.AddScoped<IReadListRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();
+            services.AddScoped<ISpecificationReadRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();
 
-            builder.RegisterType<ReservationRepository<Auditorium, AuditoriumId>>()
-                    .As<IReadRepository<Auditorium, AuditoriumId>>()
-                    .InstancePerLifetimeScope();
-
-            builder.RegisterType<ReservationRepository<Auditorium, AuditoriumId>>()
-                    .As<IReadListRepository<Auditorium, AuditoriumId>>()
-                    .InstancePerLifetimeScope();
-
-            builder.RegisterType<ReservationRepository<Auditorium, AuditoriumId>>()
-                    .As<ISpecificationReadRepository<Auditorium, AuditoriumId>>()
-                    .InstancePerLifetimeScope();
+            return services;
         }
     }
 }

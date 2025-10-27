@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Common.Application
+﻿/*namespace JordiAragonZaragoza.Cinema.Reservation.Common.Application
 {
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.BackgroundJobs.ExpireReservedSeats;
     using Microsoft.Extensions.Configuration;
@@ -10,7 +10,6 @@
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            serviceCollection.AddAutoMapper(AssemblyReference.Assembly);
             serviceCollection.AddValidatorsFromAssembly(AssemblyReference.Assembly, ServiceLifetime.Singleton);
 
             serviceCollection.AddQuartz(configure =>
@@ -39,4 +38,4 @@
             return serviceCollection;
         }
     }
-}
+}*/

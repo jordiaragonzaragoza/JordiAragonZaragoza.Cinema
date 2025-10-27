@@ -1,21 +1,18 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework
 {
-    using Autofac;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.BusinessModel;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class ShowtimeRepositories
     {
-        public static void RegisterBusinessModelRepositories(ContainerBuilder builder)
+        public static IServiceCollection AddShowtimeBusinessModelRepositories(this IServiceCollection services)
         {
-            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
-                    .As<IRepository<Showtime, ShowtimeId>>()
-                    .InstancePerLifetimeScope();
+            services.AddScoped<IRepository<Showtime, ShowtimeId>, ReservationRepository<Showtime, ShowtimeId>>();
+            services.AddScoped<IReadRepository<Showtime, ShowtimeId>, ReservationRepository<Showtime, ShowtimeId>>();
 
-            builder.RegisterType<ReservationRepository<Showtime, ShowtimeId>>()
-                    .As<IReadRepository<Showtime, ShowtimeId>>()
-                    .InstancePerLifetimeScope();
+            return services;
         }
     }
 }
