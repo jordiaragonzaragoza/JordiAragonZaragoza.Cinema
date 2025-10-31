@@ -28,6 +28,8 @@
         <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.5.1" />
         <PackageVersion Include="Aspire.Seq" Version="9.5.1" />
         <PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
+        <PackageVersion Include="CommunityToolkit.Aspire.Hosting.KurrentDB" Version="9.8.1-beta.424" />
+        <PackageVersion Include="CommunityToolkit.Aspire.KurrentDB" Version="9.8.1-beta.424" />
         <PackageVersion Include="FastEndpoints.Swagger" Version="7.0.1" />
         <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
         <PackageVersion Include="MassTransit" Version="8.5.3" />

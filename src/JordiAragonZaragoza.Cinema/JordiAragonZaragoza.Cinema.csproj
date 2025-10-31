@@ -12,11 +12,12 @@
     <PackageReference Include="Aspire.Hosting.AppHost" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.Seq" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.KurrentDB" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.SharedKernel\JordiAragonZaragoza.Cinema.SharedKernel.csproj" IsAspireProjectResource="false" />
-    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
   </ItemGroup>
 
 </Project>

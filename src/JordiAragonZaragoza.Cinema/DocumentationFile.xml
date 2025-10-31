@@ -4,14 +4,14 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
-        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation">
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
             <summary>
-            Metadata for the JordiAragonZaragoza_Cinema_Reservation project.
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
             </summary>
         </member>
-        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation.ProjectPath">
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command.ProjectPath">
             <summary>
-            The path to the JordiAragonZaragoza_Cinema_Reservation project.
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
             </summary>
         </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema">

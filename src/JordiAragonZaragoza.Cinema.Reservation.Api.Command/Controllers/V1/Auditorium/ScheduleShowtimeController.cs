@@ -20,7 +20,7 @@
         ]
         public async Task<ActionResult<Guid>> ScheduleShowtimeAsync(ScheduleShowtimeRequest request, CancellationToken cancellationToken)
         {
-            // This generated Id is done here to support compatibility with the current implementation which client provides the Id.
+            // This generated id is done here to support compatibility with the current implementation which client provides the Id.
             var showtimeId = Guid.NewGuid();
 
             var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(showtimeId), cancellationToken);

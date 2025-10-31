@@ -1,6 +1,5 @@
 namespace JordiAragonZaragoza.Cinema
 {
-    using System.Reflection.Metadata;
     using Aspire.Hosting;
     using JordiAragonZaragoza.Cinema.SharedKernel;
 
@@ -9,38 +8,26 @@ namespace JordiAragonZaragoza.Cinema
     {
         public static void Main(string[] args)
         {
-              var builder = DistributedApplication.CreateBuilder(args);
+            var builder = DistributedApplication.CreateBuilder(args);
 
-              var postgresServer = builder.AddPostgres(Constants.PostgresServer)
+              /*var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                           .WithImageTag("15.1-alpine")
                                           .WithDataBindMount("../../containers/postgres/data")
                                           .WithPgAdmin();
 
-              var reservationBusinessModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore);
-              var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);
+              var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);*/
 
-              builder.AddContainer(Constants.EventStoreDbServer, "eventstore/eventstore", "23.10.1-alpha-arm64v8")
-              ////builder.AddContainer(Constants.EventStoreDbServer, "eventstore/eventstore", "23.10.1-bookworm-slim") // use this image if you're running on x86 proc
-                     .WithEnvironment("EVENTSTORE_CLUSTER_SIZE", "1")
-                     .WithEnvironment("EVENTSTORE_RUN_PROJECTIONS", "All")
-                     .WithEnvironment("EVENTSTORE_START_STANDARD_PROJECTIONS", "true")
-                     .WithEnvironment("EVENTSTORE_INSECURE", "true")
-                     .WithEnvironment("EVENTSTORE_ENABLE_EXTERNAL_TCP", "true")
-                     .WithEnvironment("EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP", "true")
-                     .WithBindMount("../../containers/eventstore/data/", "/var/lib/eventstore")
-                     .WithBindMount("../../containers/eventstore/logs/", "/var/log/eventstore")
-                     .WithEndpoint(2113, 2113, scheme: "https");
+            /*var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
+                                   .WithDataBindMount("../../containers/seq/data")
+                                   .ExcludeFromManifest();*/
 
-              var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
-                                     .WithDataBindMount("../../containers/seq/data")
-                                     .ExcludeFromManifest();
+            var kurrentdb = builder.AddKurrentDB(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore, 22113);
 
-              builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation>(Constants.JordiAragonZaragozaCinemaReservation)
-                 .WithReference(reservationBusinessModelDb)
-                 .WithReference(reservationReadModelDb)
-                 .WithReference(seq);
+            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.JordiAragonZaragozaCinemaReservationApiCommand)
+                     .WithReference(kurrentdb)
+                     .WaitFor(kurrentdb);
 
-              builder.Build().Run();
+            builder.Build().Run();
         }
     }
 }

@@ -6,9 +6,7 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string SeqServer = "SeqServer";
 
-        public const string EventStoreDbServer = "EventStoreDbServer";
-
-        public const string JordiAragonZaragozaCinemaReservation = "JordiAragonZaragozaCinemaReservation";
+        public const string JordiAragonZaragozaCinemaReservationApiCommand = "JordiAragonZaragozaCinemaReservationApiCommand";
 
         public const string JordiAragonZaragozaCinemaReservationBusinessModelStore = "JordiAragonZaragozaCinemaReservationBusinessModelStore";
 
