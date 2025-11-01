@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-	  <DockerComposeProjectPath>../../docker-compose.dcproj</DockerComposeProjectPath>
-	  <UserSecretsId>71462ee6-5b91-4419-9b35-a015de689fe0</UserSecretsId>
-	</PropertyGroup>
 	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
 		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Domain\JordiAragonZaragoza.SharedKernel.Domain.csproj" />
 		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Application\JordiAragonZaragoza.SharedKernel.Application.csproj" />
@@ -33,6 +29,7 @@
 	<ItemGroup>
 		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
 		<PackageReference Include="Aspire.Seq" />
+    	<PackageReference Include="CommunityToolkit.Aspire.KurrentDB"/>
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 		<PackageReference Include="Quartz" />

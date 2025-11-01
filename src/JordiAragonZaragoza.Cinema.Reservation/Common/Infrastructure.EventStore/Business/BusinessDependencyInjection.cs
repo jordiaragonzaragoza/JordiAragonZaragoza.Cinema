@@ -5,6 +5,8 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EventStore;
     using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EventStore;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
 
     public static class BusinessDependencyInjection
     {
@@ -16,6 +18,13 @@
             services.AddUser();
 
             return services;
+        }
+
+        public static IHostApplicationBuilder AddInfrastructureEventStoreDbBusiness(this IHostApplicationBuilder builder)
+        {
+            builder.AddKurrentDBClient(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore);
+
+            return builder;
         }
     }
 }
