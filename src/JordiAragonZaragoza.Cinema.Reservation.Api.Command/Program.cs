@@ -29,6 +29,7 @@
             builder.Services
                 .AddDomain()
                 .AddApplication()
+                .AddApplicationCommandHandlers()
                 .AddInfrastructureEventStoreDbBusiness()
                 .AddInfrastructure()
                 .AddPresentationHttpRestfulApi(configuration);
@@ -38,7 +39,7 @@
                 .AddSharedKernelDomain()
                 .AddSharedKernelApplication()
                 .AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
-                .AddSharedKernelInfrastructure(AssemblyReference.Assembly)
+                .AddSharedKernelInfrastructure()
                 .AddSharedKernelPresentationHttpRestfulApi();
 
             builder.Host.UseHostBuilderConfigurations();
