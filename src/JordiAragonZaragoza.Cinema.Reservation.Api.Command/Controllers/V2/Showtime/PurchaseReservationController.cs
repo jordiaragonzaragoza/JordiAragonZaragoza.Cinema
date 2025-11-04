@@ -1,21 +1,20 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V1.Auditorium
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V2.Showtime
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1.Auditorium;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1.Auditorium.Requests;
-
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
 
     public sealed class PurchaseReservationController : BaseVersionedApiCommandController
     {
-        [HttpPatch(AuditoriumRoutes.PurchaseReservation)]
+        [HttpPatch(ShowtimeRoutes.PurchaseReservation)]
         [SwaggerOperation(
             Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration.",
             Description = "Purchase a reservation for an existing Showtime",
-            OperationId = "Auditorium.PurchaseReservation")
+            OperationId = "Showtime.PurchaseReservation")
         ]
         public async Task<ActionResult> PurchaseReservationAsync(
             PurchaseReservationRequest request,
