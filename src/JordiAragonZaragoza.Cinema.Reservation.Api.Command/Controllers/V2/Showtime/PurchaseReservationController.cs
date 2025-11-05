@@ -4,17 +4,21 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
 
-    public sealed class PurchaseReservationController : BaseVersionedApiCommandController
+    [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
+    [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
+    public sealed class PurchaseReservationController : BaseApiCommandController
     {
         [HttpPatch(ShowtimeRoutes.PurchaseReservation)]
         [SwaggerOperation(
             Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration.",
             Description = "Purchase a reservation for an existing Showtime",
-            OperationId = "Showtime.PurchaseReservation")
+            OperationId = "Showtime.PurchaseReservation.V2")
         ]
         public async Task<ActionResult> PurchaseReservationAsync(
             PurchaseReservationRequest request,

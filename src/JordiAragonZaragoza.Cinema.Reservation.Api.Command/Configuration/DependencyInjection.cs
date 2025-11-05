@@ -61,8 +61,8 @@
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddEndpointsApiExplorer();
-            services.AddTransient<ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options => options.EnableAnnotations());
+            services.ConfigureOptions<ConfigureSwaggerOptions>();
             services.AddHttpContextAccessor();
             services.AddHealthChecks();
 

@@ -5,17 +5,21 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
 
-    public sealed class CancelShowtimeController : BaseVersionedApiCommandController
+    [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
+    [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
+    public sealed class CancelShowtimeController : BaseApiCommandController
     {
         [HttpDelete(ShowtimeRoutes.CancelShowtime)]
         [SwaggerOperation(
             Summary = "Cancels a scheduled Showtime",
             Description = "Cancels a scheduled Showtime",
-            OperationId = "Showtime.CancelShowtime")
+            OperationId = "Showtime.CancelShowtime.V2")
         ]
         public async Task<ActionResult> CancelShowtimeAsync(CancelShowtimeRequest request, CancellationToken ct)
         {

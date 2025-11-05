@@ -2,8 +2,8 @@
 {
     using System;
     using System.Linq;
-    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Middlewares;
     using Asp.Versioning.ApiExplorer;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Middlewares;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -41,10 +41,10 @@
 
             if (app.Environment.IsDevelopment())
             {
+                var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
                     foreach (var version in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse().Select(description => description.GroupName))
                     {
                         options.SwaggerEndpoint($"/swagger/{version}/swagger.json", version.ToUpperInvariant());
