@@ -2,9 +2,13 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ApplicationDependencyInjection
@@ -22,6 +26,16 @@
             services.AddMovieCommandHandlers();
             services.AddShowtimeCommandHandlers();
             services.AddUserCommandHandlers();
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationQueryHandlers(this IServiceCollection services)
+        {
+            services.AddAuditoriumQueryHandlers();
+            services.AddMovieQueryHandlers();
+            services.AddShowtimeQueryHandlers();
+            services.AddUserQueryHandlers();
 
             return services;
         }
