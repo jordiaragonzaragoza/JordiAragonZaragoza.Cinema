@@ -8,6 +8,8 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string JordiAragonZaragozaCinemaReservationApiCommand = "JordiAragonZaragozaCinemaReservationApiCommand";
 
+        public const string JordiAragonZaragozaCinemaReservationApiQuery = "JordiAragonZaragozaCinemaReservationApiQuery";
+
         public const string JordiAragonZaragozaCinemaReservationBusinessModelStore = "JordiAragonZaragozaCinemaReservationBusinessModelStore";
 
         public const string JordiAragonZaragozaCinemaReservationReadModelStore = "JordiAragonZaragozaCinemaReservationReadModelStore";

@@ -2,13 +2,9 @@
 {
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.SharedKernel.Application;
-    using JordiAragonZaragoza.SharedKernel.Domain;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
-    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;

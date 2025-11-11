@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Query\JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.SharedKernel\JordiAragonZaragoza.Cinema.SharedKernel.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
   </ItemGroup>

@@ -4,6 +4,16 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
+            </summary>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
             <summary>
             Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.

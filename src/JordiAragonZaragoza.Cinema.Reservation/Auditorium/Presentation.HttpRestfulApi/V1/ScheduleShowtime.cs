@@ -34,7 +34,7 @@
         {
             ArgumentNullException.ThrowIfNull(req, nameof(req));
 
-            // This generated Id is done here to support compatibility with the current implementation which client provides the Id.
+            // This generated id is done here to support compatibility with the current implementation which client provides the Id.
             var showtimeId = Guid.NewGuid();
 
             var resultResponse = await this.commandBus.SendAsync(req.ToCommand(showtimeId), ct);
