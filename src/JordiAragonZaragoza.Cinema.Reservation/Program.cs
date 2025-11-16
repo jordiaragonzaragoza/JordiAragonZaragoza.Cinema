@@ -49,8 +49,8 @@
             builder.Services.AddApplicationServices(configuration);
             builder.Services.AddHttpRestfulApiServices(configuration);
             builder.Services.AddSharedKernelInfrastructureServices(configuration);
-            builder.Services.AddEntityFrameworkServices(configuration, builder.Environment.EnvironmentName == "Development");
-            builder.EnrichDbContexts();
+            builder.Services.AddInfrastructureEntityFrameworkDbReadModel(configuration, builder.Environment.EnvironmentName == "Development");
+            builder.AddInfrastructureEntityFrameworkDbReadModel();
 
             // TODO: Temporal removed. Will be enabled on using event sourcing as a aggregates store.
             ////builder.Services.AddSharedKernelInfrastructureEventStoreDbBusiness(configuration);

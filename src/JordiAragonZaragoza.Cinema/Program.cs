@@ -12,7 +12,9 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore, 22113)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage("kurrentplatform/kurrentdb", "25.1.0-experimental-arm64-8.0-jammy");
+                                   .WithImage("kurrentplatform/kurrentdb", "25.1.0-experimental-arm64-8.0-jammy")
+                                   ////.WithDataVolume()
+                                   .WithDataBindMount("../../containers/kurrentdb/data");
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.JordiAragonZaragozaCinemaReservationApiCommand)
                      .WithReference(kurrentdb)
@@ -21,6 +23,7 @@ namespace JordiAragonZaragoza.Cinema
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag("15.1-alpine")
                                         .WithDataBindMount("../../containers/postgres/data")
+                                        ////.WithDataVolume()
                                         .WithPgAdmin();
 
             var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);
