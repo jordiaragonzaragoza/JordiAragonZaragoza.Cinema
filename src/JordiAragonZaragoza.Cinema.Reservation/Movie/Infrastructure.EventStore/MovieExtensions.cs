@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EventStore
 {
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
+
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using Microsoft.Extensions.DependencyInjection;

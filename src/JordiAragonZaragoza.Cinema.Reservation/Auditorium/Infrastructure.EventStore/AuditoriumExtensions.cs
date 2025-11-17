@@ -1,9 +1,9 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EventStore
 {
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using Microsoft.Extensions.DependencyInjection;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
 
     public static class AuditoriumExtensions
     {

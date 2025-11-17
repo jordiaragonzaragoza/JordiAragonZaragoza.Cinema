@@ -3,6 +3,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
@@ -19,24 +20,22 @@
             var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
-            ////builder.AddInfrastructureEventStoreDbBusiness();
 
             // Configure specific Host Services (DI)
             builder.Services
-                ////.AddDomain()
                 .AddApplication()
                 .AddApplicationQueryHandlers()
-                ////.AddInfrastructureEventStoreDbBusiness()
+                .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
                 .AddInfrastructure()
                 .AddPresentationHttpRestfulApi(configuration);
 
             // Then configure SharedKernel Services (DI)
             builder.Services
-                ////.AddSharedKernelDomain()
                 .AddSharedKernelApplication()
-                ////.AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelPresentationHttpRestfulApi();
+
+            builder.AddInfrastructureEntityFrameworkProjections();
 
             builder.Host.UseHostBuilderConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();

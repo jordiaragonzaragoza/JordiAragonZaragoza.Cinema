@@ -9,7 +9,6 @@
 		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure\JordiAragonZaragoza.SharedKernel.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework\JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.csproj" />
 		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.csproj" />
-		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
 		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Domain" />
@@ -20,7 +19,6 @@
 		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure" />
 		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework" />
 		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore" />
-		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.UnitTests" />
@@ -29,30 +27,18 @@
 	<ItemGroup>
 		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
 		<PackageReference Include="Aspire.Seq" />
-    	<PackageReference Include="CommunityToolkit.Aspire.KurrentDB"/>
+    	<PackageReference Include="CommunityToolkit.Aspire.KurrentDB" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
 		<PackageReference Include="Quartz" />
 		<PackageReference Include="Quartz.Extensions.DependencyInjection" />
-		<PackageReference Include="FastEndpoints.Swagger" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
 		<PackageReference Include="Quartz.Serialization.Json" />
-		<PackageReference Include="Swashbuckle.AspNetCore" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
-		<PackageReference Include="Serilog.AspNetCore" />
-		<PackageReference Include="Serilog.Enrichers.Environment" />
-		<PackageReference Include="Serilog.Enrichers.Thread" />
-		<PackageReference Include="Serilog.Sinks.Async" />
-		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="Serilog.Sinks.OpenTelemetry" />
-		<PackageReference Include="Serilog.Sinks.Seq" />
     </ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\JordiAragonZaragoza.Cinema.ServiceDefaults\JordiAragonZaragoza.Cinema.ServiceDefaults.csproj" />
