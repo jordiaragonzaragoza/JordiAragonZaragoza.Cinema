@@ -8,7 +8,7 @@
 
     public static class UserExtensions
     {
-        public static IServiceCollection AddUser(this IServiceCollection services)
+        public static IServiceCollection AddUserBusinessRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<User, UserId>, ReservationRepository<User, UserId>>();
             services.AddScoped<IReadRepository<User, UserId>, ReservationRepository<User, UserId>>();

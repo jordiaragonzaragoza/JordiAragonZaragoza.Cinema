@@ -7,7 +7,7 @@
 
     public static class AuditoriumExtensions
     {
-        public static IServiceCollection AddAuditorium(this IServiceCollection services)
+        public static IServiceCollection AddAuditoriumBusinessRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();
             services.AddScoped<IReadRepository<Auditorium, AuditoriumId>, ReservationRepository<Auditorium, AuditoriumId>>();

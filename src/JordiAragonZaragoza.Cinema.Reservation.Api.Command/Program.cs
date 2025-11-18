@@ -37,9 +37,10 @@
             // Then configure SharedKernel Services (DI)
             builder.Services
                 .AddSharedKernelDomain()
-                .AddSharedKernelApplication()
+                .AddSharedKernelApplicationCommandBus()
                 .AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
                 .AddSharedKernelInfrastructure()
+                .AddSharedKernelInfrastructureCommandBus()
                 .AddSharedKernelPresentationHttpRestfulApi();
 
             builder.Host.UseHostBuilderConfigurations();

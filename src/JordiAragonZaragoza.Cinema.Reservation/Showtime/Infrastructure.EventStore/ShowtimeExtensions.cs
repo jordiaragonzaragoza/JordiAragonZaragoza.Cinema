@@ -8,7 +8,7 @@
 
     public static class ShowtimeExtensions
     {
-        public static IServiceCollection AddShowtime(this IServiceCollection services)
+        public static IServiceCollection AddShowtimeBusinessRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Showtime, ShowtimeId>, ReservationRepository<Showtime, ShowtimeId>>();
             services.AddScoped<IReadRepository<Showtime, ShowtimeId>, ReservationRepository<Showtime, ShowtimeId>>();

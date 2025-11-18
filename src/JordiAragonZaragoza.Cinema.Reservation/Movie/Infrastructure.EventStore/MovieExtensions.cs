@@ -8,7 +8,7 @@
 
     public static class MovieExtensions
     {
-        public static IServiceCollection AddMovie(this IServiceCollection services)
+        public static IServiceCollection AddMovieBusinessRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Movie, MovieId>, ReservationRepository<Movie, MovieId>>();
             services.AddScoped<IReadRepository<Movie, MovieId>, ReservationRepository<Movie, MovieId>>();

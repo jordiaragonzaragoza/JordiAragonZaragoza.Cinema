@@ -31,8 +31,9 @@
 
             // Then configure SharedKernel Services (DI)
             builder.Services
-                .AddSharedKernelApplication()
+                .AddSharedKernelApplicationQueryBus()
                 .AddSharedKernelInfrastructure()
+                .AddSharedKernelInfrastructureQueryBus()
                 .AddSharedKernelPresentationHttpRestfulApi();
 
             builder.AddInfrastructureEntityFrameworkProjections();

@@ -12,10 +12,10 @@
     {
         public static IServiceCollection AddInfrastructureEventStoreDbBusiness(this IServiceCollection services)
         {
-            services.AddShowtime();
-            services.AddMovie();
-            services.AddAuditorium();
-            services.AddUser();
+            services.AddShowtimeBusinessRepositories();
+            services.AddMovieBusinessRepositories();
+            services.AddAuditoriumBusinessRepositories();
+            services.AddUserBusinessRepositories();
 
             return services;
         }

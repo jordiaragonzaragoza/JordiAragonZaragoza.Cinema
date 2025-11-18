@@ -3,7 +3,7 @@
     using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
-
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +14,7 @@
             // AuditoriumReadModel projection.
             services.AddScoped<IRepository<AuditoriumReadModel, Guid>, ReservationReadModelRepository<AuditoriumReadModel>>();
             services.AddScoped<IReadRepository<AuditoriumReadModel, Guid>, ReservationReadModelRepository<AuditoriumReadModel>>();
+            services.AddScoped<IPaginatedSpecificationReadRepository<AuditoriumReadModel>, ReservationReadModelRepository<AuditoriumReadModel>>();
 
             return services;
         }

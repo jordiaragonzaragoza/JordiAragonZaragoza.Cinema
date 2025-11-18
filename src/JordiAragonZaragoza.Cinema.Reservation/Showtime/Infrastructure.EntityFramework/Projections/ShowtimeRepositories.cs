@@ -5,6 +5,7 @@
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using Microsoft.Extensions.DependencyInjection;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
     public static class ShowtimeRepositories
     {
@@ -13,6 +14,7 @@
             // ShowtimeReadModel projection.
             services.AddScoped<IRepository<ShowtimeReadModel, Guid>, ReservationReadModelRepository<ShowtimeReadModel>>();
             services.AddScoped<IReadRepository<ShowtimeReadModel, Guid>, ReservationReadModelRepository<ShowtimeReadModel>>();
+            services.AddScoped<IPaginatedSpecificationReadRepository<ShowtimeReadModel>, ReservationReadModelRepository<ShowtimeReadModel>>();
 
             // AvailableSeatReadModel projection.
             services.AddScoped<IRangeableRepository<AvailableSeatReadModel, Guid>, ReservationReadModelRepository<AvailableSeatReadModel>>();
@@ -22,6 +24,7 @@
             services.AddScoped<IRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
             services.AddScoped<ISpecificationReadRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
             services.AddScoped<IRangeableRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
+            services.AddScoped<IPaginatedSpecificationReadRepository<ReservationReadModel>, ReservationReadModelRepository<ReservationReadModel>>();
 
             return services;
         }

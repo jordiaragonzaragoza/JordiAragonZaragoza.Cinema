@@ -5,6 +5,7 @@
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using Microsoft.Extensions.DependencyInjection;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
     public static class UserRepositories
     {
@@ -12,6 +13,7 @@
         {
             // UserReadModel projection.
             services.AddScoped<IRepository<UserReadModel, Guid>, ReservationReadModelRepository<UserReadModel>>();
+            services.AddScoped<IPaginatedSpecificationReadRepository<UserReadModel>, ReservationReadModelRepository<UserReadModel>>();
 
             return services;
         }
