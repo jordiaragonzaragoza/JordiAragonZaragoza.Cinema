@@ -3,24 +3,13 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.Result;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
     public static class MoviesMapper
     {
-        public static GetMoviesQuery ToQuery(this GetMoviesRequest request)
-        {
-            ArgumentNullException.ThrowIfNull(request);
-
-            return new GetMoviesQuery(
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
-        }
-
         public static Result<PaginatedCollectionResponse<MovieResponse>> ToResponse(
             this Result<PaginatedCollectionOutputDto<MovieReadModel>> result)
         {

@@ -25,10 +25,11 @@
             OperationId = "User.GetUserReservations.V2")
         ]
         public async Task<ActionResult<PaginatedCollectionResponse<ReservationResponse>>> GetUsersAsync(
-            UserReservationsRequest request,
+            [FromRoute] UserReservationsRequest request,
+            [FromQuery] PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);
+            var resultOutputDto = await this.QueryBus.SendAsync(request.ToQuery(paginatedRequest), cancellationToken);
 
             var resultResponse = resultOutputDto.ToResponse();
 

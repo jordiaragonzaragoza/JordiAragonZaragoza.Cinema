@@ -22,7 +22,7 @@
             OperationId = "User.GetUserReservation.V2")
         ]
         public async Task<ActionResult<ReservationResponse>> GetUserReservationAsync(
-            UserReservationRequest request,
+            [FromRoute] UserReservationRequest request,
             CancellationToken cancellationToken)
         {
             var resultOutputDto = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

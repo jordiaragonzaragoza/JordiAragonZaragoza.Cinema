@@ -25,9 +25,11 @@
         }
 
         public static GetUserReservationsQuery ToQuery(
-            this UserReservationsRequest request)
+            this UserReservationsRequest request,
+            PaginatedRequest paginatedRequest)
         {
             ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
 
             return new GetUserReservationsQuery(
                 request.UserId,
@@ -37,18 +39,8 @@
                 request.AuditoriumName,
                 request.MovieTitle,
                 request.IsPurchased,
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
-        }
-
-        public static GetUsersQuery ToQuery(
-            this GetUsersRequest request)
-        {
-            ArgumentNullException.ThrowIfNull(request);
-
-            return new GetUsersQuery(
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
+                paginatedRequest.PageNumber,
+                paginatedRequest.PageSize);
         }
 
         public static Result<ReservationResponse> ToResponse(

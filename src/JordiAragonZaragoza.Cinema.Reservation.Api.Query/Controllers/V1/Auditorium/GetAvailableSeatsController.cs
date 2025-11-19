@@ -23,7 +23,7 @@
             OperationId = "Auditorium.GetAvailableSeats.V1")
         ]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(
-            GetAvailableSeatsRequest request,
+            [FromQuery] GetAvailableSeatsRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModel = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

@@ -3,24 +3,13 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.Result;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
     public static class AuditoriumsMapper
     {
-        public static GetAuditoriumsQuery ToQuery(this GetAuditoriumsRequest request)
-        {
-            ArgumentNullException.ThrowIfNull(request);
-
-            return new GetAuditoriumsQuery(
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
-        }
-
         public static Result<PaginatedCollectionResponse<AuditoriumResponse>> ToResponse(
             this Result<PaginatedCollectionOutputDto<AuditoriumReadModel>> result)
         {

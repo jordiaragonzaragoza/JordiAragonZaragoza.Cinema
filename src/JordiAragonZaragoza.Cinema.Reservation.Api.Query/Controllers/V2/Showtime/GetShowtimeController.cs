@@ -22,7 +22,7 @@
             OperationId = "Showtime.GetShowtime.V2")
         ]
         public async Task<ActionResult<ShowtimeResponse>> GetShowtimeAsync(
-            GetShowtimeRequest request,
+            [FromRoute] GetShowtimeRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModels = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

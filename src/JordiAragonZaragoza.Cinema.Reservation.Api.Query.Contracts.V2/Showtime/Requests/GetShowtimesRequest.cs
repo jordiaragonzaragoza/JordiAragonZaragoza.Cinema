@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Requests
 {
     using System;
-    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
     public sealed record class GetShowtimesRequest(
         Guid? AuditoriumId,
@@ -9,9 +8,5 @@
         DateTimeOffset? StartTimeOnUtc,
         DateTimeOffset? EndTimeOnUtc,
         string? MovieTitle,
-        string? AuditoriumName)
-        : PaginatedRequest
-        {
-            public const string Route = "showtimes";
-        }
+        string? AuditoriumName);
 }

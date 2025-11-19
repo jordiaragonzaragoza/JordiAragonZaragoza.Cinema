@@ -23,7 +23,7 @@
             OperationId = "Showtime.GetAvailableSeats.V2")
         ]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(
-            GetAvailableSeatsRequest request,
+            [FromRoute] GetAvailableSeatsRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModels = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

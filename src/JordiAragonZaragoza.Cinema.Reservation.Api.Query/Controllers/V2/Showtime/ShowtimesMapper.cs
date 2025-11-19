@@ -15,9 +15,10 @@
 
     public static class ShowtimesMapper
     {
-        public static GetShowtimesQuery ToQuery(this GetShowtimesRequest request)
+        public static GetShowtimesQuery ToQuery(this GetShowtimesRequest request, PaginatedRequest paginatedRequest)
         {
             ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
 
             return new GetShowtimesQuery(
                 request.AuditoriumId,
@@ -26,18 +27,21 @@
                 request.MovieTitle,
                 request.StartTimeOnUtc,
                 request.EndTimeOnUtc,
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
+                paginatedRequest.PageNumber,
+                paginatedRequest.PageSize);
         }
 
-        public static GetShowtimeReservationsQuery ToQuery(this GetShowtimeReservationsRequest request)
+        public static GetShowtimeReservationsQuery ToQuery(
+            this GetShowtimeReservationsRequest request,
+            PaginatedRequest paginatedRequest)
         {
             ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
 
             return new GetShowtimeReservationsQuery(
                 request.ShowtimeId,
-                request.PageNumber ?? 1,
-                request.PageSize ?? 10);
+                paginatedRequest.PageNumber,
+                paginatedRequest.PageSize);
         }
 
         public static GetAvailableSeatsQuery ToQuery(this GetAvailableSeatsRequest request)

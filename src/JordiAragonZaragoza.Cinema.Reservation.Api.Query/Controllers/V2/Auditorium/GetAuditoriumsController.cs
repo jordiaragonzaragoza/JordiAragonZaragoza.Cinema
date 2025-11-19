@@ -1,10 +1,12 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Controllers.V2.Auditorium
 {
+    using System;
+
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
@@ -24,10 +26,16 @@
             OperationId = "Auditorium.GetAuditoriums.V2")
         ]
         public async Task<ActionResult<PaginatedCollectionResponse<AuditoriumResponse>>> GetAuditoriumsAsync(
-            GetAuditoriumsRequest request,
+            [FromQuery] PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var query = new GetAuditoriumsQuery(
+                paginatedRequest.PageNumber,
+                paginatedRequest.PageSize);
+
+            var resultOutputDto = await this.QueryBus.SendAsync(query, cancellationToken);
 
             var resultResponse = resultOutputDto.ToResponse();
 

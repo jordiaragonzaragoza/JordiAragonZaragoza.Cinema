@@ -23,7 +23,7 @@
             OperationId = "Auditorium.GetShowtimes.V1")
         ]
         public async Task<ActionResult<IEnumerable<ShowtimeResponse>>> GetShowtimesAsync(
-            GetShowtimesRequest request,
+            [FromQuery] GetShowtimesRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModel = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

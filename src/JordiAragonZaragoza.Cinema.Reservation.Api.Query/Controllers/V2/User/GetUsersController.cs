@@ -1,10 +1,12 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Controllers.V2.User
 {
+    using System;
+
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
@@ -24,10 +26,16 @@
             OperationId = "User.GetUsers.V2")
         ]
         public async Task<ActionResult<PaginatedCollectionResponse<UserResponse>>> GetUsersAsync(
-            GetUsersRequest request,
+            [FromQuery] PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var query = new GetUsersQuery(
+                paginatedRequest.PageNumber,
+                paginatedRequest.PageSize);
+
+            var resultOutputDto = await this.QueryBus.SendAsync(query, cancellationToken);
 
             var resultResponse = resultOutputDto.ToResponse();
 

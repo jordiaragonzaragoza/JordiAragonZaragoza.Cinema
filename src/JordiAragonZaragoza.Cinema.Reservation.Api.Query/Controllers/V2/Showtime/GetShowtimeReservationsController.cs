@@ -23,10 +23,11 @@
             OperationId = "Showtime.GetShowtimeReservations.V2")
         ]
         public async Task<ActionResult<PaginatedCollectionResponse<ReservationResponse>>> GetShowtimeReservationsAsync(
-            GetShowtimeReservationsRequest request,
+            [FromRoute] GetShowtimeReservationsRequest request,
+            [FromQuery] PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
         {
-            var resultReadModels = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);
+            var resultReadModels = await this.QueryBus.SendAsync(request.ToQuery(paginatedRequest), cancellationToken);
 
             var resultResponse = resultReadModels.ToResponse();
 
