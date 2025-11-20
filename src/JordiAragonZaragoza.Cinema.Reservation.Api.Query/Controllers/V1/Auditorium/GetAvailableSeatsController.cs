@@ -14,6 +14,7 @@
 
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("1.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class GetAvailableSeatsController : BaseApiQueryController
     {
         [HttpGet(AuditoriumRoutes.GetAvailableSeats)]
@@ -23,7 +24,7 @@
             OperationId = "Auditorium.GetAvailableSeats.V1")
         ]
         public async Task<ActionResult<IEnumerable<SeatResponse>>> GetAvailableSeatsAsync(
-            [FromQuery] GetAvailableSeatsRequest request,
+            [FromRoute] GetAvailableSeatsRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModel = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

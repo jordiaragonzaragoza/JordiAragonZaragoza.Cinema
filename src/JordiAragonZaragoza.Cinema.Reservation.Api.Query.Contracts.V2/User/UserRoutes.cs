@@ -5,6 +5,6 @@
         public const string GetUsers = $"{Base}";
         public const string GetUserReservation = $"{Base}/{{userId}}/showtimes/{{showtimeId}}/reservations/{{reservationId}}";
         public const string GetUserReservations = $"{Base}/{{userId}}/reservations";
-        private const string Base = $"{Routes.ApiBase}/users";
+        private const string Base = "users";
     }
 }

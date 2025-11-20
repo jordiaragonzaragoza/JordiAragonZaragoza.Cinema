@@ -13,6 +13,7 @@
 
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class GetShowtimeController : BaseApiQueryController
     {
         [HttpGet(ShowtimeRoutes.GetShowtime)]

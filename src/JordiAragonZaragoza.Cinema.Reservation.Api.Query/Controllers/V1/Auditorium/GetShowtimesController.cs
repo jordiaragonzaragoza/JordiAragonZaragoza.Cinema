@@ -14,6 +14,7 @@
 
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("1.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class GetShowtimesController : BaseApiQueryController
     {
         [HttpGet(AuditoriumRoutes.GetShowtimes)]
@@ -23,7 +24,7 @@
             OperationId = "Auditorium.GetShowtimes.V1")
         ]
         public async Task<ActionResult<IEnumerable<ShowtimeResponse>>> GetShowtimesAsync(
-            [FromQuery] GetShowtimesRequest request,
+            [FromRoute] GetShowtimesRequest request,
             CancellationToken cancellationToken)
         {
             var resultReadModel = await this.QueryBus.SendAsync(request.ToQuery(), cancellationToken);

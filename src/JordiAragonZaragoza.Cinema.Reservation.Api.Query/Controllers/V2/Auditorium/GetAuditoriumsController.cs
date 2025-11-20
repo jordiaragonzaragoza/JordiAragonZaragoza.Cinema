@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Controllers.V2.Auditorium
 {
     using System;
-
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium;
@@ -17,6 +16,7 @@
     // TODO: Will be removed. It belongs to the cinema manager bounded context.
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class GetAuditoriumsController : BaseApiQueryController
     {
         [HttpGet(AuditoriumRoutes.GetAuditoriums)]

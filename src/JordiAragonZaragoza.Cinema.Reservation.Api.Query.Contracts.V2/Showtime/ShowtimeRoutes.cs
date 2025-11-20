@@ -6,6 +6,6 @@
         public const string GetShowtime = $"{Base}/{{showtimeId}}";
         public const string GetAvailableSeats = $"{Base}/{{showtimeId}}/seats/available";
         public const string GetShowtimeReservations = $"{Base}/{{showtimeId}}/reservations";
-        private const string Base = $"{Routes.ApiBase}/showtimes";
+        private const string Base = "showtimes";
     }
 }

@@ -3,6 +3,6 @@
     public static class MovieRoutes
     {
         public const string GetMovies = $"{Base}";
-        private const string Base = $"{Routes.ApiBase}/movies";
+        private const string Base = "movies";
     }
 }

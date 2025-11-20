@@ -3,6 +3,6 @@
     public static class AuditoriumRoutes
     {
         public const string GetAuditoriums = $"{Base}";
-        private const string Base = $"{Routes.ApiBase}/auditoriums";
+        private const string Base = "auditoriums";
     }
 }
