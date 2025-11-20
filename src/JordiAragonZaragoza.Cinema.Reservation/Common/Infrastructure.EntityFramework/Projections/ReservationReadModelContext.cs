@@ -7,6 +7,8 @@
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Context;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
@@ -26,6 +28,8 @@
 
         public DbSet<MovieReadModel> Movies => this.Set<MovieReadModel>();
 
+        public DbSet<UserReadModel> Users => this.Set<UserReadModel>();
+
         public DbSet<ShowtimeReadModel> Showtimes => this.Set<ShowtimeReadModel>();
 
         public DbSet<AvailableSeatReadModel> AvailableSeats => this.Set<AvailableSeatReadModel>();
@@ -41,6 +45,7 @@
             modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration());
             modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration());
             modelBuilder.ApplyConfiguration(new ReservationReadModelConfiguration());
+            modelBuilder.ApplyConfiguration(new UserReadModelConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
