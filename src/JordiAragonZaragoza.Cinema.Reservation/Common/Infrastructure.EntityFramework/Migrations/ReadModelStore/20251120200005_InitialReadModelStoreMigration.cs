@@ -17,7 +17,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Position = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,6 +68,24 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false),
+                    MovieTitle = table.Column<string>(type: "text", nullable: false),
+                    IsPurchased = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Showtimes",
                 columns: table => new
                 {
@@ -84,21 +103,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SessionDateOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: false),
-                    MovieTitle = table.Column<string>(type: "text", nullable: false),
-                    IsPurchased = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,10 +180,13 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Movies");
 
             migrationBuilder.DropTable(
+                name: "ReservationsSeats");
+
+            migrationBuilder.DropTable(
                 name: "Showtimes");
 
             migrationBuilder.DropTable(
-                name: "ReservationsSeats");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Auditoriums");

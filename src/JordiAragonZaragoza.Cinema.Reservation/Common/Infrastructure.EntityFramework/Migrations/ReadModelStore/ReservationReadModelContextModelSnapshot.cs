@@ -17,7 +17,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -85,37 +85,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("AvailableSeats");
                 });
 
-            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ShowtimeReadModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuditoriumId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AuditoriumName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uuid");
-
-                    b.Property<TimeSpan>("MovieRuntime")
-                        .HasColumnType("interval");
-
-                    b.Property<string>("MovieTitle")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("SessionDateOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Showtimes");
-                });
-
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,6 +119,48 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ShowtimeReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuditoriumId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AuditoriumName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("MovieRuntime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("MovieTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("SessionDateOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Showtimes");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint.Checkpoint", b =>
                 {
                     b.Property<Guid>("Id")
@@ -161,6 +172,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
                     b.Property<decimal>("Position")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
