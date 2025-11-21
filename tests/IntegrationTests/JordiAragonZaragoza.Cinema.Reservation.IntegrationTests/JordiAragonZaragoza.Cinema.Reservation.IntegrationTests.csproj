@@ -33,4 +33,7 @@
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
 	  <ProjectReference Include="..\..\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Infrastructure/EntityFramework/Projections/" />
+	</ItemGroup>
 </Project>

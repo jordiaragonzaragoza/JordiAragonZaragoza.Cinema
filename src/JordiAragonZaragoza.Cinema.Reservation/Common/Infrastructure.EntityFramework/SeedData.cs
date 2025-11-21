@@ -8,6 +8,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,9 @@
             User.Create(
                 id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
+        public static readonly UserReadModel ExampleUserReadModel =
+            new(ExampleUser.Id);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2139:Exceptions should be either logged or rethrown but not both", Justification = "Ok for seeding data.")]
         public static void Initialize(WebApplication app, bool isDevelopment)
         {
@@ -90,6 +94,8 @@
             context.Movies.Add(ExampleMovieReadModel);
 
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
+
+            context.Users.Add(ExampleUserReadModel);
 
             context.SaveChanges();
         }

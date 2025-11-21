@@ -1,18 +1,17 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Repositories.ReadModel.Showtime
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Projections.Showtime.ShowtimeReadModel
 {
     using System;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Repositories.ReadModel;
     using JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
     using Xunit.Abstractions;
 
-    public sealed class AddTests : BaseEntityFrameworkIntegrationTests
+    public sealed class DeleteTests : BaseEntityFrameworkIntegrationTests
     {
-        public AddTests(
+        public DeleteTests(
             IntegrationTestsFixture fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -20,7 +19,7 @@
         }
 
         [Fact]
-        public async Task AddAsync_WhenHavingAnUnexistingShowtime_ShouldAddTheShowtime()
+        public async Task DeleteAsync_WhenHavingAnExistingShowtime_ShouldDeleteTheShowtime()
         {
             // Arrange
             var newShowtime = new ShowtimeReadModel(
@@ -34,36 +33,22 @@
 
             var repository = this.GetReadModelRepository<ShowtimeReadModel>();
 
-            // Act
             await repository.AddAsync(newShowtime);
+
+            // Act
+            await repository.DeleteAsync(newShowtime);
 
             // Assert
             var result = await repository.ListAsync();
 
             result.Should()
-                .NotBeNullOrEmpty()
-                .And
-                .Contain(newShowtime);
+                .NotContain(newShowtime);
         }
 
         [Fact]
-        public async Task AddAsync_WhenHavingAnExistingShowtime_ShouldThrowDbUpdateException()
+        public async Task DeleteAsync_WhenHavingAnUnexistingShowtime_ShouldThrowDbUpdateException()
         {
             // Arrange
-            var repository = this.GetReadModelRepository<ShowtimeReadModel>();
-
-            var existingShowtimeReadModel = await AddNewShowtimeReadModelAsync(repository);
-
-            // Act
-            Func<Task> addAsync = async () => await repository.AddAsync(existingShowtimeReadModel);
-
-            // Assert
-            await addAsync.Should().ThrowAsync<DbUpdateException>();
-        }
-
-        private static async Task<ShowtimeReadModel> AddNewShowtimeReadModelAsync(
-            ReservationReadModelRepository<ShowtimeReadModel> repository)
-        {
             var newShowtime = new ShowtimeReadModel(
                 Guid.NewGuid(),
                 DateTimeOffset.UtcNow,
@@ -73,9 +58,13 @@
                 Guid.NewGuid(),
                 "Some auditorium");
 
-            await repository.AddAsync(newShowtime);
+            var repository = this.GetReadModelRepository<ShowtimeReadModel>();
 
-            return newShowtime;
+            // Act
+            Func<Task> deleteAsync = async () => await repository.DeleteAsync(newShowtime);
+
+            // Assert
+            await deleteAsync.Should().ThrowAsync<DbUpdateConcurrencyException>();
         }
     }
 }
