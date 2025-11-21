@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore
+namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     [DbContext(typeof(ReservationReadModelContext))]
     partial class ReservationReadModelContextModelSnapshot : ModelSnapshot

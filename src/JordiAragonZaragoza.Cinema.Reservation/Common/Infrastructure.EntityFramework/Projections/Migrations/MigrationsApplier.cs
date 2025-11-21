@@ -1,7 +1,6 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     using System;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
@@ -17,15 +16,11 @@
                 return;
             }
 
-            using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-
-            using var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
             using var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                ApplyMigrations(writeContext);
                 ApplyMigrations(readContext);
             }
             catch (Exception exception)

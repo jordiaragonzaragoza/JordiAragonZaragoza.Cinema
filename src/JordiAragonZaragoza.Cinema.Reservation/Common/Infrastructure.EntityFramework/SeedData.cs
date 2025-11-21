@@ -5,7 +5,6 @@
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
@@ -66,15 +65,11 @@
 
             ArgumentNullException.ThrowIfNull(app, nameof(app));
 
-            using var writeScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var readScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-
-            using var writeContext = writeScope.ServiceProvider.GetRequiredService<ReservationBusinessModelContext>();
             using var readContext = readScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
 
             try
             {
-                PopulateBusinessModelTestData(writeContext);
                 PopulateReadModelTestData(readContext);
             }
             catch (Exception exception)
@@ -83,22 +78,6 @@
 
                 throw;
             }
-        }
-
-        private static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
-        {
-            if (HasAnyData(context))
-            {
-                return;
-            }
-
-            context.Movies.Add(ExampleMovie);
-
-            context.Auditoriums.Add(ExampleAuditorium);
-
-            context.Users.Add(ExampleUser);
-
-            context.SaveChanges();
         }
 
         private static void PopulateReadModelTestData(ReservationReadModelContext context)

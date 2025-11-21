@@ -4,39 +4,21 @@
         <name>JordiAragonZaragoza.Cinema.Reservation</name>
     </assembly>
     <members>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration">
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.BusinessModelStore.InitialBusinessModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Migrations.ReadModelStore.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.SeedData">
             <summary>
             Seeds the database. This file should only be used in the development environment.
-            </summary>
-        </member>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.Business.ShowtimeConfiguration">
-            <summary>
-            This configuration is obsolete when using showtime as event sourced aggregate.
-            It is conserved as future reference.
             </summary>
         </member>
     </members>
