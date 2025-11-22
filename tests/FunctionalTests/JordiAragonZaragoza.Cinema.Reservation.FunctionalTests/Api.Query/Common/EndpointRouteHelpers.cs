@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common
 {
     using System;
     using System.Web;

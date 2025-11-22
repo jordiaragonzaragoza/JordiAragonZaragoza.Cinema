@@ -32,7 +32,19 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
+      <!-- TODO: Temporal. Remove it-->
+	  <Compile Remove="Api.Command\V2\Showtime\CancelShowtimeTests.cs" />
+	  <Compile Remove="Api.Command\V2\Showtime\PurchaseReservationTests.cs" />
+	  <Compile Remove="Api.Command\V2\Showtime\ReserveSeatsTests.cs" />
+	  <Compile Remove="Api.Command\V2\Showtime\ScheduleShowtimeTests.cs" />
+	  
+	  <Compile Remove="Api.Query\V2\Showtime\GetShowtimeReservationsTests.cs" />
+	  <Compile Remove="Api.Query\V2\User\GetUserReservationsTests.cs" />
+	  <Compile Remove="Api.Query\V2\User\GetUserReservationTests.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query\JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" />
 	  <ProjectReference Include="..\..\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>
 </Project>

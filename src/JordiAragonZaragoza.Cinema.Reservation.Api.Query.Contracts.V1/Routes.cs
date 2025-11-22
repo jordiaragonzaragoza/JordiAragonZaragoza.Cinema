@@ -2,6 +2,6 @@
 {
     public static class Routes
     {
-        public const string ApiBase = "api/v1";
+        public const string ApiBase = "api/v1/";
     }
 }

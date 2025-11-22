@@ -1,11 +1,13 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.V2.Auditorium
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.V2.Auditorium
 {
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
@@ -23,7 +25,7 @@
         public async Task GetAllAuditoriums_WhenHavingValidUrl_ShouldReturnOneAuditorium()
         {
             // Arrange
-            var url = $"api/v2/{GetAuditoriumsRequest.Route}";
+            var url = $"{Routes.ApiBase}{AuditoriumRoutes.GetAuditoriums}";
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<AuditoriumResponse>>(url, this.OutputHelper);

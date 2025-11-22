@@ -1,20 +1,20 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common
 {
     using System;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
     using Xunit;
     using Xunit.Abstractions;
 
-    [Collection(nameof(SharedTestCollection))]
+    [Collection(nameof(ApiQuerySharedTestCollection))]
     public abstract class BaseHttpRestfulApiFunctionalTests : IAsyncLifetime
     {
         protected BaseHttpRestfulApiFunctionalTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
         {
-            this.Fixture = Guard.Against.Null(fixture, nameof(fixture));
-            this.OutputHelper = Guard.Against.Null(outputHelper, nameof(outputHelper));
+            this.Fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
+            this.OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
         }
 
         protected FunctionalTestsFixture<Program> Fixture { get; private init; }
@@ -22,12 +22,9 @@
         protected ITestOutputHelper OutputHelper { get; private init; }
 
         public virtual async Task InitializeAsync()
-            => await this.Fixture.InitDatabasesAsync();
+            => await this.Fixture.InitDatabaseAsync();
 
         public virtual async Task DisposeAsync()
-            => await this.Fixture.ResetDatabasesAsync();
-
-        protected static async Task AddEventualConsistencyDelayAsync()
-            => await Task.Delay(TimeSpan.FromSeconds(2));
+            => await this.Fixture.ResetDatabaseAsync();
     }
 }

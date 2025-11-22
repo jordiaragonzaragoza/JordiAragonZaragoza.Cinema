@@ -1,12 +1,15 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common
 {
     using System;
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
 
     public static class SeedData
@@ -47,18 +50,25 @@
             User.Create(
                 id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
-        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
-        {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
+        public static readonly UserReadModel ExampleUserReadModel =
+            new(ExampleUser.Id);
 
-            context.Movies.Add(ExampleMovie);
+        public static readonly Showtime ExampleShowtime =
+            Showtime.Schedule(
+                id: new ShowtimeId(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
+                movieId: ExampleMovie.Id,
+                sessionDateOnUtc: SessionDate.Create(DateTimeOffset.UtcNow.AddYears(1)),
+                auditoriumId: ExampleAuditorium.Id);
 
-            context.Auditoriums.Add(ExampleAuditorium);
-
-            context.Users.Add(ExampleUser);
-
-            context.SaveChanges();
-        }
+        public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
+            new(
+                ExampleShowtime.Id,
+                ExampleShowtime.SessionDateOnUtc,
+                ExampleMovie.Id,
+                ExampleMovie.Title,
+                ExampleMovie.Runtime,
+                ExampleAuditorium.Id,
+                ExampleAuditorium.Name);
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
@@ -67,6 +77,10 @@
             context.Movies.Add(ExampleMovieReadModel);
 
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
+
+            context.Users.Add(ExampleUserReadModel);
+
+            context.Showtimes.Add(ExampleShowtimeReadModel);
 
             context.SaveChanges();
         }
