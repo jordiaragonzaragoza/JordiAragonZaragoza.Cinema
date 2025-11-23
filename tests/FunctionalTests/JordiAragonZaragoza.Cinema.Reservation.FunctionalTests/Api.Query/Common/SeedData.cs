@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common
 {
     using System;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
@@ -70,6 +71,17 @@
                 ExampleAuditorium.Id,
                 ExampleAuditorium.Name);
 
+        public static ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel
+            =>
+            ExampleAuditorium.Seats.Select(seat => new AvailableSeatReadModel(
+                id: Guid.NewGuid(),
+                seatId: seat.Id,
+                row: seat.Row,
+                seatNumber: seat.SeatNumber,
+                showtimeId: ExampleShowtime.Id,
+                auditoriumId: ExampleAuditorium.Id,
+                auditoriumName: ExampleAuditorium.Name)).ToList().AsReadOnly();
+
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
@@ -81,6 +93,8 @@
             context.Users.Add(ExampleUserReadModel);
 
             context.Showtimes.Add(ExampleShowtimeReadModel);
+
+            context.AvailableSeats.AddRange(ExampleAvailableSeatsReadModel);
 
             context.SaveChanges();
         }

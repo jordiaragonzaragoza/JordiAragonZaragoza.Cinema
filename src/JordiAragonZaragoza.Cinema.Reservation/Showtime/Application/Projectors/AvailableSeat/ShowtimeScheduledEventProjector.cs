@@ -46,13 +46,13 @@
             foreach (var seat in existingAuditorium.Seats)
             {
                 availableSeats.Add(new AvailableSeatReadModel(
-                    this.guidGenerator.Create(),
-                    seat.Id,
-                    seat.Row,
-                    seat.SeatNumber,
-                    @event.AggregateId,
-                    existingAuditorium.Id,
-                    existingAuditorium.Name));
+                    id: this.guidGenerator.Create(),
+                    seatId: seat.Id,
+                    row: seat.Row,
+                    seatNumber: seat.SeatNumber,
+                    showtimeId: @event.AggregateId,
+                    auditoriumId: existingAuditorium.Id,
+                    auditoriumName: existingAuditorium.Name));
             }
 
             await this.availableReadModelRepository.AddRangeAsync(availableSeats, cancellationToken);
