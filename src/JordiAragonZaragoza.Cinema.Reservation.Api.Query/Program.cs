@@ -4,6 +4,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
@@ -47,6 +48,10 @@
 
             // Configure Request Pipeline
             ConfigureWebApplication.UseWebApplicationConfigurations(app);
+
+            // TODO: Temporal. Apply migrations and seed data only in development environment until we have a proper aspire implementation.
+            MigrationsApplier.Initialize(app, builder.Environment.EnvironmentName == "Development");
+            ////SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }
