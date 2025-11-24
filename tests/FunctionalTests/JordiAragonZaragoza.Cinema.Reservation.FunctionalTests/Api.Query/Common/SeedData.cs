@@ -71,16 +71,41 @@
                 ExampleAuditorium.Id,
                 ExampleAuditorium.Name);
 
-        public static ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel
-            =>
-            ExampleAuditorium.Seats.Select(seat => new AvailableSeatReadModel(
-                id: Guid.NewGuid(),
-                seatId: seat.Id,
-                row: seat.Row,
-                seatNumber: seat.SeatNumber,
+        public static readonly Reservation ExampleReservation =
+            new(
+                id: new ReservationId(new Guid("d290f1ee-6c54-4b01-90e6-d701748f0851")),
+                userId: ExampleUser.Id,
+                seatIds: ExampleAuditorium.Seats.Take(3).Select(seat => seat.Id),
+                reservationDateOnUtc: ReservationDate.Create(DateTimeOffset.UtcNow));
+
+        public static ReservationReadModel ExampleReservationReadModel =>
+            new(
+                id: ExampleReservation.Id,
+                userId: ExampleUser.Id,
                 showtimeId: ExampleShowtime.Id,
-                auditoriumId: ExampleAuditorium.Id,
-                auditoriumName: ExampleAuditorium.Name)).ToList().AsReadOnly();
+                sessionDateOnUtc: ExampleShowtime.SessionDateOnUtc,
+                auditoriumName: ExampleAuditorium.Name,
+                movieTitle: ExampleMovie.Title,
+                seats: ExampleAuditorium.Seats.Take(3).Select(seat => new SeatReadModel(
+                    seat.Id,
+                    seat.Row,
+                    seat.SeatNumber)).ToList(),
+                isPurchased: false,
+                createdTimeOnUtc: DateTimeOffset.UtcNow);
+
+        public static ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel =>
+            ExampleAuditorium.Seats
+                .Where(seat => !ExampleReservation.Seats.Contains(seat.Id))
+                .Select(seat => new AvailableSeatReadModel(
+                    id: Guid.NewGuid(),
+                    seatId: seat.Id,
+                    row: seat.Row,
+                    seatNumber: seat.SeatNumber,
+                    showtimeId: ExampleShowtime.Id,
+                    auditoriumId: ExampleAuditorium.Id,
+                    auditoriumName: ExampleAuditorium.Name))
+                .ToList()
+                .AsReadOnly();
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
@@ -93,6 +118,8 @@
             context.Users.Add(ExampleUserReadModel);
 
             context.Showtimes.Add(ExampleShowtimeReadModel);
+
+            context.Reservations.AddRange(ExampleReservationReadModel);
 
             context.AvailableSeats.AddRange(ExampleAvailableSeatsReadModel);
 

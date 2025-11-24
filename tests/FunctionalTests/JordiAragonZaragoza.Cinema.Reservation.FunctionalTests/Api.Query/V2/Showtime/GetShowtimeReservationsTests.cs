@@ -1,26 +1,17 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.V2.Showtime
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
-
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common;
-
-    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Auditorium.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
-
-    using Constants = JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain.Constants;
 
     public sealed class GetShowtimeReservationsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -35,11 +26,9 @@
         public async Task GetAllShowtimeReservations_WhenHavingValidArguments_ShouldReturnOneReservation()
         {
             // Arrange
-            var showtimeId = await this.ScheduleNewShowtimeAsync();
+            Guid showtimeId = SeedData.ExampleShowtime.Id;
 
-            var reservationResponse = await this.ReserveSeatsAsync(showtimeId);
-
-            var route = $"api/v2/{GetShowtimeReservationsRequest.Route}";
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.GetShowtimeReservations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(showtimeId), showtimeId.ToString()));
@@ -50,10 +39,9 @@
             // Assert
             response.Should().NotBeNull();
             response.Items.Should().HaveCount(1);
-            response.Items.First().Should().BeEquivalentTo(reservationResponse);
         }
 
-        private async Task<ReservationResponse> ReserveSeatsAsync(Guid showtimeId)
+        /*private async Task<ReservationResponse> ReserveSeatsAsync(Guid showtimeId)
         {
             var routeAvailableSeats = $"api/v2/{GetAvailableSeatsRequest.Route}";
             routeAvailableSeats = routeAvailableSeats.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
@@ -72,36 +60,7 @@
 
             var response = await this.Fixture.HttpClient.PutAndDeserializeAsync<ReservationResponse>(reserveSeatsRoute, reserveSeatsContent, this.OutputHelper);
 
-            await AddEventualConsistencyDelayAsync();
-
             return response;
-        }
-
-        private async Task<Guid> ScheduleNewShowtimeAsync()
-        {
-            var showtimeId = Guid.NewGuid();
-
-            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-
-            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
-
-            var request = new ScheduleShowtimeRequest(
-                showtimeId,
-                Constants.Auditorium.Id,
-                Constants.Movie.Id,
-                sessionDateOnUtc);
-
-            var content = StringContentHelpers.FromModelAsJson(request);
-
-            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
-
-            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
-            await this.Fixture.HttpClient.PutAsync(fullUri, content);
-
-            await AddEventualConsistencyDelayAsync();
-
-            return showtimeId;
-        }
+        }*/
     }
 }

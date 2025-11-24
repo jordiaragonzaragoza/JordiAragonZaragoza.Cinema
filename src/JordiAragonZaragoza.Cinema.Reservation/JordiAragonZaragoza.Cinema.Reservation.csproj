@@ -23,6 +23,7 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.UnitTests" />
 		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.TestUtilities" />
+		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.FunctionalTests" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
