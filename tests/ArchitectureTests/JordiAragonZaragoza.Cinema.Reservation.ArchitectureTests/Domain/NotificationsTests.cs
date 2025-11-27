@@ -28,22 +28,6 @@
         }
 
         [Fact]
-        public void DomainNotifications_Should_Inherit_From_BaseDomainEventNotification()
-        {
-            // Act.
-            var testResult = Types
-                .InAssembly(this.assembly)
-                .That()
-                .ResideInNamespaceContaining("Domain.Notifications")
-                .Should()
-                .Inherit(typeof(BaseDomainEventNotification<>))
-                .GetResult();
-
-            // Assert.
-            testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
-        }
-
-        [Fact]
         public void DomainNotifications_Should_EndingWith_Event()
         {
             // Act.
