@@ -13,9 +13,10 @@
 
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class ReserveSeatsController : BaseApiCommandController
     {
-        [HttpPost(ShowtimeRoutes.ReserveSeats)]
+        [HttpPut(ShowtimeRoutes.ReserveSeats)]
         [SwaggerOperation(
             Summary = "Reserve Seats for an existing Showtime",
             Description = "Reserve Seats for an existing Showtime",

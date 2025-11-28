@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.Common
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common
 {
     using System;
     using System.Net.Http;
@@ -9,23 +9,22 @@
     using Microsoft.Extensions.Logging;
     using Npgsql;
     using Respawn;
+    using Testcontainers.KurrentDb;
+
     using Testcontainers.PostgreSql;
     using Xunit;
 
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
-        private readonly PostgreSqlContainer readModelStoreContainer =
-            new PostgreSqlBuilder()
-            .WithImage("postgres:15-alpine")
-            .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.api.query")
+        private readonly KurrentDbContainer businessModelStoreContainer =
+            new KurrentDbBuilder()
+            .WithImage("25.1.0-experimental-arm64-8.0-jammy")
+            .WithName("kurrentdb.cinema.reservation.eventstore.functionaltests.api.command")
             .WithAutoRemove(true).Build();
 
-        private NpgsqlConnection readModelStoreConnection = default!;
-        private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;
-        private IServiceScopeFactory scopeFactory = default!;
-        private Respawner readModelStoreRespawner = default!;
-        private bool disposedValue;
+        ////private NpgsqlConnection readModelStoreConnection = default!;
+        private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;        private bool disposedValue;
 
         public HttpClient HttpClient { get; private set; } = default!;
 
@@ -56,7 +55,7 @@
         public async Task DisposeAsync()
         {
             await this.readModelStoreConnection.DisposeAsync();
-            await this.readModelStoreContainer.DisposeAsync();
+            await this.businessModelStoreContainer.DisposeAsync();
         }
 
         public void Dispose()
@@ -82,13 +81,13 @@
 
         private async Task StartDbsConnectionAsync()
         {
-            await this.readModelStoreContainer.StartAsync();
+            await this.businessModelStoreContainer.StartAsync();
 
-            this.readModelStoreConnection = new NpgsqlConnection(this.readModelStoreContainer.GetConnectionString());
+            this.readModelStoreConnection = new NpgsqlConnection(this.businessModelStoreContainer.GetConnectionString());
             await this.readModelStoreConnection.OpenAsync();
         }
 
-        private async Task InitReadModelStoreDatabaseAsync()
+        /*private async Task InitReadModelStoreDatabaseAsync()
         {
             using var readModelScope = this.scopeFactory.CreateScope();
             var readContext = readModelScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
@@ -110,6 +109,6 @@
 
                 throw;
             }
-        }
+        }*/
     }
 }

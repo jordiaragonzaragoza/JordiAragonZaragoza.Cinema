@@ -12,6 +12,7 @@
 
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("1.0", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/")]
     public sealed class PurchaseReservationController : BaseApiCommandController
     {
         [HttpPatch(AuditoriumRoutes.PurchaseReservation)]
