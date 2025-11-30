@@ -102,6 +102,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1.csproj", "{AD431BE5-BF5E-470F-806D-E09798C8B427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator", "src\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.csproj", "{48ACB012-FED9-4249-AA36-B499105C7613}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -480,6 +482,18 @@ Global
 		{AD431BE5-BF5E-470F-806D-E09798C8B427}.Release|x64.Build.0 = Release|Any CPU
 		{AD431BE5-BF5E-470F-806D-E09798C8B427}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD431BE5-BF5E-470F-806D-E09798C8B427}.Release|x86.Build.0 = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|x64.Build.0 = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Debug|x86.Build.0 = Debug|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|x64.ActiveCfg = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|x64.Build.0 = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|x86.ActiveCfg = Release|Any CPU
+		{48ACB012-FED9-4249-AA36-B499105C7613}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -520,6 +534,7 @@ Global
 		{82917A2D-DCDA-48CB-BA50-D852862CBD05} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
 		{D186C08B-E378-408A-B02B-9C662DBF09A6} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
 		{AD431BE5-BF5E-470F-806D-E09798C8B427} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
+		{48ACB012-FED9-4249-AA36-B499105C7613} = {E1CD4071-F9FA-4575-A746-BC5F572AA12F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82D7CB3-8FCC-470B-8AB9-2932F59BF4D9}
