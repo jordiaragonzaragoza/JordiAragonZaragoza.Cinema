@@ -10,13 +10,13 @@ namespace JordiAragonZaragoza.Cinema
         {
             var builder = DistributedApplication.CreateBuilder(args);
 
-            var kurrentdb = builder.AddKurrentDB(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore, 22113)
+            var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore, 22113)
                                    .WithImageRegistry("docker.io")
                                    .WithImage("kurrentplatform/kurrentdb", "25.1.0-experimental-arm64-8.0-jammy")
                                    ////.WithDataVolume()
                                    .WithDataBindMount("../../containers/kurrentdb/data");
 
-            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.JordiAragonZaragozaCinemaReservationApiCommand)
+            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
                      .WithReference(kurrentdb)
                      .WaitFor(kurrentdb);
 
@@ -26,11 +26,15 @@ namespace JordiAragonZaragoza.Cinema
                                         ////.WithDataVolume()
                                         .WithPgAdmin();
 
-            var reservationReadModelDb = postgresServer.AddDatabase(Constants.JordiAragonZaragozaCinemaReservationReadModelStore);
+            var reservationReadModelDb = postgresServer.AddDatabase(Constants.ReservationReadModelStore);
 
-            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.JordiAragonZaragozaCinemaReservationApiQuery)
+            var reservationWorkerReadModelMigrator = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator>(Constants.ReservationWorkerReadModelMigrator)
+                                                          .WithReference(reservationReadModelDb)
+                                                          .WaitFor(postgresServer);
+
+            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)
-                     .WaitFor(postgresServer);
+                     .WaitForCompletion(reservationWorkerReadModelMigrator);
 
                      /*var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
                                    .WithDataBindMount("../../containers/seq/data")

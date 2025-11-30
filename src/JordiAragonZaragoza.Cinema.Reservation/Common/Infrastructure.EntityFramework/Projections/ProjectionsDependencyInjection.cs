@@ -17,7 +17,7 @@
         {
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.JordiAragonZaragozaCinemaReservationReadModelStore))
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.ReservationReadModelStore))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);

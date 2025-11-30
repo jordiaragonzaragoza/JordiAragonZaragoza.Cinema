@@ -4,6 +4,16 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
+            </summary>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query">
             <summary>
             Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
@@ -14,14 +24,14 @@
             The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
             </summary>
         </member>
-        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator">
             <summary>
-            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.
             </summary>
         </member>
-        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command.ProjectPath">
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator.ProjectPath">
             <summary>
-            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.
             </summary>
         </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema">

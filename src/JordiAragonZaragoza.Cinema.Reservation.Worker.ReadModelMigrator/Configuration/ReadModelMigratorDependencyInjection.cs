@@ -15,7 +15,7 @@
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(
-                                    configuration.GetConnectionString(Constants.JordiAragonZaragozaCinemaReservationReadModelStore),
+                                    configuration.GetConnectionString(Constants.ReservationReadModelStore),
                                     options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly))
                                     .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 

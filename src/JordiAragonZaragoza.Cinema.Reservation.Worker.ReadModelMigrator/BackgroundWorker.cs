@@ -54,7 +54,6 @@
             }
             catch (Exception exception)
             {
-                ////this.logger.LogError(exception, "Error during read model migration");
                 activity?.AddException(exception);
                 throw;
             }

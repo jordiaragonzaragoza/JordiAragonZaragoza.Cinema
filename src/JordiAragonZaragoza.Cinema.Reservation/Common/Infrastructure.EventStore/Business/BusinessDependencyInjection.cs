@@ -22,7 +22,7 @@
 
         public static IHostApplicationBuilder AddInfrastructureEventStoreDbBusiness(this IHostApplicationBuilder builder)
         {
-            builder.AddKurrentDBClient(Constants.JordiAragonZaragozaCinemaReservationBusinessModelStore);
+            builder.AddKurrentDBClient(Constants.ReservationBusinessModelStore);
 
             return builder;
         }

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Npgsql;
@@ -96,6 +97,7 @@
 
             try
             {
+                await readContext.Database.MigrateAsync();
                 SeedData.PopulateReadModelTestData(readContext);
 
                 this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions

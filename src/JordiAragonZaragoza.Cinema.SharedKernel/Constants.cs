@@ -6,12 +6,14 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string SeqServer = "SeqServer";
 
-        public const string JordiAragonZaragozaCinemaReservationApiCommand = "JordiAragonZaragozaCinemaReservationApiCommand";
+        public const string ReservationApiCommand = "ReservationApiCommand";
 
-        public const string JordiAragonZaragozaCinemaReservationApiQuery = "JordiAragonZaragozaCinemaReservationApiQuery";
+        public const string ReservationApiQuery = "ReservationApiQuery";
 
-        public const string JordiAragonZaragozaCinemaReservationBusinessModelStore = "JordiAragonZaragozaCinemaReservationBusinessModelStore";
+        public const string ReservationWorkerReadModelMigrator = "ReservationWorkerReadModelMigrator";
 
-        public const string JordiAragonZaragozaCinemaReservationReadModelStore = "JordiAragonZaragozaCinemaReservationReadModelStore";
+        public const string ReservationBusinessModelStore = "ReservationBusinessModelStore";
+
+        public const string ReservationReadModelStore = "ReservationReadModelStore";
     }
 }
