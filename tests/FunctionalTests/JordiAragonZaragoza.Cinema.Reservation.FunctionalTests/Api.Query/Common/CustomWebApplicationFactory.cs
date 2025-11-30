@@ -3,6 +3,7 @@
     using System;
     using System.Data.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
@@ -41,7 +42,9 @@
                     .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
                     .AddDbContext<ReservationReadModelContext>((options) =>
                     {
-                        options.UseNpgsql(this.readModelStoreConnection);
+                        options.UseNpgsql(
+                            this.readModelStoreConnection,
+                            options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly));
                         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
             });

@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -76,7 +77,9 @@
         {
             // Create a new options instance telling the context to use an
             var builder = new DbContextOptionsBuilder<ReservationReadModelContext>();
-            builder.UseNpgsql(this.readModelStoreConnection);
+            builder.UseNpgsql(
+                this.readModelStoreConnection,
+                options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly));
 
             return builder.Options;
         }
