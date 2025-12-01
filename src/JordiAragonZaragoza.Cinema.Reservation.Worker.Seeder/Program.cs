@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.Configuration;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -18,19 +19,18 @@
             ConfigurationManager configuration = builder.Configuration;
 
             builder.AddInfrastructure();
+            builder.AddInfrastructureEventStoreDbBusiness();
 
             // Configure specific Host Services (DI)
             builder.Services
                 .AddHostedService<BackgroundWorker>()
-                .AddInfrastructureEntityFrameworkMigrations(configuration)
+                .AddInfrastructureEventStoreSeeder()
                 .AddHostConfigurations(configuration);
-
-            builder.AddInfrastructureEntityFrameworkMigrations();
 
             IHost app = builder.Build();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
-            logger.LogDebug("Read Model Migrator Host created...");
+            logger.LogDebug("Seeder Host created...");
 
             await app.RunAsync();
         }

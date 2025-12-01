@@ -34,6 +34,16 @@
             The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.
             </summary>
         </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder project.
+            </summary>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema">
             <summary>
             Metadata for the Aspire Host project.

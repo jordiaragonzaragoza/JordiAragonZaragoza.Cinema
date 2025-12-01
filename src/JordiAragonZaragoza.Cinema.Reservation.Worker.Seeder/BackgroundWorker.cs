@@ -4,8 +4,7 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
-    using Microsoft.EntityFrameworkCore;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -44,13 +43,13 @@
             try
             {
                 using var scope = this.serviceProvider.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+                var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
 
-                this.logger.LogInformation("Starting migration of the read model");
+                this.logger.LogInformation("Starting seeding data on business model");
 
-                await RunMigrationAsync(dbContext, stoppingToken);
+                await SeedData.PopulateBusinessModelTestDataAsync(eventStore, stoppingToken);
 
-                this.logger.LogInformation("Migration completed successfully");
+                this.logger.LogInformation("Data seeding completed successfully");
             }
             catch (Exception exception)
             {
@@ -59,30 +58,6 @@
             }
 
             this.hostApplicationLifetime.StopApplication();
-        }
-
-        private static async Task RunMigrationAsync(ReservationReadModelContext dbContext, CancellationToken cancellationToken)
-        {
-            var strategy = dbContext.Database.CreateExecutionStrategy();
-            await strategy.ExecuteAsync(async () =>
-            {
-                await dbContext.Database.MigrateAsync(cancellationToken);
-            });
-
-            /*await strategy.ExecuteAsync(
-                state: 0,
-                operation: async (context, state, ct) =>
-                {
-                    await context.Database.MigrateAsync(ct);
-                    return 0;
-                },
-                verifySucceeded: async (context, state, ct) =>
-                {
-                    var canConnect = await context.Database.CanConnectAsync(ct);
-                    return new ExecutionResult<int>(canConnect, canConnect ? 0 : -1);
-                },
-                cancellationToken: cancellationToken);
-                }*/
         }
     }
 }

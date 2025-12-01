@@ -3,6 +3,8 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
@@ -16,6 +18,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
 
     public static class SeedData
     {
@@ -112,8 +115,8 @@
 
         public static readonly ReservedSeatsEvent ExampleReservedSeatsEvent =
             new(
+                ExampleShowtime.Id,
                 ExampleReservation.Id,
-                new Guid("10429528-46d2-4353-9c35-ede2c869a3fb"),
                 ExampleReservation.UserId,
                 ExampleReservation.Seats.Select(seatId => seatId.Value),
                 ExampleReservation.ReservationDateOnUtc);
@@ -164,6 +167,59 @@
             context.AvailableSeats.AddRange(ExampleAvailableSeatsReadModel);
 
             context.SaveChanges();
+        }
+
+        public static async Task PopulateBusinessModelTestDataAsync(
+            IEventStore eventStore,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(eventStore, nameof(eventStore));
+
+            var hasExistingData = await HasExistingDataAsync(eventStore, cancellationToken);
+            if (hasExistingData)
+            {
+                return;
+            }
+
+            eventStore.AppendChanges<Movie, MovieId>(ExampleMovie);
+            eventStore.AppendChanges<Auditorium, AuditoriumId>(ExampleAuditorium);
+            eventStore.AppendChanges<User, UserId>(ExampleUser);
+
+            ExampleShowtime.ReserveSeats(
+                ExampleReservation.Id,
+                ExampleReservation.UserId,
+                ExampleReservation.Seats,
+                ExampleReservation.ReservationDateOnUtc);
+
+            eventStore.AppendChanges<Showtime, ShowtimeId>(ExampleShowtime);
+
+            await eventStore.SaveChangesAsync(cancellationToken);
+        }
+
+        private static async Task<bool> HasExistingDataAsync(IEventStore eventStore, CancellationToken cancellationToken)
+        {
+            var existingMovie = await eventStore.LoadAggregateAsync<Movie, MovieId>(
+                                ExampleMovie.Id,
+                                cancellationToken);
+
+            var existingAuditorium = await eventStore.LoadAggregateAsync<Auditorium, AuditoriumId>(
+                ExampleAuditorium.Id,
+                cancellationToken);
+
+            var existingUser = await eventStore.LoadAggregateAsync<User, UserId>(
+                ExampleUser.Id,
+                cancellationToken);
+
+            var existingShowtime = await eventStore.LoadAggregateAsync<Showtime, ShowtimeId>(
+                ExampleShowtime.Id,
+                cancellationToken);
+
+            if (existingMovie != null || existingAuditorium != null || existingUser != null || existingShowtime != null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

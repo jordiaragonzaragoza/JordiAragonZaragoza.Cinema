@@ -10,6 +10,8 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string ReservationApiQuery = "ReservationApiQuery";
 
+        public const string ReservationWorkerSeeder = "ReservationWorkerSeeder";
+
         public const string ReservationWorkerReadModelMigrator = "ReservationWorkerReadModelMigrator";
 
         public const string ReservationBusinessModelStore = "ReservationBusinessModelStore";
