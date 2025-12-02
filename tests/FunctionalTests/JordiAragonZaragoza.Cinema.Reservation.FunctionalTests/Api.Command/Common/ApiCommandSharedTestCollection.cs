@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common
 {
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
 
     using Xunit;
 

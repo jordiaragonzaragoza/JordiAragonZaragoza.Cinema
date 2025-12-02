@@ -2,29 +2,29 @@
 {
     using System;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Npgsql;
-    using Respawn;
     using Testcontainers.KurrentDb;
-
-    using Testcontainers.PostgreSql;
     using Xunit;
 
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
-        private readonly KurrentDbContainer businessModelStoreContainer =
+        private readonly KurrentDbContainer eventStoreContainer =
             new KurrentDbBuilder()
-            .WithImage("25.1.0-experimental-arm64-8.0-jammy")
+            .WithImage("kurrentplatform/kurrentdb:25.1.0-experimental-arm64-8.0-jammy")
             .WithName("kurrentdb.cinema.reservation.eventstore.functionaltests.api.command")
             .WithAutoRemove(true).Build();
 
-        ////private NpgsqlConnection readModelStoreConnection = default!;
-        private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;        private bool disposedValue;
+        private string eventStoreConnection = default!;
+        private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;
+        private IServiceScopeFactory scopeFactory = default!;
+        private bool disposedValue;
 
         public HttpClient HttpClient { get; private set; } = default!;
 
@@ -32,7 +32,7 @@
         {
             await this.StartDbsConnectionAsync();
 
-            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.readModelStoreConnection);
+            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.eventStoreConnection);
 
             this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
@@ -42,20 +42,23 @@
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
 
-        public async Task InitDatabaseAsync()
+        public async Task InitDatabaseAsync(CancellationToken cancellationToken = default)
         {
-            await this.InitReadModelStoreDatabaseAsync();
+            await this.InitEventStoreDatabaseAsync(cancellationToken);
         }
 
         public async Task ResetDatabaseAsync()
         {
-            await this.readModelStoreRespawner.ResetAsync(this.readModelStoreConnection);
+            // TODO: Implement reset logic
+            ////await this.readModelStoreRespawner.ResetAsync(this.eventStoreConnection);
+
+            await Task.CompletedTask;
         }
 
         public async Task DisposeAsync()
         {
-            await this.readModelStoreConnection.DisposeAsync();
-            await this.businessModelStoreContainer.DisposeAsync();
+            ////await this.eventStoreConnection.DisposeAsync();
+            await this.eventStoreContainer.DisposeAsync();
         }
 
         public void Dispose()
@@ -81,34 +84,32 @@
 
         private async Task StartDbsConnectionAsync()
         {
-            await this.businessModelStoreContainer.StartAsync();
-
-            this.readModelStoreConnection = new NpgsqlConnection(this.businessModelStoreContainer.GetConnectionString());
-            await this.readModelStoreConnection.OpenAsync();
+            await this.eventStoreContainer.StartAsync();
+            this.eventStoreConnection = this.eventStoreContainer.GetConnectionString();
+            ////this.eventStoreConnection = new NpgsqlConnection(this.eventStoreContainer.GetConnectionString());
+            ////await this.eventStoreConnection.OpenAsync();
         }
 
-        /*private async Task InitReadModelStoreDatabaseAsync()
+        private async Task InitEventStoreDatabaseAsync(CancellationToken stoppingToken = default)
         {
             using var readModelScope = this.scopeFactory.CreateScope();
-            var readContext = readModelScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            var eventStore = readModelScope.ServiceProvider.GetRequiredService<IEventStore>();
             var logger = readModelScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
 
             try
             {
-                SeedData.PopulateReadModelTestData(readContext);
+                logger.LogInformation("Starting seeding data on business model");
 
-                this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
-                {
-                    DbAdapter = DbAdapter.Postgres,
-                    TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
-                });
+                await SeedData.PopulateBusinessModelTestDataAsync(eventStore, stoppingToken);
+
+                logger.LogInformation("Data seeding completed successfully");
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "An error occurred seeding the read model database with test data. Error: {ExceptionMessage}", exception.Message);
+                logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {ExceptionMessage}", exception.Message);
 
                 throw;
             }
-        }*/
+        }
     }
 }

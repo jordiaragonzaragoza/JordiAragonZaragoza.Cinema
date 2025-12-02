@@ -1,12 +1,10 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common
 {
     using System;
-    using System.Data.Common;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using KurrentDB.Client;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
@@ -14,12 +12,12 @@
     public sealed class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
         where TProgram : class
     {
-        private readonly DbConnection readModelStoreConnection;
+        private readonly string eventStoreConnection;
 
         public CustomWebApplicationFactory(
-            DbConnection readModelStoreConnection)
+            string eventStoreConnection)
         {
-            this.readModelStoreConnection = readModelStoreConnection;
+            this.eventStoreConnection = eventStoreConnection;
         }
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -37,13 +35,13 @@
         {
             builder.ConfigureTestServices(services =>
             {
-                services
-                    .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
-                    .AddDbContext<ReservationReadModelContext>((options) =>
-                    {
-                        options.UseNpgsql(this.readModelStoreConnection);
-                        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                    });
+                services.RemoveAll<KurrentDBClient>();
+
+                services.AddSingleton<KurrentDBClient>(_ =>
+                {
+                    var clientSettings = KurrentDBClientSettings.Create(this.eventStoreConnection);
+                    return new KurrentDBClient(clientSettings);
+                });
             });
         }
     }

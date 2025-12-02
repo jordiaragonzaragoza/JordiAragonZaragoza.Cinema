@@ -4,7 +4,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.Configuration;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -16,7 +15,7 @@
         {
             HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-            ConfigurationManager configuration = builder.Configuration;
+            var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
             builder.AddInfrastructureEventStoreDbBusiness();

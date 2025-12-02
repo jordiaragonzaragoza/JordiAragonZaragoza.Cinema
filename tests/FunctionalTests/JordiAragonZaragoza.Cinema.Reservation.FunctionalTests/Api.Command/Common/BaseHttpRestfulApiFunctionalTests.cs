@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using Xunit;
     using Xunit.Abstractions;
 

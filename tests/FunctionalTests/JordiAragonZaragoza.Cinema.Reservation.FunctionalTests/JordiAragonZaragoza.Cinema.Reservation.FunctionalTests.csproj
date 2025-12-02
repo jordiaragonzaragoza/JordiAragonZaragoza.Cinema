@@ -33,17 +33,9 @@
 	</ItemGroup>
 	<ItemGroup>
       <!-- TODO: Temporal. Remove it-->
-	  <Compile Remove="Api.Command\Common\ApiCommandSharedTestCollection.cs" />
-	  <Compile Remove="Api.Command\Common\BaseHttpRestfulApiFunctionalTests.cs" />
-	  <Compile Remove="Api.Command\Common\CustomWebApplicationFactory.cs" />
-	  <Compile Remove="Api.Command\Common\EndpointRouteHelpers.cs" />
-	  <Compile Remove="Api.Command\Common\FunctionalTestsFixture.cs" />
-	  <Compile Remove="Api.Command\Common\SeedData.cs" />
-	  
 	  <Compile Remove="Api.Command\V2\Showtime\CancelShowtimeTests.cs" />
 	  <Compile Remove="Api.Command\V2\Showtime\PurchaseReservationTests.cs" />
 	  <Compile Remove="Api.Command\V2\Showtime\ReserveSeatsTests.cs" />
-	  <Compile Remove="Api.Command\V2\Showtime\ScheduleShowtimeTests.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />

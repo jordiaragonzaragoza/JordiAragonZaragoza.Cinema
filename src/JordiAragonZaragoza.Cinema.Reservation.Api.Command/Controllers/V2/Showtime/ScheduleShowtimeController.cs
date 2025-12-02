@@ -1,6 +1,5 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V2.Showtime
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
@@ -22,7 +21,7 @@
             Description = "Schedule a new Showtime",
             OperationId = "Showtime.ScheduleShowtime.V2")
         ]
-        public async Task<ActionResult<Guid>> ScheduleShowtimeAsync(ScheduleShowtimeRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult> ScheduleShowtimeAsync(ScheduleShowtimeRequest request, CancellationToken cancellationToken)
         {
             var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(), cancellationToken);
 
