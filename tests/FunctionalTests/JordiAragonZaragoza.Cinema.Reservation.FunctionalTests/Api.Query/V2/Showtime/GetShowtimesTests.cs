@@ -13,6 +13,8 @@
     using Xunit;
     using Xunit.Abstractions;
 
+    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+
     public sealed class GetShowtimesTests : BaseHttpRestfulApiFunctionalTests
     {
         public GetShowtimesTests(

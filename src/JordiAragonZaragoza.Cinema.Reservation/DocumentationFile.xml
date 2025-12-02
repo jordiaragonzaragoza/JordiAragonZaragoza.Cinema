@@ -4,10 +4,5 @@
         <name>JordiAragonZaragoza.Cinema.Reservation</name>
     </assembly>
     <members>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.SeedData">
-            <summary>
-            Seeds the database. This file should only be used in the development environment.
-            </summary>
-        </member>
     </members>
 </doc>

@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.V2.User
 {
     using System;
-
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
@@ -13,6 +12,8 @@
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit;
     using Xunit.Abstractions;
+
+    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
 
     public sealed class GetUserReservationsTests : BaseHttpRestfulApiFunctionalTests
     {

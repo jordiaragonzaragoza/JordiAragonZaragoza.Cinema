@@ -48,6 +48,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query\JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.csproj" />
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.csproj" />
 	  <ProjectReference Include="..\..\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>

@@ -3,7 +3,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
