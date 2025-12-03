@@ -4,11 +4,15 @@
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation;
-    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Presentation.HttpRestfulApi.Common;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common;
     using Xunit;
     using Xunit.Abstractions;
+
+    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
 
     public sealed class CancelShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -25,7 +29,7 @@
             // Arrange
             var showtimeId = await this.CreateNewShowtimeAsync();
 
-            var route = $"api/v2/{CancelShowtimeRequest.Route}";
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.CancelShowtime}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
@@ -34,73 +38,16 @@
             this.OutputHelper.WriteLine($"Requesting with DELETE {route}");
             var response = await this.Fixture.HttpClient.DeleteAsync(fullUri);
 
-            await AddEventualConsistencyDelayAsync();
-
             // Assert
             response.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NoContent);
-
-            await this.TestProjectionsAsync(showtimeId);
-        }
-
-        private async Task TestProjectionsAsync(Guid showtimeId)
-        {
-            await this.GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
-
-            await this.GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
-
-            await this.GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(showtimeId);
-        }
-
-        private async Task GetShowtime_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
-        {
-            // Arrange
-            var getShowtimeRoute = $"api/v2/{GetShowtimeRequest.Route}";
-            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
-                getShowtimeRoute,
-                (nameof(showtimeId), showtimeId.ToString()));
-
-            // Act
-            var showtimeResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(uri.PathAndQuery, this.OutputHelper);
-
-            // Assert
-            showtimeResponse.StatusCode.Should()
-                .Be(System.Net.HttpStatusCode.NotFound);
-        }
-
-        private async Task GetAvailableSeats_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
-        {
-            // Arrange
-            var route = $"api/v2/{GetAvailableSeatsRequest.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-
-            // Act
-            var availableSeatsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
-
-            // Assert
-            availableSeatsResponse.StatusCode.Should()
-                .Be(System.Net.HttpStatusCode.NotFound);
-        }
-
-        private async Task GetShowtimeReservations_WhenShowtimeCanceled_ShouldReturnNotFound(Guid showtimeId)
-        {
-            // Arrange
-            var route = $"api/v2/{GetShowtimeReservationsRequest.Route}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-
-            // Act
-            var showtimeReservationsResponse = await this.Fixture.HttpClient.GetAndEnsureNotFoundAsync(route, this.OutputHelper);
-
-            // Assert
-            showtimeReservationsResponse.StatusCode.Should()
-                .Be(System.Net.HttpStatusCode.NotFound);
         }
 
         private async Task<Guid> CreateNewShowtimeAsync()
         {
             var showtimeId = Guid.NewGuid();
 
-            var route = $"api/v2/{ScheduleShowtimeRequest.Route}";
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
@@ -117,8 +64,6 @@
 
             this.OutputHelper.WriteLine($"Requesting with PUT {route}");
             await this.Fixture.HttpClient.PutAsync(fullUri, content);
-
-            await AddEventualConsistencyDelayAsync();
 
             return showtimeId;
         }

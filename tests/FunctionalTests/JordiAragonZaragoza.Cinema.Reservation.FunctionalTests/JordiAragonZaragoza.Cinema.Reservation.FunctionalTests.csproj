@@ -33,7 +33,6 @@
 	</ItemGroup>
 	<ItemGroup>
       <!-- TODO: Temporal. Remove it-->
-	  <Compile Remove="Api.Command\V2\Showtime\CancelShowtimeTests.cs" />
 	  <Compile Remove="Api.Command\V2\Showtime\PurchaseReservationTests.cs" />
 	  <Compile Remove="Api.Command\V2\Showtime\ReserveSeatsTests.cs" />
 	</ItemGroup>

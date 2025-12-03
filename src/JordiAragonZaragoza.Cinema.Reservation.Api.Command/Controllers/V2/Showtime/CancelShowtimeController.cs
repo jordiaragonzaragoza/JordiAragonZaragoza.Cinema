@@ -22,7 +22,7 @@
             Description = "Cancels a scheduled Showtime",
             OperationId = "Showtime.CancelShowtime.V2")
         ]
-        public async Task<ActionResult> CancelShowtimeAsync(CancelShowtimeRequest request, CancellationToken ct)
+        public async Task<ActionResult> CancelShowtimeAsync([FromRoute] CancelShowtimeRequest request, CancellationToken ct)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
