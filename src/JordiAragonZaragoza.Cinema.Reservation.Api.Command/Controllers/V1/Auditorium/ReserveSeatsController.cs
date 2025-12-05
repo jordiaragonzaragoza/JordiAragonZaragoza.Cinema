@@ -23,12 +23,16 @@
             Description = "Reserve Seats for an existing Showtime",
             OperationId = "Auditorium.ReserveSeats.V1")
         ]
-        public async Task<ActionResult<ReservationResponse>> ReserveSeatsAsync(ReserveSeatsRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<ReservationResponse>> ReserveSeatsAsync(
+            [FromRoute] Guid auditoriumId,
+            [FromRoute] Guid showtimeId,
+            [FromBody] ReserveSeatsBodyRequest request,
+            CancellationToken cancellationToken)
         {
             // This generated Id is done here to support compatibility with the current implementation which client provides the Id.
             var reservationId = Guid.NewGuid();
 
-            var resultOutputDto = await this.CommandBus.SendAsync(request.ToCommand(reservationId), cancellationToken);
+            var resultOutputDto = await this.CommandBus.SendAsync(request.ToCommand(reservationId, showtimeId), cancellationToken);
 
             var resultResponse = resultOutputDto.ToResponse();
 

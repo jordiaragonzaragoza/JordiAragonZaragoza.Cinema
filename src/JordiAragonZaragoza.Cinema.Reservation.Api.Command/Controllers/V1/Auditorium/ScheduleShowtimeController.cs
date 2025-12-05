@@ -23,12 +23,15 @@
             Description = "Schedule a new Showtime",
             OperationId = "Auditorium.ScheduleShowtime.V1")
         ]
-        public async Task<ActionResult<Guid>> ScheduleShowtimeAsync(ScheduleShowtimeRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<Guid>> ScheduleShowtimeAsync(
+            [FromRoute] Guid auditoriumId,
+            [FromBody] ScheduleShowtimeBodyRequest request,
+            CancellationToken cancellationToken)
         {
             // This generated id is done here to support compatibility with the current implementation which client provides the Id.
             var showtimeId = Guid.NewGuid();
 
-            var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(showtimeId), cancellationToken);
+            var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(showtimeId, auditoriumId), cancellationToken);
 
             if (resultResponse.IsSuccess)
             {

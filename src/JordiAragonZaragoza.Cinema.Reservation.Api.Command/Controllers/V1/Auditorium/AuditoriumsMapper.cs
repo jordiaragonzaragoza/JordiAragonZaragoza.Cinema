@@ -12,33 +12,24 @@
     public static class AuditoriumsMapper
     {
         // Requests to queries or commands.
-        public static ScheduleShowtimeCommand ToCommand(this ScheduleShowtimeRequest request, Guid showtimeId)
+        public static ScheduleShowtimeCommand ToCommand(this ScheduleShowtimeBodyRequest request, Guid showtimeId, Guid auditoriumId)
         {
             ArgumentNullException.ThrowIfNull(request);
 
             return new ScheduleShowtimeCommand(
                 showtimeId,
-                AuditoriumId: request.AuditoriumId,
+                AuditoriumId: auditoriumId,
                 MovieId: request.MovieId,
                 SessionDateOnUtc: request.SessionDateOnUtc);
         }
 
-        public static PurchaseReservationCommand ToCommand(this PurchaseReservationRequest request)
-        {
-            ArgumentNullException.ThrowIfNull(request);
-
-            return new PurchaseReservationCommand(
-                request.ShowtimeId,
-                request.ReservationId);
-        }
-
-        public static ReserveSeatsCommand ToCommand(this ReserveSeatsRequest request, Guid reservationId)
+        public static ReserveSeatsCommand ToCommand(this ReserveSeatsBodyRequest request, Guid reservationId, Guid showtimeId)
         {
             ArgumentNullException.ThrowIfNull(request);
 
             return new ReserveSeatsCommand(
                 reservationId,
-                request.ShowtimeId,
+                showtimeId,
                 request.SeatsIds);
         }
 
