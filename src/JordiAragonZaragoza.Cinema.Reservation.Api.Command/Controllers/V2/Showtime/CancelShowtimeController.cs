@@ -4,7 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
@@ -22,11 +22,9 @@
             Description = "Cancels a scheduled Showtime",
             OperationId = "Showtime.CancelShowtime.V2")
         ]
-        public async Task<ActionResult> CancelShowtimeAsync([FromRoute] CancelShowtimeRequest request, CancellationToken ct)
+        public async Task<ActionResult> CancelShowtimeAsync([FromRoute] Guid showtimeId, CancellationToken ct)
         {
-            ArgumentNullException.ThrowIfNull(request, nameof(request));
-
-            var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(), ct);
+            var resultResponse = await this.CommandBus.SendAsync(new CancelShowtimeCommand(showtimeId), ct);
 
             return this.ToActionResult(resultResponse);
         }

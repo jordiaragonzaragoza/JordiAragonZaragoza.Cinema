@@ -1,9 +1,10 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V2.Showtime
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
     using Microsoft.AspNetCore.Authorization;
@@ -17,15 +18,20 @@
     {
         [HttpPatch(ShowtimeRoutes.PurchaseReservation)]
         [SwaggerOperation(
-            Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration.",
+            Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration. It will be implemented using integration events.",
             Description = "Purchase a reservation for an existing Showtime",
             OperationId = "Showtime.PurchaseReservation.V2")
         ]
         public async Task<ActionResult> PurchaseReservationAsync(
-            PurchaseReservationRequest request,
+            [FromRoute] Guid showtimeId,
+            [FromRoute] Guid reservationId,
             CancellationToken cancellationToken)
         {
-            var result = await this.CommandBus.SendAsync(request.ToCommand(), cancellationToken);
+            var command = new PurchaseReservationCommand(
+                showtimeId,
+                reservationId);
+
+            var result = await this.CommandBus.SendAsync(command, cancellationToken);
 
             return this.ToActionResult(result);
         }

@@ -1,5 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V2.Showtime
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
@@ -22,9 +23,13 @@
             Description = "Reserve Seats for an existing Showtime",
             OperationId = "Showtime.ReserveSeats.V2")
         ]
-        public async Task<ActionResult<ReservationResponse>> ReserveSeatsAsync(ReserveSeatsRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<ReservationResponse>> ReserveSeatsAsync(
+            [FromRoute] Guid showtimeId,
+            [FromRoute] Guid reservationId,
+            [FromBody] ReserveSeatsBodyRequest request,
+            CancellationToken cancellationToken)
         {
-            var resultOutputDto = await this.CommandBus.SendAsync(request.ToCommand(), cancellationToken);
+            var resultOutputDto = await this.CommandBus.SendAsync(request.ToCommand(showtimeId, reservationId), cancellationToken);
 
             var resultResponse = resultOutputDto.ToResponse();
 
