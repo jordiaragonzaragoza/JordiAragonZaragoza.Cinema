@@ -52,8 +52,7 @@
 
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
-            var request = new ScheduleShowtimeRequest(
-                showtimeId,
+            var request = new ScheduleShowtimeBodyRequest(
                 SeedData.ExampleAuditorium.Id,
                 SeedData.ExampleMovie.Id,
                 sessionDateOnUtc);
