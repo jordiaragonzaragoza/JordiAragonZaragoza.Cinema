@@ -26,12 +26,12 @@
         }
 
         [Fact]
-        public async Task CreateReservation_WhenHavingValidArguments_ShouldCreateRequiredReservation()
+        public async Task CreateReservationOnExistingShowtime_WhenHavingValidArguments_ShouldCreateRequiredReservation()
         {
             // Arrange
-            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+            var sessionDateOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc;
 
-            var showtimeId = await this.ScheduleNewShowtimeAsync(sessionDateOnUtc);
+            var showtimeId = SeedData.ExampleShowtime.Id;
 
             var seatsIds = SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.SeatId).ToList();
@@ -61,28 +61,6 @@
                 .Contain(seatsIds);
 
             reservationResponse.IsPurchased.Should().BeFalse();
-        }
-
-        private async Task<Guid> ScheduleNewShowtimeAsync(DateTimeOffset sessionDateOnUtc)
-        {
-            var showtimeId = Guid.NewGuid();
-
-            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-
-            var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
-                sessionDateOnUtc);
-
-            var content = StringContentHelpers.FromModelAsJson(request);
-
-            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
-
-            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
-            await this.Fixture.HttpClient.PutAsync(fullUri, content);
-
-            return showtimeId;
         }
     }
 }
