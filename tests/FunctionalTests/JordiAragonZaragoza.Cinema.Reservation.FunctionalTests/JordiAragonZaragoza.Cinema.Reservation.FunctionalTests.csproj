@@ -32,10 +32,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-      <!-- TODO: Temporal. Remove it-->
-	  <Compile Remove="Api.Command\V2\Showtime\PurchaseReservationTests.cs" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query\JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" />
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.csproj" />
