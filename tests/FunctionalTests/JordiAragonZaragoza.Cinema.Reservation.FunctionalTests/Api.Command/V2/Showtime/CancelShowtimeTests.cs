@@ -27,7 +27,7 @@
         public async Task CancelShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
         {
             // Arrange
-            var showtimeId = await this.CreateNewShowtimeAsync();
+            var showtimeId = await this.ScheduleNewShowtimeAsync();
 
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.CancelShowtime}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
@@ -43,7 +43,7 @@
                 .Be(System.Net.HttpStatusCode.NoContent);
         }
 
-        private async Task<Guid> CreateNewShowtimeAsync()
+        private async Task<Guid> ScheduleNewShowtimeAsync()
         {
             var showtimeId = Guid.NewGuid();
 
