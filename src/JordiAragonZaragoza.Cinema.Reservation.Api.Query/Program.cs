@@ -43,7 +43,7 @@
 
             var app = builder.Build();
 
-            app.Logger.LogDebug("Api Query Host created...");
+            app.Logger.LogDebug("Reservation Api Query Host created...");
 
             // Configure Request Pipeline
             ConfigureWebApplication.UseWebApplicationConfigurations(app);

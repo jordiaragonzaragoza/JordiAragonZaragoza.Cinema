@@ -44,6 +44,26 @@
             The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder project.
             </summary>
         </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Projector project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Projector project.
+            </summary>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor project.
+            </summary>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema">
             <summary>
             Metadata for the Aspire Host project.

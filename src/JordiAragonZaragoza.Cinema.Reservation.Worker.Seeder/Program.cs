@@ -29,7 +29,7 @@
             IHost app = builder.Build();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
-            logger.LogDebug("Seeder Host created...");
+            logger.LogDebug("Reservation Seeder Host created...");
 
             await app.RunAsync();
         }

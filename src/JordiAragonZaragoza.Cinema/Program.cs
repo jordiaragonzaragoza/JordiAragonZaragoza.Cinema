@@ -25,6 +25,10 @@ namespace JordiAragonZaragoza.Cinema
                      .WithReference(kurrentdb)
                      .WaitForCompletion(kurrentdbSeeder);
 
+            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor>(Constants.ReservationWorkerReactor)
+                     .WithReference(kurrentdb)
+                     .WaitForCompletion(kurrentdbSeeder);
+
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag("15.1-alpine")
                                         .WithDataBindMount("../../containers/postgres/data")
@@ -40,6 +44,12 @@ namespace JordiAragonZaragoza.Cinema
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)
                      .WaitForCompletion(reservationWorkerReadModelMigrator);
+
+            builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector>(Constants.ReservationWorkerProjector)
+                                          .WithReference(kurrentdb)
+                                          .WaitFor(kurrentdb)
+                                          .WithReference(reservationReadModelDb)
+                                          .WaitForCompletion(reservationWorkerReadModelMigrator);
 
                      /*var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
                                    .WithDataBindMount("../../containers/seq/data")

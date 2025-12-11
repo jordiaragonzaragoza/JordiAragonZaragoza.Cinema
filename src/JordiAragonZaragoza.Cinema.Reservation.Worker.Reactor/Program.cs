@@ -1,9 +1,9 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Reactor
 {
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
-    using JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Configuration;
-    using Microsoft.Extensions.Configuration;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
+    using JordiAragonZaragoza.Cinema.Reservation.Worker.Reactor.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -15,22 +15,21 @@
         {
             HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-            ConfigurationManager configuration = builder.Configuration;
+            var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
+            builder.AddInfrastructureEventStoreDbBusiness();
 
             // Configure specific Host Services (DI)
             builder.Services
                 .AddHostedService<BackgroundWorker>()
-                .AddInfrastructureEntityFrameworkMigrations(configuration)
+                .AddInfrastructureEventStoreSeeder()
                 .AddHostConfigurations(configuration);
-
-            builder.AddInfrastructureEntityFrameworkMigrations();
 
             IHost app = builder.Build();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
-            logger.LogDebug("Reservation Read Model Migrator Host created...");
+            logger.LogDebug("Reservation Reactor Host created...");
 
             await app.RunAsync();
         }

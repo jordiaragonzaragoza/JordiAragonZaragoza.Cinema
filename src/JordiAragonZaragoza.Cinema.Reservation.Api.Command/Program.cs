@@ -48,7 +48,7 @@
 
             var app = builder.Build();
 
-            app.Logger.LogDebug("Api Command Host created...");
+            app.Logger.LogDebug("Reservation Api Command Host created...");
 
             // Configure Request Pipeline
             ConfigureWebApplication.UseWebApplicationConfigurations(app);
