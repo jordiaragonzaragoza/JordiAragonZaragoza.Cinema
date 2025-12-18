@@ -21,7 +21,7 @@
     {
         [HttpPatch(AuditoriumRoutes.PurchaseReservation)]
         [SwaggerOperation(
-            Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on finance integration.",
+            Summary = "Purchase a reservation for an existing Showtime. Temporal: This endpoint will not be exposed on payment integration.",
             Description = "Purchase a reservation for an existing Showtime",
             OperationId = "Auditorium.PurchaseReservation.V1")
         ]
