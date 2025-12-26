@@ -19,7 +19,7 @@
         <mxCell id="DlgKFndedhAOlHJQc7Nk-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="VtXr9Akpmu3jSIrbLdUw-4" target="DlgKFndedhAOlHJQc7Nk-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VtXr9Akpmu3jSIrbLdUw-4" value="&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Invoicing BC&lt;/font&gt;&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#DAE8FC;strokeColor=#6D1F00;rounded=1;fontColor=#ffffff;" parent="1" vertex="1">
+        <mxCell id="VtXr9Akpmu3jSIrbLdUw-4" value="&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Invoicing BC&lt;/font&gt;&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFD966;strokeColor=#6D1F00;rounded=1;fontColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="1756" y="219.5" width="110" height="110" as="geometry" />
         </mxCell>
         <mxCell id="VtXr9Akpmu3jSIrbLdUw-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="VtXr9Akpmu3jSIrbLdUw-5" target="VtXr9Akpmu3jSIrbLdUw-3" edge="1">
@@ -107,22 +107,7 @@
           <mxGeometry x="1955" y="376.5" width="110" height="110" as="geometry" />
         </mxCell>
         <mxCell id="DlgKFndedhAOlHJQc7Nk-46" value="Email Gateway" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F8C5E5;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="2142" y="376.5" width="110" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="DlgKFndedhAOlHJQc7Nk-47" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="DlgKFndedhAOlHJQc7Nk-43" target="DlgKFndedhAOlHJQc7Nk-46" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1929" y="473.5" as="sourcePoint" />
-            <mxPoint x="1979" y="423.5" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DlgKFndedhAOlHJQc7Nk-48" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="DlgKFndedhAOlHJQc7Nk-46" target="DlgKFndedhAOlHJQc7Nk-43" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1929" y="473.5" as="sourcePoint" />
-            <mxPoint x="1979" y="423.5" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="DlgKFndedhAOlHJQc7Nk-49" value="Send email" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="2057" y="431.5" width="80" height="30" as="geometry" />
+          <mxGeometry x="2188" y="376.5" width="110" height="110" as="geometry" />
         </mxCell>
         <mxCell id="DlgKFndedhAOlHJQc7Nk-51" value="Accounting Gateway" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F8C5E5;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="1756" y="43.5" width="110" height="110" as="geometry" />
@@ -161,7 +146,42 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="DlgKFndedhAOlHJQc7Nk-60" value="Pricing BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" parent="1" vertex="1">
-          <mxGeometry x="399" y="173" width="110" height="110" as="geometry" />
+          <mxGeometry x="589" y="178" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Qz9qtB2Ryq9hUwhXNy6t-1" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.045;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="DlgKFndedhAOlHJQc7Nk-43" target="DlgKFndedhAOlHJQc7Nk-46" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1719" y="527" as="sourcePoint" />
+            <mxPoint x="1769" y="477" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qz9qtB2Ryq9hUwhXNy6t-2" value="Send email" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="Qz9qtB2Ryq9hUwhXNy6t-1" vertex="1" connectable="0">
+          <mxGeometry x="-0.1458" y="-2" relative="1" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-2" value="Catalog BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="622" y="1035" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-3" value="Administration&amp;nbsp;BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1309" y="1028.5" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-5" value="Marketing BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1169" y="1031.5" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-6" value="Reservation BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#D9B6FE;strokeColor=#82b366;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="356" y="1035" width="118" height="118" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-7" value="Pricing BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="493" y="1035" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-8" value="Payments BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F1764D;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="761" y="1033" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-9" value="Customer Notifications&amp;nbsp;BC" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#9EC695;strokeColor=#3A5431;rounded=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="893" y="1035" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dkLL8Yjdb3XiRGomzM0W-10" value="&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Invoicing BC&lt;/font&gt;&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFD966;strokeColor=#6D1F00;rounded=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1025" y="1030" width="110" height="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

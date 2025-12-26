@@ -13,7 +13,10 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Program class should not have a protected constructor or the static keyword because is used in WebApplicationFactory for functional and integration test.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1118:Utility classes should not have public constructors",
+        Justification = "Used by WebApplicationFactory for functional and integration tests.")]
     public sealed class Program
     {
         public static void Main(string[] args)
