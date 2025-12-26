@@ -23,10 +23,10 @@
 
             // Configure specific Host Services (DI)
             builder.Services
-                .AddApplication()
+                .AddApplicationValidators()
                 .AddApplicationQueryHandlers()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
-                .AddInfrastructure()
+                .AddInfrastructureProjectionsRepositories()
                 .AddPresentationHttpRestfulApi(configuration);
 
             // Then configure SharedKernel Services (DI)
@@ -47,9 +47,6 @@
 
             // Configure Request Pipeline
             ConfigureWebApplication.UseWebApplicationConfigurations(app);
-
-            // TODO: Temporal. Seed data only in development environment until we have a proper seeding from business model.
-            ////SeedData.Initialize(app, builder.Environment.EnvironmentName == "Development");
 
             app.Run();
         }

@@ -8,29 +8,24 @@
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
-
-    public sealed class UserRemovedNotificationHandler : BaseEventHandler<UserRemovedEvent>
+    public sealed class UserAddedEventProjector : BaseEventHandler<UserCreatedEvent>
     {
         private readonly IRepository<UserReadModel, Guid> userReadModelRepository;
 
-        public UserRemovedNotificationHandler(
+        public UserAddedEventProjector(
             IRepository<UserReadModel, Guid> userReadModelRepository)
         {
             this.userReadModelRepository = userReadModelRepository ?? throw new ArgumentNullException(nameof(userReadModelRepository));
         }
 
-        public override async Task HandleAsync(UserRemovedEvent @event, CancellationToken cancellationToken)
+        public override async Task HandleAsync(UserCreatedEvent @event, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(@event);
 
-            var readModel = await this.userReadModelRepository.GetByIdAsync(@event.AggregateId, cancellationToken);
-            if (readModel is null)
-            {
-                throw new NotFoundException(nameof(UserReadModel), @event.AggregateId.ToString());
-            }
+            var userReadModel = new UserReadModel(
+                @event.AggregateId);
 
-            await this.userReadModelRepository.DeleteAsync(readModel, cancellationToken);
+            await this.userReadModelRepository.AddAsync(userReadModel, cancellationToken);
         }
     }
 }

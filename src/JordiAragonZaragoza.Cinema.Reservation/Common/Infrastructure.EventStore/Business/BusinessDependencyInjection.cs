@@ -10,7 +10,7 @@
 
     public static class BusinessDependencyInjection
     {
-        public static IServiceCollection AddInfrastructureEventStoreDbBusiness(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureEventStoreDbRepositories(this IServiceCollection services)
         {
             services.AddShowtimeBusinessRepositories();
             services.AddMovieBusinessRepositories();
@@ -20,7 +20,7 @@
             return services;
         }
 
-        public static IHostApplicationBuilder AddInfrastructureEventStoreDbBusiness(this IHostApplicationBuilder builder)
+        public static IHostApplicationBuilder AddInfrastructureEventStoreDbClient(this IHostApplicationBuilder builder)
         {
             builder.AddKurrentDBClient(Constants.ReservationBusinessModelStore);
 

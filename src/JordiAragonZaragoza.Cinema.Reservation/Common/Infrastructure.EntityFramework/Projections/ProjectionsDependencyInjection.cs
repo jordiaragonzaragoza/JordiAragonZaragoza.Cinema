@@ -25,8 +25,6 @@
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
 
-            serviceCollection.AddReadModelsRepositories();
-
             return serviceCollection;
         }
 
@@ -42,7 +40,7 @@
             return hostApplicationBuilder;
         }
 
-        private static IServiceCollection AddReadModelsRepositories(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureProjectionsRepositories(this IServiceCollection services)
         {
             services.AddAuditoriumProjectionsRepositories();
             services.AddMovieProjectionsRepositories();

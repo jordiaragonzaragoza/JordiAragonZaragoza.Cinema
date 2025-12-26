@@ -2,18 +2,22 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ApplicationDependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplicationValidators(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(AssemblyReference.Assembly, ServiceLifetime.Singleton);
 
@@ -36,6 +40,16 @@
             services.AddMovieQueryHandlers();
             services.AddShowtimeQueryHandlers();
             services.AddUserQueryHandlers();
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationProjectorsEventHandlers(this IServiceCollection services)
+        {
+            services.AddShowtimeProjectorsEventHandlers();
+            services.AddAuditoriumProjectorsEventHandlers();
+            services.AddMovieProjectorsEventHandlers();
+            services.AddUserProjectorsEventHandlers();
 
             return services;
         }

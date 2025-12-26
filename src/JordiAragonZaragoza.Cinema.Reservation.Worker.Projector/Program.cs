@@ -1,9 +1,13 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Projector
 {
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Projector.Configuration;
+    using JordiAragonZaragoza.SharedKernel.Application;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -18,13 +22,24 @@
             var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
-            builder.AddInfrastructureEventStoreDbBusiness();
+            builder.AddInfrastructureEventStoreDbClient();
 
             // Configure specific Host Services (DI)
             builder.Services
-                .AddHostedService<BackgroundWorker>()
-                .AddInfrastructureEventStoreSeeder()
-                .AddHostConfigurations(configuration);
+                .AddApplicationProjectorsEventHandlers()
+                .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
+                .AddInfrastructureProjectionsRepositories();
+
+            // Then configure SharedKernel Services (DI)
+            builder.Services
+                .AddSharedKernelApplicationProjectionsEventBus()
+                ////.AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
+                .AddSharedKernelInfrastructure()
+                .AddSharedKernelInfrastructureProjections();
+
+            builder.AddInfrastructureEntityFrameworkProjections();
+
+            builder.Services.AddHostConfigurations(configuration);
 
             IHost app = builder.Build();
 
