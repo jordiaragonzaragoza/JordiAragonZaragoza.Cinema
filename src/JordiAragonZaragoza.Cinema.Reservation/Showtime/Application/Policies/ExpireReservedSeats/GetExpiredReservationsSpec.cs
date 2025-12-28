@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.BackgroundJobs.ExpireReservedSeats
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies.ExpireReservedSeats
 {
     using System;
     using Ardalis.Specification;
