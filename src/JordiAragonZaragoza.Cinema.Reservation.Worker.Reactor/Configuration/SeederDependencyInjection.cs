@@ -2,13 +2,13 @@
 {
     using Microsoft.Extensions.DependencyInjection;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
-    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.EventStoreDb;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.KurrentDb;
 
     public static class SeederDependencyInjection
     {
         public static IServiceCollection AddInfrastructureEventStoreSeeder(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IEventStore, EventStoreDbEventStore>();
+            serviceCollection.AddScoped<IEventStore, KurrentDbEventStore>();
 
             return serviceCollection;
         }
