@@ -22,7 +22,7 @@
             var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
-            builder.AddInfrastructureEventStoreDbClient();
+            builder.AddInfrastructureKurrentDbClient();
 
             // Configure specific Host Services (DI)
             builder.Services

@@ -27,20 +27,20 @@
             var configuration = builder.Configuration;
 
             builder.AddInfrastructure();
-            builder.AddInfrastructureEventStoreDbClient();
+            builder.AddInfrastructureKurrentDbClient();
 
             // Configure specific Host Services (DI)
             builder.Services
                 .AddDomain()
                 .AddApplicationValidators()
                 .AddApplicationCommandHandlers()
-                .AddInfrastructureEventStoreDbRepositories();
+                .AddInfrastructureEventStoreRepositories();
 
             // Then configure SharedKernel Services (DI)
             builder.Services
                 .AddSharedKernelDomain()
                 .AddSharedKernelApplicationCommandBus()
-                .AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
+                .AddSharedKernelInfrastructureKurrentDbBusiness(configuration)
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureCommandBus();
 
