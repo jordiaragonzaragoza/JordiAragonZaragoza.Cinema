@@ -1,10 +1,13 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections
 {
+    using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EntityFramework.Projections;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.SharedKernel;
+    using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.Extensions.Configuration;
@@ -46,6 +49,16 @@
             services.AddMovieProjectionsRepositories();
             services.AddShowtimeProjectionsRepositories();
             services.AddUserProjectionsRepositories();
+
+            services.AddCheckpointProjectionsRepositories();
+
+            return services;
+        }
+
+        private static IServiceCollection AddCheckpointProjectionsRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
+            services.AddScoped<IReadRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
 
             return services;
         }
