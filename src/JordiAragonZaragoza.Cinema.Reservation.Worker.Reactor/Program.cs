@@ -40,7 +40,7 @@
             builder.Services
                 .AddSharedKernelDomain()
                 .AddSharedKernelApplicationCommandBus()
-                .AddSharedKernelInfrastructureKurrentDbBusiness(configuration)
+                .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureCommandBus();
 

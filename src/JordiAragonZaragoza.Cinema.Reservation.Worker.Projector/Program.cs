@@ -8,6 +8,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Projector.Configuration;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@
             // Then configure SharedKernel Services (DI)
             builder.Services
                 .AddSharedKernelApplicationProjectionsEventBus()
-                ////.AddSharedKernelInfrastructureEventStoreDbBusiness(configuration)
+                .AddSharedKernelInfrastructureKurrentDbAllStreamSubscription()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureProjections();
 

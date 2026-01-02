@@ -22,7 +22,7 @@
 
             // Configure specific Host Services (DI)
             builder.Services
-                .AddHostedService<BackgroundWorker>()
+                .AddHostedService<SeederBackgroundWorker>()
                 .AddInfrastructureEventStoreSeeder()
                 .AddHostConfigurations(configuration);
 

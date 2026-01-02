@@ -21,7 +21,7 @@
 
             // Configure specific Host Services (DI)
             builder.Services
-                .AddHostedService<BackgroundWorker>()
+                .AddHostedService<MigratorBackgroundWorker>()
                 .AddInfrastructureEntityFrameworkMigrations(configuration)
                 .AddHostConfigurations(configuration);
 
