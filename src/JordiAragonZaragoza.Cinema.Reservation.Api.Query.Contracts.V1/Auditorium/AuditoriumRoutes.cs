@@ -3,8 +3,8 @@
     public static class AuditoriumRoutes
     {
         public const string GetAuditoriums = $"{Base}";
-        public const string GetShowtimes = $"{Base}/{{auditoriumId}}/showtimes";
-        public const string GetAvailableSeats = $"{Base}/{{auditoriumId}}/showtimes/{{showtimeId}}/seats/available";
+        public const string GetShowtimes = $"{Base}/{{AuditoriumId}}/showtimes";
+        public const string GetAvailableSeats = $"{Base}/{{AuditoriumId}}/showtimes/{{ShowtimeId}}/seats/available";
         private const string Base = "auditoriums";
     }
 }

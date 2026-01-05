@@ -3,8 +3,8 @@
     public static class UserRoutes
     {
         public const string GetUsers = $"{Base}";
-        public const string GetUserReservation = $"{Base}/{{userId}}/showtimes/{{showtimeId}}/reservations/{{reservationId}}";
-        public const string GetUserReservations = $"{Base}/{{userId}}/reservations";
+        public const string GetUserReservation = $"{Base}/{{UserId}}/showtimes/{{ShowtimeId}}/reservations/{{ReservationId}}";
+        public const string GetUserReservations = $"{Base}/{{UserId}}/reservations";
         private const string Base = "users";
     }
 }

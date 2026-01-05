@@ -24,7 +24,7 @@
             OperationId = "Showtime.GetShowtimes.V2")
         ]
         public async Task<ActionResult<PaginatedCollectionResponse<ShowtimeResponse>>> GetShowtimesAsync(
-            [FromRoute] GetShowtimesRequest request,
+            [FromQuery] GetShowtimesRequest request,
             [FromQuery] PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
         {
