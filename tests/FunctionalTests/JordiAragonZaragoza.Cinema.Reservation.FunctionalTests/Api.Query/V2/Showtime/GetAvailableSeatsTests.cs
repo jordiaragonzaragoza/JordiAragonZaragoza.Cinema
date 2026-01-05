@@ -31,7 +31,7 @@
             var showtimeId = SeedData.ExampleShowtime.Id;
 
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.GetAvailableSeats}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            route = route.Replace("{ShowtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IEnumerable<SeatResponse>>(route, this.OutputHelper);
