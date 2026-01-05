@@ -7,7 +7,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Projectors
 
     public static class UserProjectorsEventHandlersDependencyInjection
     {
-        public static IServiceCollection AddUserProjectorsEventHandlers(this IServiceCollection services)
+        public static IServiceCollection AddUserProjectors(this IServiceCollection services)
         {
             // User projection.
             services.AddProjectorEventHandler<UserCreatedEvent, UserAddedEventProjector>();
