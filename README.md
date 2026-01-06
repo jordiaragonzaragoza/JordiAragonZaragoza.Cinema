@@ -14,14 +14,13 @@ Loving it? Please show your support by giving this project a star!
 
 ## Architecture: 🏗️
 
-- Full architecture with responsibility separation concerns, SOLID and clean code (including zero warnings policy)
-- Clean Architecture (Onion Architecture)
+- Clean Architecture (Onion Architecture). SOLID and clean code (including zero warnings policy)
 - Vertical Slices Architecture.
 - Domain Driven-Design 
-- Rich Domain Model with Aggregates and Strong Ids
-- Domain Events
-- Outbox Pattern with idempotent consumers
-- CQRS with DB physical separation using domain events. 
+- Rich Domain Model with event sourced aggregates and Strong Ids
+- Domain Events as source of truth
+- CQRS with DB physical separation.
+- Event Sourcing 
 - Unit of Work
 - Repository & Specification
 - Custom API Error Handling with Problems Details
@@ -33,15 +32,18 @@ Loving it? Please show your support by giving this project a star!
 
 ![JordiAragonZaragoza.Cinema - Clean architecture graph](./docs/CleanArchitecture.jpg)
 
+## Workflow: 📍
+
+![JordiAragonZaragoza.Cinema - workflow graph](./docs/Current.jpg)
+
 ## Technologies implemented: ⚒️
 
 - ASP.NET
 - Entity Framework Core
 - .NET Aspire
-- FastEndpoints
-- MediatR
-- AutoMapper
-- Autofac
+- Kurrent DB as event store
+- Postgresql as projection store
+- MediatR as in memory event bus (will be removed)
 - Ardalis.Result
 - Ardalis.Specification
 - Ardalis.SmartEnums
@@ -50,21 +52,17 @@ Loving it? Please show your support by giving this project a star!
 - Serilog
 - Seq
 - Quartz
-- Polly
 - Swagger UI with JWT support
-- EasyCaching
-- Volo.Abp.Guids
 - StyleCop & SonarAnalyzer
 - xUnit & NetArchTest & Testcontainers & Ardalis.HttpClientTestExtensions
 
 ## Cross-cutting concerns 🏃
 
-- Outbox pattern to handle the domain event outside the source transaction with resilence idempotent consumers support.
 - Result Pattern: Flow Control using Ardalis.Result avoiding throwing exceptions.
 - API Versioning
-- REPR Pattern using FastEndpoints
-- Application cache request with invalidation.
-- Generic cache repository with invalidation.
+- REPR Pattern
+- Application cache request with invalidation. (will be re implemented using ms hybrid cache)
+- Generic cache repository with invalidation. (will be re implemented using ms hybrid cache)
 - MediatR Pipelines Behaviours (Decorator pattern)
  - LoggerBehaviour to track all requests.
  - UnitOfWorkBehaviour as a main exception handler to commit or rollback the transaction.
@@ -79,11 +77,12 @@ Loving it? Please show your support by giving this project a star!
 - Unit Tests: Domain and Application
 - Functional Tests with Testcontainers: Presentation.HttpRestfulApi
 - Integration Tests with Testcontainers: Infrastructure.EntityFramework
+- System Test using .NET Aspire
 - GitHub workflow CI with SonarCloud integration
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
 
-## Reservation Bounded Context Overview 🌍
+## Reservation Bounded Context Overview 🎟️
 
 The reservation bounded context manage the cinema showtimes and seats reservation.
 
@@ -101,9 +100,15 @@ The reservation bounded context manage the cinema showtimes and seats reservatio
 
 - Schedule or cancel a showtime (in progress only basic functionality, not completed yet)
 
-## Workflow: 📍
-
-![JordiAragonZaragoza.Cinema - workflow graph](./docs/Current.jpg)
+## Future Bounded Contexts 🌍
+(will be implemented)
+- Payments
+- Pricing
+- Invoicing
+- Movie catalog
+- Customer Notifications
+- Marketing
+- Administration
  
 ## Resources and Inspiration 🙏
 
@@ -114,11 +119,10 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 - <a href="https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/" target="_blank">Vaughn Vernon: Implementing Domain-Driven Design (book)</a>
 - <a href="https://kalele.io/books/ddd-destilado/" target="_blank">Vaughn Vernon: Domain-Driven Design Destilado (book)</a>
 - <a href="https://www.amazon.com/Hands-Domain-Driven-Design-NET-ebook/dp/B07C5WSR9B" target="_blank">Alexey Zimarev: Hands-on Domain-Driven Design (book)</a>
-- <a href="https://github.com/dotnet-architecture/eShopOnContainers" target="_blank">Microsoft eShopOnContainers</a>
-- <a href="https://github.com/dotnet-architecture/eShopOnWeb" target="_blank">Microsoft eShopOnWeb</a>
+- <a href="https://github.com/oskardudycz/EventSourcing.NetCore" target="_blank">Oskar Dudycz: EventSourcing .NET</a>
+- <a href="https://eventuous.dev/" target="_blank">Alexey Zimarev: Eventuous</a>
 - <a href="https://github.com/kgrzybek/sample-dotnet-core-cqrs-api" target="_blank">Kamil Grzybek: Sample .NET Core REST API CQRS</a>
 - <a href="https://github.com/kgrzybek/modular-monolith-with-ddd" target="_blank">Kamil Grzybek: Modular Monolith With DDD</a>
-- <a href="https://github.com/oskardudycz/EventSourcing.NetCore" target="_blank">Oskar Dudycz: EventSourcing .NET</a>
 - <a href="https://www.youtube.com/watch?v=Lw04HRF8ies" target="_blank">NDC Oslo: Udi Dahan - Talk Session: CQRS pitfalls and patterns</a>
 - <a href="https://www.youtube.com/watch?v=26xrX113KZc" target="_blank">Explore DDD: Mauro Servienti - Talk Session: Welcome to the (State) Machine</a>
 - <a href="https://www.youtube.com/watch?v=KkzvQSuYd5I" target="_blank">Explore DDD: Mauro Servienti - Talk Session: All Our Aggregates Are Wrong</a>
@@ -134,6 +138,7 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 ## Versions
 
 The main branch is now on .NET 9 The following previous versions are available:
+* [.NET 9](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net9.0)
 * [.NET 8](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net8.0)
 * [.NET 7](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net7.0)
 

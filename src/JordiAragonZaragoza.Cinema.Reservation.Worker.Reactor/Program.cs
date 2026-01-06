@@ -4,6 +4,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Reactor.Configuration;
     using JordiAragonZaragoza.SharedKernel.Application;
@@ -34,7 +35,12 @@
                 .AddDomain()
                 .AddApplicationValidators()
                 .AddApplicationCommandHandlers()
-                .AddInfrastructureEventStoreRepositories();
+                .AddApplicationPolicies(configuration)
+                .AddInfrastructureEventStoreRepositories()
+
+                // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
+                .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
+                .AddInfrastructureProjectionsRepositories();
 
             // Then configure SharedKernel Services (DI)
             builder.Services
@@ -43,6 +49,9 @@
                 .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureCommandBus();
+
+            // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
+            builder.AddInfrastructureEntityFrameworkProjections();
 
             builder.Services.AddHostConfigurations(configuration);
 

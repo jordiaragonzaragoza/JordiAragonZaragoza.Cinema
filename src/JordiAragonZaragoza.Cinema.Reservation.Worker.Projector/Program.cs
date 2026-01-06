@@ -27,7 +27,7 @@
 
             // Configure specific Host Services (DI)
             builder.Services
-                .AddApplicationProjectorsEventHandlers()
+                .AddApplicationProjectors()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
                 .AddInfrastructureProjectionsRepositories();
 
