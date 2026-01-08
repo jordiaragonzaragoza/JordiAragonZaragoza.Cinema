@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules;
+
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
@@ -50,11 +50,18 @@
         }
 
         public void Remove()
-            => this.Apply(new MovieRemovedEvent(this.Id));
+        {
+            // Removing a movie is only possible when the system has reached a consistent state with respect to its showtimes.
+            CheckRule(new OnlyMoviesWithoutActiveShowtimesCanBeRemovedRule(this.activeShowtimes.AsReadOnly()));
+
+            this.Apply(new MovieRemovedEvent(this.Id));
+        }
 
         public void AddActiveShowtime(ShowtimeId showtimeId)
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            CheckRule(new OnlyNonExistingActiveShowtimeCanBeAddedRule(this.activeShowtimes.AsReadOnly(), showtimeId));
 
             this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
         }

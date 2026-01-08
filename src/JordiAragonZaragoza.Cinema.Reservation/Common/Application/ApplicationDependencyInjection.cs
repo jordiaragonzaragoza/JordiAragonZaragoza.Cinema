@@ -8,6 +8,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.QueryHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies.ExpireReservedSeats;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers;
@@ -82,6 +83,8 @@
                 {
                     opt.WaitForJobsToComplete = true;
                 });
+
+            services.AddShowtimePolicies();
 
             return services;
         }

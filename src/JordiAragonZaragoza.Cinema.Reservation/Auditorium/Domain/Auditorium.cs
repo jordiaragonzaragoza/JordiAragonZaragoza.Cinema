@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Rules;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
@@ -60,11 +61,18 @@
         }
 
         public void Remove()
-            => this.Apply(new AuditoriumRemovedEvent(this.Id));
+        {
+            // Removing an auditorium is only possible when the system has reached a consistent state with respect to its showtimes.
+            CheckRule(new OnlyAuditoriumsWithoutActiveShowtimesCanBeRemovedRule(this.activeShowtimes.AsReadOnly()));
+
+            this.Apply(new AuditoriumRemovedEvent(this.Id));
+        }
 
         public void AddActiveShowtime(ShowtimeId showtimeId)
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            CheckRule(new OnlyNonExistingActiveShowtimeCanBeAddedRule(this.activeShowtimes.AsReadOnly(), showtimeId));
 
             this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
         }
