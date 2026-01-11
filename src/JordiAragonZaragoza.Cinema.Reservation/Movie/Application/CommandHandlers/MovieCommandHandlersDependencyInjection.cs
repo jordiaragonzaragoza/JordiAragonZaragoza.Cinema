@@ -5,8 +5,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandle
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.AddMovie;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.RemoveMovie;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.AddActiveShowtime;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.RemoveActiveShowtime;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.ScheduleShowtimeInMovie;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.CancelShowtimeInMovie;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandlers.EndShowtimeInMovie;
 
     public static class MovieCommandHandlersDependencyInjection
     {
@@ -14,8 +15,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.CommandHandle
         {
             services.AddCommandHandler<AddMovieCommand, AddMovieCommandHandler>();
             services.AddCommandHandler<RemoveMovieCommand, RemoveMovieCommandHandler>();
-            services.AddCommandHandler<AddActiveShowtimeCommand, AddActiveShowtimeCommandHandler>();
-            services.AddCommandHandler<RemoveActiveShowtimeCommand, RemoveActiveShowtimeCommandHandler>();
+            services.AddCommandHandler<ScheduleShowtimeInMovieCommand, ScheduleShowtimeInMovieCommandHandler>();
+            services.AddCommandHandler<CancelShowtimeInMovieCommand, CancelShowtimeInMovieCommandHandler>();
+            services.AddCommandHandler<EndShowtimeInMovieCommand, EndShowtimeInMovieCommandHandler>();
 
             return services;
         }

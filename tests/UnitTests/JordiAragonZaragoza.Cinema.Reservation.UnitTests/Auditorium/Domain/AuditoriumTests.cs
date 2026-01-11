@@ -113,7 +113,7 @@
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            auditorium.AddActiveShowtime(showtimeId);
+            auditorium.ScheduleShowtime(showtimeId);
 
             // Assert.
             auditorium.ActiveShowtimes.Should()
@@ -122,9 +122,9 @@
                           .HaveCount(1);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ActiveShowtimeAddedEvent)
-                              .Which.Should().BeOfType<ActiveShowtimeAddedEvent>()
-                              .Which.Should().Match<ActiveShowtimeAddedEvent>(e =>
+                              .ContainSingle(x => x is ShowtimeScheduledEvent)
+                              .Which.Should().BeOfType<ShowtimeScheduledEvent>()
+                              .Which.Should().Match<ShowtimeScheduledEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
@@ -137,7 +137,7 @@
             ShowtimeId showtimeId = null!;
 
             // Act.
-            Action addShowtime = () => auditorium.AddActiveShowtime(showtimeId);
+            Action addShowtime = () => auditorium.ScheduleShowtime(showtimeId);
 
             // Assert.
             addShowtime.Should().Throw<ArgumentNullException>();
@@ -149,10 +149,10 @@
             // Arrange.
             var auditorium = CreateAuditoriumUtils.Create();
             var showtimeId = Constants.Showtime.Id;
-            auditorium.AddActiveShowtime(showtimeId);
+            auditorium.ScheduleShowtime(showtimeId);
 
             // Act.
-            auditorium.RemoveActiveShowtime(showtimeId);
+            auditorium.CancelShowtime(showtimeId);
 
             // Assert.
             auditorium.ActiveShowtimes.Should()
@@ -161,9 +161,9 @@
                           .HaveCount(0);
 
             auditorium.Events.Should()
-                              .ContainSingle(x => x is ActiveShowtimeRemovedEvent)
-                              .Which.Should().BeOfType<ActiveShowtimeRemovedEvent>()
-                              .Which.Should().Match<ActiveShowtimeRemovedEvent>(e =>
+                              .ContainSingle(x => x is ShowtimeCanceledEvent)
+                              .Which.Should().BeOfType<ShowtimeCanceledEvent>()
+                              .Which.Should().Match<ShowtimeCanceledEvent>(e =>
                                                                             e.AggregateId == auditorium.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
@@ -176,7 +176,7 @@
             ShowtimeId showtimeId = default!;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.CancelShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<ArgumentNullException>();
@@ -190,7 +190,7 @@
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            Action removeShowtime = () => auditorium.RemoveActiveShowtime(showtimeId);
+            Action removeShowtime = () => auditorium.CancelShowtime(showtimeId);
 
             // Assert.
             removeShowtime.Should().Throw<NotFoundException>();
