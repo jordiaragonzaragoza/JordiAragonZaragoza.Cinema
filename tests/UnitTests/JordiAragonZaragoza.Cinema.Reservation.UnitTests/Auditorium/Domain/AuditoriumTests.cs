@@ -183,7 +183,7 @@
         }
 
         [Fact]
-        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsNotPresent_ShouldThrowNotFoundException()
+        public void RemoveShowtimeToAuditorium_WhenShowtimeIdIsNotPresent_ShouldThrowBusinessRuleValidationException()
         {
             // Arrange
             var auditorium = CreateAuditoriumUtils.Create();
@@ -193,7 +193,7 @@
             Action removeShowtime = () => auditorium.CancelShowtime(showtimeId);
 
             // Assert.
-            removeShowtime.Should().Throw<NotFoundException>();
+            removeShowtime.Should().Throw<BusinessRuleValidationException>();
         }
     }
 }
