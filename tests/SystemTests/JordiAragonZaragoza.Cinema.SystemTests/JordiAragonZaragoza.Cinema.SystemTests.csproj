@@ -27,6 +27,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema\JordiAragonZaragoza.Cinema.csproj" />
-	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj" />
 	</ItemGroup>
 </Project>
