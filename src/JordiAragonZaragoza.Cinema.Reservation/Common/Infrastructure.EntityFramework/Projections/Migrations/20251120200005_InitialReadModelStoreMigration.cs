@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Migrations
+namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     /// <inheritdoc />
     public partial class InitialReadModelStoreMigration : Migration

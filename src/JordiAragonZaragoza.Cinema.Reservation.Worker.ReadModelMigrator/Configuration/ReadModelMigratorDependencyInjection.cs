@@ -15,8 +15,7 @@
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(
-                                    configuration.GetConnectionString(Constants.ReservationReadModelStore),
-                                    options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly))
+                                    configuration.GetConnectionString(Constants.ReservationReadModelStore))
                                     .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);

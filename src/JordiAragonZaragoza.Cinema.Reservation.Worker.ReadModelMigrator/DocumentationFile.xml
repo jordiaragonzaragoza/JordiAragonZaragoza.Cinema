@@ -4,17 +4,5 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator</name>
     </assembly>
     <members>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Migrations.InitialReadModelStoreMigration">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Migrations.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Migrations.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Migrations.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
     </members>
 </doc>
