@@ -42,9 +42,7 @@
                     .RemoveAll<DbContextOptions<ReservationReadModelContext>>()
                     .AddDbContext<ReservationReadModelContext>((options) =>
                     {
-                        options.UseNpgsql(
-                            this.readModelStoreConnection,
-                            options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly));
+                        options.UseNpgsql(this.readModelStoreConnection);
                         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     });
             });

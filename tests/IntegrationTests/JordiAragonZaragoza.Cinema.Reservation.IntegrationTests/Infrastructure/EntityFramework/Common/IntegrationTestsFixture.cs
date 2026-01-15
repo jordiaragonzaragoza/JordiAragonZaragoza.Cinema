@@ -77,9 +77,7 @@
         {
             // Create a new options instance telling the context to use an
             var builder = new DbContextOptionsBuilder<ReservationReadModelContext>();
-            builder.UseNpgsql(
-                this.readModelStoreConnection,
-                options => options.MigrationsAssembly(ReadModelMigratorAssemblyReference.Assembly));
+            builder.UseNpgsql(this.readModelStoreConnection);
 
             return builder.Options;
         }
