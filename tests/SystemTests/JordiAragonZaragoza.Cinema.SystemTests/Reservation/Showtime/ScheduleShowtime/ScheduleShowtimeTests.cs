@@ -9,9 +9,9 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
     using Xunit;
     using Xunit.Abstractions;
 
-    public sealed class ScheduleShowtimeSystemTests : BaseSystemTests
+    public sealed class ScheduleShowtimeTests : BaseSystemTests
     {
-        public ScheduleShowtimeSystemTests(
+        public ScheduleShowtimeTests(
             SystemTestsFixture fixture,
             ITestOutputHelper output)
             : base(fixture, output)
@@ -31,20 +31,22 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
                 sessionDate);
 
             // Act
-            await this.Fixture.ShowtimeCommandClient.ScheduleShowtimeAsync(showtimeId, request);
+            await this.Fixture.ShowtimeCommandClient.ScheduleShowtimeAsync(showtimeId, request, this.OutputHelper);
 
             await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ShowtimeQueryClient.ShowtimeExistsAsync(showtimeId));
+                () => this.Fixture.ShowtimeQueryClient.ShowtimeExistsAsync(showtimeId, this.OutputHelper));
 
             // Assert
             await ShowtimeAssertions.ShouldExistAsync(
                 this.Fixture.ShowtimeQueryClient,
                 showtimeId,
-                sessionDate);
+                sessionDate,
+                this.OutputHelper);
 
             await SeatAvailabilityAssertions.ShouldBeAvailableAsync(
                 this.Fixture.ShowtimeQueryClient,
-                showtimeId);
+                showtimeId,
+                this.OutputHelper);
         }
     }
 }

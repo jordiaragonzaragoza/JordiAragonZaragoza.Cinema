@@ -4,17 +4,19 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
     using System.Threading.Tasks;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
+    using Xunit.Abstractions;
 
     public static class ShowtimeAssertions
     {
         public static async Task ShouldExistAsync(
             ShowtimeQueryClient queryClient,
             Guid showtimeId,
-            DateTimeOffset expectedSessionDate)
+            DateTimeOffset expectedSessionDate,
+            ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(queryClient);
 
-            var showtime = await queryClient.GetShowtimeAsync(showtimeId);
+            var showtime = await queryClient.GetShowtimeAsync(showtimeId, output);
 
             showtime.Should().NotBeNull();
             showtime.SessionDateOnUtc.Should().Be(expectedSessionDate);
