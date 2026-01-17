@@ -43,8 +43,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.SharedK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts", "..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts.csproj", "{89047CF8-31C0-4F59-9253-8E47B82F3949}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CDF63486-97B5-48C0-8C02-54F3FE55D8F8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore", "..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore\JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.csproj", "{F763E219-5B84-41A2-943A-4BDE80E94D0F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{20F7F97A-B7BB-444B-B09E-0032E5BB8F8E}"

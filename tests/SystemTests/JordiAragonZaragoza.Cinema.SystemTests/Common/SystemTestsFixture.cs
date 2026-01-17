@@ -1,19 +1,19 @@
 ﻿namespace JordiAragonZaragoza.Cinema.SystemTests.Common
 {
-    using System.Net.Http;
     using System.Threading.Tasks;
     using Aspire.Hosting;
     using Aspire.Hosting.Testing;
-    using Xunit;
     using JordiAragonZaragoza.Cinema.SharedKernel;
+    using JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients;
+    using Xunit;
 
     public class SystemTestsFixture : IAsyncLifetime
     {
         private DistributedApplication app = null!;
 
-        public HttpClient ReservationApiCommandHttpClient { get; private set; } = default!;
+        public ReservationCommandClient ReservationCommandClient { get; private set; } = default!;
 
-        public HttpClient ReservationApiQueryHttpClient { get; private set; } = default!;
+        public ReservationQueryClient ReservationQueryClient { get; private set; } = default!;
 
         public async Task InitializeAsync()
         {
@@ -22,15 +22,14 @@
                                 [
                                     "DcpPublisher:RandomizePorts=false",
                                     "--environment=Development",
-                                    "UseVolumes=false",
+                                    "IsTesting=true"
                                 ]);
 
             this.app = await appHost.BuildAsync();
-
             await this.app.StartAsync();
 
-            this.ReservationApiCommandHttpClient = this.app.CreateHttpClient(Constants.ReservationApiCommand);
-            this.ReservationApiQueryHttpClient = this.app.CreateHttpClient(Constants.ReservationApiQuery);
+            this.ReservationCommandClient = new ReservationCommandClient(this.app.CreateHttpClient(Constants.ReservationApiCommand));
+            this.ReservationQueryClient = new ReservationQueryClient(this.app.CreateHttpClient(Constants.ReservationApiQuery));
         }
 
         public async Task DisposeAsync()
