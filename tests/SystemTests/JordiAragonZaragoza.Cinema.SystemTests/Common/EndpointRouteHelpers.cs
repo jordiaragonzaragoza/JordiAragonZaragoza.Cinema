@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients
+﻿namespace JordiAragonZaragoza.Cinema.SystemTests.Common
 {
     using System;
     using System.Web;

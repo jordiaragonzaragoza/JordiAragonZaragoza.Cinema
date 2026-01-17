@@ -1,16 +1,15 @@
-namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.Assertions
+namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleShowtime.Assertions
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
-    using JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients;
 
     public static class SeatAvailabilityAssertions
     {
         public static async Task ShouldBeAvailableAsync(
-            ReservationQueryClient queryClient,
+            ShowtimeQueryClient queryClient,
             Guid showtimeId)
         {
             ArgumentNullException.ThrowIfNull(queryClient);

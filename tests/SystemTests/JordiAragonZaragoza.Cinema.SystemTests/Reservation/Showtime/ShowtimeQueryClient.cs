@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients
+namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
 {
     using System;
     using System.Collections.Generic;
@@ -9,12 +9,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
+    using JordiAragonZaragoza.Cinema.SystemTests.Common;
 
-    public sealed class ReservationQueryClient
+    public sealed class ShowtimeQueryClient
     {
         private readonly HttpClient http;
 
-        public ReservationQueryClient(HttpClient http)
+        public ShowtimeQueryClient(HttpClient http)
             => this.http = http;
 
         public async Task<ShowtimeResponse?> GetShowtimeAsync(Guid showtimeId)

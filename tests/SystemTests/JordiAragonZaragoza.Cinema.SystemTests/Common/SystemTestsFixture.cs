@@ -4,16 +4,17 @@
     using Aspire.Hosting;
     using Aspire.Hosting.Testing;
     using JordiAragonZaragoza.Cinema.SharedKernel;
-    using JordiAragonZaragoza.Cinema.SystemTests.Common.ApiClients;
+    using JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime;
+
     using Xunit;
 
     public class SystemTestsFixture : IAsyncLifetime
     {
         private DistributedApplication app = null!;
 
-        public ReservationCommandClient ReservationCommandClient { get; private set; } = default!;
+        public ShowtimeCommandClient ShowtimeCommandClient { get; private set; } = default!;
 
-        public ReservationQueryClient ReservationQueryClient { get; private set; } = default!;
+        public ShowtimeQueryClient ShowtimeQueryClient { get; private set; } = default!;
 
         public async Task InitializeAsync()
         {
@@ -28,8 +29,11 @@
             this.app = await appHost.BuildAsync();
             await this.app.StartAsync();
 
-            this.ReservationCommandClient = new ReservationCommandClient(this.app.CreateHttpClient(Constants.ReservationApiCommand));
-            this.ReservationQueryClient = new ReservationQueryClient(this.app.CreateHttpClient(Constants.ReservationApiQuery));
+            var commandHttp = this.app.CreateHttpClient(Constants.ReservationApiCommand);
+            var queryHttp = this.app.CreateHttpClient(Constants.ReservationApiQuery);
+
+            this.ShowtimeCommandClient = new ShowtimeCommandClient(commandHttp);
+            this.ShowtimeQueryClient = new ShowtimeQueryClient(queryHttp);
         }
 
         public async Task DisposeAsync()
