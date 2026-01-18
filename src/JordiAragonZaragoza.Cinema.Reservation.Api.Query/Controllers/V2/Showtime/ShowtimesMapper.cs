@@ -60,6 +60,14 @@
                 request.ShowtimeId);
         }
 
+        public static GetShowtimeReservationQuery ToQuery(this GetShowtimeReservationRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            return new GetShowtimeReservationQuery(
+                request.ReservationId);
+        }
+
         public static Result<PaginatedCollectionResponse<ReservationResponse>> ToResponse(
             this Result<PaginatedCollectionOutputDto<ReservationReadModel>> result)
         {
@@ -109,7 +117,7 @@
         }
 
         public static Result<ReservationResponse> ToResponse(
-            this Result<ReservationOutputDto> resultOutputDto)
+            this Result<ReservationReadModel> resultOutputDto)
         {
             ArgumentNullException.ThrowIfNull(resultOutputDto);
 
@@ -123,14 +131,6 @@
                     reservationOutputDto.MovieTitle,
                     reservationOutputDto.Seats.ToResponse(),
                     reservationOutputDto.IsPurchased));
-        }
-
-        private static IEnumerable<SeatResponse> ToResponse(
-            this IEnumerable<SeatOutputDto> seatOutputDtos)
-        {
-            ArgumentNullException.ThrowIfNull(seatOutputDtos);
-
-            return ToResponseIterator(seatOutputDtos);
         }
 
         private static IEnumerable<ShowtimeResponse> ToResponse(
@@ -217,18 +217,6 @@
                     showtimeReadModel.SessionDateOnUtc,
                     showtimeReadModel.AuditoriumId,
                     showtimeReadModel.AuditoriumName);
-            }
-        }
-
-        private static IEnumerable<SeatResponse> ToResponseIterator(
-            IEnumerable<SeatOutputDto> seatOutputDtos)
-        {
-            foreach (var seatOutputDto in seatOutputDtos)
-            {
-                yield return new SeatResponse(
-                    seatOutputDto.Id,
-                    seatOutputDto.Row,
-                    seatOutputDto.SeatNumber);
             }
         }
     }

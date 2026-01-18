@@ -22,6 +22,7 @@
 
             // ReservationReadModel projection.
             services.AddScoped<IRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
+            services.AddScoped<IReadRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
             services.AddScoped<ISpecificationReadRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
             services.AddScoped<IRangeableRepository<ReservationReadModel, Guid>, ReservationReadModelRepository<ReservationReadModel>>();
             services.AddScoped<IPaginatedSpecificationReadRepository<ReservationReadModel>, ReservationReadModelRepository<ReservationReadModel>>();

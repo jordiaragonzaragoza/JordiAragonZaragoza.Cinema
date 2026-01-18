@@ -6,6 +6,7 @@
         public const string GetShowtime = $"{Base}/{{ShowtimeId}}";
         public const string GetAvailableSeats = $"{Base}/{{ShowtimeId}}/seats/available";
         public const string GetShowtimeReservations = $"{Base}/{{ShowtimeId}}/reservations";
+        public const string GetShowtimeReservation = $"{Base}/reservations/{{ReservationId}}";
         private const string Base = "showtimes";
     }
 }

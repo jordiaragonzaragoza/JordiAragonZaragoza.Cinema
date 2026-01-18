@@ -5,6 +5,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandl
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetAvailableSeats;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtime;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimeReservation;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimeReservations;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimes;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
@@ -19,6 +20,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandl
             services.AddQueryHandler<GetShowtimeQuery, ShowtimeReadModel, GetShowtimeQueryHandler>();
             services.AddQueryHandler<GetShowtimeReservationsQuery, PaginatedCollectionOutputDto<ReservationReadModel>, GetShowtimeReservationsQueryHandler>();
             services.AddQueryHandler<GetShowtimesQuery, PaginatedCollectionOutputDto<ShowtimeReadModel>, GetShowtimesQueryHandler>();
+            services.AddQueryHandler<GetShowtimeReservationQuery, ReservationReadModel, GetShowtimeReservationQueryHandler>();
 
             return services;
         }
