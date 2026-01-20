@@ -147,7 +147,7 @@
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList(),
-                isPurchased: false,
+                isPurchased: true,
                 createdTimeOnUtc: DateTimeOffset.UtcNow);
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
@@ -190,6 +190,8 @@
                 ExampleReservation.UserId,
                 ExampleReservation.Seats,
                 ExampleReservation.ReservationDateOnUtc);
+
+            ExampleShowtime.PurchaseReservation(ExampleReservation.Id);
 
             eventStore.AppendChanges<Showtime, ShowtimeId>(ExampleShowtime);
 
