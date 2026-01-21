@@ -52,6 +52,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
         public async Task<bool> ShowtimeReservationNotExistsAsync(Guid reservationId, ITestOutputHelper? output = null)
             => await this.GetShowtimeReservationAsync(reservationId, output) is null;
 
+        public async Task<bool> PurchasedReservationExistsAsync(Guid reservationId, ITestOutputHelper? output = null)
+        {
+            var reservation = await this.GetShowtimeReservationAsync(reservationId, output);
+
+            return reservation is not null && reservation.IsPurchased;
+        }
+
         public async Task<IEnumerable<SeatResponse>?> GetAvailableSeatsAsync(Guid showtimeId, ITestOutputHelper? output = null)
         {
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.GetAvailableSeats}";

@@ -52,5 +52,17 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             // Act
             return await this.http.PutAndDeserializeAsync<ReservationResponse>(route, reserveSeatsContent, output);
         }
+
+        public async Task PurchaseReservationAsync(Guid showtimeId, Guid reservationId, ITestOutputHelper? output = null)
+        {
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.PurchaseReservation}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            route = route.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
+
+            var fullUri = new Uri(this.http.BaseAddress!, route);
+
+            output?.WriteLine($"Requesting with PATCH {route}");
+            await this.http.PatchAsync(fullUri, null);
+        }
     }
 }
