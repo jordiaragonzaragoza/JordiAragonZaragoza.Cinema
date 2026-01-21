@@ -111,7 +111,7 @@
                 id: new ReservationId(new Guid("d290f1ee-6c54-4b01-90e6-d701748f0851")),
                 userId: ExampleUser.Id,
                 seatIds: ExampleAuditorium.Seats.Take(3).Select(seat => seat.Id),
-                reservationDateOnUtc: ReservationDate.Create(DateTimeOffset.UtcNow));
+                reservationDateOnUtc: ReservationDate.Create(DateTimeOffset.UtcNow.AddDays(1))); // Added 1 day to avoid conflicts with the seat reservation time in the showtime.
 
         public static readonly ReservedSeatsEvent ExampleReservedSeatsEvent =
             new(
@@ -147,7 +147,7 @@
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList(),
-                isPurchased: true,
+                isPurchased: false,
                 createdTimeOnUtc: DateTimeOffset.UtcNow);
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
@@ -190,8 +190,6 @@
                 ExampleReservation.UserId,
                 ExampleReservation.Seats,
                 ExampleReservation.ReservationDateOnUtc);
-
-            ExampleShowtime.PurchaseReservation(ExampleReservation.Id);
 
             eventStore.AppendChanges<Showtime, ShowtimeId>(ExampleShowtime);
 

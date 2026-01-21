@@ -16,7 +16,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
         }
 
         [Fact]
-        public async Task CancelShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
+        public async Task CancelShowtime_ShouldRemoveShowtimeAndRelatedData()
         {
             // Arrange
             var scenario = new CancelShowtimeScenario();

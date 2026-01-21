@@ -171,7 +171,7 @@
             foreach (var availableSeatReadModel in availableSeatReadModels)
             {
                 yield return new SeatResponse(
-                    availableSeatReadModel.Id,
+                    availableSeatReadModel.SeatId,
                     availableSeatReadModel.Row,
                     availableSeatReadModel.SeatNumber);
             }

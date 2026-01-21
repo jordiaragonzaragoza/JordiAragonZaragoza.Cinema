@@ -11,8 +11,6 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
     {
         public Guid ShowtimeId { get; } = Guid.NewGuid();
 
-        public DateTimeOffset SessionDate { get; } = DateTimeOffset.UtcNow.AddDays(1);
-
         public async Task ArrangeAsync(
             ShowtimeCommandClient commandClient,
             ShowtimeQueryClient queryClient,

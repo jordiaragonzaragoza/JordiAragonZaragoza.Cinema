@@ -6,6 +6,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.SystemTests.Common.HttpClient;
     using Xunit.Abstractions;
 
@@ -38,6 +39,18 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
 
             output?.WriteLine($"Requesting with DELETE {route}");
             await this.http.DeleteAsync(fullUri);
+        }
+
+        public async Task<ReservationResponse?> ReserveSeatsAsync(Guid reservationId, Guid showtimeId, ReserveSeatsBodyRequest reserveSeatsRequest, ITestOutputHelper? output = null)
+        {
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ReserveSeats}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            route = route.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
+
+            using var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
+
+            // Act
+            return await this.http.PutAndDeserializeAsync<ReservationResponse>(route, reserveSeatsContent, output);
         }
     }
 }
