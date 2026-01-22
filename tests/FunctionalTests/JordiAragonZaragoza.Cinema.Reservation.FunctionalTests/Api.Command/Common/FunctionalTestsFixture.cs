@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@
         where TProgram : class
     {
         private readonly KurrentDbContainer eventStoreContainer =
-            new KurrentDbBuilder("kurrentplatform/kurrentdb:25.1.0-experimental-arm64-8.0-jammy")
+            new KurrentDbBuilder($"{Constants.KurrentDbImage}:{Constants.KurrentDbArmImageTag}")
             .WithName("kurrentdb.cinema.reservation.eventstore.functionaltests.api.command")
             .WithAutoRemove(true).Build();
 

@@ -3,9 +3,9 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
-
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +19,7 @@
         where TProgram : class
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
-            new PostgreSqlBuilder("postgres:15-alpine")
+            new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
             .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.api.query")
             .WithAutoRemove(true).Build();
 

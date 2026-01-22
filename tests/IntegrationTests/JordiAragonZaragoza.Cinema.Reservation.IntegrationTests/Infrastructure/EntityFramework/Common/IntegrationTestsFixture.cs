@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common
 {
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@
     public sealed class IntegrationTestsFixture : IAsyncLifetime
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
-            new PostgreSqlBuilder("postgres:15-alpine")
+            new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
             .WithName("postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework")
             .WithAutoRemove(true).Build();
 
