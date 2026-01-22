@@ -19,8 +19,7 @@
         where TProgram : class
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
-            new PostgreSqlBuilder()
-            .WithImage("postgres:15-alpine")
+            new PostgreSqlBuilder("postgres:15-alpine")
             .WithName("postgres.cinema.reservation.readmodelstore.functionaltests.api.query")
             .WithAutoRemove(true).Build();
 

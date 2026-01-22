@@ -1,16 +1,16 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Asp.Versioning.ApiExplorer;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
-    using Microsoft.OpenApi.Models;
+    using Microsoft.OpenApi;
     using Swashbuckle.AspNetCore.SwaggerGen;
 
     public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
     {
+        private const string SecuritySchemeName = "Bearer";
         private readonly IApiVersionDescriptionProvider provider;
 
         public ConfigureSwaggerOptions(
@@ -40,21 +40,12 @@
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer",
+                BearerFormat = "JWT",
             });
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement()
                 {
-                    {
-                        new OpenApiSecurityScheme()
-                        {
-                            Reference = new OpenApiReference()
-                            {
-                                Id = "Bearer",
-                                Type = ReferenceType.SecurityScheme,
-                            },
-                        },
-                        new List<string>()
-                    },
+                    [new OpenApiSecuritySchemeReference(SecuritySchemeName, doc)] = [],
                 });
 
             options.CustomSchemaIds(type => type.FullName);

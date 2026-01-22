@@ -74,7 +74,7 @@
                     var expireReservedSeatsIntervalInSeconds = expireReservedSeatsJobOptions.ScheduleIntervalInSeconds;
 
                     configure
-                        .AddJob<ExpireReservedSeatsJob>(expireReservedSeatsJobKey)
+                        .AddJob<ExpireReservedSeatsJob>(expireReservedSeatsJobKey, job => { })
                         .AddTrigger(trigger => trigger.ForJob(expireReservedSeatsJobKey)
                                                     .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(expireReservedSeatsIntervalInSeconds)
                                                                                             .RepeatForever()));
