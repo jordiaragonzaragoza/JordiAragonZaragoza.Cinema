@@ -30,7 +30,6 @@
         <PackageVersion Include="Ardalis.GuardClauses" Version="5.0.0" />
         <PackageVersion Include="CommunityToolkit.Aspire.Hosting.KurrentDB" Version="13.1.1" />
         <PackageVersion Include="CommunityToolkit.Aspire.KurrentDB" Version="13.1.1" />
-        <PackageVersion Include="FastEndpoints.Swagger" Version="7.2.0" />
         <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
         <PackageVersion Include="MassTransit" Version="8.5.7" />
         <PackageVersion Include="MassTransit.Azure.ServiceBus.Core" Version="8.5.7" />
@@ -57,7 +56,6 @@
         <PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="3.15.1" />
         <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.15.1" />
         <PackageVersion Include="Quartz.Serialization.Json" Version="3.15.1" />
-        <PackageVersion Include="Refit.HttpClientFactory" Version="9.0.2" />
         <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.18.0.131500" />
         <PackageVersion Include="Serilog.AspNetCore" Version="10.0.0" />
         <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
@@ -71,6 +69,5 @@
         <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
         <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.0" />
         <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.0" />
-        <PackageVersion Include="Swashbuckle.AspNetCore.Swagger" Version="10.1.0" />
    </ItemGroup>
 </Project>

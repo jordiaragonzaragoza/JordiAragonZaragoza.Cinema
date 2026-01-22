@@ -13,7 +13,7 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage("kurrentplatform/kurrentdb", "25.1.0-experimental-arm64-8.0-jammy");
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag);
 
             if (!IsSystemTesting(builder))
             {
@@ -33,7 +33,7 @@ namespace JordiAragonZaragoza.Cinema
                      .WaitForCompletion(kurrentdbSeeder);
 
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
-                                        .WithImageTag("15.1-alpine")
+                                        .WithImageTag(Constants.PostgresImageTag)
                                         .WithPgAdmin();
 
             if (!IsSystemTesting(builder))
