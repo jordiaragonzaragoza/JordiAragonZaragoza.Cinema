@@ -141,7 +141,7 @@ Special thanks to all these authors for sharing their knowledge and expertise:
 
 ## Versions
 
-The main branch is now on .NET 9 The following previous versions are available:
+The main branch is now on .NET 10 The following previous versions are available:
 * [.NET 9](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net9.0)
 * [.NET 8](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net8.0)
 * [.NET 7](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/tree/net7.0)

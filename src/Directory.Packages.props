@@ -2,13 +2,13 @@
 <Project>
    <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-        <SharedKernelVersion>10.1.0</SharedKernelVersion>
+        <SharedKernelVersion>11.1.0</SharedKernelVersion>
    </PropertyGroup>
    <ItemGroup>
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application.Contracts" Version="$(SharedKernelVersion)" />
-        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application.Contracts.IntegrationMessages" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Application.Contracts.Integration" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Contracts" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Domain" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Domain.Contracts" Version="$(SharedKernelVersion)" />
@@ -17,6 +17,8 @@
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" Version="$(SharedKernelVersion)" />
         <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.Integration" Version="$(SharedKernelVersion)" />
+        <PackageVersion Include="JordiAragonZaragoza.SharedKernel.Presentation.Integration.Contracts" Version="$(SharedKernelVersion)" />
     </ItemGroup>
     <ItemGroup>
         <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.1" />

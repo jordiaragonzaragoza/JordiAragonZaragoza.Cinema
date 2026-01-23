@@ -26,6 +26,8 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string KurrentDbArmImageTag = "26.0.0-experimental-arm64-10.0-noble";
 
+        public const string KurrentDbImageTag = "26.0.0";
+
         public const string PostgresImage = "postgres";
 
         public const string PostgresImageTag = "18.1-alpine";
