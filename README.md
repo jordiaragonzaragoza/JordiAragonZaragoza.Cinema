@@ -8,20 +8,19 @@ Loving it? Please show your support by giving this project a star!
 
 ## Getting Started 🏃
 
-- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 9 SDK).
+- You will need the latest Visual Studio 2022 and the latest .NET Core SDK (at least .NET 10 SDK).
 - You will need also Docker Desktop running on your machine and NET Aspire Workload (installed either Visual Studio or the .NET CLI)
 - To run the project just find and build the solution file JordiAragonZaragoza.Cinema.sln and press F5
 
 ## Architecture: 🏗️
 
 - Clean Architecture (Onion Architecture). SOLID and clean code (including zero warnings policy)
-- Vertical Slices Architecture.
+- Vertical Slices Architecture. Screaming Architecture
 - Domain Driven-Design 
 - Rich Domain Model with event sourced aggregates and Strong Ids
 - Domain Events as source of truth
 - CQRS with DB physical separation.
-- Event Sourcing 
-- Unit of Work
+- Event Sourcing
 - Repository & Specification
 - Custom API Error Handling with Problems Details
 
@@ -34,7 +33,11 @@ Loving it? Please show your support by giving this project a star!
 
 ## Workflow: 📍
 
-![JordiAragonZaragoza.Cinema - workflow graph](./docs/Current.jpg)
+![JordiAragonZaragoza.Cinema - workflow graph](./docs/EventSourcing.jpg)
+
+## Aspire: 📍
+
+![JordiAragonZaragoza.Cinema - NET Aspire](./docs/Aspire.jpeg)
 
 ## Technologies implemented: ⚒️
 
@@ -77,7 +80,7 @@ Loving it? Please show your support by giving this project a star!
 - Unit Tests: Domain and Application
 - Functional Tests with Testcontainers: Presentation.HttpRestfulApi
 - Integration Tests with Testcontainers: Infrastructure.EntityFramework
-- System Test using .NET Aspire
+- System Test using .NET Aspire Testing
 - GitHub workflow CI with SonarCloud integration
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=jordiaragonzaragoza_JordiAragon.Cinema)
