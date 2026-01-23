@@ -6,7 +6,7 @@
 
     public sealed record class GetShowtimeQuery(
         Guid ShowtimeId)
-        : IQuery<ShowtimeReadModel>, ICacheRequest
+        : IQuery<ShowtimeReadModel> ////, ICacheRequest // TODO: Enable cache request when implementing cache invalidation
     {
         public string CacheKey
             => $"{ShowtimeConstants.CachePrefix}_{this.ShowtimeId}";

@@ -10,8 +10,8 @@
         Guid? ShowtimeId,
         DateTimeOffset? StartIntervalTimeOnUtc,
         DateTimeOffset? EndIntervalTimeOnUtc,
-        string AuditoriumName,
-        string MovieTitle,
+        string? AuditoriumName,
+        string? MovieTitle,
         bool? IsPurchased,
         int PageNumber,
         int PageSize)

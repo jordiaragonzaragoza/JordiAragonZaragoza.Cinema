@@ -1,13 +1,12 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Domain
 {
     using System;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
 
-    public sealed class User : BaseAggregateRoot<UserId, Guid>
+    public sealed class User : BaseEventSourcedAggregateRoot<UserId, Guid>
     {
         // Required by EF.
         private User()

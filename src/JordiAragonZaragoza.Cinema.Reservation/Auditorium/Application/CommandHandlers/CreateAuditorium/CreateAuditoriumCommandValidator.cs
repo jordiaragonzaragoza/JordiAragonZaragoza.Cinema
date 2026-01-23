@@ -1,10 +1,9 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers.AddAuditorium
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.CommandHandlers.CreateAuditorium
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class CreateAuditoriumCommandValidator : BaseValidator<CreateAuditoriumCommand>
+    public sealed class CreateAuditoriumCommandValidator : AbstractValidator<CreateAuditoriumCommand>
     {
         public CreateAuditoriumCommandValidator()
         {

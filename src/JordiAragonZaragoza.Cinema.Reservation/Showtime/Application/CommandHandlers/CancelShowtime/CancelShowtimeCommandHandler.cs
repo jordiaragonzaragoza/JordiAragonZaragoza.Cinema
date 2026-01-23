@@ -3,24 +3,23 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class CancelShowtimeCommandHandler : BaseCommandHandler<CancelShowtimeCommand>
+    public sealed class CancelShowtimeCommandHandler : ICommandHandler<CancelShowtimeCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
         public CancelShowtimeCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.showtimeRepository = showtimeRepository ?? throw new ArgumentNullException(nameof(showtimeRepository));
         }
 
-        public override async Task<Result> Handle(CancelShowtimeCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CancelShowtimeCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 

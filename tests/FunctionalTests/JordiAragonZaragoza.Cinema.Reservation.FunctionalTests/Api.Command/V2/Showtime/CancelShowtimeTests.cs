@@ -1,0 +1,70 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.Showtime
+{
+    using System;
+    using System.Threading.Tasks;
+    using Ardalis.HttpClientTestExtensions;
+    using FluentAssertions;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common;
+    using Xunit;
+    using Xunit.Abstractions;
+
+    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+
+    public sealed class CancelShowtimeTests : BaseHttpRestfulApiFunctionalTests
+    {
+        public CancelShowtimeTests(
+            FunctionalTestsFixture<Program> fixture,
+            ITestOutputHelper outputHelper)
+            : base(fixture, outputHelper)
+        {
+        }
+
+        [Fact]
+        public async Task CancelShowtime_WhenHavingValidArguments_ShouldDeleteRequiredShowtime()
+        {
+            // Arrange
+            var showtimeId = await this.ScheduleNewShowtimeAsync();
+
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.CancelShowtime}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            // Act
+            this.OutputHelper.WriteLine($"Requesting with DELETE {route}");
+            var response = await this.Fixture.HttpClient.DeleteAsync(fullUri);
+
+            // Assert
+            response.StatusCode.Should()
+                .Be(System.Net.HttpStatusCode.NoContent);
+        }
+
+        private async Task<Guid> ScheduleNewShowtimeAsync()
+        {
+            var showtimeId = Guid.NewGuid();
+
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+
+            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            var request = new ScheduleShowtimeBodyRequest(
+                SeedData.ExampleAuditorium.Id,
+                SeedData.ExampleMovie.Id,
+                sessionDateOnUtc);
+
+            var content = StringContentHelpers.FromModelAsJson(request);
+
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
+
+            return showtimeId;
+        }
+    }
+}

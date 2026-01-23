@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserReservations
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Ardalis.Specification;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
@@ -13,13 +13,13 @@
 
         public GetUserReservationsSpecification(GetUserReservationsQuery request)
         {
-            this.request = Guard.Against.Null(request);
+            this.request = request ?? throw new ArgumentNullException(nameof(request));
 
             this.Query
                 .Where(t => t.UserId == request.UserId)
                 .Where(t => t.ShowtimeId == request.ShowtimeId, request.ShowtimeId is not null)
-                .Where(t => t.AuditoriumName.Contains(request.AuditoriumName), !string.IsNullOrWhiteSpace(request.AuditoriumName))
-                .Where(t => t.MovieTitle.Contains(request.MovieTitle), !string.IsNullOrWhiteSpace(request.MovieTitle))
+                .Where(t => request.AuditoriumName == null || t.AuditoriumName.Contains(request.AuditoriumName))
+                .Where(t => request.MovieTitle == null || t.MovieTitle.Contains(request.MovieTitle))
                 .Where(s => s.SessionDateOnUtc >= request.StartIntervalTimeOnUtc, request.StartIntervalTimeOnUtc is not null)
                 .Where(s => s.SessionDateOnUtc <= request.EndIntervalTimeOnUtc, request.EndIntervalTimeOnUtc is not null)
                 .AsNoTracking()
