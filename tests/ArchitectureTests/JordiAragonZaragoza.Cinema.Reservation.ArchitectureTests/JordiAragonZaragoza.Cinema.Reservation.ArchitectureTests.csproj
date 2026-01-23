@@ -23,7 +23,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
-		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1.csproj" />
-		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command\JordiAragonZaragoza.Cinema.Reservation.Api.Command.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query\JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1.csproj" />
+	    <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.csproj" />
+		<ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1.csproj" />
+	    <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj" />
 	</ItemGroup>
 </Project>

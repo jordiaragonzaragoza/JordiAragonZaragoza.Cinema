@@ -4,9 +4,10 @@
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
 
     public static class SeedData
@@ -47,18 +48,8 @@
             User.Create(
                 id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
-        public static void PopulateBusinessModelTestData(ReservationBusinessModelContext context)
-        {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
-
-            context.Movies.Add(ExampleMovie);
-
-            context.Auditoriums.Add(ExampleAuditorium);
-
-            context.Users.Add(ExampleUser);
-
-            context.SaveChanges();
-        }
+        public static readonly UserReadModel ExampleUserReadModel =
+            new(ExampleUser.Id);
 
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
@@ -67,6 +58,8 @@
             context.Movies.Add(ExampleMovieReadModel);
 
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
+
+            context.Users.Add(ExampleUserReadModel);
 
             context.SaveChanges();
         }

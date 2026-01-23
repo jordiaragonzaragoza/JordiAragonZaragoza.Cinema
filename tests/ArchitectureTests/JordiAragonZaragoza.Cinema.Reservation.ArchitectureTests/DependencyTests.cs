@@ -4,48 +4,68 @@
     using System.Linq;
     using System.Reflection;
     using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V1;
-    using JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using NetArchTest.Rules;
     using Xunit;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
 
     public sealed class DependencyTests
     {
-        private readonly Assembly assembly;
+        private readonly Assembly reservationAssembly;
         private readonly IEnumerable<string> domainNamespaces;
         private readonly IEnumerable<string> applicationNamespaces;
         private readonly IEnumerable<string> applicationContractsNamespaces;
-        private readonly IEnumerable<string> applicationContractsIntegrationMessagesNamespaces;
+        private readonly IEnumerable<string> applicationContractsIntegrationMessagesV1Namespaces;
         private readonly IEnumerable<string> infrastructureNamespaces;
         private readonly IEnumerable<string> infrastructureEntityFrameworkNamespaces;
         private readonly IEnumerable<string> infrastructureEventStoreNamespaces;
-        private readonly IEnumerable<string> httpRestfulApiNamespaces;
+        private readonly IEnumerable<string> apiCommandNamespaces;
+        private readonly IEnumerable<string> apiQueryNamespaces;
+        private readonly IEnumerable<string> apiCommandContractsV1Namespaces;
+        private readonly IEnumerable<string> apiCommandContractsV2Namespaces;
+        private readonly IEnumerable<string> apiQueryContractsV1Namespaces;
+        private readonly IEnumerable<string> apiQueryContractsV2Namespaces;
         private readonly string[] allNamespaces;
-        private readonly string httpRestfulApiContractsV1Namespace = HttpRestfulApiContractsV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty;
-        private readonly string httpRestfulApiContractsV2Namespace = HttpRestfulApiContractsV2AssemblyReference.Assembly.GetName().Name ?? string.Empty;
 
         public DependencyTests()
         {
-            this.assembly = AssemblyReference.Assembly;
-            this.domainNamespaces = GetNamespacesContaining(this.assembly, "Domain");
-            this.applicationNamespaces = GetNamespacesContaining(this.assembly, "Application");
-            this.applicationContractsNamespaces = GetNamespacesContaining(this.assembly, "Application.Contracts");
-            this.applicationContractsIntegrationMessagesNamespaces = GetNamespacesContaining(this.assembly, "Application.Contracts.IntegrationMessages");
-            this.infrastructureNamespaces = GetNamespacesContaining(this.assembly, "Infrastructure");
-            this.infrastructureEntityFrameworkNamespaces = GetNamespacesContaining(this.assembly, "Infrastructure.EntityFramework");
-            this.infrastructureEventStoreNamespaces = GetNamespacesContaining(this.assembly, "Infrastructure.EventStore");
-            this.httpRestfulApiNamespaces = GetNamespacesContaining(this.assembly, "Presentation.HttpRestfulApi");
+            this.reservationAssembly = AssemblyReference.Assembly;
+            this.domainNamespaces = GetNamespacesContaining(this.reservationAssembly, "Domain");
+            this.applicationNamespaces = GetNamespacesContaining(this.reservationAssembly, "Application");
+            this.applicationContractsNamespaces = GetNamespacesContaining(this.reservationAssembly, "Application.Contracts");
+            this.applicationContractsIntegrationMessagesV1Namespaces = GetNamespacesContaining(IntegrationMessagesV1AssemblyReference.Assembly, "Application.Contracts.IntegrationMessages.V1");
+            this.infrastructureNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure");
+            this.infrastructureEntityFrameworkNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure.EntityFramework");
+            this.infrastructureEventStoreNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure.EventStore");
+
+            // TODO: Complete with all Autonomous Components Namespaces
+            this.apiCommandNamespaces = GetNamespacesContaining(ApiCommandAssemblyReference.Assembly, "Api.Command");
+            this.apiCommandContractsV1Namespaces = GetNamespacesContaining(ApiCommandContractsV1AssemblyReference.Assembly, "Api.Command.Contracts.V1");
+            this.apiCommandContractsV2Namespaces = GetNamespacesContaining(ApiCommandContractsV2AssemblyReference.Assembly, "Api.Command.Contracts.V2");
+            this.apiQueryNamespaces = GetNamespacesContaining(ApiQueryAssemblyReference.Assembly, "Api.Query");
+            this.apiQueryContractsV1Namespaces = GetNamespacesContaining(ApiQueryContractsV1AssemblyReference.Assembly, "Api.Query.Contracts.V1");
+            this.apiQueryContractsV2Namespaces = GetNamespacesContaining(ApiQueryContractsV2AssemblyReference.Assembly, "Api.Query.Contracts.V2");
 
             this.allNamespaces = new List<IEnumerable<string>>
             {
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             }.SelectMany(collection => collection).ToArray();
         }
 
@@ -56,20 +76,23 @@
             {
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Domain")
                 .Should()
@@ -91,20 +114,23 @@
             {
                 this.domainNamespaces,
                 this.applicationNamespaces,
-                this.applicationContractsIntegrationMessagesNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Application.Contracts")
                 .Should()
@@ -122,6 +148,9 @@
         [Fact]
         public void ApplicationContractsIntegrationMessages_Should_Not_HaveDependencyOnOtherProjects()
         {
+            // Arrange.
+            var assemblyV1 = IntegrationMessagesV1AssemblyReference.Assembly;
+
             var namespacesCollections = new List<IEnumerable<string>>
             {
                 this.domainNamespaces,
@@ -130,22 +159,25 @@
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(assemblyV1)
                 .That()
                 .ResideInNamespaceContaining("Application.Contracts.IntegrationMessages")
                 .Should()
                 .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOnAny(this.applicationContractsIntegrationMessagesNamespaces.ToArray())
+                .HaveDependencyOn(IntegrationMessagesV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
                 .Or()
                 .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
@@ -163,12 +195,15 @@
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             var allowedDependencies = new List<IEnumerable<string>>
             {
@@ -178,7 +213,7 @@
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Application")
                 .Should()
@@ -205,12 +240,15 @@
                 this.applicationNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             var allowedDependencies = new List<IEnumerable<string>>
             {
@@ -219,7 +257,7 @@
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Infrastructure")
                 .Should()
@@ -244,12 +282,13 @@
             {
                 this.infrastructureNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiQueryContractsV1Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             var allowedDependencies = new List<IEnumerable<string>>
             {
@@ -259,7 +298,7 @@
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Infrastructure.EntityFramework")
                 .Should()
@@ -284,12 +323,13 @@
             {
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiQueryContractsV1Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             var allowedDependencies = new List<IEnumerable<string>>
             {
@@ -299,7 +339,7 @@
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
                 .ResideInNamespaceContaining("Infrastructure.EventStore")
                 .Should()
@@ -317,25 +357,28 @@
         }
 
         [Fact]
-        public void HttpRestfulApiContractsV1_Should_Not_HaveDependencyOnOtherProjects()
+        public void ApiCommandContractsV1_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assemblyV1 = HttpRestfulApiContractsV1AssemblyReference.Assembly;
+            var assemblyV1 = ApiCommandContractsV1AssemblyReference.Assembly;
 
             var namespacesCollections = new List<IEnumerable<string>>
             {
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
+                this.apiCommandContractsV2Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
@@ -343,7 +386,7 @@
                 .Should()
                 .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOn(this.httpRestfulApiContractsV1Namespace)
+                .HaveDependencyOn(ApiCommandContractsV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
                 .Or()
                 .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
@@ -353,33 +396,36 @@
         }
 
         [Fact]
-        public void HttpRestfulApiContractsV2_Should_Not_HaveDependencyOnOtherProjects()
+        public void ApiCommandContractsV2_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assemblyV2 = HttpRestfulApiContractsV2AssemblyReference.Assembly;
+            var assemblyV1 = ApiCommandContractsV2AssemblyReference.Assembly;
 
             var namespacesCollections = new List<IEnumerable<string>>
             {
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
-                this.httpRestfulApiNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiQueryContractsV1Namespaces,
+                this.apiQueryContractsV2Namespaces,
+                this.apiCommandContractsV1Namespaces,
             };
 
             var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
-            forbiddenReferences.Add(this.httpRestfulApiContractsV1Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(assemblyV2)
+                .InAssembly(assemblyV1)
                 .Should()
                 .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOn(this.httpRestfulApiContractsV1Namespace)
+                .HaveDependencyOn(ApiCommandContractsV2AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
                 .Or()
                 .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
@@ -389,7 +435,85 @@
         }
 
         [Fact]
-        public void HttpRestfulApi_Should_Not_HaveDependencyOnOtherProjects()
+        public void ApiQueryContractsV1_Should_Not_HaveDependencyOnOtherProjects()
+        {
+            // Arrange.
+            var assemblyV1 = ApiQueryContractsV1AssemblyReference.Assembly;
+
+            var namespacesCollections = new List<IEnumerable<string>>
+            {
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.applicationContractsNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV2Namespaces,
+            };
+
+            var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
+
+            // Act.
+            var testResult = Types
+                .InAssembly(assemblyV1)
+                .Should()
+                .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
+                .Or()
+                .HaveDependencyOn(ApiQueryContractsV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
+                .Or()
+                .NotHaveDependencyOnAny(this.allNamespaces)
+                .GetResult();
+
+            // Assert.
+            testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
+        }
+
+        [Fact]
+        public void ApiQueryContractsV2_Should_Not_HaveDependencyOnOtherProjects()
+        {
+            // Arrange.
+            var assemblyV1 = ApiQueryContractsV2AssemblyReference.Assembly;
+
+            var namespacesCollections = new List<IEnumerable<string>>
+            {
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.applicationContractsNamespaces,
+                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+                this.apiCommandNamespaces,
+                this.apiQueryNamespaces,
+                this.apiCommandContractsV1Namespaces,
+                this.apiCommandContractsV2Namespaces,
+                this.apiQueryContractsV1Namespaces,
+            };
+
+            var forbiddenReferences = namespacesCollections.SelectMany(collection => collection).ToList();
+
+            // Act.
+            var testResult = Types
+                .InAssembly(assemblyV1)
+                .Should()
+                .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
+                .Or()
+                .HaveDependencyOn(ApiQueryContractsV2AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
+                .Or()
+                .NotHaveDependencyOnAny(this.allNamespaces)
+                .GetResult();
+
+            // Assert.
+            testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
+        }
+
+        [Fact]
+        public void ApiCommand_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
             var forbiddenReferences = new List<IEnumerable<string>>
@@ -404,19 +528,55 @@
             var allowedDependencies = new List<IEnumerable<string>>
             {
                 this.applicationContractsNamespaces,
+                this.apiCommandContractsV1Namespaces,
             }.SelectMany(collection => collection).ToList();
-            allowedDependencies.Add(this.httpRestfulApiContractsV1Namespace);
-            allowedDependencies.Add(this.httpRestfulApiContractsV2Namespace);
 
             // Act.
             var testResult = Types
-                .InAssembly(this.assembly)
+                .InAssembly(this.reservationAssembly)
                 .That()
-                .ResideInNamespaceContaining("Presentation.HttpRestfulApi")
+                .ResideInNamespaceContaining("Api.Command")
                 .Should()
                 .NotHaveDependencyOnAny(forbiddenReferences)
                 .Or()
-                .HaveDependencyOnAny(this.httpRestfulApiNamespaces.ToArray())
+                .HaveDependencyOnAny(this.apiCommandNamespaces.ToArray())
+                .Or()
+                .HaveDependencyOnAny(allowedDependencies.ToArray())
+                .Or()
+                .NotHaveDependencyOnAny(this.allNamespaces)
+                .GetResult();
+
+            testResult.IsSuccessful.Should().BeTrue(Utils.GetFailingTypes(testResult));
+        }
+
+        [Fact]
+        public void ApiQuery_Should_Not_HaveDependencyOnOtherProjects()
+        {
+            // Arrange.
+            var forbiddenReferences = new List<IEnumerable<string>>
+            {
+                this.domainNamespaces,
+                this.applicationNamespaces,
+                this.infrastructureNamespaces,
+                this.infrastructureEntityFrameworkNamespaces,
+                this.infrastructureEventStoreNamespaces,
+            }.SelectMany(collection => collection).ToArray();
+
+            var allowedDependencies = new List<IEnumerable<string>>
+            {
+                this.applicationContractsNamespaces,
+                this.apiCommandContractsV1Namespaces,
+            }.SelectMany(collection => collection).ToList();
+
+            // Act.
+            var testResult = Types
+                .InAssembly(this.reservationAssembly)
+                .That()
+                .ResideInNamespaceContaining("Api.Query")
+                .Should()
+                .NotHaveDependencyOnAny(forbiddenReferences)
+                .Or()
+                .HaveDependencyOnAny(this.apiCommandNamespaces.ToArray())
                 .Or()
                 .HaveDependencyOnAny(allowedDependencies.ToArray())
                 .Or()

@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using Ardalis.GuardClauses;
     using Ardalis.Result;
-    using AutoMapper;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
@@ -15,15 +14,14 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
-    using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
-    public sealed class ReserveSeatsCommandHandler : BaseCommandHandler<ReserveSeatsCommand, ReservationOutputDto>
+    public sealed class ReserveSeatsCommandHandler : ICommandHandler<ReserveSeatsCommand, ReservationOutputDto>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
         private readonly IReadRepository<User, UserId> userRepository;
-        private readonly IMapper mapper;
         private readonly IDateTime dateTime;
         private readonly IReservationManager showtimeManager;
         private readonly IReadRepository<Movie, MovieId> movieRepository;
@@ -33,7 +31,6 @@
             IRepository<Showtime, ShowtimeId> showtimeRepository,
             IReadRepository<User, UserId> userRepository,
             IReservationManager showtimeManager,
-            IMapper mapper,
             IDateTime dateTime,
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
@@ -41,13 +38,12 @@
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
             this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
             this.showtimeManager = Guard.Against.Null(showtimeManager, nameof(showtimeManager));
-            this.mapper = Guard.Against.Null(mapper, nameof(mapper));
             this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
             this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
             this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
         }
 
-        public override async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
@@ -63,7 +59,7 @@
                 return Result.NotFound($"{nameof(Showtime)}: {request.ShowtimeId} not found.");
             }
 
-            var desiredSeatsIds = this.mapper.Map<IEnumerable<SeatId>>(request.SeatsIds);
+            var desiredSeatsIds = Map(request.SeatsIds);
 
             // Make the reserve.
             var newReservation = await this.showtimeManager.ReserveSeatsAsync(
@@ -77,7 +73,7 @@
             await this.showtimeRepository.UpdateAsync(existingShowtime, cancellationToken);
 
             // Prepare command response to avoid delays on eventual consistency.
-            // This may change if asynchronous commands are used.
+            // This may change if pure DDD commands are used.
             var existingMovie = await this.movieRepository.GetByIdAsync(existingShowtime.MovieId, cancellationToken);
             if (existingMovie is null)
             {
@@ -107,5 +103,8 @@
 
             return Result.Created(reservationOutputDto);
         }
+
+        private static IEnumerable<SeatId> Map(IEnumerable<Guid> seatIds)
+            => seatIds.Select(id => new SeatId(id));
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.QueryHandlers.GetAuditoriums
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
@@ -17,7 +17,7 @@
 
         public GetAuditoriumsQueryHandler(IPaginatedSpecificationReadRepository<AuditoriumReadModel> auditoriumReadModelRepository)
         {
-            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));
         }
 
         public async Task<Result<PaginatedCollectionOutputDto<AuditoriumReadModel>>> Handle(GetAuditoriumsQuery request, CancellationToken cancellationToken)

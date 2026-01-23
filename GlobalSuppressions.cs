@@ -18,3 +18,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Warning not applicable to .NET Core")]
 [assembly: SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "Ok for Ardalis.GuardClauses")]
 [assembly: SuppressMessage("Minor Code Smell", "S2094:Classes should not be empty", Justification = "Ok for empty records")]
+[assembly: SuppressMessage("Major Code Smell", "S6934:A Route attribute should be added to the controller when a route template is specified at the action level", Justification = "Ok when full route is specified")]

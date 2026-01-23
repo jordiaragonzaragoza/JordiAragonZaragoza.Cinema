@@ -1,0 +1,61 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Projectors.AvailableSeat
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Ardalis.GuardClauses;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
+
+    using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+
+    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
+
+    public sealed class ShowtimeScheduledEventProjector : BaseEventHandler<ShowtimeScheduledEvent>
+    {
+        private readonly IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository;
+        private readonly IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository;
+        private readonly IIdGenerator guidGenerator;
+
+        public ShowtimeScheduledEventProjector(
+            IReadRepository<AuditoriumReadModel, Guid> auditoriumReadModelRepository,
+            IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository,
+            IIdGenerator guidGenerator)
+        {
+            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
+            this.availableReadModelRepository = Guard.Against.Null(availableReadModelRepository, nameof(availableReadModelRepository));
+            this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
+        }
+
+        public override async Task HandleAsync(ShowtimeScheduledEvent @event, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(@event);
+
+            var existingAuditorium = await this.auditoriumReadModelRepository.GetByIdAsync(new AuditoriumId(@event.AuditoriumId), cancellationToken);
+            if (existingAuditorium is null)
+            {
+                throw new NotFoundException(nameof(Auditorium), @event.AuditoriumId.ToString());
+            }
+
+            var availableSeats = new List<AvailableSeatReadModel>();
+            foreach (var seat in existingAuditorium.Seats)
+            {
+                availableSeats.Add(new AvailableSeatReadModel(
+                    id: this.guidGenerator.Create(),
+                    seatId: seat.Id,
+                    row: seat.Row,
+                    seatNumber: seat.SeatNumber,
+                    showtimeId: @event.AggregateId,
+                    auditoriumId: existingAuditorium.Id,
+                    auditoriumName: existingAuditorium.Name));
+            }
+
+            await this.availableReadModelRepository.AddRangeAsync(availableSeats, cancellationToken);
+        }
+    }
+}

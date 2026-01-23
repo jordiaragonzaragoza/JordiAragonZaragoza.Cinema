@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class EndShowtimeCommandValidator : BaseValidator<EndShowtimeCommand>
+    public sealed class EndShowtimeCommandValidator : AbstractValidator<EndShowtimeCommand>
     {
         public EndShowtimeCommandValidator()
         {

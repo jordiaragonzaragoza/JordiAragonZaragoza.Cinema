@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -18,7 +17,7 @@
 
         public GetAvailableSeatsQueryHandler(ISpecificationReadRepository<AvailableSeatReadModel, Guid> readListRepository)
         {
-            this.readListRepository = Guard.Against.Null(readListRepository, nameof(readListRepository));
+            this.readListRepository = readListRepository ?? throw new ArgumentNullException(nameof(readListRepository));
         }
 
         public async Task<Result<IEnumerable<AvailableSeatReadModel>>> Handle(GetAvailableSeatsQuery request, CancellationToken cancellationToken)

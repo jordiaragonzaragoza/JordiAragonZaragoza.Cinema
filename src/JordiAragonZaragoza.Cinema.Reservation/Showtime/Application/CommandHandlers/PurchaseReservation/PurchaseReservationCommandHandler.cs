@@ -7,10 +7,10 @@
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class PurchaseReservationCommandHandler : BaseCommandHandler<PurchaseReservationCommand>
+    public sealed class PurchaseReservationCommandHandler : ICommandHandler<PurchaseReservationCommand>
     {
         private readonly IRepository<Showtime, ShowtimeId> showtimeRepository;
 
@@ -20,7 +20,7 @@
             this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
         }
 
-        public override async Task<Result> Handle(PurchaseReservationCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(PurchaseReservationCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 

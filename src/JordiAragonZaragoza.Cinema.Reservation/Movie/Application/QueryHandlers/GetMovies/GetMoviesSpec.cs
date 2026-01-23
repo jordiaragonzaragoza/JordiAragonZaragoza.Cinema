@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Application.QueryHandlers.GetMovies
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Ardalis.Specification;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
@@ -13,7 +13,7 @@
 
         public GetMoviesSpec(GetMoviesQuery request)
         {
-            this.request = Guard.Against.Null(request);
+            this.request = request ?? throw new ArgumentNullException(nameof(request));
         }
 
         public IPaginatedQuery Request

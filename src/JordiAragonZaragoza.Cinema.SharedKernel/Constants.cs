@@ -6,12 +6,30 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string SeqServer = "SeqServer";
 
-        public const string EventStoreDbServer = "EventStoreDbServer";
+        public const string ReservationApiCommand = "ReservationApiCommand";
 
-        public const string JordiAragonZaragozaCinemaReservation = "JordiAragonZaragozaCinemaReservation";
+        public const string ReservationWorkerReactor = "ReservationWorkerReactor";
 
-        public const string JordiAragonZaragozaCinemaReservationBusinessModelStore = "JordiAragonZaragozaCinemaReservationBusinessModelStore";
+        public const string ReservationApiQuery = "ReservationApiQuery";
 
-        public const string JordiAragonZaragozaCinemaReservationReadModelStore = "JordiAragonZaragozaCinemaReservationReadModelStore";
+        public const string ReservationWorkerProjector = "ReservationWorkerProjector";
+
+        public const string ReservationWorkerSeeder = "ReservationWorkerSeeder";
+
+        public const string ReservationWorkerReadModelMigrator = "ReservationWorkerReadModelMigrator";
+
+        public const string ReservationBusinessModelStore = "ReservationBusinessModelStore";
+
+        public const string ReservationReadModelStore = "ReservationReadModelStore";
+
+        public const string KurrentDbImage = "kurrentplatform/kurrentdb";
+
+        public const string KurrentDbArmImageTag = "26.0.0-experimental-arm64-10.0-noble";
+
+        public const string KurrentDbImageTag = "26.0.0";
+
+        public const string PostgresImage = "postgres";
+
+        public const string PostgresImageTag = "18.1-alpine";
     }
 }

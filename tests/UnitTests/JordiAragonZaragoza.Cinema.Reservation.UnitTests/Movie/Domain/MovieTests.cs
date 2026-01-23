@@ -113,7 +113,7 @@
             var showtimeId = Constants.Showtime.Id;
 
             // Act.
-            movie.AddActiveShowtime(showtimeId);
+            movie.ScheduleShowtime(showtimeId);
 
             // Assert.
             movie.ActiveShowtimes.Should()
@@ -122,9 +122,9 @@
                           .HaveCount(1);
 
             movie.Events.Should()
-                              .ContainSingle(x => x is ActiveShowtimeAddedEvent)
-                              .Which.Should().BeOfType<ActiveShowtimeAddedEvent>()
-                              .Which.Should().Match<ActiveShowtimeAddedEvent>(e =>
+                              .ContainSingle(x => x is ShowtimeScheduledEvent)
+                              .Which.Should().BeOfType<ShowtimeScheduledEvent>()
+                              .Which.Should().Match<ShowtimeScheduledEvent>(e =>
                                                                             e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }
@@ -135,10 +135,10 @@
             // Arrange.
             var movie = CreateMovieUtils.Create();
             var showtimeId = Constants.Showtime.Id;
-            movie.AddActiveShowtime(showtimeId);
+            movie.ScheduleShowtime(showtimeId);
 
             // Act.
-            movie.RemoveActiveShowtime(showtimeId);
+            movie.CancelShowtime(showtimeId);
 
             // Assert.
             movie.ActiveShowtimes.Should()
@@ -147,9 +147,9 @@
                           .HaveCount(0);
 
             movie.Events.Should()
-                              .ContainSingle(x => x is ActiveShowtimeRemovedEvent)
-                              .Which.Should().BeOfType<ActiveShowtimeRemovedEvent>()
-                              .Which.Should().Match<ActiveShowtimeRemovedEvent>(e =>
+                              .ContainSingle(x => x is ShowtimeCanceledEvent)
+                              .Which.Should().BeOfType<ShowtimeCanceledEvent>()
+                              .Which.Should().Match<ShowtimeCanceledEvent>(e =>
                                                                             e.AggregateId == movie.Id &&
                                                                             e.ShowtimeId == showtimeId);
         }

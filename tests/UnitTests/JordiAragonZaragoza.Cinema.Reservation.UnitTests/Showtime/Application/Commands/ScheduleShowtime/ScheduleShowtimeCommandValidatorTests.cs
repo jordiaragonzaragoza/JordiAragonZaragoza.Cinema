@@ -5,7 +5,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
-    using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Contracts;
     using NSubstitute;
     using Xunit;
 

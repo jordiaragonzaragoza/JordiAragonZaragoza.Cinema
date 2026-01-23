@@ -4,13 +4,9 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Ardalis.GuardClauses" />
-		<PackageReference Include="Ardalis.HttpClientTestExtensions" />
 		<PackageReference Include="Aspire.Hosting.Testing" />
 		<PackageReference Include="FluentAssertions" />
-		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="Respawn" />
 		<PackageReference Include="xunit" />
 		<PackageReference Include="xunit.runner.visualstudio">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,6 +23,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema\JordiAragonZaragoza.Cinema.csproj" />
-	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Presentation.HttpRestfulApi.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.csproj" />
 	</ItemGroup>
 </Project>

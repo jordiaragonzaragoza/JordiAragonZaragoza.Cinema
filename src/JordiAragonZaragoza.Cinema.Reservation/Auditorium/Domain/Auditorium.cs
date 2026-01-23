@@ -4,14 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Rules;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
 
-    using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
-
-    public sealed class Auditorium : BaseAggregateRoot<AuditoriumId, Guid>
+    public sealed class Auditorium : BaseEventSourcedAggregateRoot<AuditoriumId, Guid>
     {
         private readonly List<ShowtimeId> activeShowtimes = new();
         private List<Seat> seats = new();
@@ -60,25 +59,39 @@
         }
 
         public void Remove()
-            => this.Apply(new AuditoriumRemovedEvent(this.Id));
-
-        public void AddActiveShowtime(ShowtimeId showtimeId)
         {
-            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+            // An Auditorium cannot be deleted if it has active showtimes.
+            // Removing an auditorium is only possible when the system has reached a consistent state with respect to its showtimes.
+            CheckRule(new OnlyAuditoriumsWithoutActiveShowtimesCanBeRemovedRule(this.activeShowtimes.AsReadOnly()));
 
-            this.Apply(new ActiveShowtimeAddedEvent(this.Id, showtimeId));
+            this.Apply(new AuditoriumRemovedEvent(this.Id));
         }
 
-        public void RemoveActiveShowtime(ShowtimeId showtimeId)
+        public void ScheduleShowtime(ShowtimeId showtimeId)
         {
             ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
 
-            if (!this.activeShowtimes.Exists(showtime => showtime.Equals(showtimeId)))
-            {
-                throw new NotFoundException(nameof(ShowtimeId), showtimeId.Value);
-            }
+            CheckRule(new ShowtimeMustNotBeAlreadyRegisteredRule(this.activeShowtimes.AsReadOnly(), showtimeId));
 
-            this.Apply(new ActiveShowtimeRemovedEvent(this.Id, showtimeId));
+            this.Apply(new ShowtimeScheduledEvent(this.Id, showtimeId));
+        }
+
+        public void CancelShowtime(ShowtimeId showtimeId)
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            CheckRule(new ShowtimeHasToBeAlreadyRegisteredRule(this.activeShowtimes.AsReadOnly(), showtimeId));
+
+            this.Apply(new ShowtimeCanceledEvent(this.Id, showtimeId));
+        }
+
+        public void EndShowtime(ShowtimeId showtimeId)
+        {
+            ArgumentNullException.ThrowIfNull(showtimeId, nameof(showtimeId));
+
+            CheckRule(new ShowtimeHasToBeAlreadyRegisteredRule(this.activeShowtimes.AsReadOnly(), showtimeId));
+
+            this.Apply(new ShowtimeEndedEvent(this.Id, showtimeId));
         }
 
         protected override void When(IDomainEvent domainEvent)
@@ -92,11 +105,15 @@
                 case AuditoriumRemovedEvent:
                     break;
 
-                case ActiveShowtimeAddedEvent @event:
+                case ShowtimeScheduledEvent @event:
                     this.activeShowtimes.Add(new ShowtimeId(@event.ShowtimeId));
                     break;
 
-                case ActiveShowtimeRemovedEvent @event:
+                case ShowtimeCanceledEvent @event:
+                    this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
+                    break;
+
+                case ShowtimeEndedEvent @event:
                     this.activeShowtimes.Remove(new ShowtimeId(@event.ShowtimeId));
                     break;
 

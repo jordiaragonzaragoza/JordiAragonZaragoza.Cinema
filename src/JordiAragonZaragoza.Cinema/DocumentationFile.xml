@@ -4,19 +4,123 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
-        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation">
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
             <summary>
-            Metadata for the JordiAragonZaragoza_Cinema_Reservation project.
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
             </summary>
         </member>
-        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation.ProjectPath">
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command.ProjectPath">
             <summary>
-            The path to the JordiAragonZaragoza_Cinema_Reservation project.
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.
             </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Api_Query project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Projector project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Projector project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
         </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema">
             <summary>
-            Metadata for the Aspire Host project.
+            Metadata for the Aspire AppHost project.
             </summary>
         </member>
         <member name="P:Projects.JordiAragonZaragoza_Cinema.ProjectPath">
