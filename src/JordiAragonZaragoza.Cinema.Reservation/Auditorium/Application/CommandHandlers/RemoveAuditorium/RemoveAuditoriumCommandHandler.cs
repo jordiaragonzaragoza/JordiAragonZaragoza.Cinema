@@ -3,23 +3,22 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class RemoveAuditoriumCommandHandler : BaseCommandHandler<RemoveAuditoriumCommand>
+    public sealed class RemoveAuditoriumCommandHandler : ICommandHandler<RemoveAuditoriumCommand>
     {
         private readonly IRepository<Auditorium, AuditoriumId> auditoriumRepository;
 
         public RemoveAuditoriumCommandHandler(IRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.auditoriumRepository = auditoriumRepository ?? throw new ArgumentNullException(nameof(auditoriumRepository));
         }
 
-        public override async Task<Result> Handle(RemoveAuditoriumCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RemoveAuditoriumCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 

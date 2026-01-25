@@ -1,0 +1,28 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies.ShowtimeEnded
+{
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Commands;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.Handlers;
+
+    public sealed class EndShowtimeInMoviePolicy : BaseEventHandler<ShowtimeEndedEvent>
+    {
+        private readonly ICommandBus commandBus;
+
+        public EndShowtimeInMoviePolicy(
+            ICommandBus commandBus)
+        {
+            this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
+        }
+
+        public override async Task HandleAsync(ShowtimeEndedEvent @event, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(@event);
+
+            await this.commandBus.SendAsync(new EndShowtimeInMovieCommand(@event.MovieId, @event.AggregateId), cancellationToken);
+        }
+    }
+}

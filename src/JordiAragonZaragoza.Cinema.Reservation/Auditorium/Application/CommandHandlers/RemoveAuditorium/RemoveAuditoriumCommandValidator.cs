@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class RemoveAuditoriumCommandValidator : BaseValidator<RemoveAuditoriumCommand>
+    public sealed class RemoveAuditoriumCommandValidator : AbstractValidator<RemoveAuditoriumCommand>
     {
         public RemoveAuditoriumCommandValidator()
         {

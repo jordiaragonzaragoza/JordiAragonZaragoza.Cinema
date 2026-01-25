@@ -384,3 +384,6 @@ containers/postgres/data
 
 # Seq
 containers/seq/data
+
+# Kurrent DB
+containers/kurrentdb/data

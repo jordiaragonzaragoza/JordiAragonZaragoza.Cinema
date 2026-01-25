@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class RemoveMovieCommandValidator : BaseValidator<RemoveMovieCommand>
+    public sealed class RemoveMovieCommandValidator : AbstractValidator<RemoveMovieCommand>
     {
         public RemoveMovieCommandValidator()
         {

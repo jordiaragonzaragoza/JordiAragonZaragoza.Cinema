@@ -3,23 +3,22 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
-    using JordiAragonZaragoza.SharedKernel.Application.Commands;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class AddMovieCommandHandler : BaseCommandHandler<AddMovieCommand>
+    public sealed class AddMovieCommandHandler : ICommandHandler<AddMovieCommand>
     {
         private readonly IRepository<Movie, MovieId> movieRepository;
 
         public AddMovieCommandHandler(IRepository<Movie, MovieId> movieRepository)
         {
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
+            this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
         }
 
-        public override async Task<Result> Handle(AddMovieCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 

@@ -2,9 +2,8 @@
 {
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
 
-    public sealed class GetShowtimeQueryValidator : BaseValidator<GetShowtimeQuery>
+    public sealed class GetShowtimeQueryValidator : AbstractValidator<GetShowtimeQuery>
     {
         public GetShowtimeQueryValidator()
         {

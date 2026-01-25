@@ -4,10 +4,9 @@
     using Ardalis.GuardClauses;
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
-    using JordiAragonZaragoza.SharedKernel.Application.Validators;
-    using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Contracts;
 
-    public sealed class ScheduleShowtimeCommandValidator : BaseValidator<ScheduleShowtimeCommand>
+    public sealed class ScheduleShowtimeCommandValidator : AbstractValidator<ScheduleShowtimeCommand>
     {
         private readonly IDateTime dateTime;
 

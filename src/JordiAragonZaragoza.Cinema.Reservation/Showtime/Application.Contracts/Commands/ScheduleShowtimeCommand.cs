@@ -4,8 +4,8 @@
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
     public sealed record class ScheduleShowtimeCommand(Guid ShowtimeId, Guid AuditoriumId, Guid MovieId, DateTimeOffset SessionDateOnUtc)
-        : ICommand, IInvalidateCacheRequest
+        : ICommand ////, IInvalidateCacheRequest // TODO: Enable cache invalidation when implementing cache
     {
-        public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
+        ////public string PrefixCacheKey => ShowtimeConstants.CachePrefix;
     }
 }
