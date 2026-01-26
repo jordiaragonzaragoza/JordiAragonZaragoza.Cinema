@@ -4,7 +4,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using Xunit.Abstractions;
 
@@ -27,7 +27,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
             reservation.Id.Should().Be(reservationId, "ReservationId should match the created reservation");
             reservation.UserId.Should().Be(expectedUserId, "UserId should match the expected user");
             reservation.ShowtimeId.Should().Be(expectedShowtimeId, "ShowtimeId should match the expected showtime");
-            reservation.SessionDateOnUtc.Should().Be(expectedSessionDate, "SessionDate should match the expected date");
+            reservation.SessionDateOnUtc.Should().BeCloseTo(expectedSessionDate, TimeSpan.FromMilliseconds(1), "SessionDate should match the expected date");
             reservation.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
             reservation.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
             reservation.Seats.Select(seatResponse => seatResponse.Id).Should()

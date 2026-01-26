@@ -1,8 +1,9 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common
 {
+    using System;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -17,7 +18,7 @@
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
-            .WithName("postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework")
+            .WithName($"postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework-{Guid.NewGuid():N}")
             .WithAutoRemove(true).Build();
 
         private NpgsqlConnection readModelStoreConnection = default!;

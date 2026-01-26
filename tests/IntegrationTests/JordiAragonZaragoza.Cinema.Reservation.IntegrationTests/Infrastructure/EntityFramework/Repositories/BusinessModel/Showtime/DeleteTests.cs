@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;

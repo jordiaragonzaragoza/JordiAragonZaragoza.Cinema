@@ -1,7 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.Movie.Domain
 {
     using System;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;

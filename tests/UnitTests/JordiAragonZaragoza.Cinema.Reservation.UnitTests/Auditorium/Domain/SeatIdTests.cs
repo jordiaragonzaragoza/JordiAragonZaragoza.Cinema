@@ -1,7 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.Auditorium.Domain
 {
     using System;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using Xunit;
 

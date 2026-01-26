@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FluentAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1;
+    using AwesomeAssertions;
+    using JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using NetArchTest.Rules;
     using Xunit;
@@ -20,7 +20,7 @@
         private readonly IEnumerable<string> domainNamespaces;
         private readonly IEnumerable<string> applicationNamespaces;
         private readonly IEnumerable<string> applicationContractsNamespaces;
-        private readonly IEnumerable<string> applicationContractsIntegrationMessagesV1Namespaces;
+        private readonly IEnumerable<string> applicationContractsIntegrationV1Namespaces;
         private readonly IEnumerable<string> infrastructureNamespaces;
         private readonly IEnumerable<string> infrastructureEntityFrameworkNamespaces;
         private readonly IEnumerable<string> infrastructureEventStoreNamespaces;
@@ -38,7 +38,7 @@
             this.domainNamespaces = GetNamespacesContaining(this.reservationAssembly, "Domain");
             this.applicationNamespaces = GetNamespacesContaining(this.reservationAssembly, "Application");
             this.applicationContractsNamespaces = GetNamespacesContaining(this.reservationAssembly, "Application.Contracts");
-            this.applicationContractsIntegrationMessagesV1Namespaces = GetNamespacesContaining(IntegrationMessagesV1AssemblyReference.Assembly, "Application.Contracts.IntegrationMessages.V1");
+            this.applicationContractsIntegrationV1Namespaces = GetNamespacesContaining(IntegrationV1AssemblyReference.Assembly, "Application.Contracts.Integration.V1");
             this.infrastructureNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure");
             this.infrastructureEntityFrameworkNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure.EntityFramework");
             this.infrastructureEventStoreNamespaces = GetNamespacesContaining(this.reservationAssembly, "Infrastructure.EventStore");
@@ -56,7 +56,7 @@
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -76,7 +76,7 @@
             {
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -114,7 +114,7 @@
             {
                 this.domainNamespaces,
                 this.applicationNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -146,10 +146,10 @@
         }
 
         [Fact]
-        public void ApplicationContractsIntegrationMessages_Should_Not_HaveDependencyOnOtherProjects()
+        public void ApplicationContractsIntegration_Should_Not_HaveDependencyOnOtherProjects()
         {
             // Arrange.
-            var assemblyV1 = IntegrationMessagesV1AssemblyReference.Assembly;
+            var assemblyV1 = IntegrationV1AssemblyReference.Assembly;
 
             var namespacesCollections = new List<IEnumerable<string>>
             {
@@ -173,11 +173,11 @@
             var testResult = Types
                 .InAssembly(assemblyV1)
                 .That()
-                .ResideInNamespaceContaining("Application.Contracts.IntegrationMessages")
+                .ResideInNamespaceContaining("Application.Contracts.Integration")
                 .Should()
                 .NotHaveDependencyOnAny(forbiddenReferences.ToArray())
                 .Or()
-                .HaveDependencyOn(IntegrationMessagesV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
+                .HaveDependencyOn(IntegrationV1AssemblyReference.Assembly?.GetName().Name ?? string.Empty)
                 .Or()
                 .NotHaveDependencyOnAny(this.allNamespaces)
                 .GetResult();
@@ -367,7 +367,7 @@
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -406,7 +406,7 @@
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -445,7 +445,7 @@
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,
@@ -484,7 +484,7 @@
                 this.domainNamespaces,
                 this.applicationNamespaces,
                 this.applicationContractsNamespaces,
-                this.applicationContractsIntegrationMessagesV1Namespaces,
+                this.applicationContractsIntegrationV1Namespaces,
                 this.infrastructureNamespaces,
                 this.infrastructureEntityFrameworkNamespaces,
                 this.infrastructureEventStoreNamespaces,

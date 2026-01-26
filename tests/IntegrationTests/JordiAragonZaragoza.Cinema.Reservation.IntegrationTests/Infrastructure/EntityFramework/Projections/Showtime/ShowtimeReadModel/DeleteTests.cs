@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using Microsoft.EntityFrameworkCore;
