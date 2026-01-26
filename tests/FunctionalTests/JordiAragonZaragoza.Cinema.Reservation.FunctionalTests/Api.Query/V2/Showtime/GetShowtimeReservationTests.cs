@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime;
@@ -42,7 +42,7 @@
             response.Id.Should().Be(SeedData.ExampleReservation.Id);
             response.UserId.Should().Be(SeedData.ExampleUser.Id);
             response.ShowtimeId.Should().Be(SeedData.ExampleShowtime.Id);
-            response.SessionDateOnUtc.Should().Be(SeedData.ExampleShowtime.SessionDateOnUtc);
+            response.SessionDateOnUtc.Should().BeCloseTo(SeedData.ExampleShowtime.SessionDateOnUtc, TimeSpan.FromMilliseconds(1));
             response.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
             response.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
         }

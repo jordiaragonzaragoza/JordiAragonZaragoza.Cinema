@@ -3,7 +3,7 @@
     using System;
     using System.Net;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;

@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using NetArchTest.Rules;

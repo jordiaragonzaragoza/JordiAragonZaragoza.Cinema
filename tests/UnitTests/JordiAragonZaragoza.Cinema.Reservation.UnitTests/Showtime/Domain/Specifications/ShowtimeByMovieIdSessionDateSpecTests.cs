@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Specifications;
