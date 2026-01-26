@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;

@@ -4,7 +4,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using Xunit.Abstractions;
 
     public static class SeatAvailabilityAssertions

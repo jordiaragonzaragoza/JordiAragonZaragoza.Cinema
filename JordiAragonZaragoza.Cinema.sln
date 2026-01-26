@@ -70,7 +70,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2", "src\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj", "{556A5453-06FA-4E3A-A3D7-481159AB843A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.IntegrationMessages.V1.csproj", "{300500CB-0AF6-415F-8994-4FBEC68A4BCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1\JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1.csproj", "{300500CB-0AF6-415F-8994-4FBEC68A4BCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Worker.Projector", "src\JordiAragonZaragoza.Cinema.Reservation.Worker.Projector\JordiAragonZaragoza.Cinema.Reservation.Worker.Projector.csproj", "{88F594FB-A4FF-47C5-B603-7D4CC347A0B8}"
 EndProject

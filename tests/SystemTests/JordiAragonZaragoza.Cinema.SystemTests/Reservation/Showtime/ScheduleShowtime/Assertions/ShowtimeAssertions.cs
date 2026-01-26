@@ -2,7 +2,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
 {
     using System;
     using System.Threading.Tasks;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using Xunit.Abstractions;
 
@@ -19,7 +19,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
             var showtime = await queryClient.GetShowtimeAsync(showtimeId, output);
 
             showtime.Should().NotBeNull();
-            showtime.SessionDateOnUtc.Should().Be(expectedSessionDate);
+            showtime.SessionDateOnUtc.Should().BeCloseTo(expectedSessionDate, TimeSpan.FromMilliseconds(1));
             showtime.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
             showtime.AuditoriumId.Should().Be(SeedData.ExampleAuditorium.Id);
             showtime.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);

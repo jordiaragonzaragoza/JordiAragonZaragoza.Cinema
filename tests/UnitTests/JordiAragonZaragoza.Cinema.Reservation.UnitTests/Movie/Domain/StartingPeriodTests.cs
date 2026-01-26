@@ -2,7 +2,7 @@
 {
     using System;
     using System.Globalization;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
     using Xunit;

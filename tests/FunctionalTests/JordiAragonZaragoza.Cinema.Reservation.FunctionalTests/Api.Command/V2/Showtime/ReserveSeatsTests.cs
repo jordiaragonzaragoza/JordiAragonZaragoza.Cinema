@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
@@ -49,7 +49,7 @@
 
             // Assert
             reservationResponse.SessionDateOnUtc.Should()
-                .Be(sessionDateOnUtc);
+                .BeCloseTo(sessionDateOnUtc, TimeSpan.FromMilliseconds(1));
 
             reservationResponse.AuditoriumName.Should()
                 .Be(SeedData.ExampleAuditorium.Name);

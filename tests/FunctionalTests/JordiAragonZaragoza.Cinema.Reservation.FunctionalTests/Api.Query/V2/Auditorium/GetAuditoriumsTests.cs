@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium;
