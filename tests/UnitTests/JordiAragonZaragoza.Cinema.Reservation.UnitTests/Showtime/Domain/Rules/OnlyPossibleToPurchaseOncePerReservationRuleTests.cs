@@ -1,7 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.Showtime.Domain.Rules
 {
     using System;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Rules;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;

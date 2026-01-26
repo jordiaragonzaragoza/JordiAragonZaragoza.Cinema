@@ -2,7 +2,7 @@
 {
     using System;
     using System.Reflection;
-    using FluentAssertions;
+    using AwesomeAssertions;
     using JordiAragonZaragoza.SharedKernel.Domain.ValueObjects;
     using NetArchTest.Rules;
     using Xunit;
