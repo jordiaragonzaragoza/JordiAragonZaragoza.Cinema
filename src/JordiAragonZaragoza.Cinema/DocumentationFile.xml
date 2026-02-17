@@ -42,6 +42,25 @@
             so building them again before running is unnecessary. This property always returns true.
             </remarks>
         </member>
+        <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway">
+            <summary>
+            Metadata for the JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway.ProjectPath">
+            <summary>
+            The path to the JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway project.
+            </summary>
+        </member>
+        <member name="P:Projects.JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway.SuppressBuild">
+            <summary>
+            Gets a value indicating whether building the project before running it should be suppressed.
+            </summary>
+            <remarks>
+            Projects added via ProjectReference items in the AppHost project file are built as part of building the AppHost project process
+            so building them again before running is unnecessary. This property always returns true.
+            </remarks>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator">
             <summary>
             Metadata for the JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator project.

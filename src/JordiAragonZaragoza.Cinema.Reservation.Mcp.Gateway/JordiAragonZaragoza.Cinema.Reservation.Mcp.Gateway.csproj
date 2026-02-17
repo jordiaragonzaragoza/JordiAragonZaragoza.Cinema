@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <UserSecretsId>861f0ead-82fb-4823-b1f6-f69d5a06c5fa</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol.AspNetCore" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
+    <PackageReference Include="Serilog.Enrichers.Thread" />
+    <PackageReference Include="Serilog.Sinks.Async" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
+  </ItemGroup>	
+  <ItemGroup>
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.ServiceDefaults\JordiAragonZaragoza.Cinema.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.csproj" />
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj" />
+  </ItemGroup>
+</Project>

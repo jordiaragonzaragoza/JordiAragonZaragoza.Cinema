@@ -15,23 +15,21 @@ WORKDIR /src
 COPY ["src/Directory.Packages.props", "src/"]
 COPY ["src/Directory.Build.props", "src/"]
 COPY ["nuget.config", "."]
-COPY ["src/JordiAragonZaragoza.Cinema.Reservation.Api.Query/JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj", "src/JordiAragonZaragoza.Cinema.Reservation.Api.Query/"]
-COPY ["src/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1.csproj", "src/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1/"]
-COPY ["src/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj", "src/JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2/"]
+COPY ["src/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.csproj", "src/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway/"]
 COPY ["src/JordiAragonZaragoza.Cinema.ServiceDefaults/JordiAragonZaragoza.Cinema.ServiceDefaults.csproj", "src/JordiAragonZaragoza.Cinema.ServiceDefaults/"]
 COPY ["src/JordiAragonZaragoza.Cinema.SharedKernel/JordiAragonZaragoza.Cinema.SharedKernel.csproj", "src/JordiAragonZaragoza.Cinema.SharedKernel/"]
 COPY ["src/JordiAragonZaragoza.Cinema/JordiAragonZaragoza.Cinema.csproj", "src/JordiAragonZaragoza.Cinema/"]
-RUN dotnet restore "./src/JordiAragonZaragoza.Cinema.Reservation.Api.Query/JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj"
+RUN dotnet restore "./src/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.csproj"
 COPY . .
-WORKDIR "/src/src/JordiAragonZaragoza.Cinema.Reservation.Api.Query"
-RUN dotnet build "./JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" \
+WORKDIR "/src/src/JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway"
+RUN dotnet build "./JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.csproj" \
     -c "$BUILD_CONFIGURATION" \
     -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" \
+RUN dotnet publish "./JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.csproj" \
     -c "$BUILD_CONFIGURATION" \
     -o /app/publish \
     /p:UseAppHost=false
@@ -40,4 +38,4 @@ RUN dotnet publish "./JordiAragonZaragoza.Cinema.Reservation.Api.Query.csproj" \
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "JordiAragonZaragoza.Cinema.Reservation.Api.Query.dll"]
+ENTRYPOINT ["dotnet", "JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.dll"]

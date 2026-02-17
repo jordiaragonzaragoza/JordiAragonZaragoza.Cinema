@@ -1,0 +1,40 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway
+{
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.Extensions.Logging;
+    using JordiAragonZaragoza.Cinema.ServiceDefaults;
+    using Microsoft.Extensions.DependencyInjection;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Configuration;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1118:Utility classes should not have public constructors",
+        Justification = "Used by WebApplicationFactory for functional and integration tests.")]
+    public sealed class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            ////var configuration = builder.Configuration;
+
+            builder.AddServiceDefaults();
+
+            // Configure specific Host Services (DI)
+            builder.Services.AddMcpServer()
+                    .WithHttpTransport();
+
+            builder.Host.UseHostBuilderConfigurations();
+            builder.WebHost.UseWebHostBuilderConfigurations();
+
+            var app = builder.Build();
+
+            app.Logger.LogDebug("Reservation Mcp Gateway Host created...");
+
+            // Configure Request Pipeline
+            ConfigureWebApplication.UseWebApplicationConfigurations(app);
+
+            app.Run();
+        }
+    }
+}
