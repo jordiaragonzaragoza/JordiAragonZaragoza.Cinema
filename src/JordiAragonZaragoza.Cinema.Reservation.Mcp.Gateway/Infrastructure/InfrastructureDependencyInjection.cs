@@ -1,8 +1,8 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure
 {
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Command;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
 
     public static class InfrastructureDependencyInjection
     {
@@ -15,19 +15,9 @@
 
         private static IServiceCollection AddCommandService(this IServiceCollection services)
         {
-            services.AddOptions<CommandServiceOptions>()
-                .BindConfiguration(CommandServiceOptions.Section)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
-
             ////services.AddTransient<AuthorizationDelegatingHandler>();
-
             services.AddHttpClient<CommandService>(
-                (serviceProvider, httpClient) =>
-                {
-                    var options = serviceProvider.GetRequiredService<IOptions<CommandServiceOptions>>().Value;
-                    httpClient.BaseAddress = options.Url;
-                });
+                static client => client.BaseAddress = new($"https+http://{Constants.ReservationApiCommand}"));
             ////.AddHttpMessageHandler<AuthorizationDelegatingHandler>();
 
             return services;
