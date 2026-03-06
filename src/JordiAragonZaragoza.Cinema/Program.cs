@@ -1,6 +1,7 @@
 namespace JordiAragonZaragoza.Cinema
 {
     using Aspire.Hosting;
+    using Aspire.Hosting.ApplicationModel;
     using JordiAragonZaragoza.Cinema.SharedKernel;
     using Microsoft.Extensions.Configuration;
 
@@ -13,7 +14,8 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag);
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag)
+                                   .WithLifetime(ContainerLifetime.Persistent);
 
             if (!IsSystemTesting(builder))
             {
@@ -34,7 +36,8 @@ namespace JordiAragonZaragoza.Cinema
 
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag(Constants.PostgresImageTag)
-                                        .WithPgAdmin();
+                                        .WithPgAdmin()
+                                        .WithLifetime(ContainerLifetime.Persistent);
 
             if (!IsSystemTesting(builder))
             {

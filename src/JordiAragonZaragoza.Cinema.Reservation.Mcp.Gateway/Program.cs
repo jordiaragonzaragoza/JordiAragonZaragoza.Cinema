@@ -5,6 +5,7 @@
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using Microsoft.Extensions.DependencyInjection;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Configuration;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -22,7 +23,17 @@
 
             // Configure specific Host Services (DI)
             builder.Services.AddMcpServer()
-                    .WithHttpTransport();
+                    .WithHttpTransport()
+                    .WithToolsFromAssembly(McpGatewayAssemblyReference.Assembly)
+                    .WithResourcesFromAssembly(McpGatewayAssemblyReference.Assembly)
+                    .WithPromptsFromAssembly(McpGatewayAssemblyReference.Assembly)
+                    .WithRequestFilters(filters =>
+                    {
+                        filters.AddCallToolFilter(ExceptionHandlingFilters.CreateGlobalToolExceptionHandler());
+                    });
+
+            builder.Services
+                .AddInfrastructure();
 
             builder.Host.UseHostBuilderConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();
