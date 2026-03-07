@@ -20,11 +20,12 @@
                 app.UseHsts();
             }
 
-            ////app.UseMiddleware<ExceptionMiddleware>();
-
             app.UseSerilogRequestLogging();
 
-            app.UseHttpsRedirection();
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
 
             ////app.UseCors(ConfigureCors.CorsPolicy);
 
