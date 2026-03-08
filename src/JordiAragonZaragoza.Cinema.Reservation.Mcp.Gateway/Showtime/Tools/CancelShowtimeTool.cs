@@ -4,7 +4,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Command;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Command.V2;
     using ModelContextProtocol.Server;
 
     [McpServerToolType]

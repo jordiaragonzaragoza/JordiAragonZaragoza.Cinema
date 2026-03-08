@@ -6,33 +6,33 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Common.HttpClient
     using System.Threading.Tasks;
     using Xunit.Abstractions;
 
-    public static class HttpClientGetExtensionMethods
+    public static class HttpClientPutExtensionMethods
     {
         private static readonly JsonSerializerOptions DefaultJsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
-        public static async Task<T?> GetAndDeserializeAsync<T>(this HttpClient client, string requestUri, ITestOutputHelper? output = null)
+        public static async Task<T?> PutAndDeserializeAsync<T>(this HttpClient client, string requestUri, HttpContent content, ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(client);
             ArgumentNullException.ThrowIfNull(requestUri);
 
             var uri = new Uri(requestUri, UriKind.RelativeOrAbsolute);
-            return await GetAndDeserializeInternalAsync<T>(client, uri, output);
+            return await PutAndDeserializeInternalAsync<T>(client, uri, content, output);
         }
 
-        public static async Task<T?> GetAndDeserializeAsync<T>(this HttpClient client, Uri requestUri, ITestOutputHelper? output = null)
+        public static async Task<T?> PutAndDeserializeAsync<T>(this HttpClient client, Uri requestUri, HttpContent content, ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(client);
             ArgumentNullException.ThrowIfNull(requestUri);
 
-            return await GetAndDeserializeInternalAsync<T>(client, requestUri, output);
+            return await PutAndDeserializeInternalAsync<T>(client, requestUri, content, output);
         }
 
-        private static async Task<T?> GetAndDeserializeInternalAsync<T>(HttpClient client, Uri requestUri, ITestOutputHelper? output)
+        private static async Task<T?> PutAndDeserializeInternalAsync<T>(this HttpClient client, Uri requestUri, HttpContent content, ITestOutputHelper? output)
         {
-            using var response = await client.GetAsync(requestUri);
+            using var response = await client.PutAsync(requestUri, content);
 
             if (!response.IsSuccessStatusCode)
             {
