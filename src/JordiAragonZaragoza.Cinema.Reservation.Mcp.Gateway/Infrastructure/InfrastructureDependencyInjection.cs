@@ -16,7 +16,7 @@
         private static IServiceCollection AddCommandService(this IServiceCollection services)
         {
             ////services.AddTransient<AuthorizationDelegatingHandler>();
-            services.AddHttpClient<CommandService>(
+            services.AddHttpClient<ApiCommandClient>(
                 static client => client.BaseAddress = new($"https+http://{Constants.ReservationApiCommand}"));
             ////.AddHttpMessageHandler<AuthorizationDelegatingHandler>();
 

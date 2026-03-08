@@ -10,19 +10,29 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
     [McpServerToolType]
     public sealed class CancelShowtimeTool
     {
-        private readonly CommandService commandService;
+        private readonly ApiCommandClient apiCommand;
 
-        public CancelShowtimeTool(CommandService reservationApiQuery)
+        public CancelShowtimeTool(ApiCommandClient reservationApiQuery)
         {
-            this.commandService = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
+            this.apiCommand = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "CancelShowtime")]
-        [Description("Cancels a scheduled Showtime.")]
-        public Task CancelShowtimeAsync(
+        [McpServerTool(Name = "cancel_showtime")]
+        [Description(
+        """
+        Cancels a scheduled showtime.
+
+        Use this tool when a showtime must be cancelled due to operational reasons.
+        Once cancelled, no new reservations can be created for the showtime.
+        """)]
+        public async Task<string> CancelShowtimeAsync(
             [Description("The Id of the showtime to cancel")]
             Guid showtimeId,
             CancellationToken cancellationToken)
-            => this.commandService.CancelShowtimeAsync(showtimeId, cancellationToken);
+            {
+                await this.apiCommand.CancelShowtimeAsync(showtimeId, cancellationToken);
+
+                return $"Showtime {showtimeId} cancelled successfully.";
+            }
     }
 }
