@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Command.V2
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2
 {
     using System;
     using System.Net.Http;
@@ -7,14 +7,14 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.HttpClient;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Responses;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts.HttpClientHelpers;
 
-    public sealed class ApiCommandClient
+    public sealed class ReservationCommandClient : IReservationCommandClient
     {
         private readonly HttpClient http;
 
-        public ApiCommandClient(HttpClient http)
+        public ReservationCommandClient(HttpClient http)
         {
             this.http = http ?? throw new ArgumentNullException(nameof(http));
         }

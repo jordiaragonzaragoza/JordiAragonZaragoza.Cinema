@@ -4,15 +4,16 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Command.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2;
+
     using ModelContextProtocol.Server;
 
     [McpServerToolType]
     public sealed class CancelShowtimeTool
     {
-        private readonly ApiCommandClient apiCommand;
+        private readonly IReservationCommandClient apiCommand;
 
-        public CancelShowtimeTool(ApiCommandClient reservationApiQuery)
+        public CancelShowtimeTool(IReservationCommandClient reservationApiQuery)
         {
             this.apiCommand = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }

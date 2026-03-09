@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.Query.V2
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2
 {
     using System;
     using System.Collections.Generic;
@@ -9,14 +9,14 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure.Api.HttpClient;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts.HttpClientHelpers;
 
-    public sealed class ApiQueryClient
+    public sealed class ReservationQueryClient : IReservationQueryClient
     {
         private readonly HttpClient http;
 
-        public ApiQueryClient(HttpClient http)
+        public ReservationQueryClient(HttpClient http)
         {
             this.http = http ?? throw new ArgumentNullException(nameof(http));
         }
