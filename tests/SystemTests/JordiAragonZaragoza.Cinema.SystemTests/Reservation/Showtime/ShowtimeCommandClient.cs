@@ -3,66 +3,63 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2;
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.Showtime.Responses;
-    using JordiAragonZaragoza.Cinema.SystemTests.Common.HttpClient;
+    using JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2;
     using Xunit.Abstractions;
 
     public sealed class ShowtimeCommandClient
     {
-        private readonly HttpClient http;
+        private readonly IReservationCommandClient api;
 
-        public ShowtimeCommandClient(HttpClient http)
-            => this.http = http;
+        public ShowtimeCommandClient(IReservationCommandClient api)
+            => this.api = api;
 
-        public async Task ScheduleShowtimeAsync(Guid showtimeId, ScheduleShowtimeBodyRequest request, ITestOutputHelper? output = null)
+        public async Task ScheduleShowtimeAsync(
+            Guid showtimeId,
+            ScheduleShowtimeBodyRequest request,
+            ITestOutputHelper? output = null)
         {
-            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            output?.WriteLine($"Scheduling showtime {showtimeId}");
 
-            using var content = StringContentHelpers.FromModelAsJson(request);
-
-            var fullUri = new Uri(this.http.BaseAddress!, route);
-
-            output?.WriteLine($"Requesting with PUT {route}");
-            await this.http.PutAsync(fullUri, content);
+            await this.api.ScheduleShowtimeAsync(showtimeId, request);
         }
 
         public async Task CancelShowtimeAsync(Guid showtimeId, ITestOutputHelper? output = null)
         {
-            var route = $"{Routes.ApiBase}{ShowtimeRoutes.CancelShowtime}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-
-            var fullUri = new Uri(this.http.BaseAddress!, route);
-
-            output?.WriteLine($"Requesting with DELETE {route}");
-            await this.http.DeleteAsync(fullUri);
+            output?.WriteLine($"Deleting showtime {showtimeId}");
+            await this.api.CancelShowtimeAsync(showtimeId);
         }
 
-        public async Task<ReservationResponse?> ReserveSeatsAsync(Guid reservationId, Guid showtimeId, ReserveSeatsBodyRequest reserveSeatsRequest, ITestOutputHelper? output = null)
+        public async Task<ReservationResponse?> ReserveSeatsAsync(
+            Guid reservationId,
+            Guid showtimeId,
+            ReserveSeatsBodyRequest request,
+            ITestOutputHelper? output = null)
         {
-            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ReserveSeats}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-            route = route.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
+            try
+            {
+                var response = await this.api.ReserveSeatsAsync(reservationId, showtimeId, request);
 
-            using var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
+                output?.WriteLine($"Reservation created: {response.Id}");
 
-            // Act
-            return await this.http.PutAndDeserializeAsync<ReservationResponse>(route, reserveSeatsContent, output);
+                return response;
+            }
+            catch (Exception ex) when (
+                ex is HttpRequestException
+                || ex is InvalidOperationException
+                || ex is OperationCanceledException)
+            {
+                output?.WriteLine(ex.ToString());
+
+                return default;
+            }
         }
 
         public async Task PurchaseReservationAsync(Guid showtimeId, Guid reservationId, ITestOutputHelper? output = null)
         {
-            var route = $"{Routes.ApiBase}{ShowtimeRoutes.PurchaseReservation}";
-            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
-            route = route.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
-
-            var fullUri = new Uri(this.http.BaseAddress!, route);
-
-            output?.WriteLine($"Requesting with PATCH {route}");
-            await this.http.PatchAsync(fullUri, null);
+            output?.WriteLine($"Purchasing reservation {reservationId} for showtime {showtimeId}");
+            await this.api.PurchaseReservationAsync(showtimeId, reservationId);
         }
     }
 }
