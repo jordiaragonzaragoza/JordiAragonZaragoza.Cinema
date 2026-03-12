@@ -52,7 +52,6 @@
                 });
             }
 
-            app.MapHealthChecks("/health");
             app.MapControllers();
 
             return app;

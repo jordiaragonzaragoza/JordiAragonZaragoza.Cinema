@@ -33,8 +33,6 @@
 
             ////app.UseAuthorization();
 
-            app.MapHealthChecks("/health");
-
             app.MapMcp();
 
             return app;

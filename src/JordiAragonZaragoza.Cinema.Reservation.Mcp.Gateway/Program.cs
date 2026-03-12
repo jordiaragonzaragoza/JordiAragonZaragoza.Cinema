@@ -43,7 +43,8 @@
             app.Logger.LogDebug("Reservation Mcp Gateway Host created...");
 
             // Configure Request Pipeline
-            ConfigureWebApplication.UseWebApplicationConfigurations(app);
+            ConfigureWebApplication.UseWebApplicationConfigurations(app)
+                                   .MapDefaultEndpoints();
 
             app.Run();
         }
