@@ -124,6 +124,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Sdk", "src\JordiAragonZaragoza.Cinema.Reservation.Sdk\JordiAragonZaragoza.Cinema.Reservation.Sdk.csproj", "{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.csproj", "{154CF749-BC58-4FCF-A27D-DE5146C54689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -578,6 +580,18 @@ Global
 		{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD}.Release|x64.Build.0 = Release|Any CPU
 		{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD}.Release|x86.Build.0 = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|x64.Build.0 = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Debug|x86.Build.0 = Debug|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x64.ActiveCfg = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x64.Build.0 = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x86.ActiveCfg = Release|Any CPU
+		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -630,6 +644,7 @@ Global
 		{F29DBE8A-70F6-498D-B85D-824374D93496} = {A06F09CE-6A74-8752-3A8A-096DBB109DAB}
 		{BFC1A212-DCF5-4B24-8F0A-57C00624CF96} = {22B8ACC4-81B2-6EA0-7CB9-07D8FDE56D7C}
 		{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
+		{154CF749-BC58-4FCF-A27D-DE5146C54689} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82D7CB3-8FCC-470B-8AB9-2932F59BF4D9}

@@ -18,5 +18,6 @@
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.SharedKernel\JordiAragonZaragoza.Cinema.SharedKernel.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.ServiceDefaults\JordiAragonZaragoza.Cinema.ServiceDefaults.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Sdk\JordiAragonZaragoza.Cinema.Reservation.Sdk.csproj" />
+    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.csproj" />
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@
         ]
         public async Task<ActionResult> PurchaseReservationAsync(
             [FromRoute] Guid showtimeId,
-            [FromRoute] Guid reservationId,
+            [FromRoute] Guid reservationId,
             CancellationToken cancellationToken)
         {
             var command = new PurchaseReservationCommand(

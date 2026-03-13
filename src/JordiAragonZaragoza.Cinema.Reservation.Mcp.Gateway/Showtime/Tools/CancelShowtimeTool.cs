@@ -18,7 +18,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
             this.apiCommand = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "cancel_showtime")]
+        [McpServerTool(Name = "cancel_showtime", Title = "Cancel Showtime")]
         [Description(
         """
         Cancels a scheduled showtime.
