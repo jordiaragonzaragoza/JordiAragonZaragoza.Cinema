@@ -90,12 +90,12 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             }
         }
 
-        public async Task<PaginatedCollectionResponse<ReservationResponse>?> GetShowtimeReservationsAsync(Guid showtimeId, ITestOutputHelper? output = null)
+        public async Task<PaginatedCollectionResponse<ReservationResponse>?> GetShowtimeReservationsAsync(Guid showtimeId, PaginatedRequest paginatedRequest, ITestOutputHelper? output = null)
         {
             try
             {
                 output?.WriteLine($"Getting reservations for showtime {showtimeId}");
-                return await this.api.GetShowtimeReservationsAsync(showtimeId);
+                return await this.api.GetShowtimeReservationsAsync(showtimeId, paginatedRequest);
             }
             catch (Exception ex) when (
                 ex is HttpRequestException
