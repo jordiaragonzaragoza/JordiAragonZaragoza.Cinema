@@ -7,10 +7,15 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts.HttpClientHelpers;
 
@@ -86,6 +91,54 @@
                 (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
 
             return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<ReservationResponse>>(uri.PathAndQuery, cancellationToken);
+        }
+
+        // TODO: Will be moved. It belongs to the cinema manager bounded context.
+        public async Task<PaginatedCollectionResponse<AuditoriumResponse>> GetAuditoriumsAsync(
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var route = $"{Routes.ApiBase}{AuditoriumRoutes.GetAuditoriums}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(paginatedRequest.PageNumber), paginatedRequest.PageNumber.ToString(CultureInfo.InvariantCulture)),
+                (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
+
+            return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<AuditoriumResponse>>(uri.PathAndQuery, cancellationToken);
+        }
+
+        // TODO: Will be moved. It belongs to the catalog bounded context.
+        public async Task<PaginatedCollectionResponse<MovieResponse>> GetMoviesAsync(
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var route = $"{Routes.ApiBase}{MovieRoutes.GetMovies}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(paginatedRequest.PageNumber), paginatedRequest.PageNumber.ToString(CultureInfo.InvariantCulture)),
+                (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
+
+            return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<MovieResponse>>(uri.PathAndQuery, cancellationToken);
+        }
+
+        // TODO: Will be moved. It belongs to the management bounded context.
+        public async Task<PaginatedCollectionResponse<UserResponse>> GetUsersAsync(
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var route = $"{Routes.ApiBase}{UserRoutes.GetUsers}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(paginatedRequest.PageNumber), paginatedRequest.PageNumber.ToString(CultureInfo.InvariantCulture)),
+                (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
+
+            return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<UserResponse>>(uri.PathAndQuery, cancellationToken);
         }
     }
 }

@@ -5,8 +5,10 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
     public interface IReservationQueryClient
@@ -24,6 +26,21 @@
 
         Task<PaginatedCollectionResponse<ReservationResponse>> GetShowtimeReservationsAsync(
             Guid showtimeId,
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default);
+
+        // TODO: Will be moved. It belongs to the cinema manager bounded context.
+        Task<PaginatedCollectionResponse<AuditoriumResponse>> GetAuditoriumsAsync(
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default);
+
+        // TODO: Will be moved. It belongs to the catalog bounded context.
+        Task<PaginatedCollectionResponse<MovieResponse>> GetMoviesAsync(
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default);
+
+        // TODO: Will be moved. It belongs to the management bounded context.
+        Task<PaginatedCollectionResponse<UserResponse>> GetUsersAsync(
             PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken = default);
     }
