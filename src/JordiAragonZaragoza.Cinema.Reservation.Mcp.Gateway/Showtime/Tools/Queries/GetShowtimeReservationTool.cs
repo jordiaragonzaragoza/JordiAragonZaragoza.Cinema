@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Queries
 {
     using System;
     using System.ComponentModel;
@@ -9,26 +9,26 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
     using ModelContextProtocol.Server;
 
     [McpServerToolType]
-    public sealed class GetShowtimeTool
+    public sealed class GetShowtimeReservationTool
     {
         private readonly IReservationQueryClient apiQuery;
 
-        public GetShowtimeTool(IReservationQueryClient reservationApiQuery)
+        public GetShowtimeReservationTool(IReservationQueryClient reservationApiQuery)
         {
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_showtime", Title = "Get Showtime")]
+        [McpServerTool(Name = "get_showtime_reservation", Title = "Get Showtime Reservation")]
         [Description(
         """
-        Get the details of a specific existing showtime, including the movie title, session date, auditorium information, and available seats.
+        Get an existing showtime reservation.
         """)]
-        public async Task<ShowtimeResponse> GetShowtimeAsync(
-            [Description("The Id of the showtime for which to get details.")]
-            Guid showtimeId,
+        public async Task<ReservationResponse> GetShowtimeReservationAsync(
+            [Description("The showtime reservation identifier.")]
+            Guid reservationId,
             CancellationToken cancellationToken)
             {
-                var apiResponse = await this.apiQuery.GetShowtimeAsync(showtimeId, cancellationToken);
+                var apiResponse = await this.apiQuery.GetShowtimeReservationAsync(reservationId, cancellationToken);
 
                 return apiResponse.ToResponse();
             }

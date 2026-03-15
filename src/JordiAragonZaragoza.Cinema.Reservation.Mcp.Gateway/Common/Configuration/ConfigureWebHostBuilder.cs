@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Configuration
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration
 {
     using Microsoft.AspNetCore.Hosting;
 

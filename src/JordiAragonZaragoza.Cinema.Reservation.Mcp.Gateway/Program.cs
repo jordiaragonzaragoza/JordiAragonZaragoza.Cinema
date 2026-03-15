@@ -4,8 +4,8 @@
     using Microsoft.Extensions.Logging;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using Microsoft.Extensions.DependencyInjection;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Configuration;
-    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructure;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",

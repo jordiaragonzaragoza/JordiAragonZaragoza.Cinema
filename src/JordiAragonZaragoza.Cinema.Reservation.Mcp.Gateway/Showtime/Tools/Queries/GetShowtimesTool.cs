@@ -1,37 +1,39 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Queries
 {
     using System;
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Common;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2;
     using ModelContextProtocol.Server;
 
     [McpServerToolType]
-    public sealed class GetShowtimeReservationsTool
+    public sealed class GetShowtimesTool
     {
         private readonly IReservationQueryClient apiQuery;
 
-        public GetShowtimeReservationsTool(IReservationQueryClient reservationApiQuery)
+        public GetShowtimesTool(IReservationQueryClient reservationApiQuery)
         {
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_showtime_reservations", Title = "Get Showtime Reservations")]
+        [McpServerTool(Name = "get_showtimes", Title = "Get Showtimes")]
         [Description(
         """
-        Gets a list of reservations for an exiting showtime.
+        Gets a list of all showtimes.
         """)]
-        public async Task<PaginatedCollectionResponse<ReservationResponse>> GetShowtimeReservationsAsync(
-            [Description("The showtime identifier.")]
-            Guid showtimeId,
+        public async Task<PaginatedCollectionResponse<ShowtimeResponse>> GetShowtimesAsync(
+            [Description("The request with the filters to get the showtimes.")]
+            GetShowtimesRequest request,
             [Description("The pagination parameters.")]
             PaginatedRequest paginatedRequest,
             CancellationToken cancellationToken)
             {
-                var apiResponse = await this.apiQuery.GetShowtimeReservationsAsync(showtimeId, paginatedRequest.ToApiRequest(), cancellationToken);
+                var apiResponse = await this.apiQuery.GetShowtimesAsync(request.ToApiRequest(), paginatedRequest.ToApiRequest(), cancellationToken);
 
                 return apiResponse.ToResponse();
             }

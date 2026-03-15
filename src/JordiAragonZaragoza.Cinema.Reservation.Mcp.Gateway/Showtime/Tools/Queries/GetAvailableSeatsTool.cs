@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Queries
 {
     using System;
     using System.Collections.Generic;

@@ -1,11 +1,10 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Commands
 {
     using System;
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2;
-
     using ModelContextProtocol.Server;
 
     [McpServerToolType]

@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Infrastructure
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructure
 {
     using System;
     using System.Net.Http;
