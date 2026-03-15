@@ -8,6 +8,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Movie.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
 
@@ -27,6 +28,15 @@
         Task<PaginatedCollectionResponse<ReservationResponse>> GetShowtimeReservationsAsync(
             Guid showtimeId,
             PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default);
+
+        Task<PaginatedCollectionResponse<ReservationResponse>> GetUserReservationsAsync(
+            UserReservationsRequest request,
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default);
+
+        Task<ReservationResponse> GetUserReservationAsync(
+            UserReservationRequest request,
             CancellationToken cancellationToken = default);
 
         // TODO: Will be moved. It belongs to the cinema manager bounded context.

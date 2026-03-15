@@ -15,6 +15,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User;
+    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts.HttpClientHelpers;
@@ -91,6 +92,46 @@
                 (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
 
             return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<ReservationResponse>>(uri.PathAndQuery, cancellationToken);
+        }
+
+        public async Task<PaginatedCollectionResponse<ReservationResponse>> GetUserReservationsAsync(
+            UserReservationsRequest request,
+            PaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(paginatedRequest);
+
+            var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservations}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(request.UserId), request.UserId.ToString()),
+                (nameof(request.ShowtimeId), request.ShowtimeId?.ToString() ?? string.Empty),
+                (nameof(request.StartIntervalTimeOnUtc), request.StartIntervalTimeOnUtc?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty),
+                (nameof(request.EndIntervalTimeOnUtc), request.EndIntervalTimeOnUtc?.ToString("o", CultureInfo.InvariantCulture) ?? string.Empty),
+                (nameof(request.AuditoriumName), request.AuditoriumName ?? string.Empty),
+                (nameof(request.MovieTitle), request.MovieTitle ?? string.Empty),
+                (nameof(request.IsPurchased), request.IsPurchased?.ToString() ?? string.Empty),
+                (nameof(paginatedRequest.PageNumber), paginatedRequest.PageNumber.ToString(CultureInfo.InvariantCulture)),
+                (nameof(paginatedRequest.PageSize), paginatedRequest.PageSize.ToString(CultureInfo.InvariantCulture)));
+
+            return await this.http.GetAndDeserializeAsync<PaginatedCollectionResponse<ReservationResponse>>(uri.PathAndQuery, cancellationToken);
+        }
+
+        public async Task<ReservationResponse> GetUserReservationAsync(
+            UserReservationRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservation}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(request.UserId), request.UserId.ToString()),
+                (nameof(request.ShowtimeId), request.ShowtimeId.ToString()),
+                (nameof(request.ReservationId), request.ReservationId.ToString()));
+
+            return await this.http.GetAndDeserializeAsync<ReservationResponse>(uri.PathAndQuery, cancellationToken);
         }
 
         // TODO: Will be moved. It belongs to the cinema manager bounded context.
