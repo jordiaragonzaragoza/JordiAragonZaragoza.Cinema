@@ -7,6 +7,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.User.Tools.Queries
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Responses;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.User;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.User.Tools.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2;
@@ -22,7 +23,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.User.Tools.Queries
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_user_reservations", Title = "Get User Reservations")]
+        [McpServerTool(Name = UserToolsNames.GetUserReservations, Title = "Get User Reservations")]
         [Description(
         """
         Gets a list of reservations for an exiting user.

@@ -6,6 +6,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Common;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2;
     using ModelContextProtocol.Server;
@@ -20,7 +21,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_showtime_reservations", Title = "Get Showtime Reservations")]
+        [McpServerTool(Name = ShowtimeToolsNames.GetShowtimeReservations, Title = "Get Showtime Reservations")]
         [Description(
         """
         Gets a list of reservations for an exiting showtime.

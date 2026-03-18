@@ -17,8 +17,8 @@
         public DateTimeOffset SessionDate { get; private set; }
 
         public async Task ArrangeAsync(
-            ShowtimeCommandClient commandClient,
-            ShowtimeQueryClient queryClient,
+            ReservationCommandTestClient commandClient,
+            ReservationQueryTestClient queryClient,
             ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(commandClient);

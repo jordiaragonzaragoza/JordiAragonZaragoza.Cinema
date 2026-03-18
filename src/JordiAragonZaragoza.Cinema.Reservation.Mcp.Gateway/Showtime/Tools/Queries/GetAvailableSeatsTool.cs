@@ -5,6 +5,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2;
     using ModelContextProtocol.Server;
@@ -19,7 +20,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_available_seats", Title = "Get Available Seats")]
+        [McpServerTool(Name = ShowtimeToolsNames.GetAvailableSeats, Title = "Get Available Seats")]
         [Description(
         """
         Get the list of available seats for a specific existing showtime.

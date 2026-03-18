@@ -8,7 +8,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.PurchaseRe
     public static class ReservationAssertions
     {
         public static async Task ShouldBePurchasedAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid reservationId,
             ITestOutputHelper? output = null)
         {

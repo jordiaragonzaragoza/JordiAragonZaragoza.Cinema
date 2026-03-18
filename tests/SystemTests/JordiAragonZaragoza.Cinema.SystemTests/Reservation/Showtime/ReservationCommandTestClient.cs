@@ -8,11 +8,11 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2;
     using Xunit.Abstractions;
 
-    public sealed class ShowtimeCommandClient
+    public sealed class ReservationCommandTestClient
     {
         private readonly IReservationCommandClient api;
 
-        public ShowtimeCommandClient(IReservationCommandClient api)
+        public ReservationCommandTestClient(IReservationCommandClient api)
             => this.api = api;
 
         public async Task ScheduleShowtimeAsync(

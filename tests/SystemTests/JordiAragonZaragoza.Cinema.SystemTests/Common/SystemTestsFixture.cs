@@ -16,9 +16,9 @@
         private HttpClient commandHttp = null!;
         private HttpClient queryHttp = null!;
 
-        public ShowtimeCommandClient ShowtimeCommandClient { get; private set; } = default!;
+        public ReservationCommandTestClient ReservationCommandTestClient { get; private set; } = default!;
 
-        public ShowtimeQueryClient ShowtimeQueryClient { get; private set; } = default!;
+        public ReservationQueryTestClient ReservationQueryTestClient { get; private set; } = default!;
 
         public async Task InitializeAsync()
         {
@@ -35,11 +35,11 @@
 
             this.commandHttp = this.app.CreateHttpClient(Constants.ReservationApiCommand);
             var reservationCommandClient = new ReservationCommandClient(this.commandHttp);
-            this.ShowtimeCommandClient = new ShowtimeCommandClient(reservationCommandClient);
+            this.ReservationCommandTestClient = new ReservationCommandTestClient(reservationCommandClient);
 
             this.queryHttp = this.app.CreateHttpClient(Constants.ReservationApiQuery);
             var reservationQueryClient = new ReservationQueryClient(this.queryHttp);
-            this.ShowtimeQueryClient = new ShowtimeQueryClient(reservationQueryClient);
+            this.ReservationQueryTestClient = new ReservationQueryTestClient(reservationQueryClient);
         }
 
         public async Task DisposeAsync()

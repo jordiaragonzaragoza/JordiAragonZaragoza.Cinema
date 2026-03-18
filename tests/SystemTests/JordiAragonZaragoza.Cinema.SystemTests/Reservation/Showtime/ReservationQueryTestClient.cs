@@ -10,11 +10,11 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Contracts;
     using Xunit.Abstractions;
 
-    public sealed class ShowtimeQueryClient
+    public sealed class ReservationQueryTestClient
     {
         private readonly IReservationQueryClient api;
 
-        public ShowtimeQueryClient(IReservationQueryClient api)
+        public ReservationQueryTestClient(IReservationQueryClient api)
             => this.api = api;
 
         public async Task<ShowtimeResponse?> GetShowtimeAsync(Guid showtimeId, ITestOutputHelper? output = null)

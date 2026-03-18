@@ -4,6 +4,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Comm
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2;
     using ModelContextProtocol.Server;
@@ -18,7 +19,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Comm
             this.apiCommand = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "schedule_showtime", Title = "Schedule Showtime")]
+        [McpServerTool(Name = ShowtimeToolsNames.ScheduleShowtime, Title = "Schedule Showtime")]
         [Description(
         """
         Schedules a new showtime.

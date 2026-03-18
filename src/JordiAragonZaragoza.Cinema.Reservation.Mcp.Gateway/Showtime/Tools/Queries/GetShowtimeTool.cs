@@ -4,6 +4,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
     using System.ComponentModel;
     using System.Threading;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.Showtime.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Sdk.Query.V2;
     using ModelContextProtocol.Server;
@@ -18,7 +19,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Showtime.Tools.Quer
             this.apiQuery = reservationApiQuery ?? throw new ArgumentNullException(nameof(reservationApiQuery));
         }
 
-        [McpServerTool(Name = "get_showtime", Title = "Get Showtime")]
+        [McpServerTool(Name = ShowtimeToolsNames.GetShowtime, Title = "Get Showtime")]
         [Description(
         """
         Get the details of a specific existing showtime, including the movie title, session date, auditorium information, and available seats.
