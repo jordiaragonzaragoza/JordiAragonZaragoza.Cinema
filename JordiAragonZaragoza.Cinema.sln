@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway", "src\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.csproj", "{8D6AB14C-7A8E-4A45-B9A2-BE1E4D07FB1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.csproj", "{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -376,6 +378,18 @@ Global
 		{8D6AB14C-7A8E-4A45-B9A2-BE1E4D07FB1F}.Release|x64.Build.0 = Release|Any CPU
 		{8D6AB14C-7A8E-4A45-B9A2-BE1E4D07FB1F}.Release|x86.ActiveCfg = Release|Any CPU
 		{8D6AB14C-7A8E-4A45-B9A2-BE1E4D07FB1F}.Release|x86.Build.0 = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Debug|x86.Build.0 = Debug|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|x64.Build.0 = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -414,6 +428,7 @@ Global
 		{F29DBE8A-70F6-498D-B85D-824374D93496} = {A06F09CE-6A74-8752-3A8A-096DBB109DAB}
 		{78A07C7F-7E82-4627-AAC8-11B14C6B07D3} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
 		{8D6AB14C-7A8E-4A45-B9A2-BE1E4D07FB1F} = {22B8ACC4-81B2-6EA0-7CB9-07D8FDE56D7C}
+		{C645BFF9-B68F-4143-A5B4-D4463BACD5F0} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82D7CB3-8FCC-470B-8AB9-2932F59BF4D9}
