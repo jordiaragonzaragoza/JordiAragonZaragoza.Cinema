@@ -20,27 +20,27 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
         {
             // Arrange
             var scenario = new CancelShowtimeScenario();
-            await scenario.ArrangeAsync(this.Fixture.ShowtimeCommandClient, this.Fixture.ShowtimeQueryClient, this.OutputHelper);
+            await scenario.ArrangeAsync(this.Fixture.ReservationCommandTestClient, this.Fixture.ReservationQueryTestClient, this.OutputHelper);
 
             // Act
-            await this.Fixture.ShowtimeCommandClient.CancelShowtimeAsync(scenario.ShowtimeId, this.OutputHelper);
+            await this.Fixture.ReservationCommandTestClient.CancelShowtimeAsync(scenario.ShowtimeId, this.OutputHelper);
 
             await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ShowtimeQueryClient.ShowtimeNotExistsAsync(scenario.ShowtimeId, this.OutputHelper));
+                () => this.Fixture.ReservationQueryTestClient.ShowtimeNotExistsAsync(scenario.ShowtimeId, this.OutputHelper));
 
             // Assert
             await ShowtimeAssertions.ShouldNotExistAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 scenario.ShowtimeId,
                 this.OutputHelper);
 
             await SeatAvailabilityAssertions.ShouldNotBeAvailableAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 scenario.ShowtimeId,
                 this.OutputHelper);
 
             await ShowtimeReservationsAssertions.ShouldNotExistAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 scenario.ShowtimeId,
                 this.OutputHelper);
         }

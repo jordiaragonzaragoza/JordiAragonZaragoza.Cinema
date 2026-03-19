@@ -9,7 +9,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
     public static class ShowtimeAssertions
     {
         public static async Task ShouldExistAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid showtimeId,
             DateTimeOffset expectedSessionDate,
             ITestOutputHelper? output = null)

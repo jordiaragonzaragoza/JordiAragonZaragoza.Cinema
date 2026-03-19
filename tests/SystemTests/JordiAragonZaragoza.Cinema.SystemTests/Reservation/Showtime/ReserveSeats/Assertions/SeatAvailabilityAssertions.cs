@@ -10,7 +10,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
     public static class SeatAvailabilityAssertions
     {
         public static async Task ShouldNotContainReservedSeatsAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid showtimeId,
             IEnumerable<Guid> reservedSeatsIds,
             ITestOutputHelper? output = null)
