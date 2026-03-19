@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"cinema-reservation": {
+			"url": "http://localhost:5003/",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}

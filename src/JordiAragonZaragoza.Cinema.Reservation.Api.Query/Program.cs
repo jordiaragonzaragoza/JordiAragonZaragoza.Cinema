@@ -4,6 +4,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
@@ -46,7 +47,8 @@
             app.Logger.LogDebug("Reservation Api Query Host created...");
 
             // Configure Request Pipeline
-            ConfigureWebApplication.UseWebApplicationConfigurations(app);
+            ConfigureWebApplication.UseWebApplicationConfigurations(app)
+                                   .MapDefaultEndpoints();
 
             app.Run();
         }

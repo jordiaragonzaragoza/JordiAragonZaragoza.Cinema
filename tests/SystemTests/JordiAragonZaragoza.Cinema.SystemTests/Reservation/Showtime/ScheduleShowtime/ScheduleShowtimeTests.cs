@@ -31,20 +31,20 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
                 sessionDate);
 
             // Act
-            await this.Fixture.ShowtimeCommandClient.ScheduleShowtimeAsync(showtimeId, request, this.OutputHelper);
+            await this.Fixture.ReservationCommandTestClient.ScheduleShowtimeAsync(showtimeId, request, this.OutputHelper);
 
             await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ShowtimeQueryClient.ShowtimeExistsAsync(showtimeId, this.OutputHelper));
+                () => this.Fixture.ReservationQueryTestClient.ShowtimeExistsAsync(showtimeId, this.OutputHelper));
 
             // Assert
             await ShowtimeAssertions.ShouldExistAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 showtimeId,
                 sessionDate,
                 this.OutputHelper);
 
             await SeatAvailabilityAssertions.ShouldBeAvailableAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 showtimeId,
                 this.OutputHelper);
         }

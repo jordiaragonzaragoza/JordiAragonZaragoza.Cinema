@@ -8,7 +8,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
     public static class SeatAvailabilityAssertions
     {
         public static async Task ShouldNotBeAvailableAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid showtimeId,
             ITestOutputHelper? output = null)
         {

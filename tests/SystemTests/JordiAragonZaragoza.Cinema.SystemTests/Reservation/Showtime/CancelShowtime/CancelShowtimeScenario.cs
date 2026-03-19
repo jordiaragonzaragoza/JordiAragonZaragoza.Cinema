@@ -12,8 +12,8 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
         public Guid ShowtimeId { get; } = Guid.NewGuid();
 
         public async Task ArrangeAsync(
-            ShowtimeCommandClient commandClient,
-            ShowtimeQueryClient queryClient,
+            ReservationCommandTestClient commandClient,
+            ReservationQueryTestClient queryClient,
             ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(commandClient);
