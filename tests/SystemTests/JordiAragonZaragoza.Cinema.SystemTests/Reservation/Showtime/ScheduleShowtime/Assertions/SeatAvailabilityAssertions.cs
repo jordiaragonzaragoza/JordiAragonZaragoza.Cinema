@@ -10,7 +10,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
     public static class SeatAvailabilityAssertions
     {
         public static async Task ShouldBeAvailableAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid showtimeId,
             ITestOutputHelper? output = null)
         {

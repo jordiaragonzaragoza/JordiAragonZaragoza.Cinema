@@ -11,7 +11,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
     public static class ReservationAssertions
     {
         public static async Task ShouldExistAsync(
-            ShowtimeQueryClient queryClient,
+            ReservationQueryTestClient queryClient,
             Guid reservationId,
             Guid expectedShowtimeId,
             Guid expectedUserId,

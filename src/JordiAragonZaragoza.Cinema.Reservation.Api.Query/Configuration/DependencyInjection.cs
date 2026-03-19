@@ -63,7 +63,6 @@
             services.AddSwaggerGen(options => options.EnableAnnotations());
             services.ConfigureOptions<ConfigureSwaggerOptions>();
             services.AddHttpContextAccessor();
-            services.AddHealthChecks();
 
             return services;
         }

@@ -36,6 +36,9 @@ dotnet_diagnostic.CA2007.severity = none
 # CA1515: Consider making public types internal
 dotnet_diagnostic.CA1515.severity = none
 
+# CA1873: Avoid potentially expensive logging
+dotnet_diagnostic.CA1873.severity = none
+
 # Csharp settings
 csharp_style_prefer_primary_constructors = false
 csharp_style_var_when_type_is_apparent = true

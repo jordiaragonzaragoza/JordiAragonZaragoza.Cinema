@@ -23,7 +23,7 @@
         {
             // Arrange
             var scenario = new ReserveSeatsScenario();
-            await scenario.ArrangeAsync(this.Fixture.ShowtimeCommandClient, this.Fixture.ShowtimeQueryClient, this.OutputHelper);
+            await scenario.ArrangeAsync(this.Fixture.ReservationCommandTestClient, this.Fixture.ReservationQueryTestClient, this.OutputHelper);
 
             var reservationId = Guid.NewGuid();
             var seatsIds = scenario.AvailableSeatsIds.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
@@ -31,14 +31,14 @@
             var reserveSeatsRequest = new ReserveSeatsBodyRequest(seatsIds);
 
             // Act
-            await this.Fixture.ShowtimeCommandClient.ReserveSeatsAsync(reservationId, scenario.ShowtimeId, reserveSeatsRequest, this.OutputHelper);
+            await this.Fixture.ReservationCommandTestClient.ReserveSeatsAsync(reservationId, scenario.ShowtimeId, reserveSeatsRequest, this.OutputHelper);
 
             await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ShowtimeQueryClient.ShowtimeReservationExistsAsync(reservationId, this.OutputHelper));
+                () => this.Fixture.ReservationQueryTestClient.ShowtimeReservationExistsAsync(reservationId, this.OutputHelper));
 
             // Assert
             await ReservationAssertions.ShouldExistAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 reservationId,
                 scenario.ShowtimeId,
                 scenario.ExpectedUserId,
@@ -47,7 +47,7 @@
                 this.OutputHelper);
 
             await SeatAvailabilityAssertions.ShouldNotContainReservedSeatsAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 scenario.ShowtimeId,
                 seatsIds,
                 this.OutputHelper);

@@ -20,17 +20,17 @@
         {
             // Arrange
             var scenario = new PurchaseReservationScenario();
-            await scenario.ArrangeAsync(this.Fixture.ShowtimeCommandClient, this.Fixture.ShowtimeQueryClient, this.OutputHelper);
+            await scenario.ArrangeAsync(this.Fixture.ReservationCommandTestClient, this.Fixture.ReservationQueryTestClient, this.OutputHelper);
 
             // Act
-            await this.Fixture.ShowtimeCommandClient.PurchaseReservationAsync(scenario.ShowtimeId, scenario.ReservationId, this.OutputHelper);
+            await this.Fixture.ReservationCommandTestClient.PurchaseReservationAsync(scenario.ShowtimeId, scenario.ReservationId, this.OutputHelper);
 
             await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ShowtimeQueryClient.PurchasedReservationExistsAsync(scenario.ReservationId, this.OutputHelper));
+                () => this.Fixture.ReservationQueryTestClient.PurchasedReservationExistsAsync(scenario.ReservationId, this.OutputHelper));
 
             // Assert
             await ReservationAssertions.ShouldBePurchasedAsync(
-                this.Fixture.ShowtimeQueryClient,
+                this.Fixture.ReservationQueryTestClient,
                 scenario.ReservationId,
                 this.OutputHelper);
         }
