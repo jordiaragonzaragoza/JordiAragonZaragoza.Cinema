@@ -21,20 +21,20 @@
         private readonly ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository;
         private readonly ICommandBus commandBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
-        private readonly IUserContextService userContextService;
+        private readonly IExecutionContextService executionContextService;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
             ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository,
             ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger,
-            IUserContextService userContextService)
+            IExecutionContextService executionContextService)
         {
             this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
             this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
             this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.userContextService = userContextService ?? throw new ArgumentNullException(nameof(userContextService));
+            this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -48,7 +48,15 @@
                 var expiredReservations = await this.reservationReadModelRepository.ListAsync(new GetExpiredReservationsSpec(dateTimeUtcNow), context.CancellationToken);
                 foreach (var reservation in expiredReservations)
                 {
-                    this.userContextService.SetUserContext(reservation.UserId.ToString());
+                    // TODO: Complete when using saga-policy.
+                    // No need to set the execution context here, since the policy-saga will be infrastructure-based
+                    // and will handle the execution context automatically.
+                    this.executionContextService.SetExecutionContext(
+                        actorId: "reactor-worker",
+                        actorType: ActorConstants.System,
+                        correlationId: Guid.NewGuid(), ////@event.Metadata.CorrelationId,
+                        causationId: null); ////@event.Id);
+
                     var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
                     if (!result.IsSuccess)
                     {
