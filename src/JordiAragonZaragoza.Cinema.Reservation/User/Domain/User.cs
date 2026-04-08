@@ -153,14 +153,6 @@
             // All the validations are done on public methods.
         }
 
-        private static Scope GetScope(Guid tenantId, Guid? partitionId, Guid? cinemaId)
-        {
-            var partitionId1 = partitionId is not null ? new PartitionId(partitionId.Value) : null;
-            var cinemaId1 = cinemaId is not null ? new CinemaId(cinemaId.Value) : null;
-
-            return Scope.Create(new TenantId(tenantId), partitionId1, cinemaId1);
-        }
-
         private void Applier(UserCreatedEvent @event)
         {
             this.Id = new UserId(@event.AggregateId);
@@ -168,9 +160,9 @@
 
         private void Applier(UserGrantedEvent @event)
         {
-            var scope = GetScope(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
 
-            var assignment = new Assignment(new AssignmentId(Guid.NewGuid()), scope);
+            var assignment = new Assignment(new ScopeId(scope));
             foreach (var role in @event.Roles.Select(r => new Role(r)))
             {
                 assignment.AddRole(role);
@@ -181,14 +173,14 @@
 
         private void Applier(UserRevokedEvent @event)
         {
-            var scope = GetScope(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
 
             this.assignments.RemoveAll(a => a.Scope == scope);
         }
 
         private void Applier(RoleAssignedToScopeEvent @event)
         {
-            var scope = GetScope(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
             var assignment = this.GetRequiredAssignment(scope);
 
             assignment.AddRole(new Role(@event.Role));
@@ -196,7 +188,7 @@
 
         private void Applier(RoleRevokedFromScopeEvent @event)
         {
-            var scope = GetScope(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
             var assignment = this.GetRequiredAssignment(scope);
 
             assignment.RemoveRole(new Role(@event.Role));

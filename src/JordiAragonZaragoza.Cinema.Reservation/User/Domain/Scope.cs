@@ -34,6 +34,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Domain
             return new Scope(tenantId, partitionId, cinemaId);
         }
 
+        public static Scope CreateFromGuids(Guid tenantId, Guid? partitionId, Guid? cinemaId)
+        {
+            var partitionIdValueObject = partitionId is not null ? new PartitionId(partitionId.Value) : null;
+            var cinemaIdValueObject = cinemaId is not null ? new CinemaId(cinemaId.Value) : null;
+
+            return Create(new TenantId(tenantId), partitionIdValueObject, cinemaIdValueObject);
+        }
+
         public bool Matches(CinemaId? cinemaId, PartitionId? partitionId, TenantId tenantId)
         {
             if (this.CinemaId is not null)

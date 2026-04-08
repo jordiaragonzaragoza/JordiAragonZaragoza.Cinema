@@ -89,7 +89,7 @@
                 sessionDateOnUtc: SessionDate.Create(DateTimeOffset.UtcNow.AddYears(1)),
                 auditoriumId: ExampleAuditorium.Id);
 
-        public static readonly Cinema.Reservation.Showtime.Domain.Events.ShowtimeScheduledEvent ExampleShowtimeScheduledEvent =
+        public static readonly JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events.ShowtimeScheduledEvent ExampleShowtimeScheduledEvent =
             new(
                 ExampleShowtime.Id,
                 ExampleShowtime.MovieId,
