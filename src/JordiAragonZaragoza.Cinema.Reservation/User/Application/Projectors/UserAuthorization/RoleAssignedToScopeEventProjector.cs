@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Projectors.UserAuthorization
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
@@ -41,7 +42,8 @@
                 throw new NotFoundException(nameof(UserAuthorizationReadModel), $"User {@event.AggregateId} for tenant {@event.TenantId} and partition {@event.PartitionId} and cinema {@event.CinemaId}");
             }
 
-            readModel.Roles.Add(@event.Role);
+            var rolesList = (List<RoleReadModel>)readModel.Roles;
+            rolesList.Add(new RoleReadModel(Guid.NewGuid(), @event.Role));
 
             await this.repository.UpdateAsync(readModel, cancellationToken);
         }

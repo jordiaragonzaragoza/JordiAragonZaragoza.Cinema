@@ -30,13 +30,10 @@
         public Guid? CinemaId { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of roles assigned at this scope level.
-        /// Note: This property has a public setter for EF Core and projection purposes.
-        /// In production, it should only be modified through the projection events.
+        /// Gets or sets the collection of roles assigned at this scope level.
+        /// Uses owned entities pattern for flexibility and database portability.
         /// </summary>
-#pragma warning disable CA2227 // Collection properties should be read-only (read models require setter for EF Core projections)
-        public IList<string> Roles { get; set; } = new List<string>();
-#pragma warning restore CA2227
+        public IEnumerable<RoleReadModel> Roles { get; set; } = new List<RoleReadModel>();
 
         /// <summary>
         /// Checks if this authorization matches the given scope hierarchy.

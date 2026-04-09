@@ -30,7 +30,9 @@
                 TenantId = @event.TenantId,
                 PartitionId = @event.PartitionId,
                 CinemaId = @event.CinemaId,
-                Roles = @event.Roles.ToList(),
+                Roles = @event.Roles
+                    .Select(r => new RoleReadModel(Guid.NewGuid(), r))
+                    .ToList(),
             };
 
             await this.userAuthorizationReadModelRepository.AddAsync(userAuthorizationReadModel, cancellationToken);

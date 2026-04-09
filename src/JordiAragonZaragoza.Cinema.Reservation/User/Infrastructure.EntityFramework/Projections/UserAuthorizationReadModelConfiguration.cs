@@ -1,15 +1,14 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     /// <summary>
-    /// Configures the UserAuthorizationReadModel for Entity Framework Core with PostgreSQL.
+    /// Configures the UserAuthorizationReadModel for Entity Framework Core.
+    /// Uses the owned entities pattern to support future database portability.
     /// Each record represents a single user-scope authorization assignment.
     /// A user can have multiple records if granted roles at different scope levels (tenant, partition, cinema).
     /// </summary>
@@ -26,14 +25,8 @@
 
         private static void ConfigureUserAuthorizationTable(EntityTypeBuilder<UserAuthorizationReadModel> builder)
         {
-            // Table structure:
-            // Id: Primary key (composite of UserId + Scope)
-            // UserId: Foreign key reference to the user
-            // TenantId, PartitionId, CinemaId: Define the scope hierarchy
-            // Roles: JSON array stored in PostgreSQL jsonb column for optimal query performance
             builder.ToTable("UsersAuthorizations");
 
-            // Configure primary key
             builder.HasKey(x => x.Id);
 
             // Configure UserId as an additional index for faster lookups by user
@@ -45,18 +38,23 @@
                 .HasDatabaseName("IX_UsersAuthorizations_UserIdScope")
                 .IsUnique();
 
-            // Configure the Roles as a JSON column in PostgreSQL for optimal performance
-            // This avoids the need for a separate normalized table and improves query performance
-            builder.Property(x => x.Roles)
-                .HasColumnType("jsonb")
-                .HasDefaultValueSql("'[]'::jsonb")
-                .Metadata.SetValueComparer(
-                    new Microsoft.EntityFrameworkCore.ChangeTracking.ValueComparer<IList<string>>(
-                        (a, b) => (a ?? new List<string>()).SequenceEqual(b ?? new List<string>()),
-#pragma warning disable CA1307 // Use overload with StringComparison - EF Core value comparer requires specific hash behavior
-                        c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-#pragma warning restore CA1307
-                        c => new List<string>(c ?? new List<string>())));
+            // Configure owned roles collection using owned entities pattern
+            // This approach is database-agnostic and provides flexibility for future migrations
+            builder.OwnsMany(userAuthorization => userAuthorization.Roles, sb =>
+            {
+                sb.ToTable("UserAuthorizationRoles");
+
+                sb.WithOwner().HasForeignKey(nameof(UserAuthorizationReadModel.UserId));
+
+                sb.HasKey(nameof(RoleReadModel.Id), nameof(UserAuthorizationReadModel.UserId));
+
+                sb.Property(x => x.Value)
+                    .HasColumnName("RoleValue")
+                    .IsRequired();
+            });
+
+            builder.Metadata.FindNavigation(nameof(UserAuthorizationReadModel.Roles))
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             // Document the scope hierarchy for clarity
             builder.Property(x => x.TenantId).IsRequired();

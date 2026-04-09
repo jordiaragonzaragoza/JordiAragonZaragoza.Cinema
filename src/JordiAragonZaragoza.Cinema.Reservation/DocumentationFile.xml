@@ -18,9 +18,8 @@
         </member>
         <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Roles">
             <summary>
-            Gets or sets the list of roles assigned at this scope level.
-            Note: This property has a public setter for EF Core and projection purposes.
-            In production, it should only be modified through the projection events.
+            Gets or sets the collection of roles assigned at this scope level.
+            Uses owned entities pattern for flexibility and database portability.
             </summary>
         </member>
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Matches(System.Guid,System.Nullable{System.Guid},System.Nullable{System.Guid})">
@@ -35,7 +34,8 @@
         </member>
         <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections.UserAuthorizationReadModelConfiguration">
             <summary>
-            Configures the UserAuthorizationReadModel for Entity Framework Core with PostgreSQL.
+            Configures the UserAuthorizationReadModel for Entity Framework Core.
+            Uses the owned entities pattern to support future database portability.
             Each record represents a single user-scope authorization assignment.
             A user can have multiple records if granted roles at different scope levels (tenant, partition, cinema).
             </summary>
