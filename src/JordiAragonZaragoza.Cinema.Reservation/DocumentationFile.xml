@@ -16,5 +16,29 @@
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Roles">
+            <summary>
+            Gets or sets the list of roles assigned at this scope level.
+            Note: This property has a public setter for EF Core and projection purposes.
+            In production, it should only be modified through the projection events.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Matches(System.Guid,System.Nullable{System.Guid},System.Nullable{System.Guid})">
+            <summary>
+            Checks if this authorization matches the given scope hierarchy.
+            Cinema-level scope is the most specific, then partition, then tenant.
+            </summary>
+            <param name="tenantId">The tenant identifier.</param>
+            <param name="partitionId">The partition identifier (optional).</param>
+            <param name="domainId">The cinema identifier (optional).</param>
+            <returns>True if this authorization matches the given scope, false otherwise.</returns>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections.UserAuthorizationReadModelConfiguration">
+            <summary>
+            Configures the UserAuthorizationReadModel for Entity Framework Core with PostgreSQL.
+            Each record represents a single user-scope authorization assignment.
+            A user can have multiple records if granted roles at different scope levels (tenant, partition, cinema).
+            </summary>
+        </member>
     </members>
 </doc>

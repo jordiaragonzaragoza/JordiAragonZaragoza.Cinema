@@ -54,8 +54,11 @@
                     this.executionContextService.SetExecutionContext(
                         actorId: "reactor-worker",
                         actorType: ActorConstants.System,
-                        correlationId: Guid.NewGuid(), ////@event.Metadata.CorrelationId,
-                        causationId: null); ////@event.Id);
+                        correlationId: Guid.NewGuid(), // @event.Metadata.CorrelationId,
+                        causationId: null, // @event.Id;
+                        tenantId: Guid.NewGuid(), // @event.Metadata.TenantId;
+                        partitionId: default, // @event.Metadata.PartitionId;
+                        domainId: default); // @event.Metadata.DomainId;
 
                     var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
                     if (!result.IsSuccess)
