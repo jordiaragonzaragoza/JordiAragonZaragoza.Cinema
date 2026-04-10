@@ -17,7 +17,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -37,6 +37,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("Auditoriums");
                 });
 
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Cinema.Application.Contracts.ReadModels.CinemaReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cinemas");
+                });
+
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels.MovieReadModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -53,6 +64,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Partition.Application.Contracts.ReadModels.PartitionReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Partitions");
                 });
 
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.AvailableSeatReadModel", b =>
@@ -150,6 +172,47 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.ToTable("Showtimes");
                 });
 
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Tenant.Application.Contracts.ReadModels.TenantReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tenants");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CinemaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PartitionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_UsersAuthorizations_UserId");
+
+                    b.HasIndex("UserId", "TenantId", "PartitionId", "CinemaId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UsersAuthorizations_UserIdScope");
+
+                    b.ToTable("UsersAuthorizations", (string)null);
+                });
+
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserReadModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -239,6 +302,35 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                         });
 
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel", b =>
+                {
+                    b.OwnsMany("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.RoleReadModel", "Roles", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("RoleValue");
+
+                            b1.HasKey("Id", "UserId");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserAuthorizationRoles", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

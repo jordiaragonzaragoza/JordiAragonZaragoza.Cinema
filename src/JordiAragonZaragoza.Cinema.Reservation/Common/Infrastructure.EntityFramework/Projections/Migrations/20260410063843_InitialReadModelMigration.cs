@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialReadModelStoreMigration : Migration
+    public partial class InitialReadModelMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,6 +55,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cinemas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cinemas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -65,6 +76,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Partitions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Partitions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,6 +125,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tenants",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -111,6 +144,21 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersAuthorizations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CinemaId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersAuthorizations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +201,25 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserAuthorizationRoles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleValue = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAuthorizationRoles", x => new { x.Id, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserAuthorizationRoles_UsersAuthorizations_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UsersAuthorizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AuditoriumSeats_AuditoriumId",
                 table: "AuditoriumSeats",
@@ -162,6 +229,22 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "IX_ReservationsSeats_ReservationId",
                 table: "ReservationsSeats",
                 column: "ReservationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAuthorizationRoles_UserId",
+                table: "UserAuthorizationRoles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersAuthorizations_UserId",
+                table: "UsersAuthorizations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersAuthorizations_UserIdScope",
+                table: "UsersAuthorizations",
+                columns: new[] { "UserId", "TenantId", "PartitionId", "CinemaId" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -177,13 +260,25 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "AvailableSeats");
 
             migrationBuilder.DropTable(
+                name: "Cinemas");
+
+            migrationBuilder.DropTable(
                 name: "Movies");
+
+            migrationBuilder.DropTable(
+                name: "Partitions");
 
             migrationBuilder.DropTable(
                 name: "ReservationsSeats");
 
             migrationBuilder.DropTable(
                 name: "Showtimes");
+
+            migrationBuilder.DropTable(
+                name: "Tenants");
+
+            migrationBuilder.DropTable(
+                name: "UserAuthorizationRoles");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -193,6 +288,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
             migrationBuilder.DropTable(
                 name: "Reservations");
+
+            migrationBuilder.DropTable(
+                name: "UsersAuthorizations");
         }
     }
 }
