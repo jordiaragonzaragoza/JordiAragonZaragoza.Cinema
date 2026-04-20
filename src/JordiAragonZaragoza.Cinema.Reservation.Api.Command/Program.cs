@@ -11,6 +11,7 @@
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
 
@@ -32,9 +33,12 @@
             // Configure specific Host Services (DI)
             builder.Services
                 .AddDomain()
+                .AddApplication()
                 .AddApplicationValidators()
                 .AddApplicationCommandHandlers()
                 .AddInfrastructureEventStoreRepositories()
+                .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
+                .AddInfrastructureProjectionsRepositories()
                 .AddPresentationHttpRestfulApi(configuration);
 
             // Then configure SharedKernel Services (DI)

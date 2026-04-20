@@ -30,10 +30,6 @@ namespace JordiAragonZaragoza.Cinema
                                           .WithReference(kurrentdb)
                                           .WaitFor(kurrentdb);
 
-            var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
-                     .WithReference(kurrentdb)
-                     .WaitForCompletion(kurrentdbSeeder);
-
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag(Constants.PostgresImageTag)
                                         .WithPgAdmin()
@@ -53,6 +49,12 @@ namespace JordiAragonZaragoza.Cinema
             var reservationWorkerReadModelMigrator = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator>(Constants.ReservationWorkerReadModelMigrator)
                                                           .WithReference(reservationReadModelDb)
                                                           .WaitFor(postgresServer);
+
+            var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
+                     .WithReference(kurrentdb)
+                     .WaitForCompletion(kurrentdbSeeder)
+                     .WithReference(reservationReadModelDb)
+                     .WaitForCompletion(reservationWorkerReadModelMigrator);
 
             var reservationApiQuery = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)

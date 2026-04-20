@@ -24,6 +24,7 @@
 
             // Configure specific Host Services (DI)
             builder.Services
+                .AddApplication()
                 .AddApplicationValidators()
                 .AddApplicationQueryHandlers()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")

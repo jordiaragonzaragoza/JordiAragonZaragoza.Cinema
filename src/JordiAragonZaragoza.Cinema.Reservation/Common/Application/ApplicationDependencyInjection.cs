@@ -15,12 +15,21 @@
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Projectors;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Services;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Quartz;
 
     public static class ApplicationDependencyInjection
     {
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
+
+            return services;
+        }
+
         public static IServiceCollection AddApplicationValidators(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(AssemblyReference.Assembly, ServiceLifetime.Singleton);

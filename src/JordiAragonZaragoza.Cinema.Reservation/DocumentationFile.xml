@@ -4,16 +4,16 @@
         <name>JordiAragonZaragoza.Cinema.Reservation</name>
     </assembly>
     <members>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration">
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Roles">

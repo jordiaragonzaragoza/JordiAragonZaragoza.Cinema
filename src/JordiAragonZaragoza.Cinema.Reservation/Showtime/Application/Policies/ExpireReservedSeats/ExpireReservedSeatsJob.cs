@@ -51,14 +51,19 @@
                     // TODO: Complete when using saga-policy.
                     // No need to set the execution context here, since the policy-saga will be infrastructure-based
                     // and will handle the execution context automatically.
-                    this.executionContextService.SetExecutionContext(
-                        actorId: "reactor-worker",
-                        actorType: ActorConstants.System,
+                    var executionContext = new ExecutionContext(
+                        actorId: "job:reactor-worker",
+                        actorType: ActorType.System,
+                        executor: "ExpireReservedSeatsJob", // TODO: resolve executor from ServiceIdentityProvider
+                        executorType: ExecutorType.Service,
                         correlationId: Guid.NewGuid(), // @event.Metadata.CorrelationId,
                         causationId: null, // @event.Id;
-                        tenantId: Guid.NewGuid(), // @event.Metadata.TenantId;
-                        partitionId: default, // @event.Metadata.PartitionId;
-                        domainId: default); // @event.Metadata.DomainId;
+                        scopeContext: new ScopeContext(
+                            tenantId: Guid.NewGuid(), // @event.Metadata.TenantId;
+                            partitionId: default, // @event.Metadata.PartitionId;
+                            domainId: default)); // @event.Metadata.DomainId;
+
+                    this.executionContextService.SetExecutionContext(executionContext);
 
                     var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
                     if (!result.IsSuccess)
