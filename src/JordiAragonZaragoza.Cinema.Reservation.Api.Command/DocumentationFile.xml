@@ -4,6 +4,18 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.Api.Command</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration.AddRequiredHeadersOperationFilter">
+            <summary>
+            Swagger operation filter to add required custom headers to all API operations.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration.AddRequiredHeadersOperationFilter.Apply(Microsoft.OpenApi.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Apply the operation filter to add custom headers.
+            </summary>
+            <param name="operation">The operation to modify.</param>
+            <param name="context">The operation filter context.</param>
+        </member>
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <summary>
             Configure each API discovered for Swagger Documentation.
