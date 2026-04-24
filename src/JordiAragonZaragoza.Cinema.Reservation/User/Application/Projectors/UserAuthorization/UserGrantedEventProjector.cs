@@ -11,12 +11,12 @@
 
     public sealed class UserGrantedEventProjector : BaseEventHandler<UserGrantedEvent>
     {
-        private readonly IRepository<UserAuthorizationReadModel, Guid> userAuthorizationReadModelRepository;
+        private readonly ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository;
 
         public UserGrantedEventProjector(
-            IRepository<UserAuthorizationReadModel, Guid> userAuthorizationReadModelRepository)
+            ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository)
         {
-            this.userAuthorizationReadModelRepository = userAuthorizationReadModelRepository ?? throw new ArgumentNullException(nameof(userAuthorizationReadModelRepository));
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public override async Task HandleAsync(UserGrantedEvent @event, CancellationToken cancellationToken)
@@ -35,7 +35,7 @@
                     .ToList(),
             };
 
-            await this.userAuthorizationReadModelRepository.AddAsync(userAuthorizationReadModel, cancellationToken);
+            await this.repository.AddAsync(userAuthorizationReadModel, cancellationToken);
         }
     }
 }

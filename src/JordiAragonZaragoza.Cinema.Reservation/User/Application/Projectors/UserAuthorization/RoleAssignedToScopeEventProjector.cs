@@ -15,14 +15,11 @@
 
     public sealed class RoleAssignedToScopeEventProjector : BaseEventHandler<RoleAssignedToScopeEvent>
     {
-        private readonly ISpecificationReadRepository<UserAuthorizationReadModel, Guid> specificationRepository;
-        private readonly IRepository<UserAuthorizationReadModel, Guid> repository;
+        private readonly ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository;
 
         public RoleAssignedToScopeEventProjector(
-            ISpecificationReadRepository<UserAuthorizationReadModel, Guid> specificationRepository,
-            IRepository<UserAuthorizationReadModel, Guid> repository)
+            ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository)
         {
-            this.specificationRepository = specificationRepository ?? throw new ArgumentNullException(nameof(specificationRepository));
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
@@ -36,7 +33,7 @@
                 PartitionId: @event.PartitionId,
                 CinemaId: @event.CinemaId);
 
-            var readModel = await this.specificationRepository.FirstOrDefaultAsync(new GetUserAuthorizationSpecification(query), cancellationToken);
+            var readModel = await this.repository.FirstOrDefaultAsync(new GetUserAuthorizationSpecification(query), cancellationToken);
             if (readModel is null)
             {
                 throw new NotFoundException(nameof(UserAuthorizationReadModel), $"User {@event.AggregateId} for tenant {@event.TenantId} and partition {@event.PartitionId} and cinema {@event.CinemaId}");

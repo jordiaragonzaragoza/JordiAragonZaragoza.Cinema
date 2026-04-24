@@ -12,25 +12,25 @@
 
     public sealed class UserRemovedEventProjector : BaseEventHandler<UserRemovedEvent>
     {
-        private readonly IRepository<UserAuthorizationReadModel, Guid> userAuthorizationReadModelRepository;
+        private readonly ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository;
 
         public UserRemovedEventProjector(
-            IRepository<UserAuthorizationReadModel, Guid> userAuthorizationReadModelRepository)
+            ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository)
         {
-            this.userAuthorizationReadModelRepository = userAuthorizationReadModelRepository ?? throw new ArgumentNullException(nameof(userAuthorizationReadModelRepository));
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public override async Task HandleAsync(UserRemovedEvent @event, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(@event);
 
-            var readModel = await this.userAuthorizationReadModelRepository.GetByIdAsync(@event.AggregateId, cancellationToken);
+            var readModel = await this.repository.GetByIdAsync(@event.AggregateId, cancellationToken);
             if (readModel is null)
             {
                 throw new NotFoundException(nameof(UserAuthorizationReadModel), @event.AggregateId.ToString());
             }
 
-            await this.userAuthorizationReadModelRepository.DeleteAsync(readModel, cancellationToken);
+            await this.repository.DeleteAsync(readModel, cancellationToken);
         }
     }
 }
