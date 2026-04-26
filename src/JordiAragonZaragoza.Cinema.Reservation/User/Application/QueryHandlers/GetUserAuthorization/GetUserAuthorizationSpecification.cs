@@ -7,15 +7,15 @@
 
     public sealed class GetUserAuthorizationSpecification : SingleResultSpecification<UserAuthorizationReadModel>
     {
-        public GetUserAuthorizationSpecification(GetUserAuthorizationQuery request)
+        public GetUserAuthorizationSpecification(GetUserAuthorizationQuery query)
         {
-            ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(query);
 
             this.Query
-                .Where(userAuthorization => userAuthorization.UserId == request.UserId)
-                .Where(userAuthorization => userAuthorization.TenantId == request.TenantId)
-                .Where(userAuthorization => userAuthorization.PartitionId == request.PartitionId, request.PartitionId is not null)
-                .Where(userAuthorization => userAuthorization.CinemaId == request.CinemaId, request.CinemaId is not null)
+                .Where(userAuthorization => userAuthorization.UserId == query.UserId)
+                .Where(userAuthorization => userAuthorization.TenantId == query.TenantId)
+                .Where(userAuthorization => userAuthorization.PartitionId == query.PartitionId, query.PartitionId is not null)
+                .Where(userAuthorization => userAuthorization.CinemaId == query.CinemaId, query.CinemaId is not null)
                 .AsNoTracking();
         }
     }

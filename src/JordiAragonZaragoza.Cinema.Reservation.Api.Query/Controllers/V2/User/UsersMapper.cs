@@ -43,6 +43,32 @@
                 paginatedRequest.PageSize);
         }
 
+        public static GetUserAuthorizationQuery ToQuery(
+            this UserAuthorizationRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            return new GetUserAuthorizationQuery(
+                request.UserId,
+                request.TenantId,
+                request.PartitionId,
+                request.CinemaId);
+        }
+
+        public static Result<UserAuthorizationResponse> ToResponse(
+            this Result<UserAuthorizationReadModel> result)
+        {
+            ArgumentNullException.ThrowIfNull(result);
+
+            return result.Map(userAuthorizationReadModel => new UserAuthorizationResponse(
+                userAuthorizationReadModel.Id,
+                userAuthorizationReadModel.UserId,
+                userAuthorizationReadModel.TenantId,
+                userAuthorizationReadModel.PartitionId,
+                userAuthorizationReadModel.CinemaId,
+                userAuthorizationReadModel.Roles.ToResponse()));
+        }
+
         public static Result<ReservationResponse> ToResponse(
             this Result<ReservationReadModel> result)
         {
@@ -88,6 +114,14 @@
             return ToResponseIterator(users);
         }
 
+        private static IEnumerable<RoleResponse> ToResponse(
+            this IEnumerable<RoleReadModel> roles)
+        {
+            ArgumentNullException.ThrowIfNull(roles);
+
+            return ToResponseIterator(roles);
+        }
+
         private static IEnumerable<SeatResponse> ToResponseIterator(
             IEnumerable<SeatReadModel> seats)
         {
@@ -107,6 +141,17 @@
             {
                 yield return new UserResponse(
                     user.Id);
+            }
+        }
+
+        private static IEnumerable<RoleResponse> ToResponseIterator(
+            IEnumerable<RoleReadModel> roles)
+        {
+            foreach (var role in roles)
+            {
+                yield return new RoleResponse(
+                    role.Id,
+                    role.Value);
             }
         }
     }

@@ -5,6 +5,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandler
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemoveUser;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.CreateUser;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.GrantUser;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RevokeUser;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.AssignRole;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemoveRole;
 
     public static class UserCommandHandlersDependencyInjection
     {
@@ -12,6 +16,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandler
         {
             services.AddCommandHandler<CreateUserCommand, CreateUserCommandHandler>();
             services.AddCommandHandler<RemoveUserCommand, RemoveUserCommandHandler>();
+            services.AddCommandHandler<GrantUserCommand, GrantUserCommandHandler>();
+            services.AddCommandHandler<RevokeUserCommand, RevokeUserCommandHandler>();
+            services.AddCommandHandler<AssignRoleCommand, AssignRoleCommandHandler>();
+            services.AddCommandHandler<RemoveRoleCommand, RemoveRoleCommandHandler>();
 
             return services;
         }

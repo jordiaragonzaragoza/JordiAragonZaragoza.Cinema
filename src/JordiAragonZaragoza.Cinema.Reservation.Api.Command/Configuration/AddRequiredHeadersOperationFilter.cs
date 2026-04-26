@@ -36,8 +36,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration
                 {
                     Name = "x-partition-id",
                     In = ParameterLocation.Header,
-                    Description = "The ID of the partition. This header is required and must be a valid non-empty Guid.",
-                    Required = true,
+                    Description = "The ID of the partition. This header is optional and must be a valid non-empty Guid if provided. It is used for data partitioning in multi-tenant scenarios.",
+                    Required = false,
                     Schema = new OpenApiSchema { Type = JsonSchemaType.String, Format = "uuid", },
                 });
 
@@ -46,8 +46,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration
                 {
                     Name = "x-domain-id",
                     In = ParameterLocation.Header,
-                    Description = "The ID of the cinema. This header is required and must be a valid non-empty Guid.",
-                    Required = true,
+                    Description = "The ID of the cinema. This header is optional and must be a valid non-empty Guid if provided. It is used to identify the specific cinema or context of the request.",
+                    Required = false,
                     Schema = new OpenApiSchema { Type = JsonSchemaType.String, Format = "uuid", },
                 });
 
