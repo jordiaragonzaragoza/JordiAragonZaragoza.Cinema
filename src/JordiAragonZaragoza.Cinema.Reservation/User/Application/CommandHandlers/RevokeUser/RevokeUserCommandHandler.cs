@@ -5,11 +5,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandler
     using System.Threading.Tasks;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
-
     using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
-
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
-
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
