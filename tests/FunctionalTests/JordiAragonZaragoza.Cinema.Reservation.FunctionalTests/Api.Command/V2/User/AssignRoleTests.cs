@@ -2,7 +2,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
 {
     using System;
     using System.Net;
-    using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
     using AwesomeAssertions;
@@ -11,6 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common;
+    using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -30,11 +30,11 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         {
             // Arrange
             var userId = SeedData.ExampleUser.Id;
-            var tenantId = Guid.NewGuid();
-            var partitionId = Guid.NewGuid();
-            var cinemaId = Guid.NewGuid();
-            var role = "Viewer";
-            var initialRoles = new[] { "Admin" };
+            var tenantId = SeedData.ExampleTenant.Id;
+            var partitionId = SeedData.ExamplePartition.Id;
+            var cinemaId = SeedData.ExampleCinema.Id;
+            var role = Constants.Role.Viewer;
+            string[] initialRoles = { Constants.Role.Admin };
 
             await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles);
 

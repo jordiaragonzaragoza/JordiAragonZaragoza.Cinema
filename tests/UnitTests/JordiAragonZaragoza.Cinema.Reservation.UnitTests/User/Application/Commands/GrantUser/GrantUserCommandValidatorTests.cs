@@ -3,13 +3,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
     using System;
     using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
+    using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.GrantUser;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
     using Xunit;
 
     public sealed class GrantUserCommandValidatorTests
     {
-        private static readonly string[] DefaultRoles = { "Admin" };
+        private static readonly string[] DefaultRoles = { Constants.Role.Admin };
 
         private readonly GrantUserCommandValidator validator;
 

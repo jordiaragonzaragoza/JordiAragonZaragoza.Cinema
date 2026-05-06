@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using AwesomeAssertions;
-    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;

@@ -1,11 +1,12 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
 {
     using System;
+    using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
 
     public static class UserCommandUtils
     {
-        private static readonly string[] DefaultRoles = { "Admin" };
+        private static readonly string[] DefaultRoles = { Constants.Role.Admin };
 
         public static CreateUserCommand CreateUserCommand()
             => new(Guid.NewGuid());
@@ -24,7 +25,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Role: "Viewer");
+                Role: Constants.Role.Viewer);
 
         public static RemoveRoleCommand CreateRemoveRoleCommand()
             => new(
@@ -32,7 +33,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Role: "Viewer");
+                Role: Constants.Role.Viewer);
 
         public static RemoveUserCommand CreateRemoveUserCommand()
             => new(Guid.NewGuid());

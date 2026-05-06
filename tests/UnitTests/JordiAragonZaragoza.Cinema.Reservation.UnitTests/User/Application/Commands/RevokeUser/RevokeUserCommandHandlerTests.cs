@@ -64,7 +64,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 new PartitionId(revokeUserCommand.PartitionId!.Value),
                 new CinemaId(revokeUserCommand.CinemaId!.Value));
 
-            existingUser.GrantUser(scope, new List<Role> { Role.Create("Admin") });
+            existingUser.GrantUser(scope, new List<Role> { Constants.Role.Admin });
 
             this.mockUserRepository.GetByIdAsync(Arg.Any<UserId>(), Arg.Any<CancellationToken>())
                 .Returns(existingUser);

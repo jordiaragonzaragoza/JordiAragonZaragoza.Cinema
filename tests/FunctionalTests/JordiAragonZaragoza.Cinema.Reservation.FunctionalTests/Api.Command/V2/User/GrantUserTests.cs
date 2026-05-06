@@ -10,6 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common;
+    using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -29,10 +30,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         {
             // Arrange
             var userId = SeedData.ExampleUser.Id;
-            var tenantId = Guid.NewGuid();
-            var partitionId = Guid.NewGuid();
-            var cinemaId = Guid.NewGuid();
-            var roles = new[] { "Admin", "Viewer" };
+            var tenantId = SeedData.ExampleTenant.Id;
+            var partitionId = SeedData.ExamplePartition.Id;
+            var cinemaId = SeedData.ExampleCinema.Id;
+            string[] roles = { Constants.Role.Admin, Constants.Role.Viewer };
 
             var request = new GrantUserBodyRequest(
                 tenantId,

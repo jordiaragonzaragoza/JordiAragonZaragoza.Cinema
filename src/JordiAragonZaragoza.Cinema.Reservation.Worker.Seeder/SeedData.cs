@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
@@ -8,13 +9,22 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
@@ -71,6 +81,36 @@
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList());
+
+        public static readonly Cinema ExampleCinema =
+            Cinema.Create(
+                id: new CinemaId(new Guid("497cd8f1-620c-426f-992d-7012147f6e7c")));
+
+        public static readonly CinemaCreatedEvent ExampleCinemaCreatedEvent =
+            new(ExampleCinema.Id);
+
+        public static readonly CinemaReadModel ExampleCinemaReadModel =
+            new(ExampleCinema.Id);
+
+        public static readonly Partition ExamplePartition =
+            Partition.Create(
+                id: new PartitionId(new Guid("05cbd871-da4e-447b-9d62-89438df8c4a8")));
+
+        public static readonly PartitionCreatedEvent ExamplePartitionCreatedEvent =
+            new(ExamplePartition.Id);
+
+        public static readonly PartitionReadModel ExamplePartitionReadModel =
+            new(ExamplePartition.Id);
+
+        public static readonly Tenant ExampleTenant =
+            Tenant.Create(
+                id: new TenantId(new Guid("667196fc-0e17-43f9-990d-7dc2175e6162")));
+
+        public static readonly TenantCreatedEvent ExampleTenantCreatedEvent =
+            new(ExampleTenant.Id);
+
+        public static readonly TenantReadModel ExampleTenantReadModel =
+            new(ExampleTenant.Id);
 
         public static readonly User ExampleUser =
             User.Create(
@@ -150,6 +190,23 @@
                 isPurchased: false,
                 createdTimeOnUtc: DateTimeOffset.UtcNow);
 
+        public static UserAuthorizationReadModel ExampleUserAuthorizationReadModel()
+        {
+            var userAuthorization = new UserAuthorizationReadModel(ExampleUser.Id)
+            {
+                UserId = ExampleUser.Id,
+                TenantId = ExampleTenant.Id,
+                PartitionId = ExamplePartition.Id,
+                CinemaId = ExampleCinema.Id,
+                Roles = new List<RoleReadModel>
+                {
+                    new RoleReadModel(Guid.NewGuid(), "Admin"),
+                },
+            };
+
+            return userAuthorization;
+        }
+
         public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
@@ -159,6 +216,14 @@
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
 
             context.Users.Add(ExampleUserReadModel);
+
+            context.UsersAuthorizations.Add(ExampleUserAuthorizationReadModel());
+
+            context.Tenants.Add(ExampleTenantReadModel);
+
+            context.Partitions.Add(ExamplePartitionReadModel);
+
+            context.Cinemas.Add(ExampleCinemaReadModel);
 
             context.Showtimes.Add(ExampleShowtimeReadModel);
 
@@ -183,8 +248,15 @@
 
             eventStore.AppendChanges<Movie, MovieId>(ExampleMovie);
             eventStore.AppendChanges<Auditorium, AuditoriumId>(ExampleAuditorium);
-            eventStore.AppendChanges<User, UserId>(ExampleUser);
+            eventStore.AppendChanges<Partition, PartitionId>(ExamplePartition);
+            eventStore.AppendChanges<Tenant, TenantId>(ExampleTenant);
+            eventStore.AppendChanges<Cinema, CinemaId>(ExampleCinema);
 
+            ExampleUser.GrantUser(
+                new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
+                new[] { Role.Create("Admin") });
+
+            eventStore.AppendChanges<User, UserId>(ExampleUser);
             ExampleShowtime.ReserveSeats(
                 ExampleReservation.Id,
                 ExampleReservation.UserId,
@@ -210,11 +282,29 @@
                 ExampleUser.Id,
                 cancellationToken);
 
+            var existingPartition = await eventStore.LoadAggregateAsync<Partition, PartitionId>(
+                ExamplePartition.Id,
+                cancellationToken);
+
+            var existingTenant = await eventStore.LoadAggregateAsync<Tenant, TenantId>(
+                ExampleTenant.Id,
+                cancellationToken);
+
+            var existingCinema = await eventStore.LoadAggregateAsync<Cinema, CinemaId>(
+                ExampleCinema.Id,
+                cancellationToken);
+
             var existingShowtime = await eventStore.LoadAggregateAsync<Showtime, ShowtimeId>(
                 ExampleShowtime.Id,
                 cancellationToken);
 
-            if (existingMovie != null || existingAuditorium != null || existingUser != null || existingShowtime != null)
+            if (existingMovie != null ||
+                existingAuditorium != null ||
+                existingUser != null ||
+                existingPartition != null ||
+                existingTenant != null ||
+                existingCinema != null ||
+                existingShowtime != null)
             {
                 return true;
             }

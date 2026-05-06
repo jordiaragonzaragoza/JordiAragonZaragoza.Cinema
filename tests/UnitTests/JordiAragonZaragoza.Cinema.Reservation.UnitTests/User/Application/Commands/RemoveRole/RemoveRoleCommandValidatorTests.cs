@@ -3,6 +3,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
     using System;
     using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
+    using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemoveRole;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
     using Xunit;
@@ -39,7 +40,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Role: "Viewer");
+                Role: Constants.Role.Viewer);
 
             // Act.
             var validationResult = this.validator.Validate(removeRoleCommand);
@@ -59,7 +60,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 TenantId: Guid.Empty,
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Role: "Viewer");
+                Role: Constants.Role.Viewer);
 
             // Act.
             var validationResult = this.validator.Validate(removeRoleCommand);
