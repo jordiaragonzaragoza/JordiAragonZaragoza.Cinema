@@ -134,6 +134,23 @@
             return await this.http.GetAndDeserializeAsync<ReservationResponse>(uri.PathAndQuery, cancellationToken);
         }
 
+        public async Task<UserAuthorizationResponse> GetUserAuthorizationAsync(
+            UserAuthorizationRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var route = $"{Routes.ApiBase}{UserRoutes.GetUserAuthorization}";
+            var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
+                route,
+                (nameof(request.UserId), request.UserId.ToString()),
+                (nameof(request.TenantId), request.TenantId.ToString()),
+                (nameof(request.PartitionId), request.PartitionId?.ToString() ?? string.Empty),
+                (nameof(request.CinemaId), request.CinemaId?.ToString() ?? string.Empty));
+
+            return await this.http.GetAndDeserializeAsync<UserAuthorizationResponse>(uri.PathAndQuery, cancellationToken);
+        }
+
         // TODO: Will be moved. It belongs to the cinema manager bounded context.
         public async Task<PaginatedCollectionResponse<AuditoriumResponse>> GetAuditoriumsAsync(
             PaginatedRequest paginatedRequest,

@@ -39,6 +39,10 @@
             UserReservationRequest request,
             CancellationToken cancellationToken = default);
 
+        Task<UserAuthorizationResponse> GetUserAuthorizationAsync(
+            UserAuthorizationRequest request,
+            CancellationToken cancellationToken = default);
+
         // TODO: Will be moved. It belongs to the cinema manager bounded context.
         Task<PaginatedCollectionResponse<AuditoriumResponse>> GetAuditoriumsAsync(
             PaginatedRequest paginatedRequest,
