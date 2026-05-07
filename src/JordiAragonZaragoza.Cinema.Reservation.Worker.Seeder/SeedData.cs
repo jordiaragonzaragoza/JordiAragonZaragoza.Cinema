@@ -8,26 +8,19 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Partition.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
 
     public static class SeedData
@@ -42,14 +35,6 @@
                     EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2)),
                     Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28))));
 
-        public static readonly MovieAddedEvent ExampleMovieAddedEvent =
-            new(
-                ExampleMovie.Id,
-                ExampleMovie.Title,
-                ExampleMovie.Runtime,
-                ExampleMovie.ExhibitionPeriod.StartingPeriodOnUtc,
-                ExampleMovie.ExhibitionPeriod.EndOfPeriodOnUtc);
-
         public static readonly MovieReadModel ExampleMovieReadModel =
            new(
             ExampleMovie.Id,
@@ -62,16 +47,6 @@
                 name: Name.Create("Auditorium One"),
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
-
-        public static readonly AuditoriumCreatedEvent ExampleAuditoriumCreatedEvent =
-            new(
-                ExampleAuditorium.Id,
-                ExampleAuditorium.Name,
-                ExampleAuditorium.Rows,
-                ExampleAuditorium.SeatsPerRow,
-                ExampleAuditorium.Seats.Select(seat => (Guid)seat.Id).ToList().AsReadOnly(),
-                ExampleAuditorium.Seats.Select(seat => (ushort)seat.Row).ToList().AsReadOnly(),
-                ExampleAuditorium.Seats.Select(seat => (ushort)seat.SeatNumber).ToList().AsReadOnly());
 
         public static readonly AuditoriumReadModel ExampleAuditoriumReadModel =
             new(
@@ -86,18 +61,12 @@
             Cinema.Create(
                 id: new CinemaId(new Guid("497cd8f1-620c-426f-992d-7012147f6e7c")));
 
-        public static readonly CinemaCreatedEvent ExampleCinemaCreatedEvent =
-            new(ExampleCinema.Id);
-
         public static readonly CinemaReadModel ExampleCinemaReadModel =
             new(ExampleCinema.Id);
 
         public static readonly Partition ExamplePartition =
             Partition.Create(
                 id: new PartitionId(new Guid("05cbd871-da4e-447b-9d62-89438df8c4a8")));
-
-        public static readonly PartitionCreatedEvent ExamplePartitionCreatedEvent =
-            new(ExamplePartition.Id);
 
         public static readonly PartitionReadModel ExamplePartitionReadModel =
             new(ExamplePartition.Id);
@@ -106,18 +75,26 @@
             Tenant.Create(
                 id: new TenantId(new Guid("667196fc-0e17-43f9-990d-7dc2175e6162")));
 
-        public static readonly TenantCreatedEvent ExampleTenantCreatedEvent =
-            new(ExampleTenant.Id);
-
         public static readonly TenantReadModel ExampleTenantReadModel =
             new(ExampleTenant.Id);
 
-        public static readonly User ExampleUser =
+        public static readonly User ExampleUserWithReservation =
+            User.Create(
+                id: new UserId(new Guid("a9c483ba-4f95-400b-835d-1a9c6c39e17b")));
+
+        public static readonly UserReadModel ExampleUserReadModelWithReservation =
+            new(ExampleUserWithReservation.Id);
+
+        public static readonly User ExampleUserWithAdminRole =
             User.Create(
                 id: new UserId(new Guid("08ffddf5-3826-483f-a806-b3144477c7e8")));
 
-        public static readonly UserCreatedEvent ExampleUserCreatedEvent =
-            new(ExampleUser.Id);
+        public static readonly UserReadModel ExampleUserReadModelWithAdminRole =
+            new(ExampleUserWithAdminRole.Id);
+
+        public static readonly User ExampleUser =
+            User.Create(
+                id: new UserId(new Guid("b7dedad7-4c6b-498e-8808-bd88468ca97f")));
 
         public static readonly UserReadModel ExampleUserReadModel =
             new(ExampleUser.Id);
@@ -128,13 +105,6 @@
                 movieId: ExampleMovie.Id,
                 sessionDateOnUtc: SessionDate.Create(DateTimeOffset.UtcNow.AddYears(1)),
                 auditoriumId: ExampleAuditorium.Id);
-
-        public static readonly JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events.ShowtimeScheduledEvent ExampleShowtimeScheduledEvent =
-            new(
-                ExampleShowtime.Id,
-                ExampleShowtime.MovieId,
-                ExampleShowtime.SessionDateOnUtc,
-                ExampleShowtime.AuditoriumId);
 
         public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
             new(
@@ -149,17 +119,9 @@
         public static readonly Reservation ExampleReservation =
             new(
                 id: new ReservationId(new Guid("d290f1ee-6c54-4b01-90e6-d701748f0851")),
-                userId: ExampleUser.Id,
+                userId: ExampleUserWithReservation.Id,
                 seatIds: ExampleAuditorium.Seats.Take(3).Select(seat => seat.Id),
                 reservationDateOnUtc: ReservationDate.Create(DateTimeOffset.UtcNow.AddDays(1))); // Added 1 day to avoid conflicts with the seat reservation time in the showtime.
-
-        public static readonly ReservedSeatsEvent ExampleReservedSeatsEvent =
-            new(
-                ExampleShowtime.Id,
-                ExampleReservation.Id,
-                ExampleReservation.UserId,
-                ExampleReservation.Seats.Select(seatId => seatId.Value),
-                ExampleReservation.ReservationDateOnUtc);
 
         public static ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel =>
             ExampleAuditorium.Seats
@@ -178,7 +140,7 @@
         public static ReservationReadModel ExampleReservationReadModel() =>
             new(
                 id: ExampleReservation.Id,
-                userId: ExampleUser.Id,
+                userId: ExampleUserWithReservation.Id,
                 showtimeId: ExampleShowtime.Id,
                 sessionDateOnUtc: ExampleShowtime.SessionDateOnUtc,
                 auditoriumName: ExampleAuditorium.Name,
@@ -190,11 +152,11 @@
                 isPurchased: false,
                 createdTimeOnUtc: DateTimeOffset.UtcNow);
 
-        public static UserAuthorizationReadModel ExampleUserAuthorizationReadModel()
+        public static UserAuthorizationReadModel ExampleUserAuthorizationReadModelWithAdminRole()
         {
-            var userAuthorization = new UserAuthorizationReadModel(ExampleUser.Id)
+            var userAuthorization = new UserAuthorizationReadModel(ExampleUserWithAdminRole.Id)
             {
-                UserId = ExampleUser.Id,
+                UserId = ExampleUserWithAdminRole.Id,
                 TenantId = ExampleTenant.Id,
                 PartitionId = ExamplePartition.Id,
                 CinemaId = ExampleCinema.Id,
@@ -215,9 +177,13 @@
 
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
 
+            context.Users.Add(ExampleUserReadModelWithAdminRole);
+
+            context.Users.Add(ExampleUserReadModelWithReservation);
+
             context.Users.Add(ExampleUserReadModel);
 
-            context.UsersAuthorizations.Add(ExampleUserAuthorizationReadModel());
+            context.UsersAuthorizations.Add(ExampleUserAuthorizationReadModelWithAdminRole());
 
             context.Tenants.Add(ExampleTenantReadModel);
 
@@ -252,11 +218,14 @@
             eventStore.AppendChanges<Tenant, TenantId>(ExampleTenant);
             eventStore.AppendChanges<Cinema, CinemaId>(ExampleCinema);
 
-            ExampleUser.GrantUser(
+            ExampleUserWithAdminRole.GrantUser(
                 new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
                 new[] { Role.Create("Admin") });
 
+            eventStore.AppendChanges<User, UserId>(ExampleUserWithAdminRole);
+            eventStore.AppendChanges<User, UserId>(ExampleUserWithReservation);
             eventStore.AppendChanges<User, UserId>(ExampleUser);
+
             ExampleShowtime.ReserveSeats(
                 ExampleReservation.Id,
                 ExampleReservation.UserId,
@@ -276,6 +245,10 @@
 
             var existingAuditorium = await eventStore.LoadAggregateAsync<Auditorium, AuditoriumId>(
                 ExampleAuditorium.Id,
+                cancellationToken);
+
+            var existingUserWithAdminRole = await eventStore.LoadAggregateAsync<User, UserId>(
+                ExampleUserWithAdminRole.Id,
                 cancellationToken);
 
             var existingUser = await eventStore.LoadAggregateAsync<User, UserId>(
@@ -300,6 +273,7 @@
 
             if (existingMovie != null ||
                 existingAuditorium != null ||
+                existingUserWithAdminRole != null ||
                 existingUser != null ||
                 existingPartition != null ||
                 existingTenant != null ||

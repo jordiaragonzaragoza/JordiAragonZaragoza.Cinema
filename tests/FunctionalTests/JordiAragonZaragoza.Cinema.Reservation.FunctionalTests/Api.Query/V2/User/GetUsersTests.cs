@@ -22,7 +22,7 @@
         }
 
         [Fact]
-        public async Task GetAllUsers_WhenHavingValidUrl_ShouldReturnOneUser()
+        public async Task GetAllUsers_WhenHavingValidUrl_ShouldReturnThreeUsers()
         {
             // Arrange
             var url = $"{Routes.ApiBase}{UserRoutes.GetUsers}";
@@ -32,7 +32,7 @@
 
             // Assert
             response.Should().NotBeNull();
-            response.Items.Should().HaveCount(1);
+            response.Items.Should().HaveCount(3);
         }
     }
 }
