@@ -61,7 +61,6 @@
             ArgumentNullException.ThrowIfNull(result);
 
             return result.Map(userAuthorizationReadModel => new UserAuthorizationResponse(
-                userAuthorizationReadModel.Id,
                 userAuthorizationReadModel.UserId,
                 userAuthorizationReadModel.TenantId,
                 userAuthorizationReadModel.PartitionId,
@@ -114,7 +113,7 @@
             return ToResponseIterator(users);
         }
 
-        private static IEnumerable<RoleResponse> ToResponse(
+        private static IEnumerable<string> ToResponse(
             this IEnumerable<RoleReadModel> roles)
         {
             ArgumentNullException.ThrowIfNull(roles);
@@ -144,14 +143,12 @@
             }
         }
 
-        private static IEnumerable<RoleResponse> ToResponseIterator(
+        private static IEnumerable<string> ToResponseIterator(
             IEnumerable<RoleReadModel> roles)
         {
             foreach (var role in roles)
             {
-                yield return new RoleResponse(
-                    role.Id,
-                    role.Value);
+                yield return role.Value;
             }
         }
     }

@@ -1,6 +1,0 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses
-{
-    using System;
-
-    public sealed record class RoleResponse(Guid Id, string Value);
-}
