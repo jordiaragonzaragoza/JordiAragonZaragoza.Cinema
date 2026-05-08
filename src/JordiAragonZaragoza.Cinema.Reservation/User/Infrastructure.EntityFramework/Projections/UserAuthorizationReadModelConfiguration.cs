@@ -44,9 +44,9 @@
             {
                 sb.ToTable("UserAuthorizationRoles");
 
-                sb.WithOwner().HasForeignKey(nameof(UserAuthorizationReadModel.UserId));
+                sb.WithOwner().HasForeignKey("UserAuthorizationId");
 
-                sb.HasKey(nameof(RoleReadModel.Id), nameof(UserAuthorizationReadModel.UserId));
+                sb.HasKey(nameof(RoleReadModel.Id), "UserAuthorizationId");
 
                 sb.Property(x => x.Value)
                     .HasColumnName("RoleValue")

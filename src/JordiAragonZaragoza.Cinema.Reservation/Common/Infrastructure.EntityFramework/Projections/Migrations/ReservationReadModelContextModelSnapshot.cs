@@ -312,7 +312,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
-                            b1.Property<Guid>("UserId")
+                            b1.Property<Guid>("UserAuthorizationId")
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("Value")
@@ -320,14 +320,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .HasColumnType("text")
                                 .HasColumnName("RoleValue");
 
-                            b1.HasKey("Id", "UserId");
+                            b1.HasKey("Id", "UserAuthorizationId");
 
-                            b1.HasIndex("UserId");
+                            b1.HasIndex("UserAuthorizationId");
 
                             b1.ToTable("UserAuthorizationRoles", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("UserId");
+                                .HasForeignKey("UserAuthorizationId");
                         });
 
                     b.Navigation("Roles");

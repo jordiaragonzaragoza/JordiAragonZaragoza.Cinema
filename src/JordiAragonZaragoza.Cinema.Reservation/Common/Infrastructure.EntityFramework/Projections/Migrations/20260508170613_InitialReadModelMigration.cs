@@ -206,15 +206,15 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserAuthorizationId = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleValue = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserAuthorizationRoles", x => new { x.Id, x.UserId });
+                    table.PrimaryKey("PK_UserAuthorizationRoles", x => new { x.Id, x.UserAuthorizationId });
                     table.ForeignKey(
-                        name: "FK_UserAuthorizationRoles_UsersAuthorizations_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserAuthorizationRoles_UsersAuthorizations_UserAuthorizationId",
+                        column: x => x.UserAuthorizationId,
                         principalTable: "UsersAuthorizations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -231,9 +231,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 column: "ReservationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAuthorizationRoles_UserId",
+                name: "IX_UserAuthorizationRoles_UserAuthorizationId",
                 table: "UserAuthorizationRoles",
-                column: "UserId");
+                column: "UserAuthorizationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersAuthorizations_UserId",
