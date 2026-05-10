@@ -14,16 +14,17 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag)
-                                   .WithLifetime(ContainerLifetime.Persistent);
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag);
 
             if (!IsSystemTesting(builder))
             {
-                kurrentdb.WithDataVolume();
+                kurrentdb.WithDataVolume()
+                         .WithLifetime(ContainerLifetime.Persistent);
             }
             else
             {
-                kurrentdb.WithContainerRuntimeArgs("--tmpfs", "/var/lib/kurrentdb");
+                kurrentdb.WithContainerRuntimeArgs("--tmpfs", "/var/lib/kurrentdb")
+                         .WithLifetime(ContainerLifetime.Session);
             }
 
             var kurrentdbSeeder = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder>(Constants.ReservationWorkerSeeder)
@@ -32,29 +33,31 @@ namespace JordiAragonZaragoza.Cinema
 
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag(Constants.PostgresImageTag)
-                                        .WithPgAdmin()
-                                        .WithLifetime(ContainerLifetime.Persistent);
+                                        .WithPgAdmin();
 
             if (!IsSystemTesting(builder))
             {
-                postgresServer.WithDataVolume();
+                postgresServer.WithDataVolume()
+                              .WithLifetime(ContainerLifetime.Persistent);
             }
             else
             {
-                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql/data");
+                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql/data")
+                              .WithLifetime(ContainerLifetime.Session);
             }
 
             var cache = builder.AddRedis(Constants.RedisCache)
-                               .WithImageTag(Constants.RedisImageTag)
-                               .WithLifetime(ContainerLifetime.Persistent);
+                               .WithImageTag(Constants.RedisImageTag);
 
             if (!IsSystemTesting(builder))
             {
-                cache.WithDataVolume();
+                cache.WithDataVolume()
+                     .WithLifetime(ContainerLifetime.Persistent);
             }
             else
             {
-                cache.WithContainerRuntimeArgs("--tmpfs", "/data");
+                cache.WithContainerRuntimeArgs("--tmpfs", "/data")
+                     .WithLifetime(ContainerLifetime.Session);
             }
 
             var reservationReadModelDb = postgresServer.AddDatabase(Constants.ReservationReadModelStore);
