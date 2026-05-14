@@ -92,6 +92,34 @@
         public static readonly UserReadModel ExampleUserReadModelWithAdminRole =
             new(ExampleUserWithAdminRole.Id);
 
+        public static readonly User UserExampleToBeGranted =
+            User.Create(
+                id: new UserId(new Guid("7acabd24-d196-4599-b053-083b4fb8ba50")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeGranted =
+            new(UserExampleToBeGranted.Id);
+
+        public static readonly User ExampleUserToBeAssignedAsViewerRole =
+            User.Create(
+                id: new UserId(new Guid("d6551436-94f4-4275-9660-efacec34e90a")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeAssignedAsViewerRole =
+            new(ExampleUserToBeAssignedAsViewerRole.Id);
+
+        public static readonly User ExampleUserToBeRevoked =
+            User.Create(
+                id: new UserId(new Guid("82e78b83-24b0-4036-b3c0-b44f830c9442")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeRevoked =
+            new(ExampleUserToBeRevoked.Id);
+
+        public static readonly User ExampleUserToBeRemovedAsViewerRole =
+            User.Create(
+                id: new UserId(new Guid("cd782d72-90c2-4373-b6c4-be9857c80bba")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeRemovedAsViewerRole =
+            new(ExampleUserToBeRemovedAsViewerRole.Id);
+
         public static readonly User ExampleUser =
             User.Create(
                 id: new UserId(new Guid("b7dedad7-4c6b-498e-8808-bd88468ca97f")));
@@ -222,6 +250,10 @@
                 new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
                 new[] { Role.Create("Admin") });
 
+            eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedAsViewerRole);
+            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRevoked);
+            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRemovedAsViewerRole);
+            eventStore.AppendChanges<User, UserId>(UserExampleToBeGranted);
             eventStore.AppendChanges<User, UserId>(ExampleUserWithAdminRole);
             eventStore.AppendChanges<User, UserId>(ExampleUserWithReservation);
             eventStore.AppendChanges<User, UserId>(ExampleUser);

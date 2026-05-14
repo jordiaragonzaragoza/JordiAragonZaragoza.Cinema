@@ -15,8 +15,9 @@
                 .Where(userAuthorization => userAuthorization.UserId == query.UserId)
                 .Where(userAuthorization => userAuthorization.TenantId == query.TenantId)
                 .Where(userAuthorization => userAuthorization.PartitionId == query.PartitionId, query.PartitionId is not null)
-                .Where(userAuthorization => userAuthorization.CinemaId == query.CinemaId, query.CinemaId is not null)
-                .AsNoTracking();
+                .Where(userAuthorization => userAuthorization.CinemaId == query.CinemaId, query.CinemaId is not null);
+
+            // Note: Intentionally NOT using AsNoTracking() to allow modifications during event projection
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
