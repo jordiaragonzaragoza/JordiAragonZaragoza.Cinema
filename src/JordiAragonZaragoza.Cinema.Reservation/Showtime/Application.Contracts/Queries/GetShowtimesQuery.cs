@@ -14,11 +14,5 @@
         DateTimeOffset? EndTimeOnUtc,
         int PageNumber,
         int PageSize)
-        : IPaginatedQuery, IQuery<PaginatedCollectionOutputDto<ShowtimeReadModel>> ////, ICacheRequest // TODO: Enable cache request when implementing cache invalidation
-    {
-        public string CacheKey
-            => $"{ShowtimeConstants.CachePrefix}_{this.AuditoriumId}_{this.AuditoriumName}_{this.MovieId}_{this.MovieTitle}_{this.StartTimeOnUtc}_{this.EndTimeOnUtc}_{this.PageNumber}_{this.PageSize}";
-
-        public TimeSpan? AbsoluteExpirationInSeconds { get; }
-    }
+        : IPaginatedQuery, IQuery<PaginatedCollectionOutputDto<ShowtimeReadModel>>;
 }
