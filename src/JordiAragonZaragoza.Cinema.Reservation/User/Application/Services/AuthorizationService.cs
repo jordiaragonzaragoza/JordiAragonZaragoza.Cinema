@@ -33,7 +33,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
                 PartitionId: scope.PartitionId,
                 CinemaId: scope.DomainId);
 
-            var readModel = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationSpecification(query), cancellationToken);
+            var readModel = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken);
             if (readModel is null)
             {
                 return Result.NotFound($"User with ID {query.UserId} not found for tenant {query.TenantId}, partition {query.PartitionId}, and cinema {query.CinemaId}.");
@@ -52,7 +52,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
                 PartitionId: scope.PartitionId,
                 CinemaId: scope.DomainId);
 
-            var readModel = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationSpecification(query), cancellationToken);
+            var readModel = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken);
             if (readModel is null)
             {
                 return Result.NotFound($"User with ID {query.UserId} not found for tenant {query.TenantId}, partition {query.PartitionId}, and cinema {query.CinemaId}.");

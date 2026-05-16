@@ -32,7 +32,7 @@
                 PartitionId: @event.PartitionId,
                 CinemaId: @event.CinemaId);
 
-            var readModel = await this.repository.FirstOrDefaultAsync(new GetUserAuthorizationSpecification(query), cancellationToken);
+            var readModel = await this.repository.FirstOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken);
             if (readModel is null)
             {
                 throw new NotFoundException(nameof(UserAuthorizationReadModel), $"User {@event.AggregateId} for tenant {@event.TenantId} and partition {@event.PartitionId} and cinema {@event.CinemaId}");

@@ -21,7 +21,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.
 
         public async Task<Result<UserAuthorizationReadModel>> Handle(GetUserAuthorizationQuery query, CancellationToken cancellationToken)
         {
-            var specification = new GetUserAuthorizationSpecification(query);
+            var specification = new GetUserAuthorizationCachedSpecification(query);
             var result = await this.userAuthorizationReadModelRepository.FirstOrDefaultAsync(specification, cancellationToken);
             if (result is null)
             {
