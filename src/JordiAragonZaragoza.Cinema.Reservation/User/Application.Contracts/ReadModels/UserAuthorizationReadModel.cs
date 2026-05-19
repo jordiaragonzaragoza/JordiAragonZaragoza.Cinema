@@ -34,6 +34,11 @@
         /// </summary>
         public IEnumerable<RoleReadModel> Roles { get; set; } = new List<RoleReadModel>();
 
+        /// <summary> Gets or sets the collection of permissions assigned at this scope level.
+        /// Uses owned entities pattern for flexibility and database portability.
+        /// </summary>
+        public IEnumerable<PermissionReadModel> Permissions { get; set; } = new List<PermissionReadModel>();
+
         /// <summary>
         /// Checks if this authorization matches the given scope hierarchy.
         /// Cinema-level scope is the most specific, then partition, then tenant.

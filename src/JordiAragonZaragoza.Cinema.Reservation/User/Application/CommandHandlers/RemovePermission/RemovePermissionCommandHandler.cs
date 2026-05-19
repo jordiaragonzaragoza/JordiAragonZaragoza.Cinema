@@ -1,7 +1,6 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.GrantUser
+namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RemovePermission
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
@@ -13,16 +12,16 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandler
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
-    public sealed class GrantUserCommandHandler : ICommandHandler<GrantUserCommand>
+    public sealed class RemovePermissionCommandHandler : ICommandHandler<RemovePermissionCommand>
     {
         private readonly IRepository<User, UserId> userRepository;
 
-        public GrantUserCommandHandler(IRepository<User, UserId> userRepository)
+        public RemovePermissionCommandHandler(IRepository<User, UserId> userRepository)
         {
             this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
-        public async Task<Result> Handle(GrantUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RemovePermissionCommand request, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
 
@@ -37,10 +36,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandler
                 request.PartitionId.HasValue ? new PartitionId(request.PartitionId.Value) : null,
                 request.CinemaId.HasValue ? new CinemaId(request.CinemaId.Value) : null);
 
-            var roles = request.Roles?.Select(Role.Create).ToList();
-            var permissions = request.Permissions?.Select(Permission.Create).ToList();
+            var permission = Permission.Create(request.Permission);
 
-            existingUser.GrantUser(scope, roles, permissions);
+            existingUser.RemovePermission(scope, permission);
 
             await this.userRepository.UpdateAsync(existingUser, cancellationToken);
 

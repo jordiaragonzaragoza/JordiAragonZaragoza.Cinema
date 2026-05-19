@@ -7,6 +7,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Domain
     {
         private readonly HashSet<Role> roles = new();
 
+        private readonly HashSet<Permission> permissions = new();
+
         internal Assignment(ScopeId id)
             : base(id)
         {
@@ -17,15 +19,24 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Domain
         {
         }
 
-        public Scope Scope => this.Id; ////.Value;
+        public Scope Scope => this.Id;
 
         public IReadOnlyCollection<Role> Roles
             => this.roles.AsReadOnly();
+
+        public IReadOnlyCollection<Permission> Permissions
+            => this.permissions.AsReadOnly();
 
         internal void AddRole(Role role)
             => this.roles.Add(role);
 
         internal void RemoveRole(Role role)
             => this.roles.Remove(role);
+
+        internal void AddPermission(Permission permission)
+            => this.permissions.Add(permission);
+
+        internal void RemovePermission(Permission permission)
+            => this.permissions.Remove(permission);
     }
 }

@@ -120,5 +120,32 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2
             using var response = await this.http.SendAsync(httpRequest, cancellationToken);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task AssignPermissionAsync(Guid userId, AssignPermissionBodyRequest request, CancellationToken cancellationToken = default)
+        {
+            var route = $"{Routes.ApiBase}{UserRoutes.AssignPermission}";
+            route = route.Replace("{userId}", userId.ToString(), StringComparison.Ordinal);
+
+            using var content = StringContentHelpers.FromModelAsJson(request);
+            var fullUri = new Uri(this.http.BaseAddress!, route);
+
+            using var response = await this.http.PostAsync(fullUri, content, cancellationToken);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task RemovePermissionAsync(Guid userId, RemovePermissionBodyRequest request, CancellationToken cancellationToken = default)
+        {
+            var route = $"{Routes.ApiBase}{UserRoutes.RemovePermission}";
+            route = route.Replace("{userId}", userId.ToString(), StringComparison.Ordinal);
+
+            using var content = StringContentHelpers.FromModelAsJson(request);
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(this.http.BaseAddress!, route))
+            {
+                Content = content,
+            };
+
+            using var response = await this.http.SendAsync(httpRequest, cancellationToken);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

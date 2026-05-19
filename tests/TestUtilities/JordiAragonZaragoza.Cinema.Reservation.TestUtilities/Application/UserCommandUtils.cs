@@ -44,5 +44,21 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid());
+
+        public static AssignPermissionCommand CreateAssignPermissionCommand()
+            => new(
+                UserId: Guid.NewGuid(),
+                TenantId: Guid.NewGuid(),
+                PartitionId: Guid.NewGuid(),
+                CinemaId: Guid.NewGuid(),
+                Permission: Constants.Permission.Read);
+
+        public static RemovePermissionCommand CreateRemovePermissionCommand()
+            => new(
+                UserId: Guid.NewGuid(),
+                TenantId: Guid.NewGuid(),
+                PartitionId: Guid.NewGuid(),
+                CinemaId: Guid.NewGuid(),
+                Permission: Constants.Permission.Read);
     }
 }

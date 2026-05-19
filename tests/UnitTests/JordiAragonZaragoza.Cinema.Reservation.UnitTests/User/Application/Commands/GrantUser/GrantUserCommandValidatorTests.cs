@@ -72,25 +72,5 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
             validationResult.Errors.Should().ContainSingle();
             validationResult.Errors.Should().ContainSingle(error => error.ErrorMessage == "TenantId is required.");
         }
-
-        [Fact]
-        public void ValidateGrantUserCommand_WhenRolesAreEmpty_ShouldHaveAnError()
-        {
-            // Arrange.
-            var grantUserCommand = new GrantUserCommand(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
-                Roles: Array.Empty<string>());
-
-            // Act.
-            var validationResult = this.validator.Validate(grantUserCommand);
-
-            // Assert.
-            validationResult.IsValid.Should().BeFalse();
-            validationResult.Errors.Should().ContainSingle();
-            validationResult.Errors.Should().ContainSingle(error => error.ErrorMessage == "At least one role must be assigned.");
-        }
     }
 }

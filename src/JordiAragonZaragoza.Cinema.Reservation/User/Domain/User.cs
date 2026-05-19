@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
@@ -11,6 +10,7 @@
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Rules;
 
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
@@ -53,26 +53,54 @@
                 .Distinct();
         }
 
+        public IEnumerable<Permission> GetPermissionsFor(
+        TenantId tenantId,
+        PartitionId? partitionId = default,
+        CinemaId? cinemaId = default)
+        {
+            ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
+
+            return this.assignments
+                .Where(a => a.Scope.Matches(cinemaId, partitionId, tenantId))
+                .SelectMany(a => a.Permissions)
+                .Distinct();
+        }
+
         public void GrantUser(
             Scope scope,
-            IEnumerable<Role> roles)
+            IEnumerable<Role>? roles,
+            IEnumerable<Permission>? permissions = null)
         {
             ArgumentNullException.ThrowIfNull(scope, nameof(scope));
-            Guard.Against.NullOrEmpty(roles, nameof(roles));
+
+            CheckRule(new AssignmentMustHaveAtLeastOneRoleOrPermissionRule(roles, permissions));
 
             var assignment = this.assignments
                 .FirstOrDefault(a => a.Scope == scope);
 
             if (assignment is null)
             {
-                this.Apply(new UserGrantedEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, roles.Select(x => x.Value)));
+                this.Apply(new UserGrantedEvent(
+                    this.Id,
+                    scope.TenantId,
+                    scope.PartitionId!,
+                    scope.CinemaId!,
+                    roles?.Select(x => x.Value) ?? Enumerable.Empty<string>(),
+                    permissions?.Select(x => x.Value) ?? Enumerable.Empty<string>()));
 
                 return;
             }
 
-            foreach (var role in roles.Where(r => !assignment.Roles.Contains(r)))
+            CheckRule(new GrantUserMustIntroduceNewRolesOrPermissionsRule(assignment, roles, permissions));
+
+            foreach (var role in roles?.Where(r => !assignment.Roles.Contains(r)) ?? Enumerable.Empty<Role>())
             {
                 this.Apply(new RoleAssignedToScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, role));
+            }
+
+            foreach (var permission in permissions?.Where(p => !assignment.Permissions.Contains(p)) ?? Enumerable.Empty<Permission>())
+            {
+                this.Apply(new PermissionAssignedToScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, permission));
             }
         }
 
@@ -91,11 +119,7 @@
             ArgumentNullException.ThrowIfNull(role, nameof(role));
 
             var assignment = this.GetRequiredAssignment(scope);
-
-            if (assignment.Roles.Contains(role))
-            {
-                return;
-            }
+            CheckRule(new OnlyPossibleToAssignRoleOnceRule(assignment, role));
 
             this.Apply(new RoleAssignedToScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, role));
         }
@@ -109,10 +133,36 @@
 
             if (!assignment.Roles.Contains(role))
             {
-                return;
+                throw new NotFoundException(nameof(Role), role.Value);
             }
 
             this.Apply(new RoleRevokedFromScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, role));
+        }
+
+        public void AssignPermission(Scope scope, Permission permission)
+        {
+            ArgumentNullException.ThrowIfNull(scope, nameof(scope));
+            ArgumentNullException.ThrowIfNull(permission, nameof(permission));
+
+            var assignment = this.GetRequiredAssignment(scope);
+            CheckRule(new OnlyPossibleToAssignPermissionOnceRule(assignment, permission));
+
+            this.Apply(new PermissionAssignedToScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, permission));
+        }
+
+        public void RemovePermission(Scope scope, Permission permission)
+        {
+            ArgumentNullException.ThrowIfNull(scope, nameof(scope));
+            ArgumentNullException.ThrowIfNull(permission, nameof(permission));
+
+            var assignment = this.GetRequiredAssignment(scope);
+
+            if (!assignment.Permissions.Contains(permission))
+            {
+                throw new NotFoundException(nameof(Permission), permission.Value);
+            }
+
+            this.Apply(new PermissionRevokedFromScopeEvent(this.Id, scope.TenantId, scope.PartitionId!, scope.CinemaId!, permission));
         }
 
         protected override void When(IDomainEvent domainEvent)
@@ -142,6 +192,14 @@
                     this.Applier(@event);
                     break;
 
+                case PermissionAssignedToScopeEvent @event:
+                    this.Applier(@event);
+                    break;
+
+                case PermissionRevokedFromScopeEvent @event:
+                    this.Applier(@event);
+                    break;
+
                 default:
                     throw new EventCannotBeAppliedToAggregateException<User, UserId>(this, domainEvent);
             }
@@ -168,6 +226,11 @@
                 assignment.AddRole(role);
             }
 
+            foreach (var permission in @event.Permissions.Select(p => new Permission(p)))
+            {
+                assignment.AddPermission(permission);
+            }
+
             this.assignments.Add(assignment);
         }
 
@@ -192,6 +255,22 @@
             var assignment = this.GetRequiredAssignment(scope);
 
             assignment.RemoveRole(new Role(@event.Role));
+        }
+
+        private void Applier(PermissionAssignedToScopeEvent @event)
+        {
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var assignment = this.GetRequiredAssignment(scope);
+
+            assignment.AddPermission(new Permission(@event.Permission));
+        }
+
+        private void Applier(PermissionRevokedFromScopeEvent @event)
+        {
+            var scope = Scope.CreateFromGuids(@event.TenantId, @event.PartitionId, @event.CinemaId);
+            var assignment = this.GetRequiredAssignment(scope);
+
+            assignment.RemovePermission(new Permission(@event.Permission));
         }
 
         private Assignment GetRequiredAssignment(Scope scope)

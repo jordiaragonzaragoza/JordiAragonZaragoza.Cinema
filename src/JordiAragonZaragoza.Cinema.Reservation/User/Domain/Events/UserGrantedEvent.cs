@@ -9,6 +9,7 @@
         Guid TenantId,
         Guid? PartitionId,
         Guid? CinemaId,
-        IEnumerable<string> Roles)
+        IEnumerable<string> Roles,
+        IEnumerable<string> Permissions)
         : BaseDomainEvent(AggregateId);
 }

@@ -24,5 +24,9 @@
         Task AssignRoleAsync(Guid userId, AssignRoleBodyRequest request, CancellationToken cancellationToken = default);
 
         Task RemoveRoleAsync(Guid userId, RemoveRoleBodyRequest request, CancellationToken cancellationToken = default);
+
+        Task AssignPermissionAsync(Guid userId, AssignPermissionBodyRequest request, CancellationToken cancellationToken = default);
+
+        Task RemovePermissionAsync(Guid userId, RemovePermissionBodyRequest request, CancellationToken cancellationToken = default);
     }
 }

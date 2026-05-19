@@ -10,6 +10,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User
 
         public const string RemoveRole = $"{Base}/{{userId}}/roles/remove";
 
+        public const string AssignPermission = $"{Base}/{{userId}}/permissions/assign";
+
+        public const string RemovePermission = $"{Base}/{{userId}}/permissions/remove";
+
         private const string Base = "users";
     }
 }

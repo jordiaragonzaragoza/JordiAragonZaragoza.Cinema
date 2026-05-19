@@ -22,6 +22,11 @@
             Uses owned entities pattern for flexibility and database portability.
             </summary>
         </member>
+        <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Permissions">
+            <summary> Gets or sets the collection of permissions assigned at this scope level.
+            Uses owned entities pattern for flexibility and database portability.
+            </summary>
+        </member>
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Matches(System.Guid,System.Nullable{System.Guid},System.Nullable{System.Guid})">
             <summary>
             Checks if this authorization matches the given scope hierarchy.
