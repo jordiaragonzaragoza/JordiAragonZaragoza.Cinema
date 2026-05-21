@@ -202,6 +202,25 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserAuthorizationPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserAuthorizationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PermissionValue = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAuthorizationPermissions", x => new { x.Id, x.UserAuthorizationId });
+                    table.ForeignKey(
+                        name: "FK_UserAuthorizationPermissions_UsersAuthorizations_UserAuthor~",
+                        column: x => x.UserAuthorizationId,
+                        principalTable: "UsersAuthorizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAuthorizationRoles",
                 columns: table => new
                 {
@@ -213,7 +232,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     table.PrimaryKey("PK_UserAuthorizationRoles", x => new { x.Id, x.UserAuthorizationId });
                     table.ForeignKey(
-                        name: "FK_UserAuthorizationRoles_UsersAuthorizations_UserAuthorizationId",
+                        name: "FK_UserAuthorizationRoles_UsersAuthorizations_UserAuthorizatio~",
                         column: x => x.UserAuthorizationId,
                         principalTable: "UsersAuthorizations",
                         principalColumn: "Id",
@@ -229,6 +248,11 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "IX_ReservationsSeats_ReservationId",
                 table: "ReservationsSeats",
                 column: "ReservationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAuthorizationPermissions_UserAuthorizationId",
+                table: "UserAuthorizationPermissions",
+                column: "UserAuthorizationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAuthorizationRoles_UserAuthorizationId",
@@ -276,6 +300,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
             migrationBuilder.DropTable(
                 name: "Tenants");
+
+            migrationBuilder.DropTable(
+                name: "UserAuthorizationPermissions");
 
             migrationBuilder.DropTable(
                 name: "UserAuthorizationRoles");

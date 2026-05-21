@@ -248,7 +248,8 @@
 
             ExampleUserWithAdminRole.GrantUser(
                 new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
-                new[] { Role.Create("Admin") });
+                new[] { Role.Create("Admin") },
+                []);
 
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedAsViewerRole);
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeRevoked);

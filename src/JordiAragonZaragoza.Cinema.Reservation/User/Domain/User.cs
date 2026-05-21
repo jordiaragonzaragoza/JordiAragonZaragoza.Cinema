@@ -69,7 +69,7 @@
         public void GrantUser(
             Scope scope,
             IEnumerable<Role>? roles,
-            IEnumerable<Permission>? permissions = null)
+            IEnumerable<Permission>? permissions)
         {
             ArgumentNullException.ThrowIfNull(scope, nameof(scope));
 

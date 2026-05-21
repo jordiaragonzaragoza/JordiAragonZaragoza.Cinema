@@ -9,6 +9,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Projectors.Use
         public static IServiceCollection AddUserAuthorizationProjectorsEventHandlers(this IServiceCollection services)
         {
             // User projection.
+            services.AddProjectorEventHandler<PermissionAssignedToScopeEvent, PermissionAssignedToScopeEventProjector>();
+            services.AddProjectorEventHandler<PermissionRevokedFromScopeEvent, PermissionRevokedFromScopeEventProjector>();
             services.AddProjectorEventHandler<RoleAssignedToScopeEvent, RoleAssignedToScopeEventProjector>();
             services.AddProjectorEventHandler<RoleRevokedFromScopeEvent, RoleRevokedFromScopeEventProjector>();
             services.AddProjectorEventHandler<UserGrantedEvent, UserGrantedEventProjector>();

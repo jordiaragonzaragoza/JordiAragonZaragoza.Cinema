@@ -65,7 +65,8 @@
                 userAuthorizationReadModel.TenantId,
                 userAuthorizationReadModel.PartitionId,
                 userAuthorizationReadModel.CinemaId,
-                userAuthorizationReadModel.Roles.ToResponse()));
+                userAuthorizationReadModel.Roles.ToResponse(),
+                userAuthorizationReadModel.Permissions.ToResponse()));
         }
 
         public static Result<ReservationResponse> ToResponse(
@@ -121,6 +122,14 @@
             return ToResponseIterator(roles);
         }
 
+        private static IEnumerable<string> ToResponse(
+            this IEnumerable<PermissionReadModel> permissions)
+        {
+            ArgumentNullException.ThrowIfNull(permissions);
+
+            return ToResponseIterator(permissions);
+        }
+
         private static IEnumerable<SeatResponse> ToResponseIterator(
             IEnumerable<SeatReadModel> seats)
         {
@@ -149,6 +158,15 @@
             foreach (var role in roles)
             {
                 yield return role.Value;
+            }
+        }
+
+        private static IEnumerable<string> ToResponseIterator(
+            IEnumerable<PermissionReadModel> permissions)
+        {
+            foreach (var permission in permissions)
+            {
+                yield return permission.Value;
             }
         }
     }

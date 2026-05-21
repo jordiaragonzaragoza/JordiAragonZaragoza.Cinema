@@ -56,6 +56,22 @@
             builder.Metadata.FindNavigation(nameof(UserAuthorizationReadModel.Roles))
                 ?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
+            builder.OwnsMany(userAuthorization => userAuthorization.Permissions, sb =>
+            {
+                sb.ToTable("UserAuthorizationPermissions");
+
+                sb.WithOwner().HasForeignKey("UserAuthorizationId");
+
+                sb.HasKey(nameof(PermissionReadModel.Id), "UserAuthorizationId");
+
+                sb.Property(x => x.Value)
+                    .HasColumnName("PermissionValue")
+                    .IsRequired();
+            });
+
+            builder.Metadata.FindNavigation(nameof(UserAuthorizationReadModel.Permissions))
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
+
             // Document the scope hierarchy for clarity
             builder.Property(x => x.TenantId).IsRequired();
             builder.Property(x => x.PartitionId).IsRequired(false);

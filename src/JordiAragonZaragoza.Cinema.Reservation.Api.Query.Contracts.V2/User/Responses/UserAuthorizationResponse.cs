@@ -8,5 +8,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Res
         Guid TenantId,
         Guid? PartitionId,
         Guid? CinemaId,
-        IEnumerable<string> Roles);
+        IEnumerable<string> Roles,
+        IEnumerable<string> Permissions);
 }

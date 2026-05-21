@@ -33,6 +33,9 @@
                 Roles = @event.Roles
                     .Select(r => new RoleReadModel(Guid.NewGuid(), r))
                     .ToList(),
+                Permissions = @event.Permissions
+                    .Select(p => new PermissionReadModel(Guid.NewGuid(), p))
+                    .ToList(),
             };
 
             await this.repository.AddAsync(userAuthorizationReadModel, cancellationToken);
