@@ -18,11 +18,14 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.GrantUser
 
         public IReadOnlyList<string> Roles { get; } = new[] { "Admin", "Viewer" };
 
+        public IReadOnlyList<string> Permissions { get; } = [];
+
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
             this.PartitionId,
             this.CinemaId,
-            this.Roles);
+            this.Roles,
+            this.Permissions);
 
         public UserAuthorizationRequest UserAuthorizationRequest => new(
             this.UserId,

@@ -24,13 +24,16 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignRole
 
         public IReadOnlyList<string> BaseRoles { get; } = new[] { "Admin" };
 
+        public IReadOnlyList<string> Permissions { get; } = [];
+
         public string RoleToAssign { get; } = "Viewer";
 
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
             this.PartitionId,
             this.CinemaId,
-            this.BaseRoles);
+            this.BaseRoles,
+            this.Permissions);
 
         public AssignRoleBodyRequest AssignRoleBodyRequest => new(
             this.TenantId,

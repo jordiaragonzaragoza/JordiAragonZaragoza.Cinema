@@ -22,11 +22,14 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RevokeUser
 
         public IReadOnlyList<string> Roles { get; } = new[] { "Admin" };
 
+        public IReadOnlyList<string> Permissions { get; } = [];
+
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
             this.PartitionId,
             this.CinemaId,
-            this.Roles);
+            this.Roles,
+            this.Permissions);
 
         public RevokeUserBodyRequest RevokeUserBodyRequest => new(
             this.TenantId,

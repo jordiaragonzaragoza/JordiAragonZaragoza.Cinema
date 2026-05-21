@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Commands.AssignRole
+namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Commands.AssignPermission
 {
     using System;
     using System.Collections.Generic;
@@ -7,51 +7,52 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
     using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts;
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.AssignRole;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.AssignPermission;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using NSubstitute;
     using Xunit;
 
-    public sealed class AssignRoleCommandHandlerTests
+    public sealed class AssignPermissionCommandHandlerTests
     {
-        private readonly AssignRoleCommandHandler handler;
+        private readonly AssignPermissionCommandHandler handler;
         private readonly IRepository<User, UserId> mockUserRepository;
 
-        public AssignRoleCommandHandlerTests()
+        public AssignPermissionCommandHandlerTests()
         {
             this.mockUserRepository = Substitute.For<IRepository<User, UserId>>();
-            this.handler = new AssignRoleCommandHandler(this.mockUserRepository);
+            this.handler = new AssignPermissionCommandHandler(this.mockUserRepository);
         }
 
-        public static IEnumerable<object[]> InvalidArgumentsCreateAssignRoleCommandHandler()
+        public static IEnumerable<object[]> InvalidArgumentsCreateAssignPermissionCommandHandler()
         {
             yield return new object[] { default! };
         }
 
         [Theory]
-        [MemberData(nameof(InvalidArgumentsCreateAssignRoleCommandHandler))]
-        public void CreateAssignRoleCommandHandler_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+        [MemberData(nameof(InvalidArgumentsCreateAssignPermissionCommandHandler))]
+        public void CreateAssignPermissionCommandHandler_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
             IRepository<User, UserId> userRepository)
         {
-            FluentActions.Invoking(() => new AssignRoleCommandHandler(userRepository))
+            FluentActions.Invoking(() => new AssignPermissionCommandHandler(userRepository))
                 .Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
-        public async Task HandleAssignRoleCommand_WhenUserNotExist_ShouldReturnAError()
+        public async Task HandleAssignPermissionCommand_WhenUserNotExist_ShouldReturnAnError()
         {
             // Arrange.
-            var assignRoleCommand = UserCommandUtils.CreateAssignRoleCommand();
+            var assignPermissionCommand = UserCommandUtils.CreateAssignPermissionCommand();
 
             this.mockUserRepository.GetByIdAsync(Arg.Any<UserId>(), Arg.Any<CancellationToken>())
                 .Returns((User)null!);
 
             // Act.
-            var result = await this.handler.Handle(assignRoleCommand, default);
+            var result = await this.handler.Handle(assignPermissionCommand, default);
 
             // Assert.
             result.IsSuccess.Should().BeFalse();
@@ -61,23 +62,23 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
         }
 
         [Fact]
-        public async Task HandleAssignRoleCommand_WhenUserExists_ShouldUpdateAndReturnSuccess()
+        public async Task HandleAssignPermissionCommand_WhenUserExists_ShouldUpdateAndReturnSuccess()
         {
             // Arrange.
-            var assignRoleCommand = UserCommandUtils.CreateAssignRoleCommand();
+            var assignPermissionCommand = UserCommandUtils.CreateAssignPermissionCommand();
             var existingUser = CreateUserUtils.Create();
             var scope = Scope.Create(
-                new TenantId(assignRoleCommand.TenantId),
-                new PartitionId(assignRoleCommand.PartitionId!.Value),
-                new CinemaId(assignRoleCommand.CinemaId!.Value));
+                new TenantId(assignPermissionCommand.TenantId),
+                new PartitionId(assignPermissionCommand.PartitionId!.Value),
+                new CinemaId(assignPermissionCommand.CinemaId!.Value));
 
-            existingUser.GrantUser(scope, new List<Role> { Constants.Role.Admin }, []);
+            existingUser.GrantUser(scope, [], new List<Permission> { Permission.Create(ShowtimePermisions.GetShowtimes) });
 
             this.mockUserRepository.GetByIdAsync(Arg.Any<UserId>(), Arg.Any<CancellationToken>())
                 .Returns(existingUser);
 
             // Act.
-            var result = await this.handler.Handle(assignRoleCommand, default);
+            var result = await this.handler.Handle(assignPermissionCommand, default);
 
             // Assert.
             result.IsSuccess.Should().BeTrue();

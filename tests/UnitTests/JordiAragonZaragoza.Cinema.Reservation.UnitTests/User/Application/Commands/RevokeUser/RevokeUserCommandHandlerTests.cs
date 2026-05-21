@@ -11,7 +11,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.CommandHandlers.RevokeUser;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using NSubstitute;
@@ -64,7 +63,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 new PartitionId(revokeUserCommand.PartitionId!.Value),
                 new CinemaId(revokeUserCommand.CinemaId!.Value));
 
-            existingUser.GrantUser(scope, new List<Role> { Constants.Role.Admin });
+            existingUser.GrantUser(scope, new List<Role> { Constants.Role.Admin }, []);
 
             this.mockUserRepository.GetByIdAsync(Arg.Any<UserId>(), Arg.Any<CancellationToken>())
                 .Returns(existingUser);

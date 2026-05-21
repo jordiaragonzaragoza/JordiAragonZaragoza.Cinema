@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using AwesomeAssertions;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts;
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
@@ -68,6 +71,26 @@
             }
         }
 
+        public static IEnumerable<object[]> InvalidArgumentsAssignPermission()
+        {
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permission = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+
+            var scopeValues = new object[] { null!, scope };
+            var permissionValues = new object[] { null!, permission };
+
+            foreach (var scopeValue in scopeValues)
+            {
+                foreach (var permissionValue in permissionValues)
+                {
+                    if (scopeValue is null || permissionValue is null)
+                    {
+                        yield return new object[] { scopeValue!, permissionValue! };
+                    }
+                }
+            }
+        }
+
         public static IEnumerable<object[]> InvalidArgumentsRemoveRole()
         {
             var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
@@ -83,6 +106,26 @@
                     if (scopeValue is null || roleValue is null)
                     {
                         yield return new object[] { scopeValue!, roleValue! };
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<object[]> InvalidArgumentsRemovePermission()
+        {
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permission = Permission.Create(ShowtimePermisions.GetShowtimes);
+
+            var scopeValues = new object[] { null!, scope };
+            var permissionValues = new object[] { null!, permission };
+
+            foreach (var scopeValue in scopeValues)
+            {
+                foreach (var permissionValue in permissionValues)
+                {
+                    if (scopeValue is null || permissionValue is null)
+                    {
+                        yield return new object[] { scopeValue!, permissionValue! };
                     }
                 }
             }
@@ -145,7 +188,7 @@
             var user = CreateUserUtils.Create();
 
             // Act
-            Action grantUser = () => user.GrantUser(scope, roles);
+            Action grantUser = () => user.GrantUser(scope, roles, []);
 
             // Assert
             grantUser.Should().Throw<Exception>();
@@ -163,7 +206,7 @@
             var roles = new List<Role> { Constants.Role.Admin, Constants.Role.Viewer };
 
             // Act
-            user.GrantUser(scope, roles);
+            user.GrantUser(scope, roles, []);
 
             // Assert
             user.Events.Should()
@@ -185,12 +228,12 @@
             var initialRoles = new List<Role> { Constants.Role.Admin };
 
             // Grant the first role
-            user.GrantUser(scope, initialRoles);
+            user.GrantUser(scope, initialRoles, []);
 
             var newRoles = new List<Role> { Constants.Role.Viewer };
 
             // Act
-            user.GrantUser(scope, newRoles);
+            user.GrantUser(scope, newRoles, []);
 
             // Assert
             user.Events.Should()
@@ -246,7 +289,7 @@
             var roles = new List<Role> { Constants.Role.Admin };
 
             // Grant a role first
-            user.GrantUser(scope, roles);
+            user.GrantUser(scope, roles, []);
 
             // Act
             user.RevokeUser(scope);
@@ -305,7 +348,7 @@
             var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
             var initialRoles = new List<Role> { Constants.Role.Admin };
 
-            user.GrantUser(scope, initialRoles);
+            user.GrantUser(scope, initialRoles, []);
 
             // Act
             user.AssignRole(scope, Constants.Role.Viewer);
@@ -365,12 +408,13 @@
             var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
             var roles = new List<Role> { Constants.Role.Admin };
 
-            user.GrantUser(scope, roles);
+            user.GrantUser(scope, roles, []);
 
-            // Act
-            user.RemoveRole(scope, Constants.Role.Viewer);
+            Action removeRole = () => user.RemoveRole(scope, Constants.Role.Viewer);
 
             // Assert
+            removeRole.Should().Throw<NotFoundException>();
+
             user.Events.Should()
                        .NotContain(x => x is RoleRevokedFromScopeEvent);
         }
@@ -383,7 +427,7 @@
             var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
             var roles = new List<Role> { Constants.Role.Admin, Constants.Role.Viewer };
 
-            user.GrantUser(scope, roles);
+            user.GrantUser(scope, roles, []);
 
             // Act
             user.RemoveRole(scope, Constants.Role.Viewer);
@@ -396,6 +440,193 @@
                                                                 e.AggregateId == user.Id &&
                                                                 e.TenantId == scope.TenantId &&
                                                                 e.Role == Constants.Role.Viewer);
+        }
+
+        [Fact]
+        public void GrantUser_WhenHavingNoRolesOrPermissions_ShouldThrowException()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+
+            // Act
+            Action grantUser = () => user.GrantUser(scope, new List<Role>(), []);
+
+            // Assert
+            grantUser.Should().Throw<Exception>();
+
+            user.Events.Should()
+                       .NotContain(x => x is UserGrantedEvent);
+        }
+
+        [Fact]
+        public void GrantUser_WhenHavingPermissionsButNoRoles_ShouldCreateUserGrantedEvent()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permissions = new List<Permission> { Permission.Create(ShowtimePermisions.ScheduleShowtime) };
+
+            // Act
+            user.GrantUser(scope, [], permissions);
+
+            // Assert
+            user.Events.Should()
+                       .ContainSingle(x => x is UserGrantedEvent)
+                       .Which.Should().BeOfType<UserGrantedEvent>()
+                       .Which.Should().Match<UserGrantedEvent>(e =>
+                                                                e.AggregateId == user.Id &&
+                                                                e.TenantId == scope.TenantId &&
+                                                                e.Permissions.Count() == permissions.Count &&
+                                                                e.Permissions.All(p => permissions.Select(perm => perm.Value).Contains(p)));
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsAssignPermission))]
+        public void AssignPermission_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+            Scope scope,
+            Permission permission)
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+
+            // Act
+            Action assignPermission = () => user.AssignPermission(scope, permission);
+
+            // Assert
+            assignPermission.Should().Throw<ArgumentNullException>();
+
+            user.Events.Should()
+                       .NotContain(x => x is PermissionAssignedToScopeEvent);
+        }
+
+        [Fact]
+        public void AssignPermission_WhenScopeDoesNotExist_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permission = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+
+            // Act
+            Action assignPermission = () => user.AssignPermission(scope, permission);
+
+            // Assert
+            assignPermission.Should().Throw<NotFoundException>();
+
+            user.Events.Should()
+                       .NotContain(x => x is PermissionAssignedToScopeEvent);
+        }
+
+        [Fact]
+        public void AssignPermission_WhenHavingValidArguments_ShouldCreatePermissionAssignedToScopeEvent()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var initialPermissions = new List<Permission> { Permission.Create(ShowtimePermisions.GetShowtimes) };
+
+            user.GrantUser(scope, [], initialPermissions);
+
+            // Act
+            var newPermission = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+            user.AssignPermission(scope, newPermission);
+
+            // Assert
+            user.Events.Should()
+                       .ContainSingle(x => x is PermissionAssignedToScopeEvent)
+                       .Which.Should().BeOfType<PermissionAssignedToScopeEvent>()
+                       .Which.Should().Match<PermissionAssignedToScopeEvent>(e =>
+                                                                e.AggregateId == user.Id &&
+                                                                e.TenantId == scope.TenantId &&
+                                                                e.Permission == newPermission.Value);
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentsRemovePermission))]
+        public void RemovePermission_WhenHavingInvalidArguments_ShouldThrowArgumentNullException(
+            Scope scope,
+            Permission permission)
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+
+            // Act
+            Action removePermission = () => user.RemovePermission(scope, permission);
+
+            // Assert
+            removePermission.Should().Throw<ArgumentNullException>();
+
+            user.Events.Should()
+                       .NotContain(x => x is PermissionRevokedFromScopeEvent);
+        }
+
+        [Fact]
+        public void RemovePermission_WhenScopeDoesNotExist_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permission = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+
+            // Act
+            Action removePermission = () => user.RemovePermission(scope, permission);
+
+            // Assert
+            removePermission.Should().Throw<NotFoundException>();
+
+            user.Events.Should()
+                       .NotContain(x => x is PermissionRevokedFromScopeEvent);
+        }
+
+        [Fact]
+        public void RemovePermission_WhenPermissionDoesNotExist_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permissions = new List<Permission> { Permission.Create(ShowtimePermisions.GetShowtimes), };
+
+            user.GrantUser(scope, [], permissions);
+
+            var permissionToRemove = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+
+            // Act
+            Action removePermission = () => user.RemovePermission(scope, permissionToRemove);
+
+            // Assert
+            removePermission.Should().Throw<NotFoundException>();
+
+            user.Events.Should()
+                       .NotContain(x => x is PermissionRevokedFromScopeEvent);
+        }
+
+        [Fact]
+        public void RemovePermission_WhenHavingValidArguments_ShouldCreatePermissionRevokedFromScopeEvent()
+        {
+            // Arrange
+            var user = CreateUserUtils.Create();
+            var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
+            var permissions = new List<Permission>
+            {
+                Permission.Create(ShowtimePermisions.GetShowtimes),
+                Permission.Create(ShowtimePermisions.ScheduleShowtime),
+            };
+
+            user.GrantUser(scope, [], permissions);
+
+            // Act
+            var permissionToRemove = Permission.Create(ShowtimePermisions.ScheduleShowtime);
+            user.RemovePermission(scope, permissionToRemove);
+
+            // Assert
+            user.Events.Should()
+                       .ContainSingle(x => x is PermissionRevokedFromScopeEvent)
+                       .Which.Should().BeOfType<PermissionRevokedFromScopeEvent>()
+                       .Which.Should().Match<PermissionRevokedFromScopeEvent>(e =>
+                                                                e.AggregateId == user.Id &&
+                                                                e.TenantId == scope.TenantId &&
+                                                                e.Permission == permissionToRemove.Value);
         }
 
         [Fact]
@@ -419,7 +650,7 @@
             var user = CreateUserUtils.Create();
             var scope = Scope.Create(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);
 
-            user.GrantUser(scope, new List<Role> { Constants.Role.Admin, Constants.Role.Viewer });
+            user.GrantUser(scope, new List<Role> { Constants.Role.Admin, Constants.Role.Viewer }, []);
 
             // Act
             var roles = user.GetRolesFor(Constants.Tenant.Id, Constants.Partition.Id, Constants.Cinema.Id);

@@ -1,12 +1,15 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
 {
     using System;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Commands;
 
     public static class UserCommandUtils
     {
         private static readonly string[] DefaultRoles = { Constants.Role.Admin };
+
+        private static readonly string[] Permissions = [];
 
         public static CreateUserCommand CreateUserCommand()
             => new(Guid.NewGuid());
@@ -17,7 +20,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Roles: DefaultRoles);
+                Roles: DefaultRoles,
+                Permissions: Permissions);
 
         public static AssignRoleCommand CreateAssignRoleCommand()
             => new(
@@ -51,7 +55,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Permission: Constants.Permission.Read);
+                Permission: ShowtimePermisions.ScheduleShowtime);
 
         public static RemovePermissionCommand CreateRemovePermissionCommand()
             => new(
@@ -59,6 +63,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Permission: Constants.Permission.Read);
+                Permission: ShowtimePermisions.GetShowtimes);
     }
 }

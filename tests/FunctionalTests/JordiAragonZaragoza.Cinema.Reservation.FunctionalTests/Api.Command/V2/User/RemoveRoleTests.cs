@@ -37,7 +37,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
             var role = Constants.Role.Viewer;
 
             string[] initialRoles = { role };
-            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles);
+            string[] initialPermissions = [];
+            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles, initialPermissions);
 
             var request = new RemoveRoleBodyRequest(
                 tenantId,
@@ -64,9 +65,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles)
+        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles, string[] permissions)
         {
-            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles);
+            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles, permissions);
             using var content = JsonContent.Create(request);
 
             var route = $"{Routes.ApiBase}{UserRoutes.GrantUser}";

@@ -29,17 +29,19 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         public async Task GrantUser_WhenHavingValidArguments_ShouldGrantRolesToUser()
         {
             // Arrange
-            var userId = SeedData.ExampleUser.Id;
+            var userId = SeedData.UserExampleToBeGranted.Id;
             var tenantId = SeedData.ExampleTenant.Id;
             var partitionId = SeedData.ExamplePartition.Id;
             var cinemaId = SeedData.ExampleCinema.Id;
             string[] roles = { Constants.Role.Admin, Constants.Role.Viewer };
+            string[] permissions = [];
 
             var request = new GrantUserBodyRequest(
                 tenantId,
                 partitionId,
                 cinemaId,
-                roles);
+                roles,
+                permissions);
 
             using var content = JsonContent.Create(request);
 

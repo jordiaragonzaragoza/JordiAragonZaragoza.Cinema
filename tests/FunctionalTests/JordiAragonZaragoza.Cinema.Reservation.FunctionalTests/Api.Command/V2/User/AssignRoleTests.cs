@@ -29,14 +29,15 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         public async Task AssignRole_WhenHavingValidArguments_ShouldAssignRoleToUser()
         {
             // Arrange
-            var userId = SeedData.ExampleUser.Id;
+            var userId = SeedData.ExampleUserToBeAssignedAsViewerRole.Id;
             var tenantId = SeedData.ExampleTenant.Id;
             var partitionId = SeedData.ExamplePartition.Id;
             var cinemaId = SeedData.ExampleCinema.Id;
             var role = Constants.Role.Viewer;
             string[] initialRoles = { Constants.Role.Admin };
+            string[] initialPermissions = [];
 
-            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles);
+            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles, initialPermissions);
 
             var request = new AssignRoleBodyRequest(
                 tenantId,
@@ -58,9 +59,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles)
+        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles, string[] permissions)
         {
-            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles);
+            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles, permissions);
             using var content = JsonContent.Create(request);
 
             var route = $"{Routes.ApiBase}{UserRoutes.GrantUser}";

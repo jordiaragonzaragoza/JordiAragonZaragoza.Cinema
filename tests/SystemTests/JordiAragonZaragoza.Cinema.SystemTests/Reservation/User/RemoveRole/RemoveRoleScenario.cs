@@ -24,11 +24,14 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
 
         public string RoleToRemove { get; } = "Viewer";
 
+        public IReadOnlyList<string> Permissions { get; } = [];
+
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
             this.PartitionId,
             this.CinemaId,
-            this.BaseRoles);
+            this.BaseRoles,
+            this.Permissions);
 
         public RemoveRoleBodyRequest RemoveRoleBodyRequest => new(
             this.TenantId,

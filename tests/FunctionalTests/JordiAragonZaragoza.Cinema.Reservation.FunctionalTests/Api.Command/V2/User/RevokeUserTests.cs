@@ -12,7 +12,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.Common;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
-
     using Xunit;
     using Xunit.Abstractions;
 
@@ -31,14 +30,15 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         public async Task RevokeUser_WhenHavingValidArguments_ShouldRevokeUserFromScope()
         {
             // Arrange
-            var userId = SeedData.ExampleUser.Id;
+            var userId = SeedData.ExampleUserToBeRevoked.Id;
             var tenantId = SeedData.ExampleTenant.Id;
             var partitionId = SeedData.ExamplePartition.Id;
             var cinemaId = SeedData.ExampleCinema.Id;
             var role = Constants.Role.Viewer;
 
             string[] initialRoles = { role };
-            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles);
+            string[] initialPermissions = [];
+            await this.GrantUserAsync(userId, tenantId, partitionId, cinemaId, initialRoles, initialPermissions);
 
             var request = new RevokeUserBodyRequest(
                 tenantId,
@@ -64,9 +64,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles)
+        private async Task GrantUserAsync(Guid userId, Guid tenantId, Guid? partitionId, Guid? cinemaId, string[] roles, string[] permissions)
         {
-            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles);
+            var request = new GrantUserBodyRequest(tenantId, partitionId, cinemaId, roles, permissions);
             using var content = JsonContent.Create(request);
 
             var route = $"{Routes.ApiBase}{UserRoutes.GrantUser}";

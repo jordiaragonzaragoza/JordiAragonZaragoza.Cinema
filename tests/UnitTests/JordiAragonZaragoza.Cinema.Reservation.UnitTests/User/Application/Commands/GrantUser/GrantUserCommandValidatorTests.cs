@@ -11,6 +11,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
     public sealed class GrantUserCommandValidatorTests
     {
         private static readonly string[] DefaultRoles = { Constants.Role.Admin };
+        private static readonly string[] DefaultPermissions = [];
 
         private readonly GrantUserCommandValidator validator;
 
@@ -42,7 +43,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 TenantId: Guid.NewGuid(),
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Roles: DefaultRoles);
+                Roles: DefaultRoles,
+                Permissions: DefaultPermissions);
 
             // Act.
             var validationResult = this.validator.Validate(grantUserCommand);
@@ -62,7 +64,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
                 TenantId: Guid.Empty,
                 PartitionId: Guid.NewGuid(),
                 CinemaId: Guid.NewGuid(),
-                Roles: DefaultRoles);
+                Roles: DefaultRoles,
+                Permissions: DefaultPermissions);
 
             // Act.
             var validationResult = this.validator.Validate(grantUserCommand);
