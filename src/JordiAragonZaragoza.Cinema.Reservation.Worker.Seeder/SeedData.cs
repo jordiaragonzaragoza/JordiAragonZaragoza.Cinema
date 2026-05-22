@@ -10,6 +10,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
@@ -204,7 +205,7 @@
                 CinemaId = ExampleCinema.Id,
                 Roles = new List<RoleReadModel>
                 {
-                    new RoleReadModel(Guid.NewGuid(), "Admin"),
+                    new RoleReadModel(Guid.NewGuid(), Roles.Admin),
                 },
             };
 
@@ -262,7 +263,7 @@
 
             ExampleUserWithAdminRole.GrantUser(
                 new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
-                new[] { Role.Create("Admin") },
+                new[] { Role.Create(Roles.Admin) },
                 []);
 
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedAsViewerRole);

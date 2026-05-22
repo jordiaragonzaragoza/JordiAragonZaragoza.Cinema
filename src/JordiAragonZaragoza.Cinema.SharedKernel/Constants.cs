@@ -8,6 +8,8 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string RedisCache = "RedisCache";
 
+        public const string Keycloak = "Keycloak";
+
         public const string ReservationApiCommand = "ReservationApiCommand";
 
         public const string ReservationWorkerReactor = "ReservationWorkerReactor";

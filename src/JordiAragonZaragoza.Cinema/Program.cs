@@ -66,17 +66,34 @@ namespace JordiAragonZaragoza.Cinema
                                                           .WithReference(reservationReadModelDb)
                                                           .WaitFor(postgresServer);
 
+            var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080);
+
+            if (!IsSystemTesting(builder))
+            {
+                keycloak.WithDataVolume()
+                        .WithLifetime(ContainerLifetime.Persistent);
+            }
+            else
+            {
+                keycloak.WithContainerRuntimeArgs("--tmpfs", "/opt/keycloak/data")
+                        .WithLifetime(ContainerLifetime.Session);
+            }
+
             var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
                      .WithReference(kurrentdb)
                      .WaitForCompletion(kurrentdbSeeder)
                      .WithReference(reservationReadModelDb)
                      .WaitForCompletion(reservationWorkerReadModelMigrator)
-                     .WithReference(cache);
+                     .WithReference(cache)
+                     .WithReference(keycloak)
+                     .WaitFor(keycloak);
 
             var reservationApiQuery = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)
                      .WaitForCompletion(reservationWorkerReadModelMigrator)
-                     .WithReference(cache);
+                     .WithReference(cache)
+                     .WithReference(keycloak)
+                     .WaitFor(keycloak);
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector>(Constants.ReservationWorkerProjector)
                                           .WithReference(kurrentdb)
