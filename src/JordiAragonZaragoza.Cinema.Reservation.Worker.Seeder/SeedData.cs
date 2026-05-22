@@ -120,6 +120,20 @@
         public static readonly UserReadModel ExampleUserReadModelToBeRemovedAsViewerRole =
             new(ExampleUserToBeRemovedAsViewerRole.Id);
 
+        public static readonly User ExampleUserToBeAssignedScheduleShowtimePermission =
+            User.Create(
+                id: new UserId(new Guid("e7662547-a5d7-4386-a7d5-cf0a8dc91ccb")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeAssignedScheduleShowtimePermission =
+            new(ExampleUserToBeAssignedScheduleShowtimePermission.Id);
+
+        public static readonly User ExampleUserToBeRemovedScheduleShowtimePermission =
+            User.Create(
+                id: new UserId(new Guid("f8773658-b6e8-4497-b8e6-db1b9ed02ddc")));
+
+        public static readonly UserReadModel ExampleUserReadModelToBeRemovedScheduleShowtimePermission =
+            new(ExampleUserToBeRemovedScheduleShowtimePermission.Id);
+
         public static readonly User ExampleUser =
             User.Create(
                 id: new UserId(new Guid("b7dedad7-4c6b-498e-8808-bd88468ca97f")));
@@ -254,6 +268,8 @@
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedAsViewerRole);
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeRevoked);
             eventStore.AppendChanges<User, UserId>(ExampleUserToBeRemovedAsViewerRole);
+            eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedScheduleShowtimePermission);
+            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRemovedScheduleShowtimePermission);
             eventStore.AppendChanges<User, UserId>(UserExampleToBeGranted);
             eventStore.AppendChanges<User, UserId>(ExampleUserWithAdminRole);
             eventStore.AppendChanges<User, UserId>(ExampleUserWithReservation);

@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
+namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignPermission
 {
     using System;
     using System.Collections.Generic;
@@ -6,12 +6,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
+    using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using JordiAragonZaragoza.Cinema.SystemTests.Common;
     using JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime;
     using Xunit.Abstractions;
 
-    public sealed class RemoveRoleScenario
+    public sealed class AssignPermissionScenario
     {
         public Guid TenantId { get; } = SeedData.ExampleTenant.Id;
 
@@ -19,13 +20,15 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
 
         public Guid? CinemaId { get; } = SeedData.ExampleCinema.Id;
 
-        public Guid UserId { get; } = SeedData.ExampleUserToBeRemovedAsViewerRole.Id;
+        public Guid UserId { get; } = SeedData.ExampleUserToBeAssignedScheduleShowtimePermission.Id;
 
-        public IReadOnlyList<string> BaseRoles { get; } = new[] { Roles.Admin, Roles.Viewer };
+        public IReadOnlyList<string> ExpectedPermissions { get; } = new[] { ShowtimePermisions.ScheduleShowtime };
 
-        public string RoleToRemove { get; } = Roles.Viewer;
+        public IReadOnlyList<string> BaseRoles { get; } = new[] { Roles.Admin };
 
         public IReadOnlyList<string> Permissions { get; } = [];
+
+        public string PermissionToAssign { get; } = ShowtimePermisions.ScheduleShowtime;
 
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
@@ -34,11 +37,11 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
             this.BaseRoles,
             this.Permissions);
 
-        public RemoveRoleBodyRequest RemoveRoleBodyRequest => new(
+        public AssignPermissionBodyRequest AssignPermissionBodyRequest => new(
             this.TenantId,
             this.PartitionId,
             this.CinemaId,
-            this.RoleToRemove);
+            this.PermissionToAssign);
 
         public UserAuthorizationRequest UserAuthorizationRequest => new(
             this.UserId,
@@ -54,7 +57,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
             ArgumentNullException.ThrowIfNull(commandClient);
             ArgumentNullException.ThrowIfNull(queryClient);
 
-            output?.WriteLine($"Preparing user {this.UserId} with roles {string.Join(',', this.BaseRoles)}");
+            output?.WriteLine($"Preparing user {this.UserId} with base roles {string.Join(',', this.BaseRoles)}");
 
             await commandClient.GrantUserAsync(this.UserId, this.GrantUserBodyRequest, output);
 

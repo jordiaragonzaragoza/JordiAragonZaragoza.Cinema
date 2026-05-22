@@ -20,7 +20,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RevokeUser
 
         public Guid UserId { get; } = SeedData.ExampleUserToBeRevoked.Id;
 
-        public IReadOnlyList<string> Roles { get; } = new[] { "Admin" };
+        public IReadOnlyList<string> Roles { get; } = new[] { JordiAragonZaragoza.Cinema.Reservation.Common.Application.Roles.Admin };
 
         public IReadOnlyList<string> Permissions { get; } = [];
 

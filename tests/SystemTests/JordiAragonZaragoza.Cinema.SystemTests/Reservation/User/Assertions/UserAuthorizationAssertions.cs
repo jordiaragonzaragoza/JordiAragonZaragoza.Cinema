@@ -51,5 +51,35 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.Assertions
 
             authorization.Should().BeNull();
         }
+
+        public static async Task ShouldContainPermissionsAsync(
+            ReservationQueryTestClient queryClient,
+            UserAuthorizationRequest request,
+            IEnumerable<string> expectedPermissions,
+            ITestOutputHelper? output = null)
+        {
+            ArgumentNullException.ThrowIfNull(queryClient);
+            ArgumentNullException.ThrowIfNull(expectedPermissions);
+
+            var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
+
+            authorization.Should().NotBeNull();
+            authorization!.Permissions.Should().Contain(expectedPermissions);
+        }
+
+        public static async Task ShouldNotContainPermissionAsync(
+            ReservationQueryTestClient queryClient,
+            UserAuthorizationRequest request,
+            string permission,
+            ITestOutputHelper? output = null)
+        {
+            ArgumentNullException.ThrowIfNull(queryClient);
+            ArgumentNullException.ThrowIfNull(permission);
+
+            var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
+
+            authorization.Should().NotBeNull();
+            authorization!.Permissions.Should().NotContain(permission);
+        }
     }
 }

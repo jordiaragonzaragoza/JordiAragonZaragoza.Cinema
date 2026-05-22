@@ -16,7 +16,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.GrantUser
 
         public Guid UserId { get; } = SeedData.UserExampleToBeGranted.Id;
 
-        public IReadOnlyList<string> Roles { get; } = new[] { "Admin", "Viewer" };
+        public IReadOnlyList<string> Roles { get; } = new[] { JordiAragonZaragoza.Cinema.Reservation.Common.Application.Roles.Admin, JordiAragonZaragoza.Cinema.Reservation.Common.Application.Roles.Viewer };
 
         public IReadOnlyList<string> Permissions { get; } = [];
 

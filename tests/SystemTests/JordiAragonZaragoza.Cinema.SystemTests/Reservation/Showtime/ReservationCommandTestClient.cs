@@ -86,5 +86,17 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             output?.WriteLine($"Removing role from user {userId}");
             await this.api.RemoveRoleAsync(userId, request);
         }
+
+        public async Task AssignPermissionAsync(Guid userId, AssignPermissionBodyRequest request, ITestOutputHelper? output = null)
+        {
+            output?.WriteLine($"Assigning permission to user {userId}");
+            await this.api.AssignPermissionAsync(userId, request);
+        }
+
+        public async Task RemovePermissionAsync(Guid userId, RemovePermissionBodyRequest request, ITestOutputHelper? output = null)
+        {
+            output?.WriteLine($"Removing permission from user {userId}");
+            await this.api.RemovePermissionAsync(userId, request);
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignRole
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using JordiAragonZaragoza.Cinema.SystemTests.Common;
     using JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime;
@@ -20,13 +21,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignRole
 
         public Guid UserId { get; } = SeedData.ExampleUserToBeAssignedAsViewerRole.Id;
 
-        public IReadOnlyList<string> ExpectedRoles { get; } = new[] { "Admin", "Viewer" };
+        public IReadOnlyList<string> ExpectedRoles { get; } = new[] { Roles.Admin, Roles.Viewer };
 
-        public IReadOnlyList<string> BaseRoles { get; } = new[] { "Admin" };
+        public IReadOnlyList<string> BaseRoles { get; } = new[] { Roles.Admin };
 
         public IReadOnlyList<string> Permissions { get; } = [];
 
-        public string RoleToAssign { get; } = "Viewer";
+        public string RoleToAssign { get; } = Roles.Viewer;
 
         public GrantUserBodyRequest GrantUserBodyRequest => new(
             this.TenantId,
