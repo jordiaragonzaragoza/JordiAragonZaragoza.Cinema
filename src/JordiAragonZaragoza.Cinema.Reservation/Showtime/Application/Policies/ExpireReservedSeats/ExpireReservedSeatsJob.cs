@@ -4,10 +4,13 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Application.Helpers;
     using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.Interfaces;
+
     using Microsoft.Extensions.Logging;
     using Quartz;
 
@@ -21,6 +24,7 @@
         private readonly ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository;
         private readonly ICommandBus commandBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
+        private readonly IServiceIdentityProvider serviceIdentityProvider;
         private readonly IExecutionContextService executionContextService;
 
         public ExpireReservedSeatsJob(
@@ -28,12 +32,14 @@
             ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository,
             ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger,
+            IServiceIdentityProvider serviceIdentityProvider,
             IExecutionContextService executionContextService)
         {
             this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
             this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
             this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.serviceIdentityProvider = serviceIdentityProvider ?? throw new ArgumentNullException(nameof(serviceIdentityProvider));
             this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
         }
 
@@ -52,16 +58,13 @@
                     // No need to set the execution context here, since the policy-saga will be infrastructure-based
                     // and will handle the execution context automatically.
                     var executionContext = new ExecutionContext(
-                        actorId: "job:reactor-worker",
+                        actorId: ExecutionContext.CreateJobActorId("expire-reserved-seats"),
                         actorType: ActorType.System,
-                        executor: "ExpireReservedSeatsJob", // TODO: resolve executor from ServiceIdentityProvider
-                        executorType: ExecutorType.Service,
-                        correlationId: Guid.NewGuid(), // @event.Metadata.CorrelationId,
-                        causationId: null, // @event.Id;
-                        scopeContext: new ScopeContext(
-                            tenantId: Guid.NewGuid(), // @event.Metadata.TenantId;
-                            partitionId: default, // @event.Metadata.PartitionId;
-                            domainId: default)); // @event.Metadata.DomainId;
+                        executor: this.serviceIdentityProvider.GetName(),
+                        executorType: ExecutorType.Worker,
+                        correlationId: Guid.NewGuid(),
+                        causationId: null,
+                        scopeContext: new ScopeContext(SystemConstants.SystemTenantId, null, null));
 
                     this.executionContextService.SetExecutionContext(executionContext);
 

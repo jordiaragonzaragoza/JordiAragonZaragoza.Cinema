@@ -1,6 +1,7 @@
 namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 {
     using System;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.Extensions.DependencyInjection;
@@ -124,13 +125,15 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
                     .WithRequestTimeout(HealthChecksPolicy);
 
                 // All health checks must pass for app to be considered ready to accept traffic after starting
-                app.MapHealthChecks("/health");
+                app.MapHealthChecks("/health")
+                   .WithMetadata(new InfrastructureEndpointAttribute());
 
                 // Only health checks tagged with the "live" tag must pass for app to be considered alive
                 app.MapHealthChecks("/alive", new HealthCheckOptions
                 {
                     Predicate = r => r.Tags.Contains("live"),
-                });
+                })
+                .WithMetadata(new InfrastructureEndpointAttribute());
 
                 app.UseOutputCache()
                    .UseRequestTimeouts();

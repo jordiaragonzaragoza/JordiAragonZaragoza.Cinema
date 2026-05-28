@@ -33,6 +33,7 @@
             // Configure specific Host Services (DI)
             builder.Services
                 .AddDomain()
+                .AddApplication()
                 .AddApplicationValidators()
                 .AddApplicationCommandHandlers()
                 .AddApplicationPolicies(configuration)

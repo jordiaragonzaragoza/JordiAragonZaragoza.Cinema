@@ -75,16 +75,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
             var userAuthorization = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken)
                 ?? throw new InvalidOperationException($"User with ID {query.UserId} not found for tenant {query.TenantId}, partition {query.PartitionId}, and cinema {query.CinemaId}.");
 
-            /*if (requiredPermissions.Except(userAuthorization.Permissions).Any())
+            if (requiredPermissions.Except(userAuthorization.Permissions.Select(permission => permission.Value)).Any())
             {
                 return Result.Forbidden("User is missing required permissions for taking this action");
-            }*/
+            }
 
             if (requiredRoles.Except(userAuthorization.Roles.Select(role => role.Value)).Any())
             {
                 return Result.Forbidden("User is missing required roles for taking this action");
             }
 
+            // TODO: Complete.
             /*foreach (var policy in requiredPolicies)
             {
                 var authorizationAgainstPolicyResult = _policyEnforcer.Authorize(request, currentUser, policy);
