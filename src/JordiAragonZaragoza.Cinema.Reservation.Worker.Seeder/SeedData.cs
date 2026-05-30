@@ -22,6 +22,8 @@
     using JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
+
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
 
     public static class SeedData
@@ -71,6 +73,13 @@
 
         public static readonly PartitionReadModel ExamplePartitionReadModel =
             new(ExamplePartition.Id);
+
+        public static readonly Tenant SystemTenant =
+            Tenant.Create(
+                id: new TenantId(SystemConstants.SystemTenantId));
+
+        public static readonly TenantReadModel SystemTenantReadModel =
+            new(SystemTenant.Id);
 
         public static readonly Tenant ExampleTenant =
             Tenant.Create(
@@ -228,6 +237,8 @@
 
             context.UsersAuthorizations.Add(ExampleUserAuthorizationReadModelWithAdminRole());
 
+            context.Tenants.Add(SystemTenantReadModel);
+
             context.Tenants.Add(ExampleTenantReadModel);
 
             context.Partitions.Add(ExamplePartitionReadModel);
@@ -258,6 +269,7 @@
             eventStore.AppendChanges<Movie, MovieId>(ExampleMovie);
             eventStore.AppendChanges<Auditorium, AuditoriumId>(ExampleAuditorium);
             eventStore.AppendChanges<Partition, PartitionId>(ExamplePartition);
+            eventStore.AppendChanges<Tenant, TenantId>(SystemTenant);
             eventStore.AppendChanges<Tenant, TenantId>(ExampleTenant);
             eventStore.AppendChanges<Cinema, CinemaId>(ExampleCinema);
 
