@@ -49,7 +49,8 @@
                 .AddSharedKernelApplicationCommandBus()
                 .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
-                .AddSharedKernelInfrastructureCommandBus();
+                .AddSharedKernelInfrastructureReactorBus()
+                .AddSharedKernelInfrastructureKurrentDbAllStreamPersistentSubscription();
 
             // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
             builder.AddInfrastructureEntityFrameworkProjections();
