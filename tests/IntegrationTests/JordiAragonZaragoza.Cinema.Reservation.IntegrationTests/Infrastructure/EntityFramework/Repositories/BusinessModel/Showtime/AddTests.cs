@@ -26,7 +26,7 @@
         {
             // Arrange
             var newShowtime = Showtime.Schedule(
-                new ShowtimeId(Guid.NewGuid()),
+                new ShowtimeId(Guid.CreateVersion7()),
                 new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
                 new AuditoriumId(Constants.Auditorium.Id));
@@ -50,7 +50,7 @@
         {
             // Arrange
             var existingShowtime = Showtime.Schedule(
-                new ShowtimeId(Guid.NewGuid()),
+                new ShowtimeId(Guid.CreateVersion7()),
                 new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
                 new AuditoriumId(Constants.Auditorium.Id));

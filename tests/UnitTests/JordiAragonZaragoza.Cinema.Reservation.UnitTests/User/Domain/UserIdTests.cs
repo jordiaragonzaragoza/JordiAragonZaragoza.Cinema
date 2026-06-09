@@ -24,7 +24,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Domain
         public void ImplicitConversion_WhenHavingAUserId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var userId = new UserId(value);
 
             // Act
@@ -38,7 +38,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Domain
         public void ToString_ShouldReturnStringRepresentationOfUserId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var userId = new UserId(value);
 
             // Act
@@ -52,8 +52,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Domain
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var userId1 = new UserId(value1);
             var userId2 = new UserId(value1);

@@ -20,7 +20,7 @@
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
-            .WithName($"postgres.cinema.reservation.readmodelstore.functionaltests.api.query-{Guid.NewGuid():N}")
+            .WithName($"postgres.cinema.reservation.readmodelstore.functionaltests.api.query-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 
         private NpgsqlConnection readModelStoreConnection = default!;

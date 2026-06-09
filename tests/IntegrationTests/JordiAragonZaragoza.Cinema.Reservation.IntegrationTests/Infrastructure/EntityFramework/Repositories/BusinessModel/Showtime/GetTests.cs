@@ -45,7 +45,7 @@
             var repository = this.GetBusinessModelRepository<Showtime, ShowtimeId>();
 
             // Act
-            var result = await repository.GetByIdAsync(new ShowtimeId(Guid.NewGuid()));
+            var result = await repository.GetByIdAsync(new ShowtimeId(Guid.CreateVersion7()));
 
             // Assert
             result.Should()
@@ -55,7 +55,7 @@
         private static async Task<Showtime> AddNewShowtimeAsync(ReservationRepository<Showtime, ShowtimeId> repository)
         {
             var newShowtime = Showtime.Schedule(
-                new ShowtimeId(Guid.NewGuid()),
+                new ShowtimeId(Guid.CreateVersion7()),
                 new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
                 new AuditoriumId(Constants.Auditorium.Id));

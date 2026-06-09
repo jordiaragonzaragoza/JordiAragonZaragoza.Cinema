@@ -12,57 +12,57 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Application
         private static readonly string[] Permissions = [];
 
         public static CreateUserCommand CreateUserCommand()
-            => new(Guid.NewGuid());
+            => new(Guid.CreateVersion7());
 
         public static GrantUserCommand CreateGrantUserCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Roles: DefaultRoles,
                 Permissions: Permissions);
 
         public static AssignRoleCommand CreateAssignRoleCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Role: Constants.Role.Viewer);
 
         public static RemoveRoleCommand CreateRemoveRoleCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Role: Constants.Role.Viewer);
 
         public static RemoveUserCommand CreateRemoveUserCommand()
-            => new(Guid.NewGuid());
+            => new(Guid.CreateVersion7());
 
         public static RevokeUserCommand CreateRevokeUserCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid());
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7());
 
         public static AssignPermissionCommand CreateAssignPermissionCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Permission: ShowtimePermisions.ScheduleShowtime);
 
         public static RemovePermissionCommand CreateRemovePermissionCommand()
             => new(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Permission: ShowtimePermisions.GetShowtimes);
     }
 }

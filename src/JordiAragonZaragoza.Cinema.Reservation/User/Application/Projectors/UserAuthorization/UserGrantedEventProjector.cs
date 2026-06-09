@@ -24,17 +24,17 @@
             ArgumentNullException.ThrowIfNull(@event);
 
             var userAuthorizationReadModel = new UserAuthorizationReadModel(
-                Guid.NewGuid())
+                Guid.CreateVersion7())
             {
                 UserId = @event.AggregateId,
                 TenantId = @event.TenantId,
                 PartitionId = @event.PartitionId,
                 CinemaId = @event.CinemaId,
                 Roles = @event.Roles
-                    .Select(r => new RoleReadModel(Guid.NewGuid(), r))
+                    .Select(r => new RoleReadModel(Guid.CreateVersion7(), r))
                     .ToList(),
                 Permissions = @event.Permissions
-                    .Select(p => new PermissionReadModel(Guid.NewGuid(), p))
+                    .Select(p => new PermissionReadModel(Guid.CreateVersion7(), p))
                     .ToList(),
             };
 

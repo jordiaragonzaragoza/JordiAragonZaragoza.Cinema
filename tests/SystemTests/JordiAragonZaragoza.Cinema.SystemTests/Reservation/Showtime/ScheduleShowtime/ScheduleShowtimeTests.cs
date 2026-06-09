@@ -22,7 +22,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
         public async Task ScheduleShowtime_ShouldCreateShowtimeWithAvailableSeats()
         {
             // Arrange
-            var showtimeId = Guid.NewGuid();
+            var showtimeId = Guid.CreateVersion7();
             var sessionDate = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(

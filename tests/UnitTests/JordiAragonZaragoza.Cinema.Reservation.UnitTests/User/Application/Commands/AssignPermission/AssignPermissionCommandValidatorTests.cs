@@ -37,9 +37,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
             // Arrange.
             var assignPermissionCommand = new AssignPermissionCommand(
                 UserId: Guid.Empty,
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Permission: ShowtimePermisions.ScheduleShowtime);
 
             // Act.
@@ -56,10 +56,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
         {
             // Arrange.
             var assignPermissionCommand = new AssignPermissionCommand(
-                UserId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
                 TenantId: Guid.Empty,
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Permission: ShowtimePermisions.ScheduleShowtime);
 
             // Act.
@@ -76,10 +76,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.UnitTests.User.Application.Comm
         {
             // Arrange.
             var assignPermissionCommand = new AssignPermissionCommand(
-                UserId: Guid.NewGuid(),
-                TenantId: Guid.NewGuid(),
-                PartitionId: Guid.NewGuid(),
-                CinemaId: Guid.NewGuid(),
+                UserId: Guid.CreateVersion7(),
+                TenantId: Guid.CreateVersion7(),
+                PartitionId: Guid.CreateVersion7(),
+                CinemaId: Guid.CreateVersion7(),
                 Permission: string.Empty);
 
             // Act.

@@ -34,13 +34,13 @@
 
             var existingShowtime = await repository.GetByIdAsync(new ShowtimeId(newShowtime.Id));
 
-            var reservationId = new ReservationId(Guid.NewGuid());
+            var reservationId = new ReservationId(Guid.CreateVersion7());
 
-            var userId = new UserId(Guid.NewGuid());
+            var userId = new UserId(Guid.CreateVersion7());
 
             var seatIds = new List<SeatId>
             {
-                new SeatId(Guid.NewGuid()),
+                new SeatId(Guid.CreateVersion7()),
             };
 
             var createdTimeOnUtc = DateTimeOffset.UtcNow;
@@ -62,7 +62,7 @@
         {
             // Arrange
             var newShowtime = Showtime.Schedule(
-                new ShowtimeId(Guid.NewGuid()),
+                new ShowtimeId(Guid.CreateVersion7()),
                 new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
                 new AuditoriumId(Constants.Auditorium.Id));
@@ -79,7 +79,7 @@
         private static async Task<Showtime> AddNewShowtimeAsync(ReservationRepository<Showtime, ShowtimeId> repository)
         {
             var newShowtime = Showtime.Schedule(
-                new ShowtimeId(Guid.NewGuid()),
+                new ShowtimeId(Guid.CreateVersion7()),
                 new MovieId(Constants.Movie.Id),
                 DateTimeOffset.UtcNow.AddDays(1),
                 new AuditoriumId(Constants.Auditorium.Id));

@@ -62,7 +62,7 @@
                         actorType: ActorType.System,
                         executor: this.serviceIdentityProvider.GetName(),
                         executorType: ExecutorType.Worker,
-                        correlationId: Guid.NewGuid(),
+                        correlationId: Guid.CreateVersion7(),
                         causationId: null,
                         scopeContext: new ScopeContext(SystemConstants.SystemTenantId, null, null));
 

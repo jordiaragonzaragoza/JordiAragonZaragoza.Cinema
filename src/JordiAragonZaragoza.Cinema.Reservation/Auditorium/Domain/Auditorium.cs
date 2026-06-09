@@ -140,7 +140,7 @@
             {
                 for (ushort seatNumber = 1; seatNumber <= seatsPerRow; seatNumber++)
                 {
-                    seatIds.Add(Guid.NewGuid());
+                    seatIds.Add(Guid.CreateVersion7());
                     seatRows.Add(row);
                     seatNumbers.Add(seatNumber);
                 }

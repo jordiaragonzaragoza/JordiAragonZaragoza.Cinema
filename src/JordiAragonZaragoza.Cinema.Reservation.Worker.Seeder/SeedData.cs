@@ -179,7 +179,7 @@
             ExampleAuditorium.Seats
                 .Where(seat => !ExampleReservation.Seats.Contains(seat.Id))
                 .Select(seat => new AvailableSeatReadModel(
-                    id: Guid.NewGuid(),
+                    id: Guid.CreateVersion7(),
                     seatId: seat.Id,
                     row: seat.Row,
                     seatNumber: seat.SeatNumber,
@@ -214,7 +214,7 @@
                 CinemaId = ExampleCinema.Id,
                 Roles = new List<RoleReadModel>
                 {
-                    new RoleReadModel(Guid.NewGuid(), Roles.Admin),
+                    new RoleReadModel(Guid.CreateVersion7(), Roles.Admin),
                 },
             };
 

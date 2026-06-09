@@ -18,7 +18,7 @@
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
-            .WithName($"postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework-{Guid.NewGuid():N}")
+            .WithName($"postgres.cinema.reservation.readmodelstore.integrationtests.infrastructure.entityframework-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 
         private NpgsqlConnection readModelStoreConnection = default!;

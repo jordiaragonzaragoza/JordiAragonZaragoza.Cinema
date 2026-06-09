@@ -40,7 +40,7 @@
             }
 
             var permissionsList = (List<PermissionReadModel>)readModel.Permissions;
-            permissionsList.Add(new PermissionReadModel(Guid.NewGuid(), @event.Permission));
+            permissionsList.Add(new PermissionReadModel(Guid.CreateVersion7(), @event.Permission));
 
             await this.repository.UpdateAsync(readModel, cancellationToken);
         }

@@ -40,7 +40,7 @@
             }
 
             var rolesList = (List<RoleReadModel>)readModel.Roles;
-            rolesList.Add(new RoleReadModel(Guid.NewGuid(), @event.Role));
+            rolesList.Add(new RoleReadModel(Guid.CreateVersion7(), @event.Role));
 
             await this.repository.UpdateAsync(readModel, cancellationToken);
         }
