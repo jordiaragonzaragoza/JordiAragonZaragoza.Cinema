@@ -1,6 +1,8 @@
 namespace JordiAragonZaragoza.Cinema.ServiceDefaults
 {
     using System;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.Contracts;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -74,13 +76,15 @@ namespace JordiAragonZaragoza.Cinema.ServiceDefaults
                     }*/
 
                     tracing.AddSource(builder.Environment.ApplicationName)
+                        .AddSource(InfrastructureActivitySources.EventStore)
+                        .AddSource(ApplicationActivitySources.Handlers)
                         .AddAspNetCoreInstrumentation()
                         //// Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                         ////.AddGrpcClientInstrumentation()
                         .AddHttpClientInstrumentation();
                 });
 
-            builder.AddOpenTelemetryExporters();
+            _ = builder.AddOpenTelemetryExporters();
 
             return builder;
         }

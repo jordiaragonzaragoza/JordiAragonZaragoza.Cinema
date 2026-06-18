@@ -9,7 +9,7 @@
     using JordiAragonZaragoza.SharedKernel.Application.Helpers;
     using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
-    using JordiAragonZaragoza.SharedKernel.Infrastructure.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.Contracts;
 
     using Microsoft.Extensions.Logging;
     using Quartz;

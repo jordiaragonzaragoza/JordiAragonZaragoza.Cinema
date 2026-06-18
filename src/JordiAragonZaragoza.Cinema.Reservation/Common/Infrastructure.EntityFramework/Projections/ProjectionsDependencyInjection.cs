@@ -53,7 +53,7 @@
             services.AddShowtimeProjectionsRepositories();
             services.AddUserProjectionsRepositories();
 
-            services.AddCheckpointProjectionsRepositories();
+            _ = services.AddCheckpointProjectionsRepositories();
 
             return services;
         }
