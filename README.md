@@ -37,13 +37,15 @@ Loving it? Please show your support by giving this project a star!
 
 ## Aspire: 📍
 
-![JordiAragonZaragoza.Cinema - NET Aspire](./docs/Aspire.jpeg)
+![JordiAragonZaragoza.Cinema - Aspire](./docs/Aspire.jpeg)
+
+![JordiAragonZaragoza.Cinema - Aspire Tracing](./docs/AspireTracing.jpeg)
 
 ## Technologies implemented: ⚒️
 
 - ASP.NET
 - Entity Framework Core
-- .NET Aspire
+- Aspire
 - Kurrent DB as event store
 - Postgresql as projection store
 - MediatR as in memory event bus (will be removed)
