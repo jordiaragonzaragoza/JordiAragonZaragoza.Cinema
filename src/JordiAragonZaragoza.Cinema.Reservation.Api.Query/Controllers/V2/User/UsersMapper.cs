@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
@@ -43,16 +45,32 @@
                 paginatedRequest.PageSize);
         }
 
-        public static GetUserAuthorizationQuery ToQuery(
+        public static GetUserAuthorizationsQuery ToQuery(
             this UserAuthorizationRequest request)
         {
             ArgumentNullException.ThrowIfNull(request);
 
-            return new GetUserAuthorizationQuery(
+            return new GetUserAuthorizationsQuery(
                 request.UserId,
                 request.TenantId,
                 request.PartitionId,
                 request.CinemaId);
+        }
+
+        public static Result<IReadOnlyCollection<UserAuthorizationResponse>> ToResponse(
+            this Result<IReadOnlyCollection<UserAuthorizationReadModel>> result)
+        {
+            ArgumentNullException.ThrowIfNull(result);
+
+            return result.Map(userAuthorizationReadModels => (IReadOnlyCollection<UserAuthorizationResponse>)userAuthorizationReadModels
+                .Select(userAuthorizationReadModel => new UserAuthorizationResponse(
+                    userAuthorizationReadModel.UserId,
+                    userAuthorizationReadModel.TenantId,
+                    userAuthorizationReadModel.PartitionId,
+                    userAuthorizationReadModel.CinemaId,
+                    userAuthorizationReadModel.Roles.ToResponse(),
+                    userAuthorizationReadModel.Permissions.ToResponse()))
+                .ToList());
         }
 
         public static Result<UserAuthorizationResponse> ToResponse(

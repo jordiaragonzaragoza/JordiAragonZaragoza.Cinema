@@ -1,9 +1,9 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Controllers.V2.User
 {
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User;
-
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Requests;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.User.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
@@ -15,14 +15,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Controllers.V2.User
     [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("2.0", Deprecated = false)]
     [Route("api/v{version:apiVersion}/")]
-    public sealed class GetUserAuthorizationController : BaseApiQueryController
+    public sealed class GetUserAuthorizationsController : BaseApiQueryController
     {
-        [HttpGet(UserRoutes.GetUserAuthorization)]
+        [HttpGet(UserRoutes.GetUserAuthorizations)]
         [SwaggerOperation(
-            Summary = "Gets a user authorization for the requested scope",
-            Description = "Gets a user authorization for the requested scope",
+            Summary = "Gets a user authorizations for the requested scope",
+            Description = "Gets a user authorizations for the requested scope",
             OperationId = "User.GetUserAuthorization.V2")]
-        public async Task<ActionResult<UserAuthorizationResponse>> GetUserAuthorizationAsync(
+        public async Task<ActionResult<IReadOnlyCollection<UserAuthorizationResponse>>> GetUserAuthorizationAsync(
             [FromRoute] UserAuthorizationRequest request,
             CancellationToken cancellationToken)
         {

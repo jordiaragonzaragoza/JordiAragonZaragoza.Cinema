@@ -5,7 +5,7 @@
         public const string GetUsers = $"{Base}";
         public const string GetUserReservation = $"{Base}/{{UserId}}/showtimes/{{ShowtimeId}}/reservations/{{ReservationId}}";
         public const string GetUserReservations = $"{Base}/{{UserId}}/reservations";
-        public const string GetUserAuthorization = $"{Base}/{{UserId}}/authorization/{{TenantId}}/{{PartitionId?}}/{{CinemaId?}}";
+        public const string GetUserAuthorizations = $"{Base}/{{UserId}}/authorizations/{{TenantId}}/{{PartitionId?}}/{{CinemaId?}}";
         private const string Base = "users";
     }
 }

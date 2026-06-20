@@ -6,39 +6,30 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
     using System.Threading;
     using System.Threading.Tasks;
     using Ardalis.Result;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorization;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
 
     public class AuthorizationService : IAuthorizationService
     {
-        private readonly ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository;
+        private readonly UserAuthorizationResolver userAuthorizationResolver;
+
         private readonly IExecutionContextService executionContextService;
 
         public AuthorizationService(
-            ICachedSpecificationRepository<UserAuthorizationReadModel, Guid> repository,
-            IExecutionContextService executionContextService)
+            IExecutionContextService executionContextService,
+            UserAuthorizationResolver userAuthorizationResolver)
         {
-            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
+            this.userAuthorizationResolver = userAuthorizationResolver ?? throw new ArgumentNullException(nameof(userAuthorizationResolver));
         }
 
         public async Task<Result> ValidateScopeAsync(Guid userId, ScopeContext scope, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(scope);
 
-            var query = new GetUserAuthorizationQuery(
-                UserId: userId,
-                TenantId: scope.TenantId,
-                PartitionId: scope.PartitionId,
-                CinemaId: scope.DomainId);
-
-            var userAuthorization = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken);
+            var userAuthorization = await this.userAuthorizationResolver.ResolveAsync(userId, scope, cancellationToken);
             if (userAuthorization is null)
             {
-                return Result.NotFound($"User with ID {query.UserId} not found for tenant {query.TenantId}, partition {query.PartitionId}, and cinema {query.CinemaId}.");
+                return Result.NotFound($"User with ID {userId} not found for tenant {scope.TenantId}, partition {scope.PartitionId}, and cinema {scope.DomainId}.");
             }
 
             return Result.Success();
@@ -66,16 +57,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
             var userId = currentContext.GetUserActorId();
             var scopeContext = currentContext.ScopeContext;
 
-            var query = new GetUserAuthorizationQuery(
-                UserId: userId,
-                TenantId: scopeContext.TenantId,
-                PartitionId: scopeContext.PartitionId,
-                CinemaId: scopeContext.DomainId);
-
-            var userAuthorization = await this.repository.SingleOrDefaultAsync(new GetUserAuthorizationCachedSpecification(query), cancellationToken);
+            var userAuthorization = await this.userAuthorizationResolver.ResolveAsync(userId, scopeContext, cancellationToken);
             if (userAuthorization is null)
             {
-                return Result.NotFound($"User with ID {query.UserId} not found for tenant {query.TenantId}, partition {query.PartitionId}, and cinema {query.CinemaId}.");
+                return Result.NotFound($"User with ID {userId} not found for tenant {scopeContext.TenantId}, partition {scopeContext.PartitionId}, and cinema {scopeContext.DomainId}.");
             }
 
             if (requiredPermissions.Except(userAuthorization.Permissions.Select(permission => permission.Value)).Any())

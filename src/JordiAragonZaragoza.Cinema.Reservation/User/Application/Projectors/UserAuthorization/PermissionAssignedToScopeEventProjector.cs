@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorization;
+    using JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorizations;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
@@ -27,7 +27,7 @@
         {
             ArgumentNullException.ThrowIfNull(@event);
 
-            var query = new GetUserAuthorizationQuery(
+            var query = new GetUserAuthorizationsQuery(
                 UserId: @event.AggregateId,
                 TenantId: @event.TenantId,
                 PartitionId: @event.PartitionId,

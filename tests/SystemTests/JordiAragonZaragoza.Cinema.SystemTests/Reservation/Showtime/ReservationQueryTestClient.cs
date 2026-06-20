@@ -2,6 +2,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
@@ -110,14 +111,14 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             }
         }
 
-        public async Task<UserAuthorizationResponse?> GetUserAuthorizationAsync(UserAuthorizationRequest request, ITestOutputHelper? output = null)
+        public async Task<IReadOnlyCollection<UserAuthorizationResponse>?> GetUserAuthorizationsAsync(UserAuthorizationRequest request, ITestOutputHelper? output = null)
         {
             ArgumentNullException.ThrowIfNull(request);
 
             try
             {
                 output?.WriteLine($"Getting authorization for user {request.UserId}");
-                return await this.api.GetUserAuthorizationAsync(request);
+                return await this.api.GetUserAuthorizationsAsync(request);
             }
             catch (Exception ex) when (
                 ex is HttpRequestException
@@ -130,10 +131,33 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             }
         }
 
+        public async Task<UserAuthorizationResponse?> GetUserAuthorizationAsync(UserAuthorizationRequest request, ITestOutputHelper? output = null)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var authorizations = await this.GetUserAuthorizationsAsync(request, output);
+
+            return authorizations?.FirstOrDefault(authorization =>
+                authorization.UserId == request.UserId
+                && authorization.TenantId == request.TenantId
+                && authorization.PartitionId == request.PartitionId
+                && authorization.CinemaId == request.CinemaId);
+        }
+
         public async Task<bool> UserAuthorizationExistsAsync(UserAuthorizationRequest request, ITestOutputHelper? output = null)
-            => await this.GetUserAuthorizationAsync(request, output) is not null;
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var authorizations = await this.GetUserAuthorizationsAsync(request, output);
+
+            return authorizations?.Any(authorization =>
+                authorization.UserId == request.UserId
+                && authorization.TenantId == request.TenantId
+                && authorization.PartitionId == request.PartitionId
+                && authorization.CinemaId == request.CinemaId) == true;
+        }
 
         public async Task<bool> UserAuthorizationNotExistsAsync(UserAuthorizationRequest request, ITestOutputHelper? output = null)
-            => await this.GetUserAuthorizationAsync(request, output) is null;
+            => !await this.UserAuthorizationExistsAsync(request, output);
     }
 }

@@ -25,6 +25,7 @@
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddScoped<UserAuthorizationResolver>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();
 
             return services;

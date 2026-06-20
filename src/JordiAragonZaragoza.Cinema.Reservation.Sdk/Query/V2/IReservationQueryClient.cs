@@ -39,7 +39,7 @@
             UserReservationRequest request,
             CancellationToken cancellationToken = default);
 
-        Task<UserAuthorizationResponse> GetUserAuthorizationAsync(
+        Task<IReadOnlyCollection<UserAuthorizationResponse>> GetUserAuthorizationsAsync(
             UserAuthorizationRequest request,
             CancellationToken cancellationToken = default);
 

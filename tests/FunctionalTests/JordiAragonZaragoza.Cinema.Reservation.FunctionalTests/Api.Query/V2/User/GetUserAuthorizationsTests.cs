@@ -1,6 +1,8 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Query.V2.User
 {
     using System;
+    using System.Collections.Generic;
+
     using System.Threading.Tasks;
     using Ardalis.HttpClientTestExtensions;
     using AwesomeAssertions;
@@ -16,9 +18,9 @@
 
     using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
 
-    public sealed class GetUserAuthorizationTests : BaseHttpRestfulApiFunctionalTests
+    public sealed class GetUserAuthorizationsTests : BaseHttpRestfulApiFunctionalTests
     {
-        public GetUserAuthorizationTests(
+        public GetUserAuthorizationsTests(
             FunctionalTestsFixture<Program> fixture,
             ITestOutputHelper outputHelper)
             : base(fixture, outputHelper)
@@ -26,7 +28,7 @@
         }
 
         [Fact]
-        public async Task GetUserAuthorization_WhenHavingValidArguments_ShouldReturnUserAuthorization()
+        public async Task GetUserAuthorizations_WhenHavingValidArguments_ShouldReturnUserAuthorizations()
         {
             // Arrange
             Guid userId = SeedData.ExampleUserWithAdminRole.Id;
@@ -34,7 +36,7 @@
             Guid partitionId = SeedData.ExamplePartition.Id;
             Guid cinemaId = SeedData.ExampleCinema.Id;
 
-            var route = $"{Routes.ApiBase}{UserRoutes.GetUserAuthorization}";
+            var route = $"{Routes.ApiBase}{UserRoutes.GetUserAuthorizations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
                 (nameof(userId), userId.ToString()),
@@ -43,10 +45,10 @@
                 (nameof(cinemaId), cinemaId.ToString()));
 
             // Act
-            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<UserAuthorizationResponse>(uri.PathAndQuery, this.OutputHelper);
+            var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<IReadOnlyCollection<UserAuthorizationResponse>>(uri.PathAndQuery, this.OutputHelper);
 
             // Assert
-            response.Should().NotBeNull();
+            response.Should().NotBeEmpty();
         }
     }
 }

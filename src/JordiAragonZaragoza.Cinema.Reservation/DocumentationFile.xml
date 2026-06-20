@@ -37,6 +37,36 @@
             <param name="domainId">The cinema identifier (optional).</param>
             <returns>True if this authorization matches the given scope, false otherwise.</returns>
         </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorizations.GetUserAuthorizationCachedSpecification">
+            <summary>
+            Resolves the EXACT scope-level row for a given (userId, tenantId, partitionId, cinemaId).
+            Used by event projectors to locate the precise assignment row that a domain
+            event refers to. Does NOT apply scope hierarchy — an event with a specific
+            scope must only ever mutate the row matching that exact scope.
+            </summary>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorizations.GetUserAuthorizationsCandidatesCachedSpecification">
+            <summary>
+            Resolves ALL assignment rows for a user within a tenant — across every scope
+            level (tenant-only, partition-only, cinema-specific). Used by AuthorizationService
+            to apply UserAuthorizationReadModel.Matches and select the row whose hierarchy
+            covers the requested scope, mirroring User.GetRolesFor's in-memory resolution.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Services.UserAuthorizationResolver.ResolveAsync(System.Guid,JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeContext,System.Threading.CancellationToken)">
+            <summary>
+            Resolves the single assignment whose scope hierarchy covers the requested
+            (tenantId, partitionId, cinemaId), using UserAuthorizationReadModel.Matches
+            for the same Cinema > Partition > Tenant specificity rule the domain applies
+            in User.GetRolesFor. A user is expected to have at most one matching
+            assignment per concrete scope; if a user has multiple overlapping assignments
+            (e.g. Tenant-level AND Cinema-level), the most specific one is preferred.
+            </summary>
+            <param name="userId">The ID of the user for whom to resolve authorization.</param>
+            <param name="scope">The scope context (tenant, partition, cinema) for which to resolve authorization.</param>
+            <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+            <returns>The resolved UserAuthorizationReadModel if found; otherwise, null.</returns>
+        </member>
         <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections.UserAuthorizationReadModelConfiguration">
             <summary>
             Configures the UserAuthorizationReadModel for Entity Framework Core.
