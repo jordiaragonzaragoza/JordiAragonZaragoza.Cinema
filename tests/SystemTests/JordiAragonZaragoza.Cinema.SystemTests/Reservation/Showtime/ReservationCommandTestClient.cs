@@ -63,6 +63,12 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime
             await this.api.PurchaseReservationAsync(showtimeId, reservationId);
         }
 
+        public async Task CancelReservationAsync(Guid showtimeId, Guid reservationId, ITestOutputHelper? output = null)
+        {
+            output?.WriteLine($"Canceling reservation {reservationId} for showtime {showtimeId}");
+            await this.api.CancelReservationAsync(showtimeId, reservationId);
+        }
+
         public async Task GrantUserAsync(Guid userId, GrantUserBodyRequest request, ITestOutputHelper? output = null)
         {
             output?.WriteLine($"Granting user {userId}");

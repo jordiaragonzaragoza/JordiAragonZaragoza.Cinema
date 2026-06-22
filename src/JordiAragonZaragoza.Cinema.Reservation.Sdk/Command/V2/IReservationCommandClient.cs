@@ -17,6 +17,8 @@
 
         Task PurchaseReservationAsync(Guid showtimeId, Guid reservationId, CancellationToken cancellationToken = default);
 
+        Task CancelReservationAsync(Guid showtimeId, Guid reservationId, CancellationToken cancellationToken = default);
+
         Task GrantUserAsync(Guid userId, GrantUserBodyRequest request, CancellationToken cancellationToken = default);
 
         Task RevokeUserAsync(Guid userId, RevokeUserBodyRequest request, CancellationToken cancellationToken = default);

@@ -67,6 +67,18 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Sdk.Command.V2
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task CancelReservationAsync(Guid showtimeId, Guid reservationId, CancellationToken cancellationToken = default)
+        {
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.CancelReservation}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+            route = route.Replace("{reservationId}", reservationId.ToString(), StringComparison.Ordinal);
+
+            var fullUri = new Uri(this.http.BaseAddress!, route);
+
+            using var response = await this.http.DeleteAsync(fullUri, cancellationToken);
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task GrantUserAsync(Guid userId, GrantUserBodyRequest request, CancellationToken cancellationToken = default)
         {
             var route = $"{Routes.ApiBase}{UserRoutes.GrantUser}";
