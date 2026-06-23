@@ -11,15 +11,17 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
     public class AuthorizationService : IAuthorizationService
     {
         private readonly UserAuthorizationResolver userAuthorizationResolver;
-
+        private readonly IPolicyEnforcer policyEnforcer;
         private readonly IExecutionContextService executionContextService;
 
         public AuthorizationService(
             IExecutionContextService executionContextService,
-            UserAuthorizationResolver userAuthorizationResolver)
+            UserAuthorizationResolver userAuthorizationResolver,
+            IPolicyEnforcer policyEnforcer)
         {
             this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
             this.userAuthorizationResolver = userAuthorizationResolver ?? throw new ArgumentNullException(nameof(userAuthorizationResolver));
+            this.policyEnforcer = policyEnforcer ?? throw new ArgumentNullException(nameof(policyEnforcer));
         }
 
         public async Task<Result> ValidateScopeAsync(Guid userId, ScopeContext scope, CancellationToken cancellationToken = default)
@@ -39,6 +41,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
             ReadOnlyCollection<string> requiredRoles,
             ReadOnlyCollection<string> requiredPermissions,
             ReadOnlyCollection<string> requiredPolicies,
+            Guid? resourceId,
             CancellationToken cancellationToken = default)
         {
             var currentContext = this.executionContextService.CurrentContext;
@@ -73,16 +76,20 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
                 return Result.Forbidden("User is missing required roles for taking this action");
             }
 
-            // TODO: Complete.
-            /*foreach (var policy in requiredPolicies)
-            {
-                var authorizationAgainstPolicyResult = _policyEnforcer.Authorize(request, currentUser, policy);
+            ArgumentNullException.ThrowIfNull(requiredPolicies);
 
-                if (authorizationAgainstPolicyResult.IsError)
+            var currentUserRoles = userAuthorization.Roles.Select(r => r.Value).ToList();
+            var currentUserPermissions = userAuthorization.Permissions.Select(p => p.Value).ToList();
+            foreach (var policy in requiredPolicies)
+            {
+                var policyResult = await this.policyEnforcer.AuthorizeAsync(
+                    policy, userId, currentUserRoles, currentUserPermissions, resourceId, cancellationToken);
+
+                if (!policyResult.IsSuccess)
                 {
-                    return authorizationAgainstPolicyResult.Errors;
+                    return policyResult;
                 }
-            }*/
+            }
 
             return Result.Success();
         }

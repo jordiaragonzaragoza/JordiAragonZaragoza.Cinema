@@ -27,6 +27,7 @@
         {
             services.AddScoped<UserAuthorizationResolver>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();
+            services.AddScoped<IAuthorizationPolicy, ReservationOwnerOrAdminPolicy>();
 
             return services;
         }
@@ -94,7 +95,7 @@
                     opt.WaitForJobsToComplete = true;
                 });
 
-            services.AddShowtimePolicies();
+            services.AddShowtimeEventHandlersPolicies();
 
             return services;
         }

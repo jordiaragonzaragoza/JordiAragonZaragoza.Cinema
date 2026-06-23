@@ -16,6 +16,15 @@
         <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies.ReservationOwnerOrAdminPolicy">
+            <summary>
+            Passes when the current user owns the reservation identified by
+            resourceId, or holds the Admin role. Loads ReservationReadModel
+            (not the Showtime aggregate) to resolve ownership cheaply — this
+            is an authorization-time lookup, not a domain operation, so the
+            read model is the correct source, not event replay via the aggregate.
+            </summary>
+        </member>
         <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Roles">
             <summary>
             Gets or sets the collection of roles assigned at this scope level.
@@ -66,6 +75,42 @@
             <param name="scope">The scope context (tenant, partition, cinema) for which to resolve authorization.</param>
             <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
             <returns>The resolved UserAuthorizationReadModel if found; otherwise, null.</returns>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Domain.User.GetRolesFor(JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.TenantId,JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.PartitionId,JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.CinemaId)">
+             <summary>
+             Returns the UNION of roles across all assignments whose scope matches
+             the given hierarchy — additive semantics. This reflects the full state
+             of the aggregate and is intended for domain-internal use (invariants,
+             future business rules) and unit testing of the User aggregate in isolation.
+            
+             This is NOT used by the runtime authorization check. AuthorizationService
+             resolves authorization against the projected UserAuthorizationReadModel
+             via UserAuthorizationResolver, which intentionally selects only the MOST
+             SPECIFIC matching assignment (exclusive semantics) for performance and
+             simplicity. Do not assume these two paths return equivalent results.
+             </summary>
+             <param name="tenantId">The tenant identifier.</param>
+             <param name="partitionId">The partition identifier (optional).</param>
+             <param name="cinemaId">The cinema identifier (optional).</param>
+             <returns>A collection of roles that the user has for the given scope.</returns>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Domain.User.GetPermissionsFor(JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.TenantId,JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.PartitionId,JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.CinemaId)">
+             <summary>
+             Returns the UNION of permissions across all assignments whose scope matches
+             the given hierarchy — additive semantics. This reflects the full state
+             of the aggregate and is intended for domain-internal use (invariants,
+             future business rules) and unit testing of the User aggregate in isolation.
+            
+             This is NOT used by the runtime authorization check. AuthorizationService
+             resolves authorization against the projected UserAuthorizationReadModel
+             via UserAuthorizationResolver, which intentionally selects only the MOST
+             SPECIFIC matching assignment (exclusive semantics) for performance and
+             simplicity. Do not assume these two paths return equivalent results.
+             </summary>
+             <param name="tenantId">The tenant identifier.</param>
+             <param name="partitionId">The partition identifier (optional).</param>
+             <param name="cinemaId">The cinema identifier (optional).</param>
+             <returns>A collection of permissions that the user has for the given scope.</returns>
         </member>
         <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections.UserAuthorizationReadModelConfiguration">
             <summary>

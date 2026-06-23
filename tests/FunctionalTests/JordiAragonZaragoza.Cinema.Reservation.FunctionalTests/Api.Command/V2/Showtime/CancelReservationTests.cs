@@ -29,7 +29,7 @@
         public async Task CancelReservation_WhenHavingValidArguments_ShouldCancelReservation()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = await this.ScheduleNewShowtimeAsync();
 
             var seatsIds = SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.SeatId).ToList();
@@ -57,6 +57,30 @@
 
             cancelReservationResponse.StatusCode.Should()
                 .Be(System.Net.HttpStatusCode.NoContent);
+        }
+
+        private async Task<Guid> ScheduleNewShowtimeAsync()
+        {
+            var showtimeId = Guid.CreateVersion7();
+
+            var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
+            route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);
+
+            var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            var request = new ScheduleShowtimeBodyRequest(
+                SeedData.ExampleAuditorium.Id,
+                SeedData.ExampleMovie.Id,
+                sessionDateOnUtc);
+
+            var content = StringContentHelpers.FromModelAsJson(request);
+
+            var fullUri = new Uri(this.Fixture.HttpClient.BaseAddress!, route);
+
+            this.OutputHelper.WriteLine($"Requesting with PUT {route}");
+            await this.Fixture.HttpClient.PutAsync(fullUri, content);
+
+            return showtimeId;
         }
     }
 }

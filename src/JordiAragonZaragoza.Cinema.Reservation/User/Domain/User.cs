@@ -40,6 +40,22 @@
         public void Remove()
             => this.Apply(new UserRemovedEvent(this.Id));
 
+        /// <summary>
+        /// Returns the UNION of roles across all assignments whose scope matches
+        /// the given hierarchy — additive semantics. This reflects the full state
+        /// of the aggregate and is intended for domain-internal use (invariants,
+        /// future business rules) and unit testing of the User aggregate in isolation.
+        ///
+        /// This is NOT used by the runtime authorization check. AuthorizationService
+        /// resolves authorization against the projected UserAuthorizationReadModel
+        /// via UserAuthorizationResolver, which intentionally selects only the MOST
+        /// SPECIFIC matching assignment (exclusive semantics) for performance and
+        /// simplicity. Do not assume these two paths return equivalent results.
+        /// </summary>
+        /// <param name="tenantId">The tenant identifier.</param>
+        /// <param name="partitionId">The partition identifier (optional).</param>
+        /// <param name="cinemaId">The cinema identifier (optional).</param>
+        /// <returns>A collection of roles that the user has for the given scope.</returns>
         public IEnumerable<Role> GetRolesFor(
             TenantId tenantId,
             PartitionId? partitionId = default,
@@ -53,6 +69,22 @@
                 .Distinct();
         }
 
+        /// <summary>
+        /// Returns the UNION of permissions across all assignments whose scope matches
+        /// the given hierarchy — additive semantics. This reflects the full state
+        /// of the aggregate and is intended for domain-internal use (invariants,
+        /// future business rules) and unit testing of the User aggregate in isolation.
+        ///
+        /// This is NOT used by the runtime authorization check. AuthorizationService
+        /// resolves authorization against the projected UserAuthorizationReadModel
+        /// via UserAuthorizationResolver, which intentionally selects only the MOST
+        /// SPECIFIC matching assignment (exclusive semantics) for performance and
+        /// simplicity. Do not assume these two paths return equivalent results.
+        /// </summary>
+        /// <param name="tenantId">The tenant identifier.</param>
+        /// <param name="partitionId">The partition identifier (optional).</param>
+        /// <param name="cinemaId">The cinema identifier (optional).</param>
+        /// <returns>A collection of permissions that the user has for the given scope.</returns>
         public IEnumerable<Permission> GetPermissionsFor(
         TenantId tenantId,
         PartitionId? partitionId = default,

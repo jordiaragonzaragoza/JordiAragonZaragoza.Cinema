@@ -5,6 +5,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts
         public const string Cancel = "cancel:showtime";
         public const string End = "end:showtime";
         public const string ReserveSeats = "reserveSeats:showtime";
+        public const string CancelReservation = "cancelReservation:showtime";
         public const string ScheduleShowtime = "scheduleShowtime:showtime";
         public const string GetAvailableSeats = "getAvailableSeats:showtime";
         public const string GetShowtime = "getShowtime:showtime";
