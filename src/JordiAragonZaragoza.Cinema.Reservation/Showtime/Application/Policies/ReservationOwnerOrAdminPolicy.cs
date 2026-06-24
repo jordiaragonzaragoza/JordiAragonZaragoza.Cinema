@@ -45,7 +45,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies
 
             if (resourceId is null)
             {
-                // Fail-closed: sin resourceId y sin Admin, no hay base para autorizar.
+                // Fail-closed: without resourceId and without Admin, there is no basis for authorization.
                 return Result.Forbidden(
                     $"Policy '{Policies.SelfOrAdmin}' requires a resourceId " +
                     $"when the user is not an Admin.");
