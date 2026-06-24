@@ -5,7 +5,7 @@
     using JordiAragonZaragoza.SharedKernel.Application.Attributes;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
 
-    ////[Authorize(Policies = Policies.SelfOrAdmin)] // TODO: Temporal disabled till we implement authentication.
+    ////[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)] // TODO: Temporal disabled till we implement authentication.
     public sealed record CancelReservationCommand(
         Guid ShowtimeId,
         Guid ReservationId) : ICommand, IPolicyResourceRequest

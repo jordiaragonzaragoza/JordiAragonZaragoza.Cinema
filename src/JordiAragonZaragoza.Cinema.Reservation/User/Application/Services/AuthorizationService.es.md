@@ -2,19 +2,20 @@
 
 ## 📌 Propósito
 
-El sistema de autorización controla **lo que los usuarios autenticados pueden hacer**
+El sistema de autorización controla **lo que los actores pueden hacer**
 dentro de un alcance de negocio específico. Responde a dos preguntas distintas:
 
 | Pregunta | Mecanismo |
 |----------|-----------|
 | **¿Puede este usuario acceder a este alcance?** | `ValidateScopeAsync` — comprobación de membresía del alcance |
-| **¿Puede este usuario realizar esta acción?** | `AuthorizeAsync` — comprobación de roles y permisos |
+| **¿Puede este usuario realizar esta acción?** | `AuthorizeAsync` — comprobación de roles, permisos y políticas |
 
 El sistema es intencionadamente **personalizado** — no utiliza
 `Microsoft.AspNetCore.Authorization` ni `IAuthorizationService` de ASP.NET
-Core. Esto mantiene la lógica de autorización en la capa de aplicación, desacoplada de
-la infraestructura HTTP, aislada para pruebas y consciente del contexto de negocio multi-inquilino
-(multi-tenant) que las políticas de ASP.NET Core no pueden expresar de forma nativa.
+Core. Esto mantiene la lógica de autorización en la capa de aplicación, desacoplada
+de la infraestructura HTTP, aislada para pruebas y consciente del contexto de negocio
+multi-inquilino (multi-tenant) que las políticas de ASP.NET Core no pueden expresar
+de forma nativa.
 
 ---
 
@@ -23,67 +24,73 @@ la infraestructura HTTP, aislada para pruebas y consciente del contexto de negoc
 ### 1. Agregado de Usuario (User aggregate)
 
 El agregado `User` es la fuente de verdad para los datos de autorización. Se
-persiste en KurrentDB como un agregado basado en eventos (event-sourced). Su estado es el
-resultado acumulado de todos los eventos relacionados con la autorización.
-
+persiste en KurrentDB como un agregado basado en eventos (event-sourced). Su estado
+es el resultado acumulado de todos los eventos relacionados con la autorización.
 
 ```
-
 User
 └── Assignments[]
-└── Assignment
-├── Scope (TenantId, PartitionId?, CinemaId?)
-├── Roles[]       ej. "Admin", "Viewer"
-└── Permissions[] ej. "cancel:showtime", "reserveSeats:showtime"
-
+      └── Assignment
+            ├── Scope (TenantId, PartitionId?, CinemaId?)
+            ├── Roles[]       ej. "Admin", "Viewer"
+            └── Permissions[] ej. "cancel:showtime", "reserveSeats:showtime"
 ```
 
-Un usuario tiene **cero o más Asignaciones (Assignments)**. Cada Asignación vincula un conjunto de
-roles y permisos a un Alcance (Scope) específico. Un usuario puede tener diferentes roles
-en diferentes alcances — por ejemplo, `Admin` en un cine pero `Viewer` en
-otro.
+Un usuario tiene **cero o más Asignaciones (Assignments)**. Cada Asignación vincula
+un conjunto de roles y permisos a un Alcance (Scope) específico. Un usuario puede
+tener diferentes roles en diferentes alcances — por ejemplo, `Admin` a nivel de
+Tenant pero también `Viewer` para un cine concreto dentro de ese mismo tenant.
 
 ---
 
 ### 2. Alcance (Scope) — niveles de acceso jerárquicos
 
-`Scope` es un objeto de valor (value object) que representa el contexto de negocio en el que
-se aplica una asignación. Tiene tres niveles, desde el más amplio al más estrecho:
-
+`Scope` es un objeto de valor (value object) que representa el contexto de negocio
+en el que se aplica una asignación. Tiene tres niveles, desde el más amplio al
+más estrecho:
 
 ```
-
 Tenant  (empresa / organización)
-└── Partition  (subdivisión regional o área)
-└── Cinema  (instancia de dominio específica)
-
+  └── Partition  (subdivisión regional o área)
+        └── Cinema  (instancia de dominio específica)
 ```
 
-El método `Scope.Matches` aplica una **regla de especificidad**: el nivel de alcance más estrecho
-definido en la asignación es el que prevalece.
+El método `Scope.Matches` (en el dominio) aplica una **regla de especificidad**:
+el nivel de alcance más estrecho definido en la asignación es el que prevalece.
 
 ```csharp
 public bool Matches(CinemaId? cinemaId, PartitionId? partitionId, TenantId tenantId)
 {
-    if (this.CinemaId is not null)   return this.CinemaId == cinemaId;
+    if (this.CinemaId is not null)    return this.CinemaId == cinemaId;
     if (this.PartitionId is not null) return this.PartitionId == partitionId;
     return this.TenantId == tenantId;
 }
+```
 
+El read model `UserAuthorizationReadModel` replica la misma regla con `Matches`,
+para que la lógica de especificidad sea idéntica tanto en memoria (agregado) como
+en la capa de lectura proyectada:
+
+```csharp
+public bool Matches(Guid tenantId, Guid? partitionId, Guid? domainId)
+{
+    if (this.CinemaId is not null)    return this.CinemaId == domainId;
+    if (this.PartitionId is not null) return this.PartitionId == partitionId;
+    return this.TenantId == tenantId;
+}
 ```
 
 Esto significa:
 
 * Una asignación a nivel de **Tenant** otorga acceso a todas las particiones y
-cines dentro de ese tenant.
-* Una asignación a nivel de **Partition** solo se aplica a esa partición,
-independientemente del tenant.
+  cines dentro de ese tenant.
+* Una asignación a nivel de **Partition** solo se aplica a esa partición.
 * Una asignación a nivel de **Cinema** solo se aplica a ese cine específico.
 
-#### Ejemplos de coincidencia de Alcance (Scope matching)
+#### Ejemplos de coincidencia de Alcance
 
 | Alcance de la asignación | Alcance de la solicitud | ¿Coincide? |
-| --- | --- | --- |
+|---|---|---|
 | Tenant=A | Tenant=A, Partition=cualquiera, Cinema=cualquiera | ✅ |
 | Tenant=A, Partition=P1 | Tenant=A, Partition=P1, Cinema=cualquiera | ✅ |
 | Tenant=A, Partition=P1 | Tenant=A, Partition=P2 | ❌ |
@@ -94,19 +101,19 @@ independientemente del tenant.
 
 ### 3. Asignación (Assignment)
 
-Una `Assignment` es una entidad que vincula un `Scope` a un conjunto de `Role`s
-y `Permission`s. Es propiedad del agregado `User`.
+Una `Assignment` vincula un `Scope` a un conjunto de `Role`s y `Permission`s.
+Es propiedad del agregado `User`.
 
 Reglas de negocio aplicadas a nivel de dominio:
 
-* Una asignación debe tener **al menos un rol o permiso**
-(`AssignmentMustHaveAtLeastOneRoleOrPermissionRule`).
+* Debe tener **al menos un rol o permiso**
+  (`AssignmentMustHaveAtLeastOneRoleOrPermissionRule`).
 * Un rol solo se puede asignar **una vez por alcance**
-(`OnlyPossibleToAssignRoleOnceRule`).
-* A permiso solo se puede asignar **una vez por alcance**
-(`OnlyPossibleToAssignPermissionOnceRule`).
-* Invocar `GrantUser` en un alcance existente debe introducir **al menos un
-nuevo rol o permiso** (`GrantUserMustIntroduceNewRolesOrPermissionsRule`).
+  (`OnlyPossibleToAssignRoleOnceRule`).
+* Un permiso solo se puede asignar **una vez por alcance**
+  (`OnlyPossibleToAssignPermissionOnceRule`).
+* `GrantUser` sobre un alcance existente debe introducir **al menos un nuevo
+  rol o permiso** (`GrantUserMustIntroduceNewRolesOrPermissionsRule`).
 
 ---
 
@@ -115,52 +122,96 @@ nuevo rol o permiso** (`GrantUserMustIntroduceNewRolesOrPermissionsRule`).
 Un rol es una agrupación con nombre que describe semánticamente un nivel de acceso.
 Los roles son cadenas de texto planas envueltas en un objeto de valor.
 
-Roles actuales definidos en `Roles`:
+Roles actuales definidos en `Roles` (Application.Contracts):
 
 | Rol | Significado previsto |
-| --- | --- |
+|---|---|
 | `Admin` | Acceso completo de gestión |
 | `Viewer` | Acceso de solo lectura |
 
-Los roles son de grano grueso (coarse-grained). Son validados por el `AuthorizationBehavior`
-cuando un comando o consulta declara `[Authorize(Roles = "Admin")]`.
+> 📐 **Decisión de diseño**: `Roles` (Application.Contracts) y `Role` (Domain) son
+> intencionadamente independientes. `Roles` es la clase de constantes públicas que
+> cualquier bounded context usa para construir `[Authorize(Roles = Roles.Admin)]`.
+> `Role` es el value object interno del agregado `User`. Si `Roles` referenciara
+> `Role` del dominio, cualquier consumidor de `[Authorize]` arrastraría una
+> dependencia transitiva al dominio de `User` — invirtiendo la dirección de
+> dependencias de Clean Architecture. La consistencia entre ambas se garantiza
+> mediante un test de arquitectura.
 
 ---
 
 ### 5. Permiso (Permission)
 
-Un permiso es una cadena de texto de capacidad de grano fino (fine-grained). La convención es:
+Un permiso es una cadena de texto de capacidad de grano fino. La convención es:
 
 ```
 {acción}:{recurso}
-
 ```
 
 Ejemplos de `ShowtimePermissions`:
 
 | Permiso | Significado |
-| --- | --- |
+|---|---|
 | `cancel:showtime` | Cancelar una función programada |
 | `reserveSeats:showtime` | Reservar asientos para una función |
 | `scheduleShowtime:showtime` | Crear una nueva función |
 | `getAvailableSeats:showtime` | Consultar asientos disponibles |
 
-Los permisos son de grano fino. Se validan cuando un comando o consulta
-declara `[Authorize(Permissions = "cancel:showtime")]`.
-
 ---
 
 ### 6. Política (Policy)
 
-Las políticas son reglas de autorización con nombre que van más allá de las comprobaciones de roles y
-permisos — pueden codificar lógica ABAC (Control de Acceso Basado en Atributos) como
-"solo puede cancelar una función si es el propietario" o "solo puede actuar sobre
-recursos dentro de su región".
+Las políticas son reglas de autorización con nombre que van más allá de las
+comprobaciones estáticas de roles y permisos — codifican lógica ABAC
+(Control de Acceso Basado en Atributos) como "solo puede cancelar una reserva
+si es el propietario o un administrador".
 
-> **Estado actual:** La evaluación de políticas está declarada en `AuthorizeAttribute`
-> y es analizada por `RequestAuthorizationService`, pero el bucle de ejecución en
-> `AuthorizationService.AuthorizeAsync` aún no está implementado (marcado como TODO).
-> Las políticas están reservadas para futuros escenarios ABAC.
+**Estado actual:** implementado y operativo. La evaluación se realiza en
+`AuthorizationService.AuthorizeAsync` → `IPolicyEnforcer` → `IAuthorizationPolicy`.
+
+Políticas disponibles:
+
+| Constante | Significado |
+|---|---|
+| `Policies.SelfOrAdmin` | Pasa si el usuario es el propietario del recurso (`resourceId`) O tiene el rol `Admin` en el alcance activo |
+
+#### Cómo funciona `SelfOrAdmin`
+
+1. Si el usuario tiene el rol `Admin` → **pasa** inmediatamente (sin consultar el recurso).
+2. Si no es Admin y no se proporcionó `resourceId` → **Forbidden** (fail-closed, nunca
+   fail-open).
+3. Si no es Admin y hay `resourceId` → carga el `ReservationReadModel` y compara
+   `reservation.UserId == currentUserId`.
+
+> ⚠️ **Fail-closed garantizado**: una policy que no puede evaluarse por falta de datos
+> devuelve siempre `Forbidden`, nunca `Success`. Una policy declarada en `[Authorize]`
+> pero sin implementación registrada lanza `InvalidOperationException` al arranque,
+> evitando el riesgo de no-op silencioso.
+
+#### Cómo declarar una policy en un command
+
+El command implementa `IPolicyResourceRequest` para exponer el `resourceId` que
+la policy necesita para resolver el ownership — sin exponer el shape completo del
+command al sistema de autorización:
+
+```csharp
+[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+public sealed record CancelReservationCommand(
+    Guid ShowtimeId,
+    Guid ReservationId) : ICommand, IPolicyResourceRequest
+{
+    // Solo el id del recurso cruza hacia el enforcer — ningún detalle más.
+    public Guid ResourceId => this.ReservationId;
+}
+```
+
+#### Añadir una nueva policy
+
+1. Añadir la constante en `Policies` (Application.Common).
+2. Implementar `IAuthorizationPolicy` en la capa de aplicación del bounded
+   context correspondiente.
+3. Registrar con `services.AddScoped<IAuthorizationPolicy, MiNuevaPolicy>()`.
+4. El `PolicyEnforcer` la descubre automáticamente por DI.
 
 ---
 
@@ -169,26 +220,34 @@ recursos dentro de su región".
 Se aplica a comandos y consultas para declarar sus requisitos de autorización:
 
 ```csharp
+// Solo permiso
 [Authorize(Permissions = "cancel:showtime")]
 public sealed record CancelShowtimeCommand(Guid ShowtimeId) : ICommand;
 
+// Solo rol
 [Authorize(Roles = "Admin")]
 public sealed record ScheduleShowtimeCommand(...) : ICommand;
 
-// Combinado — el usuario debe tener AMBOS
+// Combinado (AND — el usuario debe tener AMBOS)
 [Authorize(Roles = "Admin", Permissions = "scheduleShowtime:showtime")]
 public sealed record ...
 
-// Múltiples atributos — el usuario debe cumplir con TODOS los atributos
+// Múltiples atributos (AND — el usuario debe cumplir TODOS)
 [Authorize(Roles = "Admin")]
 [Authorize(Permissions = "cancel:showtime")]
 public sealed record ...
 
+// Con policy de ownership
+[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+public sealed record CancelReservationCommand(...) : ICommand, IPolicyResourceRequest { ... }
+
+// Sin atributo = accesible para cualquier actor autorizado dentro del alcance
+public sealed record GetShowtimesQuery(...) : IQuery<...>;
 ```
 
-Cuando hay múltiples atributos `[Authorize]` presentes, se deben cumplir todos
-(semántica AND). Dentro de un solo atributo, se deben cumplir todos los roles y
-permisos declarados (también semántica AND).
+Semántica AND en todos los casos: se deben cumplir todos los atributos, todos
+los roles declarados en un atributo, todos los permisos declarados, y todas las
+políticas.
 
 ---
 
@@ -201,176 +260,168 @@ Solicitud HTTP
     │
     ▼
 ExecutionContextMiddleware
-    ├── Resuelve el Actor (JWT → user:{guid})
+    ├── Resuelve el Actor según tipo:
+    │     User     → JWT con claim 'oid' válido
+    │     External → [AllowAnonymous] sin JWT
+    │     null     → 401 Unauthorized
     ├── Valida x-tenant-id → ScopeContext
-    └── ValidateScopeAsync ──────────────────────────────────────────┐
-           Comprueba si existe UserAuthorizationReadModel para         │
-           (userId, tenantId, partitionId?, cinemaId?)              │
-           → 403 si el usuario no tiene asignación en este alcance    │
-    │                                                               │
-    ▼                                                               │
-Establece ExecutionContext (AsyncLocal)                             │
-    │                                                               │
-    ▼                                                               │
-Canalización de MediatR (MediatR Pipeline)                          │
-    │                                                               │
-    ├── ValidationBehavior (FluentValidation)                       │
-    │                                                               │
-    ├── AuthorizationBehavior ──────────────────────────────────────┘
-    │       RequestAuthorizationService.TryAuthorizeAsync
-    │         ├── Lee los atributos [Authorize] del comando/consulta
-    │         └── AuthorizationService.AuthorizeAsync
-    │               ├── Carga UserAuthorizationReadModel (en caché)
-    │               ├── Comprueba permisos requeridos ⊆ permisos usuario
-    │               ├── Comprueba roles requeridos ⊆ roles usuario
-    │               └── (TODO) Evalúa políticas
+    │     User sin tenant → 400 Bad Request
+    │     External sin tenant → SystemTenantId como fallback
+    └── ValidateScopeAsync (solo para ActorType.User)
+           Resolución jerárquica: ¿existe algún Assignment que cubra el scope?
+           → 403 Forbidden si no hay ninguno
+    │
+    ▼
+SetExecutionContext (AsyncLocal)
+    │
+    ▼
+MediatR Pipeline
+    │
+    ├── ValidationBehavior (FluentValidation)
+    │
+    └── AuthorizationBehavior
+            RequestAuthorizationService.TryAuthorizeAsync
+              ├── Lee [Authorize] del command/query
+              ├── Extrae resourceId si implementa IPolicyResourceRequest
+              └── AuthorizationService.AuthorizeAsync
+                    ├── ActorType.User  → AuthorizeUserAsync
+                    │     ├── Resuelve UserAuthorizationReadModel (jerárquico)
+                    │     ├── requiredPermissions ⊆ user permissions
+                    │     ├── requiredRoles ⊆ user roles
+                    │     └── Para cada policy → IPolicyEnforcer → IAuthorizationPolicy
+                    ├── ActorType.System → Result.Success() (trusted, auditado)
+                    └── ActorType.External → Result.Forbidden() (error de configuración)
     │
     └── CommandHandler / QueryHandler
-
 ```
+
+### Comportamiento de autorización por tipo de actor
+
+| ActorType | `ValidateScopeAsync` | `AuthorizeAsync` | Motivo |
+|---|---|---|---|
+| `User` | ✅ ejecutado | ✅ completo (roles + permisos + políticas) | Actor autenticado con identidad en el sistema |
+| `System` | ❌ no aplica (no pasa por middleware HTTP) | `Result.Success()` | Sistema interno de confianza, acción auditada en KurrentDB |
+| `External` | ❌ omitido en middleware | `Result.Forbidden()` — error de configuración | Nunca debe llegar a un command con `[Authorize]` |
+
+> **`ActorType.External` en `AuthorizeAsync`**: si un actor External llega a un
+> command decorado con `[Authorize]`, el sistema devuelve `Forbidden` en lugar de
+> `Success` — es un error de configuración del endpoint (debería estar detrás de
+> autenticación o no tener `[Authorize]`). Este comportamiento es fail-closed
+> deliberado: External nunca debe heredar permisos de forma silenciosa.
+
+> **`ActorType.System` y políticas de ownership**: los actores System omiten la
+> evaluación de políticas (incluyendo `SelfOrAdmin`). Si un worker/consumer invoca
+> un command con una policy de ownership, esa policy no se evalúa — System es
+> trusted por diseño. Si el command proviene de un flujo de integración que debe
+> respetar el ownership, propaga el `ActorId` original del usuario en el evento
+> de integración para que el consumer reconstruya el contexto como `ActorType.User`.
+
+---
 
 ### Paso 1 — Validación de alcance (middleware)
 
-`ValidateScopeAsync` verifica que el usuario tenga **cualquier asignación** en el
-alcance solicitado. No comprueba roles ni permisos — solo responde a:
-"¿Pertenece este usuario a este tenant/partición/cine en absoluto?"
+`ValidateScopeAsync` verifica que el usuario tenga **alguna asignación que cubra
+jerárquicamente** el alcance solicitado. No comprueba roles ni permisos — solo
+responde a: "¿Pertenece este usuario a este tenant/partición/cine?"
 
-```csharp
-// AuthorizationService.ValidateScopeAsync
-var userAuthorization = await repository.SingleOrDefaultAsync(
-    new GetUserAuthorizationCachedSpecification(query), ct);
+### Paso 2 — Autorización de comando/consulta (pipeline)
 
-if (userAuthorization is null)
-    return Result.NotFound(...);
-
-return Result.Success();
-
-```
-
-Esta es la **puerta de acceso** — si el usuario no está en el alcance, la solicitud es
-rechazada con un 403 antes de que el comando llegue a la canalización.
-
-### Paso 2 — Autorización de comando/consulta (comportamiento de la canalización)
-
-`AuthorizationBehavior` se ejecuta para cada comando y consulta. Si la solicitud
-no tiene el atributo `[Authorize]`, pasa inmediatamente (acción pública
-dentro del alcance).
-
-Para solicitudes decoradas:
-
-```csharp
-// RequestAuthorizationService
-var authorizationAttributes = request.GetType()
-    .GetCustomAttributes<AuthorizeAttribute>().ToList();
-
-if (authorizationAttributes.Count == 0)
-    return Result.Success();   // ← no se requiere autorización
-
-var requiredPermissions = authorizationAttributes
-    .SelectMany(a => a.Permissions?.Split(',') ?? [])
-    .ToList().AsReadOnly();
-
-var requiredRoles = authorizationAttributes
-    .SelectMany(a => a.Roles?.Split(',') ?? [])
-    .ToList().AsReadOnly();
-
-return await authorizationService.AuthorizeAsync(
-    requiredRoles, requiredPermissions, requiredPolicies, ct);
-
-```
-
-Luego, `AuthorizationService.AuthorizeAsync`:
-
-1. Lee el `ExecutionContext` desde `IExecutionContextService`.
-2. Omite la autorización para actores que no sean de tipo Usuario (las llamadas de servicio
-a servicio son confiables en esta capa — ver casos esquina).
-3. Carga `UserAuthorizationReadModel` desde el modelo de lectura en caché.
-4. Realiza comprobaciones de diferencia de conjuntos:
-
-```csharp
-// Cualquier permiso requerido que no esté en el conjunto del usuario → Prohibido (Forbidden)
-if (requiredPermissions.Except(userAuthorization.Permissions
-    .Select(p => p.Value)).Any())
-    return Result.Forbidden(...);
-
-// Cualquier rol requerido que no esté en el conjunto del usuario → Prohibido (Forbidden)
-if (requiredRoles.Except(userAuthorization.Roles
-    .Select(r => r.Value)).Any())
-    return Result.Forbidden(...);
-
-```
+`AuthorizationService.AuthorizeAsync` delega en `AuthorizeUserAsync` para actores
+`User`, que ejecuta en orden: permisos → roles → políticas. Un fallo en cualquier
+paso devuelve inmediatamente sin evaluar los siguientes.
 
 ### Paso 3 — Modelo de lectura: `UserAuthorizationReadModel`
 
-La comprobación de autorización lee desde un **modelo de lectura proyectado**, no directamente
-del agregado `User`. Este modelo de lectura es mantenido por proyectores
-que reaccionan a los eventos de dominio de `User` (`UserGrantedEvent`,
-`RoleAssignedToScopeEvent`, etc.) a través de la suscripción de KurrentDB.
-
 ```
 Agregado User (KurrentDB)
-    │  UserGrantedEvent
-    │  RoleAssignedToScopeEvent
-    │  PermissionAssignedToScopeEvent
+    │  UserGrantedEvent, RoleAssignedToScopeEvent, PermissionAssignedToScopeEvent, ...
     ▼
-UserAuthorizationProjector
+Proyectores (UserGrantedEventProjector, RoleAssignedToScopeEventProjector, ...)
     ▼
-UserAuthorizationReadModel (PostgreSQL, en caché en Redis)
+UserAuthorizationReadModel — una fila por nivel de Scope (PostgreSQL + Redis)
     ▼
-AuthorizationService.AuthorizeAsync
-
+UserAuthorizationResolver.ResolveAsync
+    (GetUserAuthorizationCandidatesSpecification + Matches + especificidad)
+    ▼
+AuthorizationService.AuthorizeAsync / ValidateScopeAsync
 ```
 
-El modelo de lectura se almacena en caché utilizando una clave de especificación de caché:
+---
 
+## 🔍 Resolución jerárquica de scopes en el read model
+
+### El problema (resuelto)
+
+`GetUserAuthorizationCachedSpecification` filtra con igualdad SQL exacta, lo que
+impide encontrar un Assignment de nivel Tenant cuando la request incluye un
+`CinemaId` específico.
+
+### La solución: dos specifications con responsabilidades distintas
+
+| Specification | Propósito | Usado por |
+|---|---|---|
+| `GetUserAuthorizationCachedSpecification` | Identidad **exacta** — la fila concreta que un evento de dominio referencia | Proyectores (escritura) |
+| `GetUserAuthorizationCandidatesSpecification` | Todas las filas del usuario en un tenant; resolución jerárquica con `Matches` en memoria | `UserAuthorizationResolver` (lectura) |
+
+`UserAuthorizationResolver` encapsula la resolución jerárquica y añade un caché
+en memoria por request (campo `last`) para evitar la doble carga del read model
+entre `ValidateScopeAsync` (middleware) y `AuthorizeAsync` (pipeline):
+
+```csharp
+public async Task<UserAuthorizationReadModel?> ResolveAsync(
+    Guid userId, ScopeContext scope, CancellationToken cancellationToken)
+{
+    if (this.last is { } cached && cached.UserId == userId && cached.Scope == scope)
+        return cached.Result;  // ← evita segunda consulta a Redis en la misma request
+
+    var candidates = await this.repository.ListAsync(
+        new GetUserAuthorizationCandidatesSpecification(userId, scope.TenantId), ct);
+
+    var result = candidates
+        .Where(c => c.Matches(scope.TenantId, scope.PartitionId, scope.DomainId))
+        .OrderByDescending(GetSpecificity)
+        .FirstOrDefault();
+
+    this.last = (userId, scope, result);
+    return result;
+}
 ```
-GetUserAuthorizationCachedSpecification_{userId}_{tenantId}_{partitionId}_{cinemaId}
 
-```
-
-Esto significa que las comprobaciones de autorización se sirven desde Redis después de la primera
-búsqueda, lo que las hace extremadamente rápidas para las solicitudes subsiguientes.
+> `UserAuthorizationResolver` debe registrarse como **Scoped** para que el caché
+> en memoria sea por request y no cruce entre requests concurrentes.
 
 ---
 
 ## 🏗️ Gestión del acceso de usuarios
 
-### Otorgar acceso a un usuario a un alcance con roles y permisos
-
 ```csharp
+// Otorgar acceso con roles y permisos
 user.GrantUser(
     scope: Scope.Create(tenantId, partitionId, cinemaId),
     roles: [new Role(Roles.Admin)],
     permissions: [new Permission(ShowtimePermissions.Cancel)]);
 
-```
-
-Esto emite `UserGrantedEvent` (nuevo alcance) o `RoleAssignedToScopeEvent` /
-`PermissionAssignedToScopeEvent` (alcance existente).
-
-### Revocar todo el acceso para un alcance
-
-```csharp
+// Revocar todo el acceso para un alcance
 user.RevokeUser(scope);
-// Emite: UserRevokedEvent → elimina la Asignación completa
 
-```
-
-### Añadir un único rol a un alcance existente
-
-```csharp
+// Añadir un único rol a un alcance existente
 user.AssignRole(scope, new Role(Roles.Viewer));
-// Emite: RoleAssignedToScopeEvent
 
-```
-
-### Eliminar un único permiso
-
-```csharp
+// Eliminar un único permiso
 user.RemovePermission(scope, new Permission(ShowtimePermissions.Cancel));
-// Emite: PermissionRevokedFromScopeEvent
-
 ```
+
+---
+
+## 🗄️ Caché del read model
+
+`BaseCachedSpecificationRepository` invalida **todas** las entradas de caché bajo
+el prefijo `UserAuthorizationReadModel` en cada `AddAsync`/`UpdateAsync`/`DeleteAsync`,
+automáticamente para todos los proyectores. No se requiere invalidación manual
+por clave en ningún proyector.
+
+El `UserAuthorizationResolver` añade una segunda capa de caché **en memoria por
+request** (campo `last`), eliminando la doble consulta a Redis por request HTTP.
 
 ---
 
@@ -378,44 +429,68 @@ user.RemovePermission(scope, new Permission(ShowtimePermissions.Cancel));
 
 ### ❌ Sin `Microsoft.AspNetCore.Authorization`
 
-La autorización de ASP.NET Core está ligada a HTTP y centrada en políticas. No puede
-expresar de forma nativa jerarquías de alcance multi-inquilino. El servicio personalizado
-`IAuthorizationService` reside en la capa de aplicación y se puede invocar
-desde cualquier manejador — no solo desde controladores.
+La autorización de ASP.NET Core está ligada a HTTP y centrada en políticas. No
+puede expresar de forma nativa jerarquías de alcance multi-inquilino.
 
 ### ❌ Sin comprobaciones de roles/permisos en `ValidateScopeAsync`
 
-La validación del alcance es intencionadamente gruesa. Responde únicamente a "¿pertenece este usuario
-aquí?" — no a "¿qué puede hacer?". Esta separación mantiene el
-middleware rápido y permite que el comportamiento de la canalización aplique un control de acceso
-de grano fino por operación.
+La validación del alcance responde únicamente "¿pertenece este usuario aquí?" —
+no "¿qué puede hacer?". Separación que mantiene el middleware rápido.
 
 ### ✅ Modelo de lectura para la autorización, no el agregado
 
-Cargar el agregado `User` completo para cada comprobación de autorización
-requeriría reproducir potencialmente cientos de eventos. El `UserAuthorizationReadModel`
-es una instantánea proyectada de antemano y almacenada en caché con exactamente los datos necesarios para el
-control de acceso: roles y permisos con alcance.
+El `UserAuthorizationReadModel` es una proyección con exactamente los datos
+necesarios: roles y permisos por nivel de alcance, en caché en Redis.
 
-### ✅ La clave de caché incluye el alcance completo
+### ✅ Una fila por nivel de Scope, resolución jerárquica en la consulta
 
-La clave de caché codifica `(userId, tenantId, partitionId, cinemaId)`. Esto
-significa que un usuario que opera en diferentes alcances obtiene entradas de caché independientes —
-sin riesgo de filtrar permisos a través de los límites del alcance.
+La resolución jerárquica (`Matches`) se aplica en el momento de la lectura,
+no en la proyección. Evita divergencia entre el comportamiento del dominio y
+el del read model.
 
-### ✅ Las llamadas servicio a servicio omiten la autorización de usuario
+### ✅ `IPolicyEnforcer` desacoplado del shape del request
 
-Cuando `ActorType != User`, `AuthorizeAsync` devuelve éxito incondicionalmente.
-Los servicios internos son de confianza en esta capa — ya están autenticados
-a través de la identidad del servicio, y sus acciones son audidables a través del
-`ExecutionContext` (ver casos esquina para riesgos).
+El enforcer recibe solo `(policy, currentUserId, currentUserRoles,
+currentUserPermissions, resourceId?)` — nunca el command/query completo.
+Esto mantiene el sistema de autorización independiente de los contratos de
+la capa de presentación.
 
-### ✅ Los permisos y roles utilizan la semántica AND
+### ✅ `IAuthorizationPolicy` por estrategia, descubierta por DI
 
-Se deben cumplir todos los requisitos declarados. No existe la semántica OR
-dentro de un único atributo `[Authorize]`. Para escenarios OR, el enfoque
-recomendado es declarar el permiso más amplio que cubra la operación,
-y dejar que el dominio aplique reglas más finas.
+Cada policy es una clase independiente registrada en DI. `PolicyEnforcer` las
+descubre por nombre en tiempo de ejecución. Añadir una nueva policy no requiere
+modificar `PolicyEnforcer`.
+
+### ✅ Policies viven en la capa de aplicación, no en el dominio
+
+Las policies de tipo ownership necesitan consultar un repositorio (read model)
+para resolver el dueño del recurso — esto es orquestación de application layer,
+no una invariante del agregado. El dominio permanece ignorante de roles, permisos
+y políticas de autorización.
+
+### ✅ `ActorType.External` en `AuthorizeAsync` → Forbidden explícito
+
+Los actores External solo deberían llegar a endpoints `[AllowAnonymous]` que
+no declaran `[Authorize]`. Si llegan a `AuthorizeAsync`, es un error de
+configuración que debe fallar de forma ruidosa (Forbidden), no silenciosa
+(Success).
+
+### ✅ `ActorType.System` → Success sin evaluación de políticas
+
+Los workers y consumers del sistema son trusted porque su identidad y acción
+están completamente auditadas vía `ExecutionContext` en `EventStoreMetadata`.
+Si un flujo de integración necesita respetar ownership, debe propagar el
+`ActorId` del usuario original en el evento de integración.
+
+### ✅ `Roles` (Application.Contracts) y `Role` (Domain) desacoplados
+
+Ver §4. Consistencia garantizada por test de arquitectura.
+
+### ❌ Sin paginación en read models de autorización
+
+El conjunto de Assignments de un usuario en un tenant es pequeño (1-5 filas)
+y de alta repetición — ideal para caché sin paginar. Otros read models con
+datasets grandes usan paginación sin caché.
 
 ---
 
@@ -424,234 +499,201 @@ y dejar que el dominio aplique reglas más finas.
 ```
 "¿Puede el usuario ACCEDER a este alcance?"        ValidateScopeAsync    (middleware)
        ↓ sí
-"¿Puede el usuario REALIZAR esta operación?"     AuthorizeAsync        (canalización)
+"¿Puede el usuario REALIZAR esta operación?"       AuthorizeAsync        (pipeline)
+       ↓ roles + permisos ok
+"¿Cumple las POLÍTICAS de ownership/ABAC?"         IPolicyEnforcer       (pipeline)
        ↓ sí
-"¿Es la operación VÁLIDA?"                         Reglas de dominio     (agregado)
-
+"¿Es la operación VÁLIDA?"                          Reglas de dominio     (agregado)
 ```
 
-Tres capas, tres preocupaciones, tres lugares donde fallar — cada uno de ellos
-independientemente integrable en pruebas y evolucionable por separado.
-
 ```
-ExecutionContext
-    └── ScopeContext (tenantId, partitionId?, domainId?)
-              │
-              ▼
-    UserAuthorizationReadModel
+ExecutionContext.ScopeContext
+    │
+    ▼
+UserAuthorizationResolver.ResolveAsync
+    ├── GetUserAuthorizationCandidatesSpecification (Redis → PostgreSQL)
+    ├── .Where(Matches) + OrderByDescending(especificidad)
+    └── UserAuthorizationReadModel (el más específico que cubre el scope)
               │
     ┌─────────┴──────────┐
     │  Roles[]           │  ← grano grueso: Admin, Viewer
     │  Permissions[]     │  ← grano fino: cancel:showtime
     └────────────────────┘
               │
-    Atributo [Authorize] en comando/consulta
+    [Authorize] en command/query
               │
     AuthorizationService.AuthorizeAsync
-
+              │
+    IPolicyEnforcer (si hay Policies declaradas)
+              │
+    IAuthorizationPolicy.EvaluateAsync
+         └── Carga ReservationReadModel para resolver ownership
 ```
 
 ---
 
-## ⚠️ Casos esquina (Corner cases)
+## ⚠️ Casos esquina
 
-### 1. Especificidad del alcance y asignaciones superpuestas
+### 1. Especificidad del alcance y asignaciones solapadas
 
-Un usuario puede tener asignaciones en múltiples niveles de alcance. `Scope.Matches` utiliza
-el **nivel definido más estrecho** de la asignación — no de la solicitud.
+La resolución en `UserAuthorizationResolver` es **excluyente**: selecciona
+solo el Assignment más específico. Esto difiere del comportamiento del
+agregado `User.GetRolesFor`, que es **aditivo** (unión de todos los que hacen
+match). Esta diferencia es deliberada — ver §1 de decisiones de diseño.
 
 ```
 El usuario tiene:
-  Asignación A: Tenant=T1             → roles: [Viewer]
-  Asignación B: Tenant=T1, Cinema=C1 → roles: [Admin]
+  Assignment A: Tenant=T1             → roles: [Viewer]
+  Assignment B: Tenant=T1, Cinema=C1  → roles: [Admin]
 
-Alcance de la solicitud: Tenant=T1, Cinema=C1
-
-GetRolesFor(tenantId=T1, partitionId=null, cinemaId=C1):
-  Asignación A: CinemaId=null, PartitionId=null → coincide en TenantId=T1 ✅
-  Asignación B: CinemaId=C1 → coincide en CinemaId=C1 ✅
-
-Resultado: [Viewer, Admin]  ← AMBAS asignaciones coinciden
-
+AuthorizationService para Tenant=T1, Cinema=C1:
+  → Solo Assignment B (Cinema, más específico) → [Admin]
+  (no hereda [Viewer] de Assignment A)
 ```
 
-`GetRolesFor` y `GetPermissionsFor` utilizan `.Where(a => a.Scope.Matches(...))`
-el cual devuelve **todas las asignaciones que coincidan**, no solo la más específica.
-Un usuario hereda permisos de alcances más amplios. Esto es aditivo.
+### 2. Invalidación de caché — verificado, no es un problema
 
-### 2. Caducidad de la caché tras cambios de autorización
+`BaseCachedSpecificationRepository` invalida por prefijo de tipo en cada
+operación de escritura. Todos los proyectores de revocación pasan por este
+repositorio base automáticamente.
 
-Cuando los roles o permisos de un usuario cambian (por ejemplo, se procesa `RoleAssignedToScopeEvent`),
-la entrada de caché para ese usuario+alcance debe ser invalidada.
-El proyector que actualiza `UserAuthorizationReadModel` también debe desalojar
-la clave afectada en la caché de Redis.
+### 3. `ActorType.System` omite políticas de ownership
 
-> Si la invalidación de la caché no está implementada en el proyector, los usuarios
-> verán datos de autorización obsoletos hasta que expire el TTL de la caché. Este es un
-> riesgo conocido con las proyecciones asíncronas basadas en eventos y los modelos de lectura en caché.
+Si un worker invoca un command con `[Authorize(Policies = "SelfOrAdmin")]`,
+la policy no se evalúa — System pasa directamente. Para preservar el ownership
+en flujos de integración, propaga el `ActorId` del usuario original en los
+metadatos del evento de integración.
 
-### 3. La autorización de servicio a servicio es implícita
+### 4. `ActorType.External` y `[AllowAnonymous]`
 
-Cuando `ActorType != User`, `AuthorizeAsync` devuelve `Result.Success()`
-incondicionalmente. No existe todavía un modelo de permisos de servicio. Un servicio interno
-comprometido podría realizar cualquier acción.
+El middleware omite `ValidateScopeAsync` para External. Cualquier endpoint
+`[AllowAnonymous]` que mute estado de negocio debe aplicar su propia
+autorización a nivel de command — no puede depender del sistema de roles/permisos
+porque External no tiene identidad en la plataforma.
 
-Mitigación en el diseño actual: cada acción del servicio se registra en
-KurrentDB con el `ExecutionContext` completo (incluyendo el `ActorId` del
-servicio), haciéndolo auditable a posteriori.
+### 5. `IPolicyResourceRequest` sin `[Authorize(Policies = ...)]` activo
 
-### 4. `ValidateScopeAsync` se omite para actores `External`
+Un command puede implementar `IPolicyResourceRequest` sin tener una policy
+activa (ej. mientras la policy está en desarrollo/comentada). Esto no rompe
+nada — `resourceId` simplemente no se usa. Sin embargo es ruido semántico:
+documenta el motivo en el command si la policy está temporalmente desactivada.
 
-El middleware omite `ValidateScopeAsync` para `ActorType.External`. Los actores externos
-(solicitudes no autenticadas como el registro) utilizan `SystemTenantId`
-como respaldo y omiten la validación de alcance. Cualquier endpoint que permita
-`[AllowAnonymous]` y realice operaciones comerciales significativas debe aplicar
-sus propias reglas de autorización a nivel de comando.
+### 6. Policy registrada en DI pero sin constante en `Policies`
 
-### 5. La aplicación de políticas aún no está implementada
+Si se registra una `IAuthorizationPolicy` con un `Name` que no aparece en
+ningún `[Authorize(Policies = ...)]`, es código muerto — no causa errores
+pero tampoco se invoca nunca. Detectable con un test de arquitectura.
 
-`[Authorize(Policies = "...")]` es analizado y reenviado a
-`AuthorizationService.AuthorizeAsync`, pero el bucle de evaluación está comentado
-(TODO). Declarar una política en un comando actualmente no tiene ningún efecto.
-No confíe en las políticas para el control de acceso hasta que la implementación esté completa.
+### 7. Propagación asíncrona del read model
 
-### 6. `GetUserActorId()` lanza una excepción para actores que no son de tipo Usuario
-
-El asistente en `ExecutionContext` lanza `InvalidOperationException` si es invocado
-cuando `ActorType != User`. Cualquier ruta de código que pueda manejar múltiples tipos de actores
-debe protegerse con `if (actorType == ActorType.User)` antes de llamarlo.
-`AuthorizationService` lo hace correctamente.
-
-### 7. El modelo de lectura refleja una proyección asíncrona — no el agregado
-
-Debido a que `UserAuthorizationReadModel` se construye a partir de eventos de suscripción de KurrentDB,
-existe un retraso de propagación inherente entre un cambio de dominio
-(por ejemplo, `GrantUser`) y el reflejo de este en la comprobación de autorización. En la práctica,
-esto es cuestión de milisegundos, pero en pruebas o durante el procesamiento de suscripciones
-de puesta al día (catch-up), un usuario puede estar autorizado a nivel de agregado pero no estarlo
-aún a nivel de modelo de lectura.
+`UserAuthorizationReadModel` se construye a partir de eventos de KurrentDB.
+Existe un retraso entre un cambio de dominio (`GrantUser`) y su reflejo en
+la autorización. En tests y durante catch-up de suscripción, un usuario puede
+estar autorizado en el agregado pero no en el read model.
 
 ---
 
 ## 🧪 Ejemplos completos
 
-### Ejemplo 1 — Un usuario cancela una función
+### Ejemplo 1 — Usuario cancela una función (permisos)
 
 ```
-Precondiciones:
-  El usuario U1 tiene la Asignación:
-    Alcance: Tenant=T1, Cinema=C1
-    Roles: [Admin]
-    Permisos: [cancel:showtime]
+Usuario U1: Assignment Tenant=T1, Cinema=C1 → [Admin] + [cancel:showtime]
 
-Solicitud:
-  POST /api/v2/showtimes/{id}/cancel
-  Authorization: Bearer {jwt, oid=U1}
-  x-tenant-id: T1
-  x-domain-id: C1
+POST /api/v2/showtimes/{id}/cancel
+  x-tenant-id: T1, x-domain-id: C1
 
-ExecutionContextMiddleware:
-  1. ResolveActor → user:U1, ActorType.User
-  2. ResolveTenant → T1
-  3. ValidateScopeAsync(U1, T1, null, C1)
-     → Se encontró UserAuthorizationReadModel ✅
-  4. SetExecutionContext(...)
-
-Canalización de MediatR:
-  5. AuthorizationBehavior
-     → [Authorize(Permissions = "cancel:showtime")]
-     → AuthorizeAsync
-         requiredPermissions: ["cancel:showtime"]
-         userAuthorization.Permissions: ["cancel:showtime"]
-         difference: [] → ✅ Autorizado
-
-  6. Ejecución de CancelShowtimeCommandHandler
-
-```
-
-### Ejemplo 2 — Un espectador intenta cancelar (prohibido)
-
-```
-El usuario U2 tiene la Asignación:
-  Alcance: Tenant=T1
-  Roles: [Viewer]
-  Permisos: [getShowtime:showtime, getShowtimes:showtime]
-
-Solicitud: POST /api/v2/showtimes/{id}/cancel
-
+ValidateScopeAsync → Assignment(T1,null,C1).Matches(T1,null,C1) ✅
 AuthorizeAsync:
-  requiredPermissions: ["cancel:showtime"]
-  userAuthorization.Permissions: ["getShowtime:showtime", "getShowtimes:showtime"]
-  difference: ["cancel:showtime"] → no está vacío → Result.Forbidden ❌
-
+  requiredPermissions: ["cancel:showtime"] ⊆ ["cancel:showtime"] ✅
+  → CancelShowtimeCommandHandler ejecuta
 ```
 
-### Ejemplo 3 — Un usuario accede al tenant incorrecto (prohibido en el alcance)
+### Ejemplo 2 — Usuario cancela su reserva (policy SelfOrAdmin)
 
 ```
-El usuario U3 tiene una Asignación únicamente para Tenant=T2
+Usuario U1: Assignment Tenant=T1 → [Viewer] + [cancel:reservation]
+Reserva R1: UserId = U1
 
-Solicitud:
-  x-tenant-id: T1   (tenant diferente)
+POST /api/v2/reservations/{R1}/cancel
+  [Authorize(Permissions = "cancel:reservation", Policies = "SelfOrAdmin")]
 
-ValidateScopeAsync(U3, T1, null, null):
-  → No se encontró UserAuthorizationReadModel para T1
-  → Result.NotFound → 403 Forbidden ❌
-  (nunca llega a la canalización)
-
+ValidateScopeAsync → Assignment(T1).Matches(T1) ✅
+AuthorizeAsync:
+  requiredPermissions: ["cancel:reservation"] ⊆ ["cancel:reservation"] ✅
+  requiredRoles: [] → ok
+  policy "SelfOrAdmin":
+    currentUserRoles no contiene "Admin"
+    resourceId = R1
+    ReservationReadModel(R1).UserId == U1 ✅
+  → Autorizado ✅
 ```
 
-### Ejemplo 4 — Un Administrador a nivel de Tenant accede a cualquier cine
+### Ejemplo 3 — Usuario intenta cancelar la reserva de otro (policy falla)
 
 ```
-El usuario U4 tiene la Asignación:
-  Alcance: Tenant=T1 (sin partición, sin cine)
-  Roles: [Admin]
-  Permisos: [cancel:showtime, scheduleShowtime:showtime, ...]
+Usuario U2: Assignment Tenant=T1 → [Viewer]
+Reserva R1: UserId = U1 (no es U2)
 
-Solicitud:
-  x-tenant-id: T1
-  x-domain-id: C5  (cualquier cine en T1)
-
-ValidateScopeAsync(U4, T1, null, C5):
-  Especificación: userId=U4, tenantId=T1, partitionId=null, cinemaId=C5
-  Consulta (Query): WHERE partitionId IS NULL AND cinemaId = C5
-  → No se encontró ninguna fila porque la asignación tiene cinemaId=null ⚠️
-
+policy "SelfOrAdmin":
+  currentUserRoles no contiene "Admin"
+  ReservationReadModel(R1).UserId (U1) != currentUserId (U2)
+  → Result.Forbidden ❌
 ```
 
-> **Esta es una brecha potencial**: `ValidateScopeAsync` utiliza la especificación
-> `GetUserAuthorizationCachedSpecification` la cual filtra por la tupla exacta
-> `(userId, tenantId, partitionId, cinemaId)`. Una asignación a nivel de tenant
-> (cinemaId=null) no coincidirá con una solicitud que tenga un cinemaId específico.
-> El proyector del modelo de lectura debe manejar esto mediante:
-> * El almacenamiento de una fila por nivel de alcance (solo tenant, solo partición, específico de cine), o
-> * Haciendo que `ValidateScopeAsync` realice una consulta jerárquica de respaldo (fallback)
-> (comprobar cine → luego partición → luego tenant).
-> 
-> 
-> Verifique que su proyector y especificación manejen esto correctamente.
+### Ejemplo 4 — Admin cancela reserva de cualquier usuario
+
+```
+Usuario U3: Assignment Tenant=T1 → [Admin]
+Reserva R1: UserId = U1
+
+policy "SelfOrAdmin":
+  currentUserRoles.Contains("Admin") → Result.Success() ✅
+  (no se consulta ReservationReadModel)
+```
+
+### Ejemplo 5 — Tenant Admin accede a cinema específico (jerarquía)
+
+```
+Usuario U4: Assignment Tenant=T1 (PartitionId=null, CinemaId=null) → [Admin]
+
+Request: x-tenant-id: T1, x-domain-id: C5
+
+ValidateScopeAsync:
+  Candidatos: [Assignment(T1, null, null)]
+  Matches(T1, null, C5): CinemaId=null → PartitionId=null → TenantId==T1 ✅
+  → Encontrado ✅
+```
 
 ---
 
-## 📋 Referencia del atributo de autorización
+## 📋 Referencia de contratos
 
 ```csharp
-// Solo permiso
+// Declarar autorización en un command/query
 [Authorize(Permissions = "cancel:showtime")]
-
-// Solo rol
 [Authorize(Roles = "Admin")]
+[Authorize(Policies = Policies.SelfOrAdmin)]
 
-// Ambos (AND — el usuario debe tener ambos)
-[Authorize(Roles = "Admin", Permissions = "scheduleShowtime:showtime")]
+// Exponer resourceId para policies de ownership
+public sealed record MiCommand(...) : ICommand, IPolicyResourceRequest
+{
+    public Guid ResourceId => this.RecursoId;
+}
 
-// Múltiples atributos (AND — el usuario debe cumplir con todos)
-[Authorize(Roles = "Admin")]
-[Authorize(Permissions = "cancel:showtime")]
+// Implementar una nueva policy
+public sealed class MiPolicy : IAuthorizationPolicy
+{
+    public string Name => Policies.MiNuevaPolicy;
 
-// Política (aún no se ejecuta)
-[Authorize(Policies = "OwnerOnly")]
+    public async Task<Result> EvaluateAsync(
+        Guid currentUserId,
+        IReadOnlyCollection<string> currentUserRoles,
+        IReadOnlyCollection<string> currentUserPermissions,
+        Guid? resourceId,
+        CancellationToken cancellationToken = default) { ... }
+}
 
-// Sin atributo = accesible para cualquier usuario dentro del alcance
-public sealed record GetShowtimesQuery(...) : IQuery<...>;
+// Registrar la policy en DI
+services.AddScoped<IAuthorizationPolicy, MiPolicy>();
+```

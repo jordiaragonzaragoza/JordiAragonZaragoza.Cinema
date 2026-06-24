@@ -56,9 +56,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
                 return Result.Unauthorized("No user is currently authenticated.");
             }
 
-            return currentContext.ActorType.Value switch
+            return currentContext.ActorType switch
             {
-                var t when t == ActorType.User.Value
+                var t when t == ActorType.User
                     => await this.AuthorizeUserAsync(
                         currentContext,
                         requiredRoles,
@@ -71,14 +71,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
                 // The actor is your own system reacting to an event or executing
                 // a scheduled task — it is trusted because the action is audited
                 // completely via ExecutionContext
-                var t when t == ActorType.System.Value
+                var t when t == ActorType.System
                     => Result.Success(),
 
                 // External: Call from outside the platform without a JWT.
                 // Only arrives here from [AllowAnonymous] endpoints (webhooks, registration).
                 // These endpoints should NOT be decorated with [Authorize] — if they arrive here,
                 // it's an endpoint configuration error, not a legitimate use case.
-                var t when t == ActorType.External.Value
+                var t when t == ActorType.External
                     => Result.Forbidden(
                         "External actors cannot invoke operations that require " +
                         "authorization. Endpoints accepting external actors must " +
