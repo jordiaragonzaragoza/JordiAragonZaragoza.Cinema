@@ -23,7 +23,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
-
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
 
     public static class SeedData
@@ -211,7 +211,7 @@
                 UserId = ExampleUserWithAdminRole.Id,
                 TenantId = ExampleTenant.Id,
                 PartitionId = ExamplePartition.Id,
-                CinemaId = ExampleCinema.Id,
+                DomainId = ExampleCinema.Id,
                 Roles = new List<RoleReadModel>
                 {
                     new RoleReadModel(Guid.CreateVersion7(), Roles.Admin),
@@ -221,35 +221,64 @@
             return userAuthorization;
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context)
+        public static void PopulateReadModelTestData(ReservationReadModelContext context, ScopeInfo? scopeInfo = null)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
+            var tenantId = scopeInfo?.TenantId ?? SystemConstants.SystemTenantId;
+            var partitionId = scopeInfo?.PartitionId;
+            var domainId = scopeInfo?.DomainId;
+
+            // Local factory: each entity needs its own instance of ScopeInfo.
+            // EF Core cannot resolve the same owned type reference
+            // for multiple owner entities within the same SaveChanges.
+            ScopeInfo NewScope() => new(tenantId, partitionId, domainId);
+
+            ExampleMovieReadModel.Scope = NewScope();
             context.Movies.Add(ExampleMovieReadModel);
 
+            ExampleAuditoriumReadModel.Scope = NewScope();
             context.Auditoriums.Add(ExampleAuditoriumReadModel);
 
+            ExampleUserReadModelWithAdminRole.Scope = NewScope();
             context.Users.Add(ExampleUserReadModelWithAdminRole);
 
+            ExampleUserReadModelWithReservation.Scope = NewScope();
             context.Users.Add(ExampleUserReadModelWithReservation);
 
+            ExampleUserReadModel.Scope = NewScope();
             context.Users.Add(ExampleUserReadModel);
 
-            context.UsersAuthorizations.Add(ExampleUserAuthorizationReadModelWithAdminRole());
+            var exampleUserAuthorizationReadModel = ExampleUserAuthorizationReadModelWithAdminRole();
+            exampleUserAuthorizationReadModel.Scope = NewScope();
+            context.UsersAuthorizations.Add(exampleUserAuthorizationReadModel);
 
+            SystemTenantReadModel.Scope = NewScope();
             context.Tenants.Add(SystemTenantReadModel);
 
+            ExampleTenantReadModel.Scope = NewScope();
             context.Tenants.Add(ExampleTenantReadModel);
 
+            ExamplePartitionReadModel.Scope = NewScope();
             context.Partitions.Add(ExamplePartitionReadModel);
 
+            ExampleCinemaReadModel.Scope = NewScope();
             context.Cinemas.Add(ExampleCinemaReadModel);
 
+            ExampleShowtimeReadModel.Scope = NewScope();
             context.Showtimes.Add(ExampleShowtimeReadModel);
 
-            context.Reservations.AddRange(ExampleReservationReadModel());
+            var exampleReservationReadModel = ExampleReservationReadModel();
+            exampleReservationReadModel.Scope = NewScope();
+            context.Reservations.Add(exampleReservationReadModel);
 
-            context.AvailableSeats.AddRange(ExampleAvailableSeatsReadModel);
+            var availableSeats = ExampleAvailableSeatsReadModel;
+            foreach (var seat in availableSeats)
+            {
+                seat.Scope = NewScope();
+            }
+
+            context.AvailableSeats.AddRange(availableSeats);
 
             context.SaveChanges();
         }

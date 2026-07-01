@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20260521200359_InitialReadModelMigration")]
+    [Migration("20260629182104_InitialReadModelMigration")]
     partial class InitialReadModelMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.5")
+                .HasAnnotation("ProductVersion", "10.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -192,7 +192,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CinemaId")
+                    b.Property<Guid?>("DomainId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("PartitionId")
@@ -209,7 +209,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     b.HasIndex("UserId")
                         .HasDatabaseName("IX_UsersAuthorizations_UserId");
 
-                    b.HasIndex("UserId", "TenantId", "PartitionId", "CinemaId")
+                    b.HasIndex("UserId", "TenantId", "PartitionId", "DomainId")
                         .IsUnique()
                         .HasDatabaseName("IX_UsersAuthorizations_UserIdScope");
 
@@ -238,9 +238,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
 
                     b.Property<decimal>("Position")
                         .HasColumnType("numeric(20,0)");
-
-                    b.Property<long>("Version")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -274,7 +271,159 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .HasForeignKey("AuditoriumId");
                         });
 
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("AuditoriumReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("AuditoriumReadModelId");
+
+                            b1.ToTable("Auditoriums");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AuditoriumReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Cinema.Application.Contracts.ReadModels.CinemaReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("CinemaReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("CinemaReadModelId");
+
+                            b1.ToTable("Cinemas");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CinemaReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels.MovieReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("MovieReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("MovieReadModelId");
+
+                            b1.ToTable("Movies");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MovieReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Partition.Application.Contracts.ReadModels.PartitionReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("PartitionReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("PartitionReadModelId");
+
+                            b1.ToTable("Partitions");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PartitionReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.AvailableSeatReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("AvailableSeatReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("AvailableSeatReadModelId");
+
+                            b1.ToTable("AvailableSeats");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AvailableSeatReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ReservationReadModel", b =>
@@ -304,7 +453,97 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .HasForeignKey("ReservationId");
                         });
 
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("ReservationReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("ReservationReadModelId");
+
+                            b1.ToTable("Reservations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels.ShowtimeReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("ShowtimeReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("ShowtimeReadModelId");
+
+                            b1.ToTable("Showtimes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ShowtimeReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.Tenant.Application.Contracts.ReadModels.TenantReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("TenantReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("TenantReadModelId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel", b =>
@@ -357,9 +596,68 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                                 .HasForeignKey("UserAuthorizationId");
                         });
 
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("UserAuthorizationReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("UserAuthorizationReadModelId");
+
+                            b1.ToTable("UsersAuthorizations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserAuthorizationReadModelId");
+                        });
+
                     b.Navigation("Permissions");
 
                     b.Navigation("Roles");
+
+                    b.Navigation("Scope")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserReadModel", b =>
+                {
+                    b.OwnsOne("JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeInfo", "Scope", b1 =>
+                        {
+                            b1.Property<Guid>("UserReadModelId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid?>("DomainId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_DomainId");
+
+                            b1.Property<Guid?>("PartitionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_PartitionId");
+
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("Scope_TenantId");
+
+                            b1.HasKey("UserReadModelId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserReadModelId");
+                        });
+
+                    b.Navigation("Scope")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -13,7 +13,7 @@
         {
             var corsOrigins = configuration.GetValue<string>(CorsOriginsSettingKey) ?? "*";
 
-            var builder = new CorsPolicyBuilder()
+            var builder = new CorsPolicyBuilder() // TODO: Review.
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader();

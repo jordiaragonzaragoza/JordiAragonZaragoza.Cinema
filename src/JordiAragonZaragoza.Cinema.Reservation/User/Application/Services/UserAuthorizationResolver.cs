@@ -53,7 +53,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
 
             static int GetSpecificity(UserAuthorizationReadModel authorization)
             {
-                if (authorization.CinemaId is not null)
+                if (authorization.DomainId is not null)
                 {
                     return 2;
                 }

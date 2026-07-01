@@ -2,9 +2,9 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class TenantReadModel : IReadModel
+    public sealed class TenantReadModel : BaseReadModel
     {
         public TenantReadModel(
             Guid id)
@@ -16,7 +16,5 @@
         private TenantReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
     }
 }

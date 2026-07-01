@@ -67,7 +67,7 @@
                     userAuthorizationReadModel.UserId,
                     userAuthorizationReadModel.TenantId,
                     userAuthorizationReadModel.PartitionId,
-                    userAuthorizationReadModel.CinemaId,
+                    userAuthorizationReadModel.DomainId,
                     userAuthorizationReadModel.Roles.ToResponse(),
                     userAuthorizationReadModel.Permissions.ToResponse()))
                 .ToList());
@@ -82,7 +82,7 @@
                 userAuthorizationReadModel.UserId,
                 userAuthorizationReadModel.TenantId,
                 userAuthorizationReadModel.PartitionId,
-                userAuthorizationReadModel.CinemaId,
+                userAuthorizationReadModel.DomainId,
                 userAuthorizationReadModel.Roles.ToResponse(),
                 userAuthorizationReadModel.Permissions.ToResponse()));
         }

@@ -3,12 +3,18 @@
     using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public sealed class AuditoriumReadModelConfiguration : BaseModelTypeConfiguration<AuditoriumReadModel, Guid>
+    public sealed class AuditoriumReadModelConfiguration : BaseReadModelTypeConfiguration<AuditoriumReadModel, Guid, ReservationReadModelContext>
     {
+        public AuditoriumReadModelConfiguration(ReservationReadModelContext dbContext)
+            : base(dbContext)
+        {
+        }
+
         public override void Configure(EntityTypeBuilder<AuditoriumReadModel> builder)
         {
             ArgumentNullException.ThrowIfNull(builder, nameof(builder));

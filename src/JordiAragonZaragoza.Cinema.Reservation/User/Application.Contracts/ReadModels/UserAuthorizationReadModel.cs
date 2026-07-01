@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class UserAuthorizationReadModel : IReadModel
+    public sealed class UserAuthorizationReadModel : BaseReadModel
     {
         public UserAuthorizationReadModel(
             Guid id)
@@ -18,15 +18,13 @@
         {
         }
 
-        public Guid Id { get; private set; }
-
         public Guid UserId { get; set; }
 
         public Guid TenantId { get; set; }
 
         public Guid? PartitionId { get; set; }
 
-        public Guid? CinemaId { get; set; }
+        public Guid? DomainId { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of roles assigned at this scope level.
@@ -49,9 +47,9 @@
         /// <returns>True if this authorization matches the given scope, false otherwise.</returns>
         public bool Matches(Guid tenantId, Guid? partitionId, Guid? domainId)
         {
-            if (this.CinemaId is not null)
+            if (this.DomainId is not null)
             {
-                return this.CinemaId == domainId;
+                return this.DomainId == domainId;
             }
 
             if (this.PartitionId is not null)

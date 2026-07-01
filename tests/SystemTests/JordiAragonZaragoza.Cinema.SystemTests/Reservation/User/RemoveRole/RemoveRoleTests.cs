@@ -24,9 +24,6 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
 
             await this.Fixture.ReservationCommandTestClient.RemoveRoleAsync(scenario.UserId, scenario.RemoveRoleBodyRequest, this.OutputHelper);
 
-            /*await EventualConsistency.WaitUntilAsync(
-                () => this.Fixture.ReservationQueryTestClient.UserAuthorizationExistsAsync(scenario.UserAuthorizationRequest, this.OutputHelper));*/
-
             await EventualConsistency.WaitUntilAsync(async () =>
             {
                 var authorization = await this.Fixture.ReservationQueryTestClient.GetUserAuthorizationAsync(scenario.UserAuthorizationRequest, this.OutputHelper);

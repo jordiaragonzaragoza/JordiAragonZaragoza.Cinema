@@ -2,9 +2,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Read
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class RoleReadModel : IReadModel
+    public sealed class RoleReadModel : BaseOwnedReadModel
     {
         public RoleReadModel(
             Guid id,
@@ -18,8 +18,6 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.Read
         private RoleReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public string Value { get; private set; } = default!;
     }

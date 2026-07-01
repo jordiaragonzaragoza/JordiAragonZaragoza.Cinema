@@ -2,9 +2,9 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class AvailableSeatReadModel : IReadModel
+    public class AvailableSeatReadModel : BaseReadModel
     {
         public AvailableSeatReadModel(
             Guid id,
@@ -28,8 +28,6 @@
         private AvailableSeatReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public Guid SeatId { get; private set; }
 

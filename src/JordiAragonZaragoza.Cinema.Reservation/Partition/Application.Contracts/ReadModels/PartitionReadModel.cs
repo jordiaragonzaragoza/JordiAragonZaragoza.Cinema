@@ -2,9 +2,9 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class PartitionReadModel : IReadModel
+    public sealed class PartitionReadModel : BaseReadModel
     {
         public PartitionReadModel(
             Guid id)
@@ -16,7 +16,5 @@
         private PartitionReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
     }
 }

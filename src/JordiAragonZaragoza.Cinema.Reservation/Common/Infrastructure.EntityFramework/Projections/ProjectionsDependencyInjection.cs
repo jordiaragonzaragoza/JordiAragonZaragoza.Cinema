@@ -8,6 +8,7 @@
     using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,12 +22,14 @@
         {
             serviceCollection.AddScoped<IUnitOfWork, ReservationProjectionsStore>();
 
+            serviceCollection.AddSingleton<TenantReadModelSaveChangesInterceptor>();
+
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.ReservationReadModelStore))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
-                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                ////optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
@@ -60,8 +63,8 @@
 
         private static IServiceCollection AddCheckpointProjectionsRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
-            services.AddScoped<IReadRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
+            services.AddScoped<IRepository<Checkpoint, Guid>, ReservationDataModelRepository<Checkpoint>>();
+            services.AddScoped<IReadRepository<Checkpoint, Guid>, ReservationDataModelRepository<Checkpoint>>();
 
             return services;
         }

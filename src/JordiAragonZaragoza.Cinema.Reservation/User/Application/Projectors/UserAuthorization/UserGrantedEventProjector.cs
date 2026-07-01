@@ -29,7 +29,7 @@
                 UserId = @event.AggregateId,
                 TenantId = @event.TenantId,
                 PartitionId = @event.PartitionId,
-                CinemaId = @event.CinemaId,
+                DomainId = @event.CinemaId,
                 Roles = @event.Roles
                     .Select(r => new RoleReadModel(Guid.CreateVersion7(), r))
                     .ToList(),

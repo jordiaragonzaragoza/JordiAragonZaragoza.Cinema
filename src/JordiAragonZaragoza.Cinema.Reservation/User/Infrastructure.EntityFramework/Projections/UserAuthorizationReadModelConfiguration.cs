@@ -1,6 +1,7 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections
 {
     using System;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Configuration;
     using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,13 @@
     /// Each record represents a single user-scope authorization assignment.
     /// A user can have multiple records if granted roles at different scope levels (tenant, partition, cinema).
     /// </summary>
-    public sealed class UserAuthorizationReadModelConfiguration : BaseModelTypeConfiguration<UserAuthorizationReadModel, Guid>
+    public sealed class UserAuthorizationReadModelConfiguration : BaseReadModelTypeConfiguration<UserAuthorizationReadModel, Guid, ReservationReadModelContext>
     {
+        public UserAuthorizationReadModelConfiguration(ReservationReadModelContext dbContext)
+            : base(dbContext)
+        {
+        }
+
         public override void Configure(EntityTypeBuilder<UserAuthorizationReadModel> builder)
         {
             ArgumentNullException.ThrowIfNull(builder, nameof(builder));
@@ -34,7 +40,7 @@
                 .HasDatabaseName("IX_UsersAuthorizations_UserId");
 
             // Configure composite index for scope-based lookups
-            builder.HasIndex(x => new { x.UserId, x.TenantId, x.PartitionId, x.CinemaId })
+            builder.HasIndex(x => new { x.UserId, x.TenantId, x.PartitionId, x.DomainId })
                 .HasDatabaseName("IX_UsersAuthorizations_UserIdScope")
                 .IsUnique();
 
@@ -75,7 +81,7 @@
             // Document the scope hierarchy for clarity
             builder.Property(x => x.TenantId).IsRequired();
             builder.Property(x => x.PartitionId).IsRequired(false);
-            builder.Property(x => x.CinemaId).IsRequired(false);
+            builder.Property(x => x.DomainId).IsRequired(false);
         }
     }
 }

@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class AuditoriumReadModel : IReadModel
+    public sealed class AuditoriumReadModel : BaseReadModel
     {
         public AuditoriumReadModel(
             Guid id,
@@ -21,8 +21,6 @@
         private AuditoriumReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public string Name { get; private set; } = default!;
 

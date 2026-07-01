@@ -16,6 +16,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Context;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -25,8 +26,9 @@
         public ReservationReadModelContext(
             DbContextOptions<ReservationReadModelContext> options,
             ILoggerFactory loggerFactory,
-            IHostEnvironment hostEnvironment)
-            : base(options, loggerFactory, hostEnvironment)
+            IHostEnvironment hostEnvironment,
+            TenantReadModelSaveChangesInterceptor tenantInterceptor)
+            : base(options, loggerFactory, hostEnvironment, tenantInterceptor)
         {
         }
 
@@ -54,16 +56,16 @@
         {
             ArgumentNullException.ThrowIfNull(modelBuilder, nameof(modelBuilder));
 
-            modelBuilder.ApplyConfiguration(new MovieReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new AuditoriumReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ReservationReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new UserReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new UserAuthorizationReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new TenantReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new PartitionReadModelConfiguration());
-            modelBuilder.ApplyConfiguration(new CinemaReadModelConfiguration());
+            modelBuilder.ApplyConfiguration(new MovieReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new AuditoriumReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new ShowtimeReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new AvailableSeatReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new ReservationReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new UserReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new UserAuthorizationReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new TenantReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new PartitionReadModelConfiguration(this));
+            modelBuilder.ApplyConfiguration(new CinemaReadModelConfiguration(this));
 
             base.OnModelCreating(modelBuilder);
         }

@@ -36,7 +36,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_WhenHavingAnUnExistingShowtime_ShouldThrowDbUpdateException()
+        public async Task GetByIdAsync_WhenHavingAnUnExistingShowtime_ShouldReturnNull()
         {
             // Arrange
             var repository = this.GetReadModelRepository<ShowtimeReadModel>();

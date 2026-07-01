@@ -17,8 +17,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Position = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    CheckpointedAtOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +29,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,7 +49,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     SeatNumber = table.Column<int>(type: "integer", nullable: false),
                     ShowtimeId = table.Column<Guid>(type: "uuid", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: false)
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,7 +63,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Cinemas",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +79,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: false)
+                    Runtime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,7 +93,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Partitions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,7 +114,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     AuditoriumName = table.Column<string>(type: "text", nullable: false),
                     MovieTitle = table.Column<string>(type: "text", nullable: false),
                     IsPurchased = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    CreatedTimeOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,7 +134,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     MovieTitle = table.Column<string>(type: "text", nullable: false),
                     MovieRuntime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     AuditoriumId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuditoriumName = table.Column<string>(type: "text", nullable: false)
+                    AuditoriumName = table.Column<string>(type: "text", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,7 +148,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,7 +162,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,7 +180,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CinemaId = table.Column<Guid>(type: "uuid", nullable: true)
+                    DomainId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -267,7 +296,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
             migrationBuilder.CreateIndex(
                 name: "IX_UsersAuthorizations_UserIdScope",
                 table: "UsersAuthorizations",
-                columns: new[] { "UserId", "TenantId", "PartitionId", "CinemaId" },
+                columns: new[] { "UserId", "TenantId", "PartitionId", "DomainId" },
                 unique: true);
         }
 
