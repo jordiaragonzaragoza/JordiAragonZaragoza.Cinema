@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations
 {
     [DbContext(typeof(ReservationReadModelContext))]
-    [Migration("20260629182104_InitialReadModelMigration")]
+    [Migration("20260706184414_InitialReadModelMigration")]
     partial class InitialReadModelMigration
     {
         /// <inheritdoc />
@@ -29,6 +29,9 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CinemaId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")

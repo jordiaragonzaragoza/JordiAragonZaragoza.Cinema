@@ -10,6 +10,9 @@
             this.RuleFor(x => x.AuditoriumId)
               .NotEmpty().WithMessage("AuditoriumId is required.");
 
+            this.RuleFor(x => x.CinemaId)
+              .NotEmpty().WithMessage("CinemaId is required.");
+
             this.RuleFor(x => x.Name)
               .NotEmpty().WithMessage("Name is required.");
 

@@ -28,6 +28,34 @@
 
     public static class SeedData
     {
+        public static readonly Tenant SystemTenant =
+            Tenant.Create(
+                id: new TenantId(SystemConstants.SystemTenantId));
+
+        public static readonly TenantReadModel SystemTenantReadModel =
+            new(SystemTenant.Id);
+
+        public static readonly Tenant ExampleTenant =
+            Tenant.Create(
+                id: new TenantId(new Guid("667196fc-0e17-43f9-990d-7dc2175e6162")));
+
+        public static readonly TenantReadModel ExampleTenantReadModel =
+            new(ExampleTenant.Id);
+
+        public static readonly Partition ExamplePartition =
+            Partition.Create(
+                id: new PartitionId(new Guid("05cbd871-da4e-447b-9d62-89438df8c4a8")));
+
+        public static readonly PartitionReadModel ExamplePartitionReadModel =
+            new(ExamplePartition.Id);
+
+        public static readonly Cinema ExampleCinema =
+            Cinema.Create(
+                id: new CinemaId(new Guid("497cd8f1-620c-426f-992d-7012147f6e7c")));
+
+        public static readonly CinemaReadModel ExampleCinemaReadModel =
+            new(ExampleCinema.Id);
+
         public static readonly Movie ExampleMovie =
             Movie.Add(
                 id: new MovieId(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
@@ -47,6 +75,7 @@
         public static readonly Auditorium ExampleAuditorium =
             Auditorium.Create(
                 id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
+                cinemaId: ExampleCinema.Id,
                 name: Name.Create("Auditorium One"),
                 rows: Rows.Create(10),
                 seatsPerRow: SeatsPerRow.Create(10));
@@ -55,38 +84,11 @@
             new(
                 ExampleAuditorium.Id,
                 ExampleAuditorium.Name,
+                ExampleAuditorium.CinemaId,
                 ExampleAuditorium.Seats.Select(seat => new SeatReadModel(
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList());
-
-        public static readonly Cinema ExampleCinema =
-            Cinema.Create(
-                id: new CinemaId(new Guid("497cd8f1-620c-426f-992d-7012147f6e7c")));
-
-        public static readonly CinemaReadModel ExampleCinemaReadModel =
-            new(ExampleCinema.Id);
-
-        public static readonly Partition ExamplePartition =
-            Partition.Create(
-                id: new PartitionId(new Guid("05cbd871-da4e-447b-9d62-89438df8c4a8")));
-
-        public static readonly PartitionReadModel ExamplePartitionReadModel =
-            new(ExamplePartition.Id);
-
-        public static readonly Tenant SystemTenant =
-            Tenant.Create(
-                id: new TenantId(SystemConstants.SystemTenantId));
-
-        public static readonly TenantReadModel SystemTenantReadModel =
-            new(SystemTenant.Id);
-
-        public static readonly Tenant ExampleTenant =
-            Tenant.Create(
-                id: new TenantId(new Guid("667196fc-0e17-43f9-990d-7dc2175e6162")));
-
-        public static readonly TenantReadModel ExampleTenantReadModel =
-            new(ExampleTenant.Id);
 
         public static readonly User ExampleUserWithReservation =
             User.Create(

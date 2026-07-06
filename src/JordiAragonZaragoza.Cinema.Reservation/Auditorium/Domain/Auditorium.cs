@@ -5,6 +5,8 @@
     using System.Linq;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Rules;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
+
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Domain.Entities;
@@ -20,6 +22,8 @@
         {
         }
 
+        public CinemaId CinemaId { get; private set; } = default!;
+
         // TODO: It belongs to the cinema manager bounded context. Not required.
         public Name Name { get; private set; } = default!;
 
@@ -34,13 +38,15 @@
         // TODO: Review. Will API changed passing the seats as a parameter?.
         public static Auditorium Create(
             AuditoriumId id,
+            CinemaId cinemaId,
             Name name,
             Rows rows,
             SeatsPerRow seatsPerRow)
         {
-            ArgumentNullException.ThrowIfNull(id, nameof(id));
-            ArgumentNullException.ThrowIfNull(rows, nameof(rows));
-            ArgumentNullException.ThrowIfNull(seatsPerRow, nameof(seatsPerRow));
+            ArgumentNullException.ThrowIfNull(id);
+            ArgumentNullException.ThrowIfNull(cinemaId);
+            ArgumentNullException.ThrowIfNull(rows);
+            ArgumentNullException.ThrowIfNull(seatsPerRow);
 
             var auditorium = new Auditorium();
 
@@ -48,6 +54,7 @@
 
             auditorium.Apply(new AuditoriumCreatedEvent(
                 id,
+                cinemaId,
                 name,
                 rows,
                 seatsPerRow,
@@ -152,6 +159,7 @@
         private void Applier(AuditoriumCreatedEvent @event)
         {
             this.Id = new AuditoriumId(@event.AggregateId);
+            this.CinemaId = new CinemaId(@event.CinemaId);
             this.Name = new Name(@event.Name);
             this.Rows = new Rows(@event.Rows);
             this.SeatsPerRow = new SeatsPerRow(@event.SeatsPerRow);

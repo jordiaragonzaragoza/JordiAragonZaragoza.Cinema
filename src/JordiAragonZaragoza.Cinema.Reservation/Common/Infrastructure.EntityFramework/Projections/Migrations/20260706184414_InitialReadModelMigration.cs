@@ -30,6 +30,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFra
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    CinemaId = table.Column<Guid>(type: "uuid", nullable: false),
                     Scope_TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     Scope_PartitionId = table.Column<Guid>(type: "uuid", nullable: true),
                     Scope_DomainId = table.Column<Guid>(type: "uuid", nullable: true)
