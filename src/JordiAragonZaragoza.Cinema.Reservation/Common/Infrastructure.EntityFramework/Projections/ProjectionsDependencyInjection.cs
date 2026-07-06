@@ -2,8 +2,11 @@
 {
     using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
@@ -55,6 +58,9 @@
             services.AddMovieProjectionsRepositories();
             services.AddShowtimeProjectionsRepositories();
             services.AddUserProjectionsRepositories();
+            services.AddCinemaProjectionsRepositories();
+            services.AddPartitionProjectionsRepositories();
+            services.AddTenantProjectionsRepositories();
 
             _ = services.AddCheckpointProjectionsRepositories();
 

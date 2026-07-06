@@ -249,9 +249,9 @@
             ExampleUserReadModel.Scope = NewScope();
             context.Users.Add(ExampleUserReadModel);
 
-            var exampleUserAuthorizationReadModel = ExampleUserAuthorizationReadModelWithAdminRole();
-            exampleUserAuthorizationReadModel.Scope = NewScope();
-            context.UsersAuthorizations.Add(exampleUserAuthorizationReadModel);
+            var exampleUserAuthorizationReadModelWithAdminRole = ExampleUserAuthorizationReadModelWithAdminRole();
+            exampleUserAuthorizationReadModelWithAdminRole.Scope = NewScope();
+            context.UsersAuthorizations.Add(exampleUserAuthorizationReadModelWithAdminRole);
 
             SystemTenantReadModel.Scope = NewScope();
             context.Tenants.Add(SystemTenantReadModel);

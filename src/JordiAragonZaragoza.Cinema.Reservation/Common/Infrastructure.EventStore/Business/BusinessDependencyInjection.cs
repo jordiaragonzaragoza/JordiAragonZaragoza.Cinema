@@ -7,6 +7,9 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using JordiAragonZaragoza.Cinema.SharedKernel;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Infrastructure.EventStore;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Infrastructure.EventStore;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Infrastructure.EventStore;
 
     public static class BusinessDependencyInjection
     {
@@ -16,6 +19,9 @@
             services.AddMovieBusinessRepositories();
             services.AddAuditoriumBusinessRepositories();
             services.AddUserBusinessRepositories();
+            services.AddCinemaBusinessRepositories();
+            services.AddPartitionBusinessRepositories();
+            services.AddTenantBusinessRepositories();
 
             return services;
         }

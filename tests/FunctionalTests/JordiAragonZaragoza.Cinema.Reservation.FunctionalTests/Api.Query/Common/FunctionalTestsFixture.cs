@@ -44,6 +44,10 @@
                 AllowAutoRedirect = false,
             });
 
+            /*this.HttpClient.DefaultRequestHeaders.Add(
+                "x-tenant-id",
+                SystemConstants.SystemTenantId.ToString());*/
+
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
 
