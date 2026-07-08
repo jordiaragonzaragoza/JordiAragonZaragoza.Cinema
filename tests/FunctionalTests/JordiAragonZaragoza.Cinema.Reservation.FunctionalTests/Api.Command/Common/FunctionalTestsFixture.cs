@@ -12,13 +12,17 @@
     using Microsoft.Extensions.Logging;
     using Testcontainers.KurrentDb;
     using Xunit;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
+
+    using ExecutionContext = JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ExecutionContext;
 
     public class FunctionalTestsFixture<TProgram> : IAsyncLifetime, IDisposable
         where TProgram : class
     {
         private readonly KurrentDbContainer eventStoreContainer =
-            new KurrentDbBuilder($"{Constants.KurrentDbImage}:{Constants.KurrentDbArmImageTag}")
-            .WithName($"kurrentdb.cinema.reservation.eventstore.functionaltests.api.command-{Guid.NewGuid():N}")
+            new KurrentDbBuilder($"{Constants.KurrentDbImage}:{Constants.KurrentDbImageTag}")
+            .WithName($"kurrentdb.cinema.reservation.eventstore.functionaltests.api.command-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 
         private string eventStoreConnection = default!;
@@ -82,6 +86,23 @@
             }
         }
 
+        private static ExecutionContext CreateSeederExecutionContext()
+        {
+            var testContext = new ExecutionContext(
+                actorId: ExecutionContext.CreateServiceActorId("functional-tests"),
+                actorType: ActorType.System,
+                executor: nameof(FunctionalTestsFixture<TProgram>),
+                executorType: ExecutorType.Tool,
+                correlationId: Guid.CreateVersion7(),
+                causationId: null,
+                scopeContext: new ScopeContext(
+                    tenantId: SystemConstants.SystemTenantId,
+                    partitionId: null,
+                    domainId: null));
+
+            return testContext;
+        }
+
         private async Task StartDbsConnectionAsync()
         {
             await this.eventStoreContainer.StartAsync();
@@ -92,10 +113,11 @@
 
         private async Task InitEventStoreDatabaseAsync(CancellationToken stoppingToken = default)
         {
-            using var readModelScope = this.scopeFactory.CreateScope();
-            var eventStore = readModelScope.ServiceProvider.GetRequiredService<IEventStore>();
-            var logger = readModelScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
-
+            using var scope = this.scopeFactory.CreateScope();
+            var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
+            var executionContextService = scope.ServiceProvider.GetRequiredService<IExecutionContextService>();
+            executionContextService.SetExecutionContext(CreateSeederExecutionContext());
             try
             {
                 logger.LogInformation("Starting seeding data on business model");
@@ -109,6 +131,10 @@
                 logger.LogError(exception, "An error occurred seeding the business model database with test data. Error: {ExceptionMessage}", exception.Message);
 
                 throw;
+            }
+            finally
+            {
+                executionContextService.ClearExecutionContext();
             }
         }
     }

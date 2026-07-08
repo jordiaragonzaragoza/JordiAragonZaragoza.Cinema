@@ -10,6 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Projectors
         {
             // Reservation projection.
             services.AddProjectorEventHandler<ExpiredReservedSeatsEvent, ExpiredReservedSeatsEventProjector>();
+            services.AddProjectorEventHandler<ReservationCanceledEvent, ReservationCanceledEventProjector>();
             services.AddProjectorEventHandler<PurchasedReservationEvent, PurchasedReservationEventProjector>();
             services.AddProjectorEventHandler<ReservedSeatsEvent, ReservedSeatsEventProjector>();
             services.AddProjectorEventHandler<ShowtimeCanceledEvent, ShowtimeCanceledEventProjector>();

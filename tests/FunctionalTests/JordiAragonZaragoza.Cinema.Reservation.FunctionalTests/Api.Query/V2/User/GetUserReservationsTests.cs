@@ -28,7 +28,7 @@
         public async Task GetAllUserReservations_WhenHavingValidArguments_ShouldReturnOneReservation()
         {
             // Arrange
-            Guid userId = SeedData.ExampleUser.Id;
+            Guid userId = SeedData.ExampleUserWithReservation.Id;
 
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(

@@ -36,7 +36,7 @@
             var seatsIds = SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.SeatId).ToList();
 
-            var reservationId = Guid.NewGuid();
+            var reservationId = Guid.CreateVersion7();
             var reserveSeatsRequest = new ReserveSeatsBodyRequest(seatsIds);
             var reserveSeatsContent = StringContentHelpers.FromModelAsJson(reserveSeatsRequest);
 

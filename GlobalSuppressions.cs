@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:Partial elements should be documented", Justification = "Temporal suppresion")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:Enumeration items should be documented", Justification = "Temporal suppresion")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "Temporal suppresion")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1518:The line endings at the end of a file do not match the settings for the project.", Justification = "Temporal suppresion")]
 
 [assembly: SuppressMessage("Info Code Smell", "S1135:Track uses of \"TODO\" tags", Justification = "Temporal suppresion")]
 [assembly: SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Temporal suppresion")]

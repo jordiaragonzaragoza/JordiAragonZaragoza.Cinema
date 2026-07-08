@@ -9,7 +9,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies
 
     public static class ShowtimePoliciesEventHandlersDependencyInjection
     {
-        public static IServiceCollection AddShowtimePolicies(this IServiceCollection services)
+        public static IServiceCollection AddShowtimeEventHandlersPolicies(this IServiceCollection services)
         {
             // ShowtimeScheduled policies.
             services.AddPolicyEventHandler<ShowtimeScheduledEvent, ScheduleShowtimeInAuditoriumPolicy>();

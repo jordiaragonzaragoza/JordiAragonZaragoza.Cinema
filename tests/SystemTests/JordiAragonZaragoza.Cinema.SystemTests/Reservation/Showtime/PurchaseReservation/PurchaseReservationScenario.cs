@@ -10,9 +10,9 @@
 
     public sealed class PurchaseReservationScenario
     {
-        public Guid ShowtimeId { get; } = Guid.NewGuid();
+        public Guid ShowtimeId { get; } = Guid.CreateVersion7();
 
-        public Guid ReservationId { get; } = Guid.NewGuid();
+        public Guid ReservationId { get; } = Guid.CreateVersion7();
 
         public DateTimeOffset SessionDate { get; private set; }
 

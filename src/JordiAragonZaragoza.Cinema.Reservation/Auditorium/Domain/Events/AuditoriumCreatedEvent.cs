@@ -6,6 +6,7 @@
 
     public sealed record class AuditoriumCreatedEvent(
         Guid AggregateId,
+        Guid CinemaId,
         string Name,
         ushort Rows,
         ushort SeatsPerRow,

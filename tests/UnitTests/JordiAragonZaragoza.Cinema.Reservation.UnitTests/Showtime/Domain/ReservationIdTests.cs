@@ -24,7 +24,7 @@
         public void ImplicitConversion_WhenHavingAReservationId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var reservationId = new ReservationId(value);
 
             // Act
@@ -38,7 +38,7 @@
         public void ToString_ShouldReturnStringRepresentationOfReservationId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var reservationId = new ReservationId(value);
 
             // Act
@@ -52,8 +52,8 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var reservationId1 = new ReservationId(value1);
             var reservationId2 = new ReservationId(value1);

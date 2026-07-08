@@ -9,7 +9,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
 
     public sealed class CancelShowtimeScenario
     {
-        public Guid ShowtimeId { get; } = Guid.NewGuid();
+        public Guid ShowtimeId { get; } = Guid.CreateVersion7();
 
         public async Task ArrangeAsync(
             ReservationCommandTestClient commandClient,

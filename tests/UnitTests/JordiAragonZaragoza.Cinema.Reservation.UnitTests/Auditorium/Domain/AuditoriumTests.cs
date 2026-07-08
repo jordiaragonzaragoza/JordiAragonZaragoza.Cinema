@@ -5,6 +5,7 @@
     using AwesomeAssertions;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain.Events;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain;
     using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
@@ -15,32 +16,38 @@
         public static IEnumerable<object[]> InvalidArgumentsCreateAuditorium()
         {
             var id = Constants.Auditorium.Id;
+            var cinemaId = Constants.Cinema.Id;
             var name = Constants.Auditorium.Name;
             var rows = Constants.Auditorium.Rows;
             var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             var idValues = new object[] { default!, id };
+            var cinemaIdValues = new object[] { default!, cinemaId };
             var nameValues = new object[] { default!, name };
             var rowsValues = new object[] { default!, rows };
             var seatsPerRowValues = new object[] { default!, seatsPerRow };
 
             foreach (var idValue in idValues)
             {
-                foreach (var nameValue in nameValues)
+                foreach (var cinemaIdValue in cinemaIdValues)
                 {
-                    foreach (var rowsValue in rowsValues)
+                    foreach (var nameValue in nameValues)
                     {
-                        foreach (var seatsPerRowValue in seatsPerRowValues)
+                        foreach (var rowsValue in rowsValues)
                         {
-                            if (idValue != null && idValue.Equals(id) &&
-                                nameValue != null && nameValue.Equals(name) &&
-                                rowsValue != null && rowsValue.Equals(rows) &&
-                                seatsPerRowValue != null && seatsPerRowValue.Equals(seatsPerRow))
+                            foreach (var seatsPerRowValue in seatsPerRowValues)
                             {
-                                continue;
-                            }
+                                if (idValue != null && idValue.Equals(id) &&
+                                    cinemaIdValue != null && cinemaIdValue.Equals(cinemaId) &&
+                                    nameValue != null && nameValue.Equals(name) &&
+                                    rowsValue != null && rowsValue.Equals(rows) &&
+                                    seatsPerRowValue != null && seatsPerRowValue.Equals(seatsPerRow))
+                                {
+                                    continue;
+                                }
 
-                            yield return new object[] { idValue!, nameValue!, rowsValue!, seatsPerRowValue! };
+                                yield return new object[] { idValue!, cinemaIdValue!, nameValue!, rowsValue!, seatsPerRowValue! };
+                            }
                         }
                     }
                 }
@@ -52,12 +59,13 @@
         {
             // Arrange
             var id = Constants.Auditorium.Id;
+            var cinemaId = Constants.Cinema.Id;
             var name = Constants.Auditorium.Name;
             var rows = Constants.Auditorium.Rows;
             var seatsPerRow = Constants.Auditorium.SeatsPerRow;
 
             // Act
-            var auditorium = Auditorium.Create(id, name, rows, seatsPerRow);
+            var auditorium = Auditorium.Create(id, cinemaId, name, rows, seatsPerRow);
 
             // Assert
             auditorium.Should().NotBeNull();
@@ -71,6 +79,8 @@
                               .Which.Should().BeOfType<AuditoriumCreatedEvent>()
                               .Which.Should().Match<AuditoriumCreatedEvent>(e =>
                                                                             e.AggregateId == id &&
+                                                                            e.CinemaId == cinemaId &&
+                                                                            e.Name == name &&
                                                                             e.Rows == rows &&
                                                                             e.SeatsPerRow == seatsPerRow);
         }
@@ -79,12 +89,13 @@
         [MemberData(nameof(InvalidArgumentsCreateAuditorium))]
         public void CreateAuditorium_WhenHavingInCorrectRowsSeatsArguments_ShouldThrowInvalidAggregateStateException(
             AuditoriumId id,
+            CinemaId cinemaId,
             Name name,
             Rows rows,
             SeatsPerRow seatsPerRow)
         {
             // Act
-            Func<Auditorium> auditorium = () => Auditorium.Create(id, name, rows, seatsPerRow);
+            Func<Auditorium> auditorium = () => Auditorium.Create(id, cinemaId, name, rows, seatsPerRow);
 
             // Assert
             auditorium.Should().Throw<Exception>();

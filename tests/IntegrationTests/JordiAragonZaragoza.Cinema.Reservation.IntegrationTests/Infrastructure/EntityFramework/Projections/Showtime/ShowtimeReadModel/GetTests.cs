@@ -36,13 +36,13 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_WhenHavingAnUnExistingShowtime_ShouldThrowDbUpdateException()
+        public async Task GetByIdAsync_WhenHavingAnUnExistingShowtime_ShouldReturnNull()
         {
             // Arrange
             var repository = this.GetReadModelRepository<ShowtimeReadModel>();
 
             // Act
-            var result = await repository.GetByIdAsync(Guid.NewGuid());
+            var result = await repository.GetByIdAsync(Guid.CreateVersion7());
 
             // Assert
             result.Should()
@@ -53,12 +53,12 @@
             ReservationReadModelRepository<ShowtimeReadModel> repository)
         {
             var newShowtime = new ShowtimeReadModel(
-                Guid.NewGuid(),
+                Guid.CreateVersion7(),
                 DateTimeOffset.UtcNow,
-                Guid.NewGuid(),
+                Guid.CreateVersion7(),
                 "Some title",
                 TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28),
-                Guid.NewGuid(),
+                Guid.CreateVersion7(),
                 "Some auditorium");
 
             await repository.AddAsync(newShowtime);
