@@ -14,7 +14,7 @@
     {
         private readonly List<SeatResponse> availableSeatsIds = new();
 
-        public Guid ShowtimeId { get; } = Guid.NewGuid();
+        public Guid ShowtimeId { get; } = Guid.CreateVersion7();
 
         public IEnumerable<SeatResponse> AvailableSeatsIds => this.availableSeatsIds.AsReadOnly();
 

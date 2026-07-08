@@ -24,7 +24,7 @@
         public void ImplicitConversion_WhenHavingAShowtimeId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var showtimeId = new ShowtimeId(value);
 
             // Act
@@ -38,7 +38,7 @@
         public void ToString_ShouldReturnStringRepresentationOfShowtimeId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var showtimeId = new ShowtimeId(value);
 
             // Act
@@ -52,8 +52,8 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var showtimeId1 = new ShowtimeId(value1);
             var showtimeId2 = new ShowtimeId(value1);

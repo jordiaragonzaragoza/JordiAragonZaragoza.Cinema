@@ -2,9 +2,9 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class MovieReadModel : IReadModel
+    public sealed class MovieReadModel : BaseReadModel
     {
         public MovieReadModel(
             Guid id,
@@ -20,8 +20,6 @@
         private MovieReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public string Title { get; private set; } = default!;
 

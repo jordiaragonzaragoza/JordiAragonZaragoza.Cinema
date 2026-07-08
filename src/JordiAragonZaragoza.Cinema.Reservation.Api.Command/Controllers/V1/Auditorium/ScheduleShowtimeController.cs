@@ -29,7 +29,7 @@
             CancellationToken cancellationToken)
         {
             // This generated id is done here to support compatibility with the current implementation which client provides the Id.
-            var showtimeId = Guid.NewGuid();
+            var showtimeId = Guid.CreateVersion7();
 
             var resultResponse = await this.CommandBus.SendAsync(request.ToCommand(showtimeId, auditoriumId), cancellationToken);
 

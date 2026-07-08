@@ -24,7 +24,7 @@
         public void ImplicitConversion_WhenHavingASeatId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var seatId = new SeatId(value);
 
             // Act
@@ -38,7 +38,7 @@
         public void ToString_ShouldReturnStringRepresentationOfSeatId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var seatId = new SeatId(value);
 
             // Act
@@ -52,8 +52,8 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var seatId1 = new SeatId(value1);
             var seatId2 = new SeatId(value1);

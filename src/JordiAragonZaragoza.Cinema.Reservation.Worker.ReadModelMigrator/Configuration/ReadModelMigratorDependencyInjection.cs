@@ -7,18 +7,22 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Interceptors;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.Context;
 
     public static class ReadModelMigratorDependencyInjection
     {
         public static IServiceCollection AddInfrastructureEntityFrameworkMigrations(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            serviceCollection.AddSingleton<TenantReadModelSaveChangesInterceptor>();
+            serviceCollection.AddSingleton<IExecutionContextService, ExecutionContextService>();
+
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(
                                     configuration.GetConnectionString(Constants.ReservationReadModelStore))
                                     .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
-
-                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             return serviceCollection;

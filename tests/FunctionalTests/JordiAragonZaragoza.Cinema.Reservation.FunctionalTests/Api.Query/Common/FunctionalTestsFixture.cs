@@ -3,9 +3,11 @@
     using System;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +22,7 @@
     {
         private readonly PostgreSqlContainer readModelStoreContainer =
             new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
-            .WithName($"postgres.cinema.reservation.readmodelstore.functionaltests.api.query-{Guid.NewGuid():N}")
+            .WithName($"postgres.cinema.reservation.readmodelstore.functionaltests.api.query-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 
         private NpgsqlConnection readModelStoreConnection = default!;
@@ -41,6 +43,10 @@
             {
                 AllowAutoRedirect = false,
             });
+
+            /*this.HttpClient.DefaultRequestHeaders.Add(
+                "x-tenant-id",
+                SystemConstants.SystemTenantId.ToString());*/
 
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
@@ -99,18 +105,25 @@
             try
             {
                 await readContext.Database.MigrateAsync();
-                SeedData.PopulateReadModelTestData(readContext);
 
-                this.readModelStoreRespawner = await Respawner.CreateAsync(this.readModelStoreConnection, new RespawnerOptions
-                {
-                    DbAdapter = DbAdapter.Postgres,
-                    TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
-                });
+                SeedData.PopulateReadModelTestData(
+                    readContext,
+                    new ScopeInfo(SystemConstants.SystemTenantId));
+
+                this.readModelStoreRespawner = await Respawner.CreateAsync(
+                    this.readModelStoreConnection,
+                    new RespawnerOptions
+                    {
+                        DbAdapter = DbAdapter.Postgres,
+                        TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+                    });
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "An error occurred seeding the read model database with test data. Error: {ExceptionMessage}", exception.Message);
-
+                logger.LogError(
+                    exception,
+                    "An error occurred seeding the read model database with test data. Error: {ExceptionMessage}",
+                    exception.Message);
                 throw;
             }
         }

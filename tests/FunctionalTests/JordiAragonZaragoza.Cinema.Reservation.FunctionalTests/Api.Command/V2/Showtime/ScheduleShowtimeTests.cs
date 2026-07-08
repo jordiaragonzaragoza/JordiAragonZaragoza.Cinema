@@ -27,7 +27,7 @@
         public async Task ScheduleShowtime_WhenHavingValidArguments_ShouldCreateRequiredShowtime()
         {
             // Arrange
-            var showtimeId = Guid.NewGuid();
+            var showtimeId = Guid.CreateVersion7();
 
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.ScheduleShowtime}";
             route = route.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);

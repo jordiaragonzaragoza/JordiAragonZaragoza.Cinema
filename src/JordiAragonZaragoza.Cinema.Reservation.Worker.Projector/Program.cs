@@ -34,7 +34,7 @@
             // Then configure SharedKernel Services (DI)
             builder.Services
                 .AddSharedKernelApplicationProjectionsEventBus()
-                .AddSharedKernelInfrastructureKurrentDbAllStreamSubscription()
+                .AddSharedKernelInfrastructureKurrentDbAllStreamCatchUpSubscription()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureProjections();
 

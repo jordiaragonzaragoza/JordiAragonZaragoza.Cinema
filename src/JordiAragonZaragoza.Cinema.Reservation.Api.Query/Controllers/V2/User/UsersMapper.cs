@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Auditorium.Responses;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.Showtime.Responses;
@@ -41,6 +43,48 @@
                 request.IsPurchased,
                 paginatedRequest.PageNumber,
                 paginatedRequest.PageSize);
+        }
+
+        public static GetUserAuthorizationsQuery ToQuery(
+            this UserAuthorizationRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            return new GetUserAuthorizationsQuery(
+                request.UserId,
+                request.TenantId,
+                request.PartitionId,
+                request.CinemaId);
+        }
+
+        public static Result<IReadOnlyCollection<UserAuthorizationResponse>> ToResponse(
+            this Result<IReadOnlyCollection<UserAuthorizationReadModel>> result)
+        {
+            ArgumentNullException.ThrowIfNull(result);
+
+            return result.Map(userAuthorizationReadModels => (IReadOnlyCollection<UserAuthorizationResponse>)userAuthorizationReadModels
+                .Select(userAuthorizationReadModel => new UserAuthorizationResponse(
+                    userAuthorizationReadModel.UserId,
+                    userAuthorizationReadModel.TenantId,
+                    userAuthorizationReadModel.PartitionId,
+                    userAuthorizationReadModel.DomainId,
+                    userAuthorizationReadModel.Roles.ToResponse(),
+                    userAuthorizationReadModel.Permissions.ToResponse()))
+                .ToList());
+        }
+
+        public static Result<UserAuthorizationResponse> ToResponse(
+            this Result<UserAuthorizationReadModel> result)
+        {
+            ArgumentNullException.ThrowIfNull(result);
+
+            return result.Map(userAuthorizationReadModel => new UserAuthorizationResponse(
+                userAuthorizationReadModel.UserId,
+                userAuthorizationReadModel.TenantId,
+                userAuthorizationReadModel.PartitionId,
+                userAuthorizationReadModel.DomainId,
+                userAuthorizationReadModel.Roles.ToResponse(),
+                userAuthorizationReadModel.Permissions.ToResponse()));
         }
 
         public static Result<ReservationResponse> ToResponse(
@@ -88,6 +132,22 @@
             return ToResponseIterator(users);
         }
 
+        private static IEnumerable<string> ToResponse(
+            this IEnumerable<RoleReadModel> roles)
+        {
+            ArgumentNullException.ThrowIfNull(roles);
+
+            return ToResponseIterator(roles);
+        }
+
+        private static IEnumerable<string> ToResponse(
+            this IEnumerable<PermissionReadModel> permissions)
+        {
+            ArgumentNullException.ThrowIfNull(permissions);
+
+            return ToResponseIterator(permissions);
+        }
+
         private static IEnumerable<SeatResponse> ToResponseIterator(
             IEnumerable<SeatReadModel> seats)
         {
@@ -107,6 +167,24 @@
             {
                 yield return new UserResponse(
                     user.Id);
+            }
+        }
+
+        private static IEnumerable<string> ToResponseIterator(
+            IEnumerable<RoleReadModel> roles)
+        {
+            foreach (var role in roles)
+            {
+                yield return role.Value;
+            }
+        }
+
+        private static IEnumerable<string> ToResponseIterator(
+            IEnumerable<PermissionReadModel> permissions)
+        {
+            foreach (var permission in permissions)
+            {
+                yield return permission.Value;
             }
         }
     }

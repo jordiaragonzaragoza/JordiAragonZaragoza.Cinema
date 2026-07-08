@@ -29,7 +29,7 @@
             // Arrange
             Guid showtimeId = SeedData.ExampleShowtime.Id;
             Guid reservationId = SeedData.ExampleReservation.Id;
-            Guid userId = SeedData.ExampleUser.Id;
+            Guid userId = SeedData.ExampleUserWithReservation.Id;
 
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservation}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(

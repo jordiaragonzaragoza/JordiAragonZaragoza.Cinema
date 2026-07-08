@@ -11,8 +11,8 @@ namespace JordiAragonZaragoza.Cinema.Reservation.TestUtilities.Domain
     {
         public static class Reservation
         {
-            public static readonly ReservationId Id = new ReservationId(Guid.NewGuid());
-            public static readonly UserId UserId = new UserId(Guid.NewGuid());
+            public static readonly ReservationId Id = new ReservationId(Guid.CreateVersion7());
+            public static readonly UserId UserId = new UserId(Guid.CreateVersion7());
             public static readonly IEnumerable<SeatId> SeatIds = CreateAuditoriumUtils.Create().Seats.Select(seat => seat.Id);
             public static readonly ReservationDate ReservationDateOnUtc = ReservationDate.Create(new DateTimeOffset(2010, 01, 14, 0, 0, 0, TimeSpan.Zero));
         }

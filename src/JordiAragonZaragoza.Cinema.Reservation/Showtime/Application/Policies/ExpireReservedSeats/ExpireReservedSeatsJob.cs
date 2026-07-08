@@ -4,10 +4,13 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Application.Helpers;
     using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.Contracts;
+
     using Microsoft.Extensions.Logging;
     using Quartz;
 
@@ -21,20 +24,23 @@
         private readonly ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository;
         private readonly ICommandBus commandBus;
         private readonly ILogger<ExpireReservedSeatsJob> logger;
-        private readonly IUserContextService userContextService;
+        private readonly IServiceIdentityProvider serviceIdentityProvider;
+        private readonly IExecutionContextService executionContextService;
 
         public ExpireReservedSeatsJob(
             IDateTime dateTime,
             ISpecificationReadRepository<ReservationReadModel, Guid> reservationReadModelRepository,
             ICommandBus commandBus,
             ILogger<ExpireReservedSeatsJob> logger,
-            IUserContextService userContextService)
+            IServiceIdentityProvider serviceIdentityProvider,
+            IExecutionContextService executionContextService)
         {
             this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
             this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
             this.commandBus = commandBus ?? throw new ArgumentNullException(nameof(commandBus));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.userContextService = userContextService ?? throw new ArgumentNullException(nameof(userContextService));
+            this.serviceIdentityProvider = serviceIdentityProvider ?? throw new ArgumentNullException(nameof(serviceIdentityProvider));
+            this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -48,7 +54,20 @@
                 var expiredReservations = await this.reservationReadModelRepository.ListAsync(new GetExpiredReservationsSpec(dateTimeUtcNow), context.CancellationToken);
                 foreach (var reservation in expiredReservations)
                 {
-                    this.userContextService.SetUserContext(reservation.UserId.ToString());
+                    // TODO: Complete when using saga-policy.
+                    // No need to set the execution context here, since the policy-saga will be infrastructure-based
+                    // and will handle the execution context automatically.
+                    var executionContext = new ExecutionContext(
+                        actorId: ExecutionContext.CreateJobActorId("expire-reserved-seats"),
+                        actorType: ActorType.System,
+                        executor: this.serviceIdentityProvider.GetName(),
+                        executorType: ExecutorType.Worker,
+                        correlationId: Guid.CreateVersion7(),
+                        causationId: null,
+                        scopeContext: new ScopeContext(SystemConstants.SystemTenantId, null, null));
+
+                    this.executionContextService.SetExecutionContext(executionContext);
+
                     var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
                     if (!result.IsSuccess)
                     {

@@ -36,8 +36,7 @@
 
             app.UseAuthorization();
 
-            app.UseMiddleware<UserContextMiddleware>();
-            app.UseMiddleware<PartitionContextMiddleware>();
+            app.UseMiddleware<ExecutionContextMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {

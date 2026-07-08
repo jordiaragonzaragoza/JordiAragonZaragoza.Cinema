@@ -48,6 +48,8 @@
                     [new OpenApiSecuritySchemeReference(SecuritySchemeName, doc)] = [],
                 });
 
+            options.OperationFilter<AddRequiredHeadersOperationFilter>();
+
             options.CustomSchemaIds(type => type.FullName);
         }
 
