@@ -33,6 +33,7 @@
             // Configure specific Host Services (DI)
             builder.Services
                 .AddDomain()
+                .AddApplication()
                 .AddApplicationValidators()
                 .AddApplicationCommandHandlers()
                 .AddApplicationPolicies(configuration)
@@ -48,7 +49,8 @@
                 .AddSharedKernelApplicationCommandBus()
                 .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
-                .AddSharedKernelInfrastructureCommandBus();
+                .AddSharedKernelInfrastructureReactorBus()
+                .AddSharedKernelInfrastructureKurrentDbAllStreamPersistentSubscription();
 
             // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
             builder.AddInfrastructureEntityFrameworkProjections();

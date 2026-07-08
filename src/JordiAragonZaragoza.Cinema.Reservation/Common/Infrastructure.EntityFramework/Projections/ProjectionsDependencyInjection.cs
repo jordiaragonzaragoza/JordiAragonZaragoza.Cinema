@@ -2,12 +2,16 @@
 {
     using System;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Cinema.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Partition.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Tenant.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.SharedKernel;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EntityFramework.Interceptors;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.ProjectionCheckpoint;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,12 +25,14 @@
         {
             serviceCollection.AddScoped<IUnitOfWork, ReservationProjectionsStore>();
 
+            serviceCollection.AddSingleton<TenantReadModelSaveChangesInterceptor>();
+
             serviceCollection.AddDbContext<ReservationReadModelContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.ReservationReadModelStore))
                                   .ConfigureWarnings(w => w.Ignore(CoreEventId.DuplicateDependentEntityTypeInstanceWarning));
 
-                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                ////optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             serviceCollection.AddDatabaseDeveloperPageExceptionFilter();
@@ -52,16 +58,19 @@
             services.AddMovieProjectionsRepositories();
             services.AddShowtimeProjectionsRepositories();
             services.AddUserProjectionsRepositories();
+            services.AddCinemaProjectionsRepositories();
+            services.AddPartitionProjectionsRepositories();
+            services.AddTenantProjectionsRepositories();
 
-            services.AddCheckpointProjectionsRepositories();
+            _ = services.AddCheckpointProjectionsRepositories();
 
             return services;
         }
 
         private static IServiceCollection AddCheckpointProjectionsRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
-            services.AddScoped<IReadRepository<Checkpoint, Guid>, ReservationReadModelRepository<Checkpoint>>();
+            services.AddScoped<IRepository<Checkpoint, Guid>, ReservationDataModelRepository<Checkpoint>>();
+            services.AddScoped<IReadRepository<Checkpoint, Guid>, ReservationDataModelRepository<Checkpoint>>();
 
             return services;
         }

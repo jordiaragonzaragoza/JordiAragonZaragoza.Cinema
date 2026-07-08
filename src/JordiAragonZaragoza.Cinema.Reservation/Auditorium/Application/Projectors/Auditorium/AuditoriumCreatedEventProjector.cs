@@ -33,6 +33,7 @@
             var auditoriumReadModel = new AuditoriumReadModel(
                 @event.AggregateId,
                 @event.Name,
+                @event.CinemaId,
                 seats);
 
             await this.auditoriumReadModelRepository.AddAsync(auditoriumReadModel, cancellationToken);

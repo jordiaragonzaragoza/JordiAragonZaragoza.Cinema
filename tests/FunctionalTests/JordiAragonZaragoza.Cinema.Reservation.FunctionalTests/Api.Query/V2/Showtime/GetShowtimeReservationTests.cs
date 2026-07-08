@@ -40,7 +40,7 @@
             // Assert
             response.Should().NotBeNull();
             response.Id.Should().Be(SeedData.ExampleReservation.Id);
-            response.UserId.Should().Be(SeedData.ExampleUser.Id);
+            response.UserId.Should().Be(SeedData.ExampleUserWithReservation.Id);
             response.ShowtimeId.Should().Be(SeedData.ExampleShowtime.Id);
             response.SessionDateOnUtc.Should().BeCloseTo(SeedData.ExampleShowtime.SessionDateOnUtc, TimeSpan.FromMilliseconds(1));
             response.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);

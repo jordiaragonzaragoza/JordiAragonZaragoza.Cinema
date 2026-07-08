@@ -15,6 +15,9 @@
             services.AddScoped<IRepository<UserReadModel, Guid>, ReservationReadModelRepository<UserReadModel>>();
             services.AddScoped<IPaginatedSpecificationReadRepository<UserReadModel>, ReservationReadModelRepository<UserReadModel>>();
 
+            // UserAuthorizationReadModel projection.
+            services.AddScoped<ICachedSpecificationRepository<UserAuthorizationReadModel, Guid>, ReservationReadModelCachedSpecificationRepository<UserAuthorizationReadModel>>();
+
             return services;
         }
     }

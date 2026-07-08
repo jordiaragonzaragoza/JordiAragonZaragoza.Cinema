@@ -1,0 +1,15 @@
+﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands
+{
+    using System;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
+    using JordiAragonZaragoza.SharedKernel.Application.Attributes;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+
+    ////[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)] // TODO: Temporal disabled till we implement authentication.
+    public sealed record CancelReservationCommand(
+        Guid ShowtimeId,
+        Guid ReservationId) : ICommand, IPolicyResourceRequest
+    {
+        public Guid ResourceId => this.ReservationId;
+    }
+}

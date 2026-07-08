@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class ReservationReadModel : IReadModel
+    public sealed class ReservationReadModel : BaseReadModel
     {
         public ReservationReadModel(
             Guid id,
@@ -34,8 +34,6 @@
         private ReservationReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public Guid UserId { get; private set; }
 

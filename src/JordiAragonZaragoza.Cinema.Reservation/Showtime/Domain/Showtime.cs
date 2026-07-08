@@ -84,7 +84,7 @@
 
         public void ExpireReservedSeats(ReservationId reservationToRemove)
         {
-            ArgumentNullException.ThrowIfNull(reservationToRemove, nameof(reservationToRemove));
+            ArgumentNullException.ThrowIfNull(reservationToRemove);
 
             var reservation = this.Reservations.FirstOrDefault(item => item.Id == reservationToRemove)
                 ?? throw new NotFoundException(nameof(Reservation), reservationToRemove.Value);
@@ -92,6 +92,18 @@
             var seatIds = reservation.Seats.Select(seatId => seatId.Value);
 
             this.Apply(new ExpiredReservedSeatsEvent(this.Id, reservationToRemove, seatIds));
+        }
+
+        public void CancelReservation(ReservationId reservationToRemove)
+        {
+            ArgumentNullException.ThrowIfNull(reservationToRemove);
+
+            var reservation = this.Reservations.FirstOrDefault(item => item.Id == reservationToRemove)
+                ?? throw new NotFoundException(nameof(Reservation), reservationToRemove.Value);
+
+            var seatIds = reservation.Seats.Select(seatId => seatId.Value);
+
+            this.Apply(new ReservationCanceledEvent(this.Id, reservationToRemove, reservation.IsPurchased, seatIds));
         }
 
         protected override void When(IDomainEvent domainEvent)
@@ -118,6 +130,10 @@
                     break;
 
                 case ExpiredReservedSeatsEvent @event:
+                    this.Applier(@event);
+                    break;
+
+                case ReservationCanceledEvent @event:
                     this.Applier(@event);
                     break;
 
@@ -166,6 +182,15 @@
         }
 
         private void Applier(ExpiredReservedSeatsEvent @event)
+        {
+            var reservationToRemove = new ReservationId(@event.ReservationId);
+
+            var existingReservation = this.Reservations.FirstOrDefault(item => item.Id == reservationToRemove);
+
+            this.reservations.Remove(existingReservation!);
+        }
+
+        private void Applier(ReservationCanceledEvent @event)
         {
             var reservationToRemove = new ReservationId(@event.ReservationId);
 

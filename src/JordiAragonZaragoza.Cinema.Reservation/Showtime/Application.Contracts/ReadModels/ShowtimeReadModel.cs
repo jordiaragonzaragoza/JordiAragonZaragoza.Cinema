@@ -2,9 +2,9 @@
 {
     using System;
     using Ardalis.GuardClauses;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Application.ReadModels;
 
-    public sealed record class ShowtimeReadModel : IReadModel
+    public sealed class ShowtimeReadModel : BaseReadModel
     {
         public ShowtimeReadModel(
             Guid id,
@@ -28,8 +28,6 @@
         private ShowtimeReadModel()
         {
         }
-
-        public Guid Id { get; private set; }
 
         public DateTimeOffset SessionDateOnUtc { get; private set; }
 

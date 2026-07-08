@@ -24,7 +24,7 @@
         public void ImplicitConversion_WhenHavingAAuditoriumId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var auditoriumId = new AuditoriumId(value);
 
             // Act
@@ -38,7 +38,7 @@
         public void ToString_ShouldReturnStringRepresentationOfAuditoriumId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var auditoriumId = new AuditoriumId(value);
 
             // Act
@@ -52,8 +52,8 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var auditoriumId1 = new AuditoriumId(value1);
             var auditoriumId2 = new AuditoriumId(value1);

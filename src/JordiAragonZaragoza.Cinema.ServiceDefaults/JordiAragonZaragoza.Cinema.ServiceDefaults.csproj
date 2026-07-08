@@ -3,7 +3,16 @@
   <PropertyGroup>
     <IsAspireSharedProject>true</IsAspireSharedProject>
   </PropertyGroup>
-
+  <ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+   <ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.csproj" />
+   <ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Application.Contracts\JordiAragonZaragoza.SharedKernel.Application.Contracts.csproj" />
+   <ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Infrastructure\JordiAragonZaragoza.SharedKernel.Infrastructure.csproj" />
+  </ItemGroup>	
+  <ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+   <PackageReference Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" />
+   <PackageReference Include="JordiAragonZaragoza.SharedKernel.Application.Contracts" />
+   <PackageReference Include="JordiAragonZaragoza.SharedKernel.Infrastructure" />
+  </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     

@@ -6,6 +6,10 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string SeqServer = "SeqServer";
 
+        public const string RedisCache = "RedisCache";
+
+        public const string Keycloak = "Keycloak";
+
         public const string ReservationApiCommand = "ReservationApiCommand";
 
         public const string ReservationWorkerReactor = "ReservationWorkerReactor";
@@ -33,5 +37,7 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
         public const string PostgresImage = "postgres";
 
         public const string PostgresImageTag = "18.1-alpine";
+
+        public const string RedisImageTag = "8.6.2";
     }
 }

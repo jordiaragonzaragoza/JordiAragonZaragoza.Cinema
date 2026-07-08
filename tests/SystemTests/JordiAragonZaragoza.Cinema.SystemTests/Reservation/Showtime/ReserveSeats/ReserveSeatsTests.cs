@@ -25,7 +25,7 @@
             var scenario = new ReserveSeatsScenario();
             await scenario.ArrangeAsync(this.Fixture.ReservationCommandTestClient, this.Fixture.ReservationQueryTestClient, this.OutputHelper);
 
-            var reservationId = Guid.NewGuid();
+            var reservationId = Guid.CreateVersion7();
             var seatsIds = scenario.AvailableSeatsIds.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.Id).ToList();
             var reserveSeatsRequest = new ReserveSeatsBodyRequest(seatsIds);

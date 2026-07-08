@@ -388,5 +388,75 @@
             showtime.Events.Should()
                            .NotContain(x => x is ExpiredReservedSeatsEvent);
         }
+
+        [Fact]
+        public void CancelReservation_WhenHavingValidReservationId_ShouldRemoveTheReservationAndAddReservationCanceledEvent()
+        {
+            // Arrange
+            var reservationId = Constants.Reservation.Id;
+
+            var userId = Constants.Reservation.UserId;
+
+            var showtime = ScheduleShowtimeUtils.Schedule();
+
+            var seatIds = new List<SeatId>
+            {
+                Constants.Seat.Id,
+            };
+
+            var reservationDateOnUtc = ReservationDate.Create(DateTimeOffset.UtcNow);
+
+            showtime.ReserveSeats(reservationId, userId, seatIds, reservationDateOnUtc);
+
+            // Act
+            showtime.CancelReservation(reservationId);
+
+            // Assert
+            showtime.Reservations.Should().BeEmpty();
+
+            showtime.Events.Should()
+                              .ContainSingle(x => x is ReservationCanceledEvent)
+                              .Which.Should().BeOfType<ReservationCanceledEvent>()
+                              .Which.Should().Match<ReservationCanceledEvent>(e =>
+                                                                            e.AggregateId == showtime.Id &&
+                                                                            e.ReservationId == reservationId &&
+                                                                            !e.IsPurchased);
+        }
+
+        [Fact]
+        public void CancelReservation_WhenHavingInvalidReservationId_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var reservationId = Constants.Reservation.Id;
+
+            var showtime = ScheduleShowtimeUtils.Schedule();
+
+            // Act
+            Action showtimeCancelReservation = () => showtime.CancelReservation(reservationId);
+
+            // Assert
+            showtimeCancelReservation.Should().Throw<NotFoundException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x is ReservationCanceledEvent);
+        }
+
+        [Fact]
+        public void CancelReservation_WhenHavingNullReservationId_ShouldThrowArgumentException()
+        {
+            // Arrange
+            ReservationId reservationId = null!;
+
+            var showtime = ScheduleShowtimeUtils.Schedule();
+
+            // Act
+            Action showtimeCancelReservation = () => showtime.CancelReservation(reservationId);
+
+            // Assert
+            showtimeCancelReservation.Should().Throw<ArgumentException>();
+
+            showtime.Events.Should()
+                           .NotContain(x => x is ReservationCanceledEvent);
+        }
     }
 }

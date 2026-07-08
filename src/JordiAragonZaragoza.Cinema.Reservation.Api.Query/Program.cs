@@ -24,11 +24,12 @@
 
             // Configure specific Host Services (DI)
             builder.Services
+                .AddApplication()
                 .AddApplicationValidators()
                 .AddApplicationQueryHandlers()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
                 .AddInfrastructureProjectionsRepositories()
-                .AddPresentationHttpRestfulApi(configuration);
+                .AddPresentationHttpRestfulApi(configuration, builder.Environment.EnvironmentName == "Development");
 
             // Then configure SharedKernel Services (DI)
             builder.Services

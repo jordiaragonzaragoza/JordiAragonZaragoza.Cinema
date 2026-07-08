@@ -14,38 +14,50 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag)
-                                   .WithLifetime(ContainerLifetime.Persistent);
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbImageTag);
 
             if (!IsSystemTesting(builder))
             {
-                kurrentdb.WithDataVolume();
+                kurrentdb.WithDataVolume()
+                         .WithLifetime(ContainerLifetime.Persistent);
             }
             else
             {
-                kurrentdb.WithContainerRuntimeArgs("--tmpfs", "/var/lib/kurrentdb");
+                kurrentdb.WithContainerRuntimeArgs("--tmpfs", "/var/lib/kurrentdb")
+                         .WithLifetime(ContainerLifetime.Session);
             }
 
             var kurrentdbSeeder = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Seeder>(Constants.ReservationWorkerSeeder)
                                           .WithReference(kurrentdb)
                                           .WaitFor(kurrentdb);
 
-            var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
-                     .WithReference(kurrentdb)
-                     .WaitForCompletion(kurrentdbSeeder);
-
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag(Constants.PostgresImageTag)
-                                        .WithPgAdmin()
-                                        .WithLifetime(ContainerLifetime.Persistent);
+                                        .WithPgAdmin();
 
             if (!IsSystemTesting(builder))
             {
-                postgresServer.WithDataVolume();
+                postgresServer.WithDataVolume()
+                              .WithLifetime(ContainerLifetime.Persistent);
             }
             else
             {
-                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql/data");
+                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql/data")
+                              .WithLifetime(ContainerLifetime.Session);
+            }
+
+            var cache = builder.AddRedis(Constants.RedisCache)
+                               .WithImageTag(Constants.RedisImageTag);
+
+            if (!IsSystemTesting(builder))
+            {
+                cache.WithDataVolume()
+                     .WithLifetime(ContainerLifetime.Persistent);
+            }
+            else
+            {
+                cache.WithContainerRuntimeArgs("--tmpfs", "/data")
+                     .WithLifetime(ContainerLifetime.Session);
             }
 
             var reservationReadModelDb = postgresServer.AddDatabase(Constants.ReservationReadModelStore);
@@ -54,15 +66,41 @@ namespace JordiAragonZaragoza.Cinema
                                                           .WithReference(reservationReadModelDb)
                                                           .WaitFor(postgresServer);
 
+            var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080);
+
+            if (!IsSystemTesting(builder))
+            {
+                keycloak.WithDataVolume()
+                        .WithLifetime(ContainerLifetime.Persistent);
+            }
+            else
+            {
+                keycloak.WithContainerRuntimeArgs("--tmpfs", "/opt/keycloak/data")
+                        .WithLifetime(ContainerLifetime.Session);
+            }
+
+            var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
+                     .WithReference(kurrentdb)
+                     .WaitForCompletion(kurrentdbSeeder)
+                     .WithReference(reservationReadModelDb)
+                     .WaitForCompletion(reservationWorkerReadModelMigrator)
+                     .WithReference(cache)
+                     .WithReference(keycloak)
+                     .WaitFor(keycloak);
+
             var reservationApiQuery = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)
-                     .WaitForCompletion(reservationWorkerReadModelMigrator);
+                     .WaitForCompletion(reservationWorkerReadModelMigrator)
+                     .WithReference(cache)
+                     .WithReference(keycloak)
+                     .WaitFor(keycloak);
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector>(Constants.ReservationWorkerProjector)
                                           .WithReference(kurrentdb)
                                           .WaitFor(kurrentdb)
                                           .WithReference(reservationReadModelDb)
-                                          .WaitForCompletion(reservationWorkerReadModelMigrator);
+                                          .WaitForCompletion(reservationWorkerReadModelMigrator)
+                                          .WithReference(cache);
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Reactor>(Constants.ReservationWorkerReactor)
                      .WithReference(kurrentdb)
@@ -70,7 +108,8 @@ namespace JordiAragonZaragoza.Cinema
 
                      // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
                      .WithReference(reservationReadModelDb)
-                     .WaitForCompletion(reservationWorkerReadModelMigrator);
+                     .WaitForCompletion(reservationWorkerReadModelMigrator)
+                     .WithReference(cache);
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Mcp_Gateway>(Constants.ReservationMcpGateway)
                      .WithReference(reservationApiQuery)

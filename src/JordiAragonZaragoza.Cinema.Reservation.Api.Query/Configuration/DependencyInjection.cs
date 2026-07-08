@@ -2,15 +2,31 @@
 {
     using System.Text.Json.Serialization;
     using Asp.Versioning;
+    using JordiAragonZaragoza.Cinema.SharedKernel;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPresentationHttpRestfulApi(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPresentationHttpRestfulApi(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
         {
-            services.AddAuthentication();
+            services.AddAuthentication()
+                    .AddKeycloakJwtBearer(
+                        serviceName: Constants.Keycloak,
+                        realm: "cinema",
+                        options =>
+                        {
+                            options.Audience = "cinema.api";
+
+                            // For development only - disable HTTPS metadata validation
+                            // In production, use explicit Authority configuration instead
+                            if (isDevelopment)
+                            {
+                                options.RequireHttpsMetadata = false;
+                            }
+                        });
+
             services.AddAuthorization();
 
             services.AddCors(options =>

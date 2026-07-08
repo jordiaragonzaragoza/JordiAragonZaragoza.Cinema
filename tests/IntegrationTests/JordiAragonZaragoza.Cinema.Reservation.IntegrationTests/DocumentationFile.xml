@@ -4,5 +4,19 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.IntegrationTests</name>
     </assembly>
     <members>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common.BaseEntityFrameworkIntegrationTests.SeedAsync">
+            <summary>
+            Seeds the database with test data. Can be overridden to seed specific data for a test.
+            This method is called after the database has been reset and before each test runs.
+            </summary>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.IntegrationTests.Infrastructure.EntityFramework.Common.BaseEntityFrameworkIntegrationTests.CreateExecutionContextService">
+            <summary>
+            Creates an ExecutionContextService for integration tests.
+            Can be overridden to use a different tenant.
+            </summary>
+            <returns> A IExecutionContextService for integration tests.</returns>
+        </member>
     </members>
 </doc>

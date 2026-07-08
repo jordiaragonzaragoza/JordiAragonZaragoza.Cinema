@@ -4,17 +4,121 @@
         <name>JordiAragonZaragoza.Cinema.Reservation</name>
     </assembly>
     <members>
-        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration">
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelStoreMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections.Migrations.InitialReadModelMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies.ReservationOwnerOrAdminPolicy">
+            <summary>
+            Passes when the current user owns the reservation identified by
+            resourceId, or holds the Admin role. Loads ReservationReadModel
+            (not the Showtime aggregate) to resolve ownership cheaply — this
+            is an authorization-time lookup, not a domain operation, so the
+            read model is the correct source, not event replay via the aggregate.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Roles">
+            <summary>
+            Gets or sets the collection of roles assigned at this scope level.
+            Uses owned entities pattern for flexibility and database portability.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Permissions">
+            <summary> Gets or sets the collection of permissions assigned at this scope level.
+            Uses owned entities pattern for flexibility and database portability.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Contracts.ReadModels.UserAuthorizationReadModel.Matches(System.Guid,System.Nullable{System.Guid},System.Nullable{System.Guid})">
+            <summary>
+            Checks if this authorization matches the given scope hierarchy.
+            Cinema-level scope is the most specific, then partition, then tenant.
+            </summary>
+            <param name="tenantId">The tenant identifier.</param>
+            <param name="partitionId">The partition identifier (optional).</param>
+            <param name="domainId">The cinema identifier (optional).</param>
+            <returns>True if this authorization matches the given scope, false otherwise.</returns>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorizations.GetUserAuthorizationCachedSpecification">
+            <summary>
+            Resolves the EXACT scope-level row for a given (userId, tenantId, partitionId, cinemaId).
+            Used by event projectors to locate the precise assignment row that a domain
+            event refers to. Does NOT apply scope hierarchy — an event with a specific
+            scope must only ever mutate the row matching that exact scope.
+            </summary>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Application.QueryHandlers.GetUserAuthorizations.GetUserAuthorizationsCandidatesCachedSpecification">
+            <summary>
+            Resolves ALL assignment rows for a user within a tenant — across every scope
+            level (tenant-only, partition-only, cinema-specific). Used by AuthorizationService
+            to apply UserAuthorizationReadModel.Matches and select the row whose hierarchy
+            covers the requested scope, mirroring User.GetRolesFor's in-memory resolution.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Application.Services.UserAuthorizationResolver.ResolveAsync(System.Guid,JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ScopeContext,System.Threading.CancellationToken)">
+            <summary>
+            Resolves the single assignment whose scope hierarchy covers the requested
+            (tenantId, partitionId, cinemaId), using UserAuthorizationReadModel.Matches
+            for the same Cinema > Partition > Tenant specificity rule the domain applies
+            in User.GetRolesFor. A user is expected to have at most one matching
+            assignment per concrete scope; if a user has multiple overlapping assignments
+            (e.g. Tenant-level AND Cinema-level), the most specific one is preferred.
+            </summary>
+            <param name="userId">The ID of the user for whom to resolve authorization.</param>
+            <param name="scope">The scope context (tenant, partition, cinema) for which to resolve authorization.</param>
+            <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+            <returns>The resolved UserAuthorizationReadModel if found; otherwise, null.</returns>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Domain.User.GetRolesFor(JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.TenantId,JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.PartitionId,JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.CinemaId)">
+             <summary>
+             Returns the UNION of roles across all assignments whose scope matches
+             the given hierarchy — additive semantics. This reflects the full state
+             of the aggregate and is intended for domain-internal use (invariants,
+             future business rules) and unit testing of the User aggregate in isolation.
+            
+             This is NOT used by the runtime authorization check. AuthorizationService
+             resolves authorization against the projected UserAuthorizationReadModel
+             via UserAuthorizationResolver, which intentionally selects only the MOST
+             SPECIFIC matching assignment (exclusive semantics) for performance and
+             simplicity. Do not assume these two paths return equivalent results.
+             </summary>
+             <param name="tenantId">The tenant identifier.</param>
+             <param name="partitionId">The partition identifier (optional).</param>
+             <param name="cinemaId">The cinema identifier (optional).</param>
+             <returns>A collection of roles that the user has for the given scope.</returns>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.Reservation.User.Domain.User.GetPermissionsFor(JordiAragonZaragoza.Cinema.Reservation.Tenant.Domain.TenantId,JordiAragonZaragoza.Cinema.Reservation.Partition.Domain.PartitionId,JordiAragonZaragoza.Cinema.Reservation.Cinema.Domain.CinemaId)">
+             <summary>
+             Returns the UNION of permissions across all assignments whose scope matches
+             the given hierarchy — additive semantics. This reflects the full state
+             of the aggregate and is intended for domain-internal use (invariants,
+             future business rules) and unit testing of the User aggregate in isolation.
+            
+             This is NOT used by the runtime authorization check. AuthorizationService
+             resolves authorization against the projected UserAuthorizationReadModel
+             via UserAuthorizationResolver, which intentionally selects only the MOST
+             SPECIFIC matching assignment (exclusive semantics) for performance and
+             simplicity. Do not assume these two paths return equivalent results.
+             </summary>
+             <param name="tenantId">The tenant identifier.</param>
+             <param name="partitionId">The partition identifier (optional).</param>
+             <param name="cinemaId">The cinema identifier (optional).</param>
+             <returns>A collection of permissions that the user has for the given scope.</returns>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.User.Infrastructure.EntityFramework.Projections.UserAuthorizationReadModelConfiguration">
+            <summary>
+            Configures the UserAuthorizationReadModel for Entity Framework Core.
+            Uses the owned entities pattern to support future database portability.
+            Each record represents a single user-scope authorization assignment.
+            A user can have multiple records if granted roles at different scope levels (tenant, partition, cinema).
+            </summary>
         </member>
     </members>
 </doc>

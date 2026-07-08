@@ -24,7 +24,7 @@
         public void ImplicitConversion_WhenHavingAMovieId_ShouldReturnGuid()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var movieId = new MovieId(value);
 
             // Act
@@ -38,7 +38,7 @@
         public void ToString_ShouldReturnStringRepresentationOfMovieId()
         {
             // Arrange
-            var value = Guid.NewGuid();
+            var value = Guid.CreateVersion7();
             var movieId = new MovieId(value);
 
             // Act
@@ -52,8 +52,8 @@
         public void Equality_Checks_ShouldWorkAsExpected()
         {
             // Arrange
-            var value1 = Guid.NewGuid();
-            var value2 = Guid.NewGuid();
+            var value1 = Guid.CreateVersion7();
+            var value2 = Guid.CreateVersion7();
 
             var movieId1 = new MovieId(value1);
             var movieId2 = new MovieId(value1);
