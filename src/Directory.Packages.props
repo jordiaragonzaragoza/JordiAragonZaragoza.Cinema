@@ -2,7 +2,7 @@
 <Project>
    <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-        <SharedKernelVersion>11.2.1</SharedKernelVersion>
+        <SharedKernelVersion>12.0.0</SharedKernelVersion>
    </PropertyGroup>
    <ItemGroup>
      <PackageVersion Include="JordiAragonZaragoza.SharedKernel" Version="$(SharedKernelVersion)" />

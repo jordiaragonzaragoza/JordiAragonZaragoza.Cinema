@@ -21,7 +21,7 @@
         where TProgram : class
     {
         private readonly KurrentDbContainer eventStoreContainer =
-            new KurrentDbBuilder($"{Constants.KurrentDbImage}:{Constants.KurrentDbArmImageTag}")
+            new KurrentDbBuilder($"{Constants.KurrentDbImage}:{Constants.KurrentDbImageTag}")
             .WithName($"kurrentdb.cinema.reservation.eventstore.functionaltests.api.command-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 

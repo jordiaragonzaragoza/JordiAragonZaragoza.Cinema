@@ -14,7 +14,7 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag);
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbImageTag);
 
             if (!IsSystemTesting(builder))
             {
