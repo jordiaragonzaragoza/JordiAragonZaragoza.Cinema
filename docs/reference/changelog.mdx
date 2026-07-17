@@ -1,0 +1,91 @@
+---
+title: "Cinema System Release Notes and Changelog"
+sidebarTitle: "Changelog"
+description: "Full release history for the Cinema System, including new features, architectural changes, and migration notes for each version."
+---
+
+The Cinema System follows semantic versioning. Each release below lists what changed, what was added, and — where relevant — what was removed or replaced. Use this page to understand what is available in the version you are running and what to expect when upgrading.
+
+<Note>
+The `main` branch tracks **.NET 10 (v3.x)**. If you are running an earlier .NET runtime, check out the `net8.0` or `net9.0` branch for the corresponding v2.x release. See the [GitHub releases page](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/releases) for downloadable archives of every version.
+</Note>
+
+## Release History
+
+<Accordion title="v3.2.0 — Latest (.NET 10)">
+  **Status:** Current stable release
+
+  This release introduces authorization, observability, and multi-tenancy as first-class features, alongside a move to all-stream persistent subscriptions for more reliable event reactions.
+
+  **Added**
+  - **UserAuthorization** — Role-based and claim-based access control enforced across all API endpoints.
+  - **OpenTelemetry activity tracing** — Distributed traces emitted for every API request, command, and query. View traces locally via the Aspire dashboard at `http://localhost:15888`.
+  - **Multi-tenant support** — Tenant context resolved from authenticated JWT claims, enabling a single deployment to serve multiple cinema operators.
+  - **All-stream persistent subscriptions** — Reactions (projections and process managers) now subscribe to the Kurrent DB all-stream, improving reliability and consistency of the read model.
+
+  **Runtime:** .NET 10
+</Accordion>
+
+<Accordion title="v3.1.1">
+  **Status:** Superseded by v3.2.0
+
+  **Added**
+  - **Reservation MCP Gateway** — A Model Context Protocol gateway that exposes reservation operations as structured tools, enabling AI-assisted reservation workflows.
+  - **Reservation SDK** — A first-party .NET client library for integrating with the Cinema API. Configure it via `AddReservationSdk(options => ...)` in your service registration. See the [Configuration](/reference/configuration) guide for setup details.
+</Accordion>
+
+<Accordion title="v3.0.1">
+  **Status:** Superseded by v3.1.1
+
+  **Fixed**
+  - Various bug fixes and stability improvements identified after the v3.0.0 release.
+  - Resolved edge cases in the read model migration and reference data seeding services under high-concurrency scenarios.
+</Accordion>
+
+<Accordion title="v3.0.0 — Major Architectural Overhaul (.NET 10)">
+  **Status:** Superseded by v3.0.1
+
+  This release represents a complete re-architecture of the Cinema System. Read the notes below carefully before upgrading from v2.x.
+
+  **Added**
+  - **Event Sourcing with Kurrent DB** — All domain state is now persisted as an immutable event stream. Kurrent DB replaces the previous relational write model.
+  - **System Tests** — End-to-end system test suite covering the full reservation workflow.
+  - **Read model migration service** — A standalone background service that rebuilds read-model projections from the event stream on demand.
+  - **Reference data seeding** — A standalone background service that seeds reference data (auditoriums, showtimes) on first run.
+  - **ASP.NET Controllers** — HTTP layer migrated from FastEndpoints to standard ASP.NET Core controllers for broader ecosystem compatibility.
+
+  **Changed**
+  - **Split into autonomous components** — The monolithic application is now decomposed into independently deployable services (API, workers, gateway).
+  - **Migrated to .NET 10** — The entire solution targets .NET 10. .NET 8/9 support continues on the `net8.0` and `net9.0` branches.
+
+  **Removed**
+  - **FastEndpoints** — Replaced by ASP.NET Core controllers.
+  - **AutoMapper** — Removed in favour of explicit mapping code.
+  - **Autofac** — Replaced by the built-in .NET dependency injection container.
+
+  **Runtime:** .NET 10
+
+  <Warning>
+    Upgrading from v2.x requires a full environment re-provision. Kurrent DB must be running and accessible before the API starts. Run the read model migration service after deployment to populate the read model from scratch.
+  </Warning>
+</Accordion>
+
+<Accordion title="v2.x.x — Legacy (.NET 8 / .NET 9)">
+  **Status:** Maintained on separate branches — no new features
+
+  The v2.x.x line runs on **.NET 8** and **.NET 9** and is available on the `net8.0` and `net9.0` branches respectively. The earliest documented release in this line is **v2.8.2**.
+
+  These branches receive critical bug fixes only. All new development targets v3.x on `main`.
+
+  **Branches:**
+  - `net8.0` — targets .NET 8, v2.x.x releases
+  - `net9.0` — targets .NET 9, v2.x.x releases
+
+  If you are locked to .NET 8 or .NET 9, use the appropriate branch. Plan a migration to .NET 10 (main branch) to access v3.x features including Event Sourcing, multi-tenancy, and the Reservation SDK.
+</Accordion>
+
+## Full Release Archive
+
+For a complete list of releases including pre-release versions, patch notes, and downloadable assets, visit the GitHub releases page:
+
+[github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/releases](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/releases)

@@ -1,0 +1,101 @@
+---
+title: "Event Sourcing: Immutable History and Domain Events"
+sidebarTitle: "Event Sourcing"
+description: "Learn how the Cinema System uses event sourcing to record every state change as an immutable domain event stored in Kurrent DB."
+---
+
+The Cinema System records every state change as an **immutable domain event** rather than overwriting a database row. When you create a reservation, the system appends a `SeatsReserved` event to an event stream. When you purchase it, a `ReservationPurchased` event follows. The current state of any aggregate — an auditorium, a showtime, a reservation — is always the result of replaying its event history from the beginning. This approach makes the system's history fully auditable and eliminates the possibility of silent data loss.
+
+## How the Storage Layer Works
+
+The system uses two separate stores to serve different concerns:
+
+<CardGroup cols={2}>
+  <Card title="Kurrent DB (Event Store)" icon="database">
+    Stores the authoritative event streams for every aggregate. This is the single source of truth. Every write operation appends a new event here.
+  </Card>
+  <Card title="PostgreSQL (Read Projections)" icon="table">
+    Stores pre-computed, query-optimized views of the current state. These projections are derived from the event streams and kept up to date by background event handlers.
+  </Card>
+</CardGroup>
+
+---
+
+## Domain Events
+
+The following events represent every meaningful state change in the system. Each event is immutable once written.
+
+| Event | Triggered When |
+|---|---|
+| `AuditoriumCreated` | A new auditorium is registered in the system |
+| `ShowtimeCreated` | A new showtime is scheduled for a movie |
+| `ShowtimeCancelled` | An existing showtime is cancelled |
+| `SeatsReserved` | A customer successfully reserves one or more seats |
+| `ReservationPurchased` | A reserved seat group is paid for and confirmed |
+| `ReservationExpired` | A reservation reaches its 1-minute expiry without being purchased |
+
+### Example Event Payload
+
+When you call `POST /api/v2/showtimes/{showtimeId}/reservations`, the system internally appends a `SeatsReserved` event to the showtime's stream:
+
+```json
+{
+  "eventType": "SeatsReserved",
+  "aggregateId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "occurredAt": "2025-08-15T14:00:00Z",
+  "data": {
+    "reservationId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+    "seats": [
+      { "rowNumber": 1, "seatNumber": 2 },
+      { "rowNumber": 1, "seatNumber": 3 }
+    ],
+    "expiresAt": "2025-08-15T14:01:00Z"
+  }
+}
+```
+
+---
+
+## What Event Sourcing Means for You
+
+You do not interact with events directly — the API abstracts them behind familiar HTTP verbs. However, understanding the event model helps you reason about API behavior.
+
+<Steps>
+  <Step title="Commands generate events">
+    Every `POST` or `PUT` request is a **command**. A successful command appends one or more events to Kurrent DB and returns a minimal confirmation response (typically a resource ID). The command does not return the full updated state.
+  </Step>
+  <Step title="Projections power GET responses">
+    Every `GET` request reads from the **PostgreSQL projection**. These projections are maintained by subscribing to the event stream and updating read-optimized tables. The data you receive always reflects the most recently processed events.
+  </Step>
+  <Step title="State is never patched directly">
+    There are no `PATCH` endpoints that update a field in place. All changes flow through commands, which produce events, which update projections. This ensures the audit trail is always complete.
+  </Step>
+</Steps>
+
+---
+
+## Eventual Consistency
+
+Because projections are updated asynchronously after an event is written, there is a brief window where a `GET` request may not yet reflect the outcome of a just-completed `POST` or `PUT`.
+
+```
+POST /reservations  ──► event appended to Kurrent DB
+                              │
+                              ▼  (async, milliseconds)
+                        projection updated in PostgreSQL
+                              │
+                              ▼
+GET /reservations/{id}  ──► returns current projected state
+```
+
+In practice, this lag is measured in milliseconds under normal load. If you query immediately after a write, add a short retry with back-off rather than assuming the command failed.
+
+<Note>
+  **Idempotency:** Do not automatically retry a `POST /reservations` request without first checking whether a reservation already exists for the same showtime and seats. A retry after a network timeout may create a duplicate reservation. Use `GET /api/v2/reservations/{id}` to verify the state before re-submitting a command.
+</Note>
+
+---
+
+## Audit Trail
+
+Because every state transition is recorded as an event, the complete history of any reservation is always available internally. If you need to investigate a discrepancy — for example, why a reservation shows `Expired` rather than `Purchased` — the event stream provides an exact timeline of what happened and when. Contact support with the `reservationId` and the system can replay the full history of that aggregate.

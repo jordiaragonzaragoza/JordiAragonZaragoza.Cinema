@@ -1,0 +1,122 @@
+---
+title: "Cinema Reservation API Client Configuration Reference"
+sidebarTitle: "Configuration"
+description: "Set up your base URL, JWT authentication, Swagger UI, OpenTelemetry tracing, and multi-tenant context to connect to the Cinema Reservation API."
+---
+
+Before you make your first API call, configure your HTTP client or the Reservation SDK with the correct base URL, authentication settings, and any optional observability options. The sections below walk you through each configuration area, from the minimum required setup for local development to production-ready options like multi-tenant context and distributed tracing.
+
+## Base URL
+
+Every request you send must be prefixed with the base URL of your Cinema API deployment. The value depends on your environment:
+
+| Environment       | Base URL                          |
+|-------------------|-----------------------------------|
+| Local development | `https://localhost:5001`          |
+| Production        | Provided by your deployment team  |
+
+Set the base URL once in your SDK configuration or HTTP client so you do not hard-code it into individual requests.
+
+## Authentication
+
+The Cinema API uses **JWT Bearer authentication**. Obtain a token by posting credentials to the login endpoint, then include the token in the `Authorization` header of every subsequent request.
+
+**Step 1 — Request a token:**
+
+```bash
+curl -X POST https://localhost:5001/api/v2/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "user@example.com", "password": "your-password"}'
+```
+
+The response body contains your `accessToken`:
+
+```json
+{
+  "accessToken": "..."
+}
+```
+
+**Step 2 — Attach the token to requests:**
+
+```http
+GET /api/v2/showtimes
+Authorization: Bearer ...
+```
+
+<Note>
+Tokens expire after a configured TTL. When you receive a `401 Unauthorized` response, request a new token from `/api/v2/auth/login` and retry your call.
+</Note>
+
+## Swagger UI
+
+The Cinema API ships with an interactive Swagger UI you can use to explore all available endpoints, inspect request and response schemas, and execute requests directly from your browser.
+
+Access Swagger UI at:
+
+```
+{baseUrl}/swagger
+```
+
+For local development, that is:
+
+```
+https://localhost:5001/swagger
+```
+
+<Tip>
+Use Swagger UI to prototype requests before writing integration code. You can authenticate directly in the UI by clicking **Authorize** and pasting your Bearer token.
+</Tip>
+
+## SDK Configuration
+
+The Reservation SDK wraps all HTTP communication and always targets the V2 API. Register it in your `IServiceCollection` during application startup:
+
+```csharp
+builder.Services.AddReservationSdk(options =>
+{
+    options.BaseUrl = "https://your-cinema-api.com";
+    options.ApiVersion = "v2";
+});
+```
+
+Replace `https://your-cinema-api.com` with `https://localhost:5001` for local development.
+
+## Multi-Tenant Context
+
+The Cinema API supports multiple tenants in a single deployment. Tenant context is resolved automatically from the **claims embedded in your JWT token** — you do not need to add a separate tenant header when using the SDK or standard Bearer authentication. Ensure the token you use was issued for the correct tenant.
+
+<Info>
+If your deployment uses request-header-based tenant resolution, pass the tenant identifier in the header specified by your deployment configuration. Check with your infrastructure team for the correct header name and expected value format.
+</Info>
+
+## OpenTelemetry Tracing
+
+The Cinema API emits distributed traces via **OpenTelemetry**. In a local development environment powered by .NET Aspire, view traces in the Aspire dashboard:
+
+```
+http://localhost:15888
+```
+
+The dashboard shows end-to-end trace spans for every API request, including database calls and event-sourcing activity against Kurrent DB. Use it to diagnose latency issues or understand the flow of a specific reservation operation.
+
+<Note>
+Local development requires **Docker** to run Kurrent DB (event store) and PostgreSQL (read model). Start both services before launching the API, or use the Aspire app host which orchestrates all dependencies automatically.
+</Note>
+
+## Configuration Checklist
+
+<CardGroup cols={2}>
+  <Card title="Base URL" icon="link">
+    Set `https://localhost:5001` for local dev or your production URL for deployed environments.
+  </Card>
+  <Card title="JWT Token" icon="key">
+    Call `POST /api/v2/auth/login` before your first authenticated request and refresh on `401`.
+  </Card>
+  <Card title="Swagger UI" icon="magnifying-glass">
+    Open `{baseUrl}/swagger` to explore and test endpoints interactively.
+  </Card>
+  <Card title="OpenTelemetry" icon="chart-line">
+    Access the Aspire dashboard at `http://localhost:15888` for local tracing.
+  </Card>
+</CardGroup>

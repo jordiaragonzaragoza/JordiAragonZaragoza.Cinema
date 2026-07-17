@@ -1,0 +1,79 @@
+---
+title: "Purchase a Reservation — Cinema Reservation API"
+sidebarTitle: "Purchase"
+description: "Confirm and purchase an existing reservation. Complete this step within one minute of creating the reservation to secure the seats."
+---
+
+Use this endpoint to finalize a reservation and complete the seat purchase. Send the reservation ID you received when you [created the reservation](/api/reservations/create). The API confirms the purchase and returns a timestamp recording when it was completed. You do not need to send a request body.
+
+## HTTP Request
+
+```
+PUT https://your-cinema-api.com/api/v2/reservations/{reservationId}/purchase
+```
+
+## Path Parameters
+
+<ParamField path="reservationId" type="string" required>
+  The GUID of the reservation you want to purchase. You receive this value in the `reservationId` field of the [Reserve Seats](/api/reservations/create) response.
+</ParamField>
+
+<Warning>
+  Reservations expire **one minute** after creation. If you send this request after the `expiryTime` in your reservation, the API returns `409 Conflict` and the seats are released back to the pool. Start the purchase flow immediately after reserving.
+</Warning>
+
+## Request Body
+
+This endpoint does not require a request body.
+
+### Example Request
+
+```bash
+curl --request PUT \
+  --url https://your-cinema-api.com/api/v2/reservations/3fa85f64-5717-4562-b3fc-2c963f66afa6/purchase \
+  --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+```
+
+## Response
+
+A successful request returns HTTP **200 OK** confirming the purchase.
+
+<ResponseField name="reservationId" type="string">
+  The GUID of the reservation that was purchased. This matches the `reservationId` you provided in the path.
+</ResponseField>
+
+<ResponseField name="purchasedAt" type="string">
+  The ISO 8601 UTC timestamp recording when the purchase was completed. Use this value as the official confirmation time for the customer's receipt.
+</ResponseField>
+
+### Example Response
+
+```json
+{
+  "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "purchasedAt": "2024-12-25T20:00:30Z"
+}
+```
+
+<Note>
+  After a successful purchase, the reservation status changes to `"Purchased"`. Subsequent calls to purchase the same reservation return `409 Conflict`. Use [Get Reservation](/api/reservations/get) to verify the current status at any time.
+</Note>
+
+## Error Codes
+
+| Status | Meaning |
+|--------|---------|
+| `401 Unauthorized` | The `Authorization` header is missing or the token is invalid. |
+| `404 Not Found` | No reservation exists for the provided `reservationId`. |
+| `409 Conflict` | The reservation has already been purchased, or it has expired. |
+
+Error responses follow the [Problem Details](https://www.rfc-editor.org/rfc/rfc9457) format:
+
+```json
+{
+  "type": "https://your-cinema-api.com/errors/conflict",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Reservation 3fa85f64-5717-4562-b3fc-2c963f66afa6 has expired."
+}
+```

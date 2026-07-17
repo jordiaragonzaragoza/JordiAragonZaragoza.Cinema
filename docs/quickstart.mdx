@@ -1,0 +1,167 @@
+---
+title: "Quickstart: Make Your First Cinema Seat Reservation"
+sidebarTitle: "Quickstart"
+description: "Install prerequisites, start the Cinema System locally, authenticate, and make your first seat reservation in minutes."
+---
+
+This guide walks you through running the Cinema System on your machine and making your first successful seat reservation. By the end you will have a working local stack, a valid JWT token, and a confirmed reservation GUID in hand.
+
+## Prerequisites
+
+Make sure you have the following installed before you begin.
+
+| Tool | Version | Notes |
+|---|---|---|
+| .NET SDK | 10.0 or later | [Download](https://dotnet.microsoft.com/download) |
+| Docker Desktop | Latest stable | Must be running when you start the app |
+| .NET Aspire Workload | Latest | Install with `dotnet workload install aspire` |
+| Visual Studio 2022 | 17.9+ (optional) | Recommended for the one-key launch experience |
+
+<Note>
+  Docker Desktop must be **running** before you launch the application. .NET Aspire uses it to start Kurrent DB and PostgreSQL as containers.
+</Note>
+
+## Steps
+
+<Steps>
+  <Step title="Clone the repository">
+    Download the source code from GitHub.
+
+    ```bash
+    git clone https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema.git
+    cd JordiAragonZaragoza.Cinema
+    ```
+  </Step>
+
+  <Step title="Start the application">
+    Choose the launch method that fits your workflow.
+
+    <CodeGroup>
+      ```bash CLI
+      dotnet run --project src/JordiAragonZaragoza.Cinema
+      ```
+
+      ```text Visual Studio 2022
+      1. Open JordiAragonZaragoza.Cinema.sln
+      2. Set the Aspire host project as the startup project
+      3. Press F5
+      ```
+    </CodeGroup>
+
+    .NET Aspire orchestrates the full stack — Command API, Query API, Kurrent DB event store, PostgreSQL projection store, and the Aspire dashboard — in a single launch. Wait until all services report a healthy status in the console or Aspire dashboard before proceeding.
+  </Step>
+
+  <Step title="Open Swagger UI">
+    Navigate to the interactive API explorer in your browser.
+
+    ```
+    https://localhost:5001/swagger
+    ```
+
+    Swagger UI lists every available endpoint and lets you send requests directly from the browser. Click **Authorize** in the top-right corner to add your JWT token once you obtain it in the next step.
+
+    <Tip>
+      The exact port may differ depending on your launch profile. Check the Aspire dashboard or the console output for the correct URL if `5001` does not respond.
+    </Tip>
+  </Step>
+
+  <Step title="Authenticate and get a JWT token">
+    Exchange your credentials for a JWT access token.
+
+    ```bash
+    curl -X POST https://localhost:5001/api/v2/auth/login \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "your-email@example.com",
+        "password": "your-password"
+      }'
+    ```
+
+    A successful response looks like this:
+
+    ```json
+    {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "expiresIn": 3600
+    }
+    ```
+
+    Copy the `accessToken` value. You need it in every subsequent request as a `Bearer` token in the `Authorization` header.
+  </Step>
+
+  <Step title="List available showtimes">
+    Retrieve the list of scheduled showtimes to find a valid `showtimeId` for your reservation.
+
+    ```bash
+    curl -X GET https://localhost:5001/api/v2/showtimes \
+      -H "Authorization: Bearer <your-access-token>"
+    ```
+
+    Pick a `showtimeId` from the response. Note the `auditoriumId` too — you will need it to inspect the available seat layout before choosing seats.
+
+    ```bash
+    curl -X GET https://localhost:5001/api/v2/auditoriums/{auditoriumId} \
+      -H "Authorization: Bearer <your-access-token>"
+    ```
+
+    The response lists every seat in the auditorium with its row and seat number. Use this to choose the contiguous seats you want to reserve in the next step.
+  </Step>
+
+  <Step title="Make your first reservation">
+    Reserve one or more contiguous seats for your chosen showtime.
+
+    ```bash
+    curl -X POST https://localhost:5001/api/v2/showtimes/{showtimeId}/reservations \
+      -H "Authorization: Bearer <your-access-token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "seatsNumbers": [
+          { "row": 1, "seatNumber": 4 },
+          { "row": 1, "seatNumber": 5 }
+        ]
+      }'
+    ```
+
+    Replace `{showtimeId}` with the ID from the previous step. A successful response returns your reservation details:
+
+    ```json
+    {
+      "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "seats": [
+        { "row": 1, "seatNumber": 4 },
+        { "row": 1, "seatNumber": 5 }
+      ],
+      "auditoriumId": "1",
+      "movieTitle": "Example Movie"
+    }
+    ```
+
+    <Note>
+      Your reservation expires in **1 minute**. If you do not purchase it within that window, the seats are released and become available to other users. Proceed to the next step immediately.
+    </Note>
+  </Step>
+
+  <Step title="Purchase the reservation">
+    Confirm and pay for your reservation before the one-minute expiry window closes.
+
+    ```bash
+    curl -X PUT https://localhost:5001/api/v2/reservations/{reservationId}/purchase \
+      -H "Authorization: Bearer <your-access-token>" \
+      -H "Content-Type: application/json"
+    ```
+
+    Replace `{reservationId}` with the GUID returned in the previous step. A `200 OK` response confirms the seats are permanently yours.
+
+    <Warning>
+      Once a reservation expires you cannot purchase it. Start a new reservation from step 6 if the window closes before you call the purchase endpoint.
+    </Warning>
+  </Step>
+</Steps>
+
+## Next steps
+
+You have a working local setup and a complete reservation flow. Explore what you can build next.
+
+- **[API Overview](/api/overview)** — Full endpoint reference with schemas for every request and response.
+- **[Architecture Overview](/architecture-overview)** — Understand CQRS, Event Sourcing, and how the system's design affects your integration.
+- **[SDK & Integrations](/integrations/sdk)** — Use the official .NET Reservation SDK or the MCP Gateway for AI-agent workflows.

@@ -1,0 +1,200 @@
+---
+title: "Cinema Reservation API Error Handling and Status Codes"
+sidebarTitle: "Error Handling"
+description: "Understand how the Cinema API returns errors using Problem Details (RFC 9110) and how to handle each HTTP status code in your integration."
+---
+
+The Cinema Reservation API uses the **Problem Details** standard (RFC 9110) for all error responses. Every error returns a consistent JSON object with a machine-readable `type`, a human-readable `title`, the HTTP `status` code, and a `detail` field describing the specific problem. This makes it straightforward to handle errors programmatically without parsing free-form error strings.
+
+## Error Response Format
+
+All error responses follow this structure:
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Seat 1-1 is already reserved."
+}
+```
+
+| Field    | Type    | Description                                                              |
+|----------|---------|--------------------------------------------------------------------------|
+| `type`   | string  | A URI identifying the error type, referencing the relevant RFC section.  |
+| `title`  | string  | A short, human-readable summary of the problem type.                     |
+| `status` | integer | The HTTP status code.                                                    |
+| `detail` | string  | A specific explanation of what went wrong in this particular request.    |
+
+<Tip>
+Always read the `detail` field first — it contains the most actionable information. For example, `"Seat 1-1 is already reserved."` tells you exactly which seat caused the conflict, so you can prompt the user to select a different one.
+</Tip>
+
+## HTTP Status Code Reference
+
+The table below lists every status code the Cinema API returns, its meaning in this context, and common causes.
+
+| Status | Title                  | Common Causes                                                                                  |
+|--------|------------------------|-----------------------------------------------------------------------------------------------|
+| `400`  | Bad Request            | The request body is malformed or contains logically invalid data (e.g., a showtime in the past). |
+| `401`  | Unauthorized           | The JWT token is missing, expired, or cannot be validated.                                    |
+| `403`  | Forbidden              | The authenticated user lacks the required role or permission for the operation.               |
+| `404`  | Not Found              | The requested showtime, reservation, or auditorium does not exist.                            |
+| `409`  | Conflict               | A business-rule conflict: seat already reserved, reservation already purchased, or reservation expired. |
+| `422`  | Unprocessable Entity   | Input passes basic validation but violates a domain rule (e.g., non-contiguous seat selection, missing required fields). |
+| `500`  | Internal Server Error  | An unexpected server-side error occurred. Retry with exponential back-off and report if persistent. |
+
+## Scenario Examples
+
+<Accordion title="400 — Scheduling a showtime in the past">
+  If you submit a `startTime` value that is earlier than the current UTC time, the API rejects the request immediately:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+    "title": "Bad Request",
+    "status": 400,
+    "detail": "Showtime start time must be in the future."
+  }
+  ```
+</Accordion>
+
+<Accordion title="401 — Missing or expired JWT">
+  Calling any authenticated endpoint without a valid `Authorization` header returns:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.2",
+    "title": "Unauthorized",
+    "status": 401,
+    "detail": "Authentication token is missing or invalid."
+  }
+  ```
+
+  Obtain a fresh token by calling `POST /api/v2/auth/login` and include it as a `Bearer` token.
+</Accordion>
+
+<Accordion title="403 — Insufficient permissions">
+  Attempting an admin-only operation (such as creating an auditorium) with a standard user token returns:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.4",
+    "title": "Forbidden",
+    "status": 403,
+    "detail": "You do not have permission to perform this action."
+  }
+  ```
+</Accordion>
+
+<Accordion title="404 — Showtime not found">
+  Requesting a showtime by an ID that does not exist in the system:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+    "title": "Not Found",
+    "status": 404,
+    "detail": "Showtime 'a3f2...' was not found."
+  }
+  ```
+</Accordion>
+
+<Accordion title="409 — Seat already reserved">
+  Attempting to reserve a seat that another user has already claimed:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+    "title": "Conflict",
+    "status": 409,
+    "detail": "Seat 1-1 is already reserved."
+  }
+  ```
+
+  Refresh the seating map and prompt the user to choose a different seat.
+</Accordion>
+
+<Accordion title="422 — Non-contiguous seat selection">
+  The Cinema API requires selected seats to be contiguous. Selecting seats that leave a gap triggers a 422:
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.21",
+    "title": "Unprocessable Entity",
+    "status": 422,
+    "detail": "Selected seats must be contiguous."
+  }
+  ```
+</Accordion>
+
+<Accordion title="500 — Internal server error">
+  An unexpected error occurred on the server. Retry the request using exponential back-off. If the problem persists, contact your system administrator.
+
+  ```json
+  {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+    "title": "Internal Server Error",
+    "status": 500,
+    "detail": "An unexpected error occurred. Please try again later."
+  }
+  ```
+
+  In production environments the `detail` field may be omitted to avoid leaking internal information. Check the Aspire dashboard or your observability tooling for the full trace.
+</Accordion>
+
+## Handling Errors in Your Integration
+
+### curl
+
+Use `-i` to inspect the response status and body together:
+
+```bash
+curl -i -X POST https://localhost:5001/api/v2/reservations \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -d '{"showtimeId": "abc123", "seats": [{"row": 1, "number": 1}]}'
+```
+
+A conflict response looks like:
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/problem+json
+
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Seat 1-1 is already reserved."
+}
+```
+
+### C# with the Reservation SDK
+
+The SDK surfaces errors as typed exceptions. Wrap your calls in a `try/catch` and inspect the `ProblemDetails` property for structured information:
+
+```csharp
+try
+{
+    var reservation = await reservationClient.ReserveSeatsAsync(showtimeId, request);
+}
+catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+{
+    // Read the structured detail from the Problem Details body
+    Console.WriteLine($"Conflict: {ex.ProblemDetails?.Detail}");
+    // e.g. "Seat 1-1 is already reserved."
+}
+catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.UnprocessableEntity)
+{
+    Console.WriteLine($"Validation error: {ex.ProblemDetails?.Detail}");
+}
+catch (ApiException ex)
+{
+    Console.WriteLine($"Unexpected error {ex.StatusCode}: {ex.ProblemDetails?.Detail}");
+}
+```
+
+<Note>
+The `ApiException.ProblemDetails` property is populated for all error responses that include a `application/problem+json` body. For `500` errors, `detail` may be absent in production environments to avoid leaking internal information.
+</Note>

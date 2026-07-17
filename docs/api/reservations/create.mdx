@@ -1,0 +1,145 @@
+---
+title: "Reserve Seats for a Showtime — Cinema Reservation API"
+sidebarTitle: "Reserve Seats"
+description: "Reserve one or more contiguous seats for a specific showtime using the Cinema API. Seats are held for one minute while you complete the purchase."
+---
+
+Use this endpoint to claim seats for a showtime before purchasing them. Submit the showtime ID and the list of seats you want to reserve. The API returns a reservation ID and a one-minute expiry window — call the [Purchase](/api/reservations/purchase) endpoint before the reservation expires to confirm the booking.
+
+## HTTP Request
+
+```
+POST https://your-cinema-api.com/api/v2/showtimes/{showtimeId}/reservations
+```
+
+## Path Parameters
+
+<ParamField path="showtimeId" type="string" required>
+  The GUID of the showtime for which you are reserving seats.
+</ParamField>
+
+## Request Body
+
+Send a JSON object containing a `seats` array. Each element in the array identifies a single seat by its row and seat number.
+
+<ParamField body="seats" type="array" required>
+  A list of seat objects to reserve. All seats must be contiguous and must not already be reserved or sold.
+
+  <Expandable title="seat object">
+    <ParamField body="row" type="integer" required>
+      The row number of the seat (1-indexed).
+    </ParamField>
+
+    <ParamField body="seatNumber" type="integer" required>
+      The seat number within the row (1-indexed).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Example Request
+
+```bash
+curl --request POST \
+  --url https://your-cinema-api.com/api/v2/showtimes/7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d/reservations \
+  --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "seats": [
+      { "row": 1, "seatNumber": 1 },
+      { "row": 1, "seatNumber": 2 }
+    ]
+  }'
+```
+
+```json
+{
+  "seats": [
+    { "row": 1, "seatNumber": 1 },
+    { "row": 1, "seatNumber": 2 }
+  ]
+}
+```
+
+## Response
+
+A successful request returns HTTP **201 Created** with the new reservation details.
+
+<ResponseField name="reservationId" type="string">
+  The GUID that uniquely identifies this reservation. Store this value — you need it to purchase or retrieve the reservation.
+</ResponseField>
+
+<ResponseField name="showtimeId" type="string">
+  The GUID of the showtime associated with this reservation.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string">
+  The GUID of the auditorium where the showtime takes place.
+</ResponseField>
+
+<ResponseField name="movieId" type="string">
+  The GUID of the movie being shown.
+</ResponseField>
+
+<ResponseField name="seats" type="array">
+  The list of seats that were successfully reserved, each containing `row` and `seatNumber`.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  The total price for all reserved seats, in the cinema's configured currency.
+</ResponseField>
+
+<ResponseField name="expiryTime" type="string">
+  The ISO 8601 UTC timestamp at which the reservation expires. You must purchase the reservation before this time.
+</ResponseField>
+
+### Example Response
+
+```json
+{
+  "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "showtimeId": "7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+  "seats": [
+    { "row": 1, "seatNumber": 1 },
+    { "row": 1, "seatNumber": 2 }
+  ],
+  "totalPrice": 20.00,
+  "expiryTime": "2024-12-25T20:01:00Z"
+}
+```
+
+## Business Rules
+
+Keep the following rules in mind when building your reservation flow:
+
+- **Contiguous seats only.** All seats in the request must be adjacent to each other within the same row. The API rejects requests where seats have gaps between them.
+- **No duplicates.** Do not include the same seat twice in a single request. Every seat object in the array must be unique.
+- **No reserved or sold seats.** If any seat in your request is already reserved or sold, the entire request fails with a `409 Conflict`. Check availability before submitting.
+- **One-minute expiry.** The reservation holds your seats for exactly one minute from the time of creation. Call [Purchase](/api/reservations/purchase) before `expiryTime` to confirm the booking. Expired reservations release the seats back to the pool.
+- **Active showtimes only.** You cannot reserve seats for a showtime that has already ended. The API returns `400 Bad Request` if the showtime's start time is in the past.
+
+<Tip>
+  Immediately store the `reservationId` and `expiryTime` from the response so you can display a countdown timer and fire the purchase request before the reservation expires.
+</Tip>
+
+## Error Codes
+
+| Status | Meaning |
+|--------|---------|
+| `400 Bad Request` | The showtime has already ended. |
+| `401 Unauthorized` | The `Authorization` header is missing or the token is invalid. |
+| `404 Not Found` | No showtime exists for the provided `showtimeId`. |
+| `409 Conflict` | One or more of the requested seats are already reserved or sold. |
+| `422 Unprocessable Entity` | The seats are not contiguous, or one or more required fields are missing. |
+
+Error responses follow the [Problem Details](https://www.rfc-editor.org/rfc/rfc9457) format:
+
+```json
+{
+  "type": "https://your-cinema-api.com/errors/conflict",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Seat 1-1 is already reserved."
+}
+```

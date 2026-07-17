@@ -1,0 +1,181 @@
+---
+title: "How to Reserve Cinema Seats for a Showtime Session"
+sidebarTitle: "Reserve Seats"
+description: "Walk through discovering available showtimes, selecting contiguous seats, and completing a reservation before the one-minute expiry window closes."
+---
+
+Reserving seats in the Cinema System is a two-stage process: first you create a reservation to hold your chosen seats, then you purchase it to confirm your booking. This guide walks you through every step, from browsing showtimes to completing your purchase.
+
+<Warning>
+  Reservations expire **1 minute** after creation. If you do not call the purchase endpoint within that window, your reservation is automatically released and the seats become available again. Have your purchase request ready before you create a reservation.
+</Warning>
+
+## Step-by-Step Reservation Flow
+
+<Steps>
+  <Step title="List available showtimes">
+    Fetch all upcoming showtimes to find one that suits you.
+
+    ```bash
+    curl -X GET https://your-api-host/api/v2/showtimes \
+      -H "Authorization: Bearer <your-token>"
+    ```
+
+    **Example response:**
+
+    ```json
+    [
+      {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+        "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "sessionDate": "2024-12-25T20:00:00Z"
+      }
+    ]
+    ```
+  </Step>
+
+  <Step title="Get the auditorium seat layout">
+    Use the `auditoriumId` from the showtime to retrieve the seat map for that screening room.
+
+    ```bash
+    curl -X GET https://your-api-host/api/v2/auditoriums/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+      -H "Authorization: Bearer <your-token>"
+    ```
+
+    The response includes the full seat layout so you can identify available rows and seat numbers to choose from.
+  </Step>
+
+  <Step title="Reserve your seats">
+    Submit a list of seats you want to reserve for the chosen showtime. All seats in the request must be contiguous.
+
+    ```bash
+    curl -X POST https://your-api-host/api/v2/showtimes/3fa85f64-5717-4562-b3fc-2c963f66afa6/reservations \
+      -H "Authorization: Bearer <your-token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "seats": [
+          { "row": 1, "seatNumber": 1 },
+          { "row": 1, "seatNumber": 2 }
+        ]
+      }'
+    ```
+
+    **Request body:**
+
+    ```json
+    {
+      "seats": [
+        { "row": 1, "seatNumber": 1 },
+        { "row": 1, "seatNumber": 2 }
+      ]
+    }
+    ```
+
+    **Example success response (`201 Created`):**
+
+    ```json
+    {
+      "reservationId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "showtimeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "seats": [
+        { "row": 1, "seatNumber": 1 },
+        { "row": 1, "seatNumber": 2 }
+      ],
+      "totalPrice": 20.00,
+      "expiryTime": "2024-12-25T20:01:00Z"
+    }
+    ```
+  </Step>
+
+  <Step title="Save the reservationId">
+    Copy the `reservationId` from the response. You need it to complete the purchase in the next step. The clock is ticking — you have **1 minute** from this moment.
+  </Step>
+
+  <Step title="Purchase your reservation">
+    Send a `PUT` request with your `reservationId` to confirm and pay for the reservation.
+
+    ```bash
+    curl -X PUT https://your-api-host/api/v2/reservations/d290f1ee-6c54-4b01-90e6-d701748f0851/purchase \
+      -H "Authorization: Bearer <your-token>"
+    ```
+
+    A `200 OK` response confirms your purchase. See the [Purchasing a Reservation](/guides/purchasing-reservation) guide for full details on this step.
+  </Step>
+</Steps>
+
+## Request and Response Reference
+
+### Reserve Seats — Request Body
+
+<ParamField body="seats" type="array" required>
+  An array of seat objects to reserve. All seats must be contiguous within the same row.
+
+  <ParamField body="seats[].row" type="integer" required>
+    The row number of the seat (1-indexed).
+  </ParamField>
+
+  <ParamField body="seats[].seatNumber" type="integer" required>
+    The seat number within the row (1-indexed).
+  </ParamField>
+</ParamField>
+
+### Reserve Seats — Response Fields
+
+<ResponseField name="reservationId" type="string (GUID)">
+  The unique identifier of the new reservation. Use this to purchase or look up the reservation.
+</ResponseField>
+
+<ResponseField name="showtimeId" type="string (GUID)">
+  The showtime for which seats were reserved.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string (GUID)">
+  The auditorium where the showtime is scheduled.
+</ResponseField>
+
+<ResponseField name="movieId" type="string (GUID)">
+  The movie associated with the showtime.
+</ResponseField>
+
+<ResponseField name="seats" type="array">
+  The list of seats that were successfully reserved.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  The total price for all reserved seats.
+</ResponseField>
+
+<ResponseField name="expiryTime" type="string (ISO 8601)">
+  The UTC timestamp at which the reservation expires if not purchased. You have 1 minute from creation to complete your purchase.
+</ResponseField>
+
+<Note>
+  The API requires all requested seats to be **contiguous** — they must be adjacent to one another in the same row. For example, seats 3, 4, and 5 in row 2 are valid. Seats 3 and 5 in row 2 (skipping seat 4) are not. If you need non-adjacent seats, create separate reservations.
+</Note>
+
+## Error Handling
+
+The API returns structured error details when a reservation cannot be created.
+
+| Status | Meaning | What to do |
+|--------|---------|------------|
+| `400 Bad Request` | The showtime has already ended. | Choose a future showtime. |
+| `404 Not Found` | The `showtimeId` does not exist. | Verify the showtime ID from `GET /api/v2/showtimes`. |
+| `409 Conflict` | One or more seats are already reserved or sold. | Re-fetch the auditorium layout and choose different seats. |
+| `422 Unprocessable Entity` | The requested seats are not contiguous. | Ensure all seats are adjacent in the same row. |
+
+**Example error response:**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Seat 1-1 is already reserved."
+}
+```
+
+Check the `detail` field for a human-readable description of exactly which seat caused the conflict, then adjust your seat selection accordingly.

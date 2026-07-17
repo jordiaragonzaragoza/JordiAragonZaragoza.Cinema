@@ -1,0 +1,49 @@
+---
+title: "Cinema System: .NET 10 Seat Booking API"
+sidebarTitle: "Introduction"
+description: "Understand how the Cinema System works, what it can do, and how its architecture benefits API consumers and integrators."
+---
+
+The Cinema System is an open-source .NET 10 reference application that models the full lifecycle of a cinema seat booking: scheduling showtimes, reserving contiguous seats, and purchasing those reservations before they expire. It exposes a clean, versioned REST API secured with JWT authentication, making it straightforward to integrate into any frontend, mobile app, or back-office tool.
+
+## What you can do with this API
+
+The system covers the three core workflows every cinema booking platform needs.
+
+**Reserve seats** — Send a list of seat numbers for a given showtime and the API validates availability, checks that seats are contiguous, and returns a reservation GUID with full booking details. A reservation stays active for one minute; during that window the seats are held exclusively for you.
+
+**Purchase a reservation** — Call the purchase endpoint with your reservation GUID before the one-minute window closes. The API permanently records the transaction and marks the seats as sold. You cannot purchase the same reservation twice.
+
+**Manage showtimes and auditoriums** — Query available showtimes, inspect auditorium layouts, retrieve showtime details, and look up individual reservations to build scheduling and discovery features. Administrators can also schedule and cancel showtimes through the same API surface.
+
+## Key capabilities
+
+- **Contiguous seat enforcement** — The API rejects requests where selected seats are not adjacent, ensuring a consistent cinema seating experience.
+- **Expiring reservations** — Seats are held for exactly one minute, preventing indefinite locks on inventory.
+- **Duplicate and conflict protection** — The system refuses to reserve already-reserved or sold seats, and blocks double-purchase of the same reservation.
+- **API versioning** — V1 and V2 contract packages let you adopt the latest features without breaking existing integrations.
+- **Swagger UI with JWT support** — Explore and test every endpoint interactively at `/swagger` after starting the application.
+- **Multi-tenant support** — As of v3.2.0, user authorization and multi-tenancy are supported out of the box.
+
+## Architecture highlights
+
+The Cinema System is built on a set of well-established patterns that directly affect how you consume the API.
+
+**CQRS (Command Query Responsibility Segregation)** — Writes (commands) and reads (queries) travel through separate API projects. This means reservation commands are processed independently from showtime and auditorium queries, giving each path the freedom to scale and evolve on its own terms.
+
+**Event Sourcing** — Every state change is recorded as an immutable domain event in Kurrent DB. PostgreSQL stores read-optimized projections of that event stream. As a consumer, this gives you strong consistency guarantees and a natural audit trail for every reservation and purchase.
+
+**Domain-Driven Design** — The Reservation Bounded Context owns all seat-booking logic. Future contexts (Payments, Pricing, and others) are planned as independent modules, keeping concerns cleanly separated.
+
+**Observability** — OpenTelemetry tracing is built in, with traces visible in the .NET Aspire dashboard. This makes it easy to trace a reservation request end-to-end across every service.
+
+**AI integration** — The MCP Gateway (v3.1.1+) exposes the API to AI agents, so you can automate booking workflows or build conversational interfaces without additional middleware.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Set up your local environment and make your first API call in minutes.
+  </Card>
+  <Card title="API Overview" icon="code" href="/api/overview">
+    Browse the full endpoint reference for reservations, showtimes, and auditoriums.
+  </Card>
+</CardGroup>

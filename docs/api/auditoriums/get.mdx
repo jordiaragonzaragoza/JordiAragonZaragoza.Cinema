@@ -1,0 +1,106 @@
+---
+title: "Get Auditorium Details and Complete Row-by-Row Seat Layout"
+sidebarTitle: "Get Auditorium"
+description: "Retrieve the full seat layout for a specific auditorium, organized by row, to identify available seats before making a reservation."
+---
+
+Use this endpoint to fetch the complete seat layout for a specific auditorium before reserving seats for a showtime. The response breaks the auditorium down row by row, and each seat reports whether it is currently available. Call this endpoint after retrieving a showtime to give customers an accurate, visual seat map to choose from.
+
+## Endpoint
+
+```
+GET https://your-cinema-api.com/api/v2/auditoriums/{auditoriumId}
+```
+
+## Path Parameters
+
+<ParamField path="auditoriumId" type="string (GUID)" required>
+  The unique identifier of the auditorium whose layout you want to retrieve. Obtain this value from the [List Auditoriums](/api/auditoriums/list) response.
+</ParamField>
+
+## Request
+
+```bash
+curl --request GET \
+  --url https://your-cinema-api.com/api/v2/auditoriums/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  --header "Authorization: Bearer <token>"
+```
+
+## Response
+
+### 200 — Success
+
+Returns a single auditorium object with a nested row-and-seat layout.
+
+<ResponseField name="auditoriumId" type="string (GUID)" required>
+  The unique identifier of this auditorium.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  The human-readable display name of the auditorium (e.g. `"Auditorium 1"`).
+</ResponseField>
+
+<ResponseField name="rows" type="array of objects" required>
+  An ordered array of row objects representing the seating layout of the auditorium.
+
+  <Expandable title="Row object fields">
+    <ResponseField name="rowNumber" type="integer" required>
+      The sequential number identifying this row, starting from `1` at the front of the auditorium.
+    </ResponseField>
+
+    <ResponseField name="seats" type="array of objects" required>
+      An ordered array of seat objects within this row.
+
+      <Expandable title="Seat object fields">
+        <ResponseField name="seatNumber" type="integer" required>
+          The sequential number identifying this seat within its row, starting from `1`.
+        </ResponseField>
+
+        <ResponseField name="isAvailable" type="boolean" required>
+          Indicates whether this seat is currently available for reservation. `true` means the seat is open; `false` means it is already reserved or sold.
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+**Example response**
+
+```json
+{
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "Auditorium 1",
+  "rows": [
+    {
+      "rowNumber": 1,
+      "seats": [
+        { "seatNumber": 1, "isAvailable": true },
+        { "seatNumber": 2, "isAvailable": true },
+        { "seatNumber": 3, "isAvailable": false }
+      ]
+    }
+  ]
+}
+```
+
+<Tip>
+  Filter the `seats` array by `"isAvailable": true` to build a list of seats customers can actually select. Present unavailable seats as greyed out or disabled in your reservation UI to prevent selection errors.
+</Tip>
+
+## Error Codes
+
+| Status | Meaning | Description |
+|--------|---------|-------------|
+| `401`  | Unauthorized | Your Bearer token is missing or invalid. Verify that you are sending a valid `Authorization` header. |
+| `404`  | Not Found | No auditorium exists for the provided `auditoriumId`. Confirm the ID is correct and retry. |
+
+**Example error response**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Auditorium not found."
+}
+```

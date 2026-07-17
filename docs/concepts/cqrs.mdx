@@ -1,0 +1,150 @@
+---
+title: "CQRS: How Write Commands and Read Queries Are Separated"
+sidebarTitle: "CQRS"
+description: "Understand how the Cinema System separates write commands from read queries, and what each side of the API returns to callers."
+---
+
+The Cinema System follows the **Command Query Responsibility Segregation (CQRS)** pattern, which means the API treats write operations and read operations as fundamentally different concerns. Commands change state and return minimal confirmations. Queries read state and return full resource representations. Keeping these two paths separate allows each to be optimized independently — commands write to an event store, while queries read from a fast, pre-computed projection database.
+
+## The Two Sides of the API
+
+<CardGroup cols={2}>
+  <Card title="Command API (Write)" icon="pencil">
+    Accepts `POST` and `PUT` requests. Each command triggers a domain operation, appends events to **Kurrent DB**, and returns a lightweight confirmation — typically just a resource ID.
+  </Card>
+  <Card title="Query API (Read)" icon="magnifying-glass">
+    Accepts `GET` requests. Each query reads from **PostgreSQL** projections and returns a complete resource representation. Queries never modify state.
+  </Card>
+</CardGroup>
+
+---
+
+## Command vs. Query Endpoints
+
+Both the Command API and Query API share the `/api/v2` base URL, but they serve distinct roles. Use the table below to identify which side of the CQRS boundary each endpoint belongs to.
+
+| Method | Endpoint | Side | Description |
+|---|---|---|---|
+| `POST` | `/api/v2/showtimes` | Command | Schedule a new showtime |
+| `POST` | `/api/v2/showtimes/{showtimeId}/reservations` | Command | Reserve seats for a showtime |
+| `PUT` | `/api/v2/reservations/{reservationId}/purchase` | Command | Purchase an active reservation |
+| `GET` | `/api/v2/showtimes` | Query | List all available showtimes |
+| `GET` | `/api/v2/showtimes/{id}` | Query | Retrieve a specific showtime |
+| `GET` | `/api/v2/auditoriums` | Query | List all auditoriums |
+| `GET` | `/api/v2/auditoriums/{id}` | Query | Retrieve a specific auditorium |
+| `GET` | `/api/v2/reservations/{id}` | Query | Retrieve a specific reservation |
+
+---
+
+## What Commands Return
+
+Command responses are intentionally minimal. A successful command tells you that the operation was accepted and gives you the ID of the affected or created resource. It does not return the full resource state.
+
+### Example: Create a Reservation
+
+**Request**
+```http
+POST /api/v2/showtimes/7c9e6679-7425-40de-944b-e07fc1f90ae7/reservations
+Content-Type: application/json
+
+{
+  "seats": [
+    { "rowNumber": 1, "seatNumber": 2 },
+    { "rowNumber": 1, "seatNumber": 3 }
+  ]
+}
+```
+
+**Response**
+```json
+{
+  "reservationId": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+}
+```
+
+### Example: Purchase a Reservation
+
+**Request**
+```http
+PUT /api/v2/reservations/d290f1ee-6c54-4b01-90e6-d701748f0851/purchase
+```
+
+**Response**
+```json
+{
+  "reservationId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+  "status": "Purchased"
+}
+```
+
+---
+
+## What Queries Return
+
+Query responses return the full projection of a resource as stored in PostgreSQL. The shape is richer than what a command returns.
+
+### Example: Get a Reservation
+
+**Request**
+```http
+GET /api/v2/reservations/d290f1ee-6c54-4b01-90e6-d701748f0851
+```
+
+**Response**
+```json
+{
+  "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+  "showtimeId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "seats": [
+    { "rowNumber": 1, "seatNumber": 2 },
+    { "rowNumber": 1, "seatNumber": 3 }
+  ],
+  "status": "Purchased",
+  "expiresAt": "2025-08-15T14:01:00Z"
+}
+```
+
+---
+
+## Database Separation
+
+The physical separation of write and read stores is a key architectural detail that informs how you reason about data freshness.
+
+```
+┌─────────────────────────────────────┐
+│            Your API Client          │
+└──────────┬──────────────────────────┘
+           │
+     ┌─────▼──────┐         ┌──────────────┐
+     │  Command   │──write──►  Kurrent DB   │
+     │   API      │         │  (events)     │
+     └────────────┘         └──────┬───────┘
+                                   │ async projection
+     ┌────────────┐         ┌──────▼───────┐
+     │  Query     │◄──read──│  PostgreSQL  │
+     │   API      │         │ (projections)│
+     └────────────┘         └──────────────┘
+```
+
+- **Kurrent DB** is the authoritative source. Every command produces events that are appended here.
+- **PostgreSQL** holds read-optimized projections that are updated asynchronously as events are processed.
+- Because projection updates are asynchronous, there is a brief eventual-consistency window after each command. See the [Event Sourcing](/concepts/event-sourcing) page for details on how to handle this.
+
+<Tip>
+  After submitting a `POST` or `PUT` command, issue a `GET` request to the corresponding resource endpoint to confirm the projected state reflects your change before proceeding. For example, after calling `PUT /api/v2/reservations/{reservationId}/purchase`, follow up with `GET /api/v2/reservations/{reservationId}` and verify the `status` field reads `"Purchased"`.
+</Tip>
+
+---
+
+## API Contracts and Versioning
+
+The CQRS split is also reflected in the API versioning strategy. Both the command and query sides of the API expose two contract generations:
+
+| Version | Side | Status | When to Use |
+|---|---|---|---|
+| **V2** | Command | Current | Use for all new write integrations. Reflects the latest request and response shapes. |
+| **V2** | Query | Current | Use for all new read integrations. Returns the latest projection structure. |
+| **V1** | Command | Legacy | Retained for backward compatibility. Do not use for new development. |
+| **V1** | Query | Legacy | Retained for backward compatibility. Do not use for new development. |
+
+Always integrate against the **V2** endpoints for new development. V1 endpoints are retained for backward compatibility with older integrations only. See the [versioning reference](/reference/versioning) for full details.

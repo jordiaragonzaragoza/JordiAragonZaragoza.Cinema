@@ -1,0 +1,81 @@
+---
+title: "List All Available Showtimes in the Cinema Schedule"
+sidebarTitle: "List Showtimes"
+description: "Retrieve a complete list of scheduled showtimes, including movie, auditorium, and session date for each entry."
+---
+
+Use this endpoint to retrieve every showtime currently scheduled in the system. Each item in the returned array identifies the movie being screened, the auditorium it is assigned to, and the exact date and time of the session. Use the returned `showtimeId` values to fetch seat availability details or to build a browsable schedule for your customers.
+
+## Endpoint
+
+```
+GET https://your-cinema-api.com/api/v2/showtimes
+```
+
+## Request
+
+This endpoint requires no query parameters. Include your Bearer token in the `Authorization` header with every request.
+
+```bash
+curl --request GET \
+  --url https://your-cinema-api.com/api/v2/showtimes \
+  --header "Authorization: Bearer <token>"
+```
+
+## Response
+
+### 200 — Success
+
+Returns a JSON array of showtime objects. Each object contains the following fields:
+
+<ResponseField name="showtimeId" type="string (GUID)" required>
+  The unique identifier for this showtime. Use this value to retrieve full details or seat availability via [Get Showtime Details](/api/showtimes/get).
+</ResponseField>
+
+<ResponseField name="movieId" type="string (GUID)" required>
+  The unique identifier of the movie being screened during this showtime.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string (GUID)" required>
+  The unique identifier of the auditorium where this showtime takes place. Pass this value to [Get Auditorium Details](/api/auditoriums/get) to retrieve the full seat layout.
+</ResponseField>
+
+<ResponseField name="sessionDate" type="string (ISO 8601)" required>
+  The date and time of the showtime session in UTC, formatted as an ISO 8601 timestamp (e.g. `2024-12-25T20:00:00Z`).
+</ResponseField>
+
+**Example response**
+
+```json
+[
+  {
+    "showtimeId": "7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d",
+    "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+    "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sessionDate": "2024-12-25T20:00:00Z"
+  },
+  {
+    "showtimeId": "b9d1e2f3-4a5b-6c7d-8e9f-0a1b2c3d4e5f",
+    "movieId": "f1e2d3c4-b5a6-9078-3456-12fedcba9876",
+    "auditoriumId": "c3d4e5f6-a7b8-9012-cdef-ab1234567890",
+    "sessionDate": "2024-12-26T14:30:00Z"
+  }
+]
+```
+
+## Error Codes
+
+| Status | Meaning | Description |
+|--------|---------|-------------|
+| `401`  | Unauthorized | Your Bearer token is missing or invalid. Verify that you are sending a valid `Authorization` header. |
+
+**Example error response**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc7235#section-3.1",
+  "title": "Unauthorized",
+  "status": 401,
+  "detail": "Authentication token is missing or invalid."
+}
+```

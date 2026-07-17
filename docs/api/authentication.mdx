@@ -1,0 +1,119 @@
+---
+title: "Authenticating with the Cinema System API"
+sidebarTitle: "Authentication"
+description: "Learn how to obtain and use JWT Bearer tokens to authenticate requests to the Cinema System API. Covers token expiry and refresh strategies."
+---
+
+The Cinema System API uses **JWT Bearer authentication** to protect all endpoints. Before calling any endpoint, obtain a token by logging in with your credentials, then include that token in every subsequent request. Tokens expire after a fixed interval, so your client must handle re-authentication gracefully.
+
+## Obtain a Token
+
+Send a `POST` request to `/api/v2/auth/login` with your credentials in the JSON body. A successful response returns a signed JWT and the number of seconds until it expires.
+
+### Request Parameters
+
+<ParamField body="username" type="string" required>
+  The email address associated with your Cinema System account, for example `user@example.com`.
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  The password for your account. Passwords are transmitted over HTTPS and never stored in plain text.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="token" type="string">
+  A signed JWT Bearer token. Include this value in the `Authorization` header of all subsequent requests.
+</ResponseField>
+
+<ResponseField name="expiresIn" type="integer">
+  The number of seconds until the token expires, measured from the time of issue. For example, `3600` means the token is valid for one hour.
+</ResponseField>
+
+### Example
+
+Use the following `curl` command to log in and retrieve your token:
+
+```bash
+curl -X POST https://your-cinema-api.com/api/v2/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "user@example.com",
+    "password": "your-password"
+  }'
+```
+
+A successful `200 OK` response looks like this:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+  "expiresIn": 3600
+}
+```
+
+Store the `token` value securely — you will pass it in every API request until it expires.
+
+## Use the Token
+
+Include the token in the `Authorization` header of every request using the `Bearer` scheme:
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+Here is a complete `curl` example that lists all showtimes using an authenticated request:
+
+```bash
+curl -X GET https://your-cinema-api.com/api/v2/showtimes \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" \
+  -H "Accept: application/json"
+```
+
+<Tip>
+  Store the token in an environment variable such as `$TOKEN` during development so you can reuse it across commands without hard-coding it in scripts.
+</Tip>
+
+## Token Expiry and Refresh
+
+Tokens are valid for the duration specified by `expiresIn` in the login response (typically 3600 seconds / one hour). The API does not issue refresh tokens — when your token expires, re-authenticate by calling `POST /api/v2/auth/login` again.
+
+Build your client to detect `401 Unauthorized` responses and automatically re-authenticate before retrying the failed request:
+
+<Steps>
+  <Step title="Detect the 401 response">
+    When any API call returns `401 Unauthorized`, treat this as a signal that the token is missing, invalid, or expired.
+  </Step>
+  <Step title="Re-authenticate">
+    Call `POST /api/v2/auth/login` with valid credentials to obtain a fresh token and a new `expiresIn` value.
+  </Step>
+  <Step title="Retry the original request">
+    Repeat the original request using the new token in the `Authorization` header.
+  </Step>
+</Steps>
+
+<Info>
+  To avoid unnecessary re-authentication round-trips, track the issue time and `expiresIn` value client-side and proactively refresh the token before it expires.
+</Info>
+
+## Swagger UI Authorization
+
+You can authorize requests directly in the Swagger UI at `{baseUrl}/swagger`:
+
+1. Open `{baseUrl}/swagger` in your browser.
+2. Click the **Authorize** button (🔒) at the top right of the page.
+3. In the **Value** field, enter `Bearer ` followed by the JWT you obtained from the login endpoint — for example, `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`.
+4. Click **Authorize**, then **Close**.
+
+All requests you make through Swagger UI will now include the `Authorization` header automatically.
+
+## Error Codes
+
+| Status | Description |
+|--------|-------------|
+| `401 Unauthorized` | The `Authorization` header is missing, the token is malformed, or the token has expired. Re-authenticate to obtain a new token. |
+| `403 Forbidden` | The token is valid but the authenticated user does not have the required role to perform the action. Contact your administrator to review role assignments. |
+
+<Warning>
+  Never expose your JWT token in client-side JavaScript, public repositories, or version control. Treat tokens with the same care as passwords — a leaked token grants full API access under your identity until it expires.
+</Warning>

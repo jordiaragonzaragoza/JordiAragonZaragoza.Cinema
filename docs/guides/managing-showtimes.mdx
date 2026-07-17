@@ -1,0 +1,156 @@
+---
+title: "Manage and Schedule Cinema Showtimes and Screenings"
+sidebarTitle: "Manage Showtimes"
+description: "List, inspect, and schedule cinema showtimes — each representing a single screening of a movie in a specific auditorium at a set date and time."
+---
+
+A showtime represents a scheduled screening of a movie in a specific auditorium at a particular date and time. Managing showtimes lets you browse what is currently playing, inspect individual screenings, and schedule new ones. This guide covers all available showtime endpoints and their expected responses.
+
+## List All Showtimes
+
+Retrieve every showtime currently available in the system.
+
+**Endpoint:** `GET /api/v2/showtimes`
+
+```bash
+curl -X GET https://your-api-host/api/v2/showtimes \
+  -H "Authorization: Bearer <your-token>"
+```
+
+**Example response:**
+
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sessionDate": "2024-12-25T20:00:00Z"
+  },
+  {
+    "id": "c1d2e3f4-a5b6-7890-cdef-123456789abc",
+    "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sessionDate": "2024-12-26T15:30:00Z"
+  }
+]
+```
+
+### Showtime Fields
+
+<ResponseField name="id" type="string (GUID)">
+  The unique identifier of the showtime. Use this as the `showtimeId` in reservation and detail requests.
+</ResponseField>
+
+<ResponseField name="movieId" type="string (GUID)">
+  The unique identifier of the movie being screened.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string (GUID)">
+  The unique identifier of the auditorium hosting the screening. Use this with `GET /api/v2/auditoriums/{auditoriumId}` to fetch the seat layout.
+</ResponseField>
+
+<ResponseField name="sessionDate" type="string (ISO 8601)">
+  The scheduled date and time of the screening in UTC, e.g. `2024-12-25T20:00:00Z`.
+</ResponseField>
+
+## Get Showtime Details
+
+Retrieve full details for a single showtime by its ID.
+
+**Endpoint:** `GET /api/v2/showtimes/{showtimeId}`
+
+```bash
+curl -X GET https://your-api-host/api/v2/showtimes/3fa85f64-5717-4562-b3fc-2c963f66afa6 \
+  -H "Authorization: Bearer <your-token>"
+```
+
+**Example response:**
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "sessionDate": "2024-12-25T20:00:00Z"
+}
+```
+
+## Schedule a New Showtime
+
+Create a new showtime by specifying a movie, an auditorium, and a session date.
+
+**Endpoint:** `POST /api/v2/showtimes`
+
+### Request Body
+
+<ParamField body="movieId" type="string (GUID)" required>
+  The unique identifier of the movie to screen.
+</ParamField>
+
+<ParamField body="auditoriumId" type="string (GUID)" required>
+  The unique identifier of the auditorium that will host the screening.
+</ParamField>
+
+<ParamField body="sessionDate" type="string (ISO 8601)" required>
+  The scheduled date and time for the screening in UTC, e.g. `2024-12-25T20:00:00Z`.
+</ParamField>
+
+### Example Request
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://your-api-host/api/v2/showtimes \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sessionDate": "2024-12-25T20:00:00Z"
+  }'
+```
+
+```json Request Body
+{
+  "movieId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "sessionDate": "2024-12-25T20:00:00Z"
+}
+```
+</CodeGroup>
+
+### Success Response
+
+The API returns `201 Created` with the ID of the newly scheduled showtime.
+
+```http
+HTTP/1.1 201 Created
+```
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+```
+
+<Note>
+  The current API supports listing, retrieving, and scheduling showtimes. Showtime cancellation is under active development and will be available in a future release. To remove a showtime in the meantime, contact your system administrator.
+</Note>
+
+## Explore Auditoriums
+
+Use the auditoriums endpoints alongside showtimes to look up seat layouts and available screening rooms.
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/v2/auditoriums` | List all auditoriums |
+| `GET /api/v2/auditoriums/{auditoriumId}` | Get an auditorium's details and seat layout |
+
+```bash
+curl -X GET https://your-api-host/api/v2/auditoriums \
+  -H "Authorization: Bearer <your-token>"
+```
+
+<Tip>
+  When scheduling a new showtime, call `GET /api/v2/auditoriums` first to confirm the auditorium exists and to check its capacity before assigning it to a screening.
+</Tip>

@@ -1,0 +1,83 @@
+---
+title: "Architecture Overview: CQRS, DDD, and Event Sourcing"
+sidebarTitle: "Architecture"
+description: "Explore the Clean Architecture, CQRS, and Event Sourcing patterns that shape the Cinema System and what they mean for your integration."
+---
+
+The Cinema System is built on Clean Architecture, Domain-Driven Design (DDD), Command Query Responsibility Segregation (CQRS), and Event Sourcing. Understanding these patterns helps you predict how the API behaves, design resilient integrations, and interpret responses correctly. This page explains each pattern from an API consumer's perspective — not as academic theory, but as practical constraints and guarantees that affect your code.
+
+<Note>
+  The Cinema System is an open-source **reference and demo application**. It is designed to demonstrate production-grade architectural patterns in .NET and is well-suited as a learning resource, integration baseline, or starting point for a real booking platform.
+</Note>
+
+## Clean Architecture and Domain-Driven Design
+
+The system organizes its code in concentric layers: domain logic at the center, application use cases in the next ring, and infrastructure concerns (databases, HTTP, messaging) on the outer edge. No inner layer depends on an outer one.
+
+For you as an API consumer, this means business rules are enforced consistently regardless of how a request arrives. Whether you call the REST API, use the .NET SDK, or invoke it through the MCP Gateway, the same domain logic validates your reservation and applies the same constraints — contiguous seats, expiry windows, and duplicate checks.
+
+## CQRS: separate paths for writes and reads
+
+CQRS splits the application into two independent pipelines.
+
+**Command API (writes)** handles state-changing operations: reserving seats, purchasing a reservation, scheduling a showtime, and cancelling a showtime. Commands are processed asynchronously through a pipeline that validates the request, applies domain rules, and appends events to the event store.
+
+**Query API (reads)** handles data retrieval: listing showtimes, fetching auditorium layouts, and looking up reservation details. Queries read from PostgreSQL projections that are optimized for fast lookups and do not touch the event store at all.
+
+| Concern | Endpoints | Backing store |
+|---|---|---|
+| Writes (commands) | `POST`, `PUT` | Kurrent DB (event store) |
+| Reads (queries) | `GET` | PostgreSQL (projections) |
+
+**What this means for your integration** — A `POST /api/v2/showtimes/{showtimeId}/reservations` call returns a reservation GUID immediately after the command is accepted. The read projection (used by `GET /api/v2/reservations/{reservationId}`) is updated asynchronously. In practice the propagation is fast, but build your client to tolerate a brief window between writing and reading the updated state.
+
+## Event Sourcing: events as the source of truth
+
+Rather than storing the current state of a reservation, the system stores every domain event that has ever occurred: `ReservationCreated`, `ReservationPurchased`, `SeatReleased`, and so on. Kurrent DB is the append-only event store that holds this permanent record. PostgreSQL projections are derived views rebuilt from that event stream.
+
+**Consistency** — Because every state change is recorded as an event, the system has a complete, tamper-evident audit trail. You can always trace exactly what happened to a reservation and when.
+
+**Idempotency** — Domain rules are enforced at the event level. Attempting to purchase a reservation twice, or to reserve an already-sold seat, is rejected before any event is written. You will receive a clear error response rather than silent data corruption.
+
+**Event replay** — If a projection needs to be rebuilt (after a schema migration, for example), the system replays the event stream from Kurrent DB. Your integration is unaffected; the API surface remains stable while the underlying projection is reconstructed.
+
+## Bounded contexts
+
+The system is organized around Bounded Contexts — autonomous modules with clearly defined responsibilities and their own data models.
+
+**Reservation** is the primary bounded context today. It owns all logic related to seats, showtimes, auditoriums, reservations, and purchases. Every endpoint in the current public API surface belongs to this context.
+
+Future bounded contexts are planned — Payments, Pricing, and others — each of which will be an independent module with its own API, data store, and event stream. Adding a new context will not break existing Reservation API contracts.
+
+## API versioning
+
+The system ships V1 and V2 contract packages. V2 is the current stable version and the one documented throughout this site. V1 contracts are retained for backward compatibility.
+
+Use the `/api/v2/` prefix for all new integrations. When a new major version is released, the previous version remains available under its original prefix for a documented deprecation period.
+
+## MCP Gateway for AI agents
+
+From v3.1.1 onward, the Cinema System includes an MCP (Model Context Protocol) Gateway. The gateway exposes the full booking workflow to AI agents and LLM-based tools without requiring custom middleware. If you are building a conversational booking interface or an automated workflow agent, point your MCP-compatible client at the gateway instead of calling the REST API directly.
+
+## Observability
+
+Every request is traced with OpenTelemetry. Traces span the full call path — from the HTTP endpoint through the command or query pipeline to the event store or projection database. View live traces in the .NET Aspire dashboard while running locally, or export them to any OpenTelemetry-compatible backend in a deployed environment.
+
+## Multi-tenancy and authorization
+
+As of v3.2.0, the system supports multiple tenants and user-level authorization. Each request is scoped to a tenant, and authorization rules determine which operations a given user can perform. JWT tokens carry the claims needed to identify the tenant and user context — no extra headers or parameters are required.
+
+<CardGroup cols={2}>
+  <Card title="API Overview" icon="code" href="/api/overview">
+    Browse the full endpoint reference for reservations, showtimes, and auditoriums.
+  </Card>
+  <Card title="Concepts: CQRS" icon="arrows-split-up-and-left" href="/concepts/cqrs">
+    Deep-dive into how commands and queries are separated and what that means for your client.
+  </Card>
+  <Card title="Concepts: Event Sourcing" icon="database" href="/concepts/event-sourcing">
+    Learn how the event store works and how projections are built and maintained.
+  </Card>
+  <Card title="MCP Gateway" icon="robot" href="/integrations/mcp-gateway">
+    Connect AI agents and LLM tools to the booking workflow through the MCP Gateway.
+  </Card>
+</CardGroup>

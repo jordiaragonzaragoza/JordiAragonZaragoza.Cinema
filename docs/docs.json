@@ -1,0 +1,108 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "JordiAragonZaragoza.Cinema",
+  "theme": "luma",
+  "logo": {
+    "light": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg",
+    "dark": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg"
+  },
+  "favicon": "https://media.brand.dev/2b01fe20-c04b-4a1d-a2f9-1d2789c50a7a.jpg",
+  "colors": {
+    "primary": "#848c8e",
+    "light": "#cfd0d2",
+    "dark": "#11161e"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "architecture-overview"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/domain-model",
+              "concepts/event-sourcing",
+              "concepts/cqrs",
+              "concepts/bounded-contexts"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/reserving-seats",
+              "guides/purchasing-reservation",
+              "guides/managing-showtimes",
+              "guides/authentication"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/sdk",
+              "integrations/mcp-gateway",
+              "integrations/webhooks"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/configuration",
+              "reference/error-handling",
+              "reference/versioning",
+              "reference/changelog"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Reservations",
+            "pages": [
+              "api/reservations/create",
+              "api/reservations/purchase",
+              "api/reservations/get"
+            ]
+          },
+          {
+            "group": "Showtimes",
+            "pages": [
+              "api/showtimes/list",
+              "api/showtimes/get",
+              "api/showtimes/schedule"
+            ]
+          },
+          {
+            "group": "Auditoriums",
+            "pages": [
+              "api/auditoriums/list",
+              "api/auditoriums/get"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

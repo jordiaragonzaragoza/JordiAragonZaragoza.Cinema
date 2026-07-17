@@ -1,0 +1,102 @@
+---
+title: "Cinema Reservation REST API — Complete Overview"
+sidebarTitle: "Overview"
+description: "Explore the Cinema Reservation REST API — manage showtimes, auditoriums, and seat reservations through versioned, authenticated V2 endpoints."
+---
+
+The Cinema System exposes a RESTful API built on ASP.NET that lets you schedule showtimes, manage auditorium seating, and handle the full reservation-to-purchase workflow. All functionality is available under the `/api/v2/` prefix — always target V2 endpoints, as V1 is deprecated and will be removed in a future release.
+
+## Base URL and Versioning
+
+Use the following base URL for all API requests in each environment:
+
+| Environment | Base URL |
+|-------------|----------|
+| Production | `https://your-cinema-api.com` |
+| Local development | `https://localhost:5001` |
+
+Prefix every endpoint path with `/api/v2/`. For example, to list showtimes in production, send a request to `https://your-cinema-api.com/api/v2/showtimes`.
+
+<Tip>
+  Access the interactive Swagger UI at `{baseUrl}/swagger` to explore and test all endpoints directly in your browser.
+</Tip>
+
+## Request Format
+
+Include the following header on every request that sends a body:
+
+```http
+Content-Type: application/json
+```
+
+All resource identifiers in the API are **GUIDs** (UUID v4), for example:
+
+```
+3fa85f64-5717-4562-b3fc-2c963f66afa6
+```
+
+Pass IDs exactly as returned by the API — they are case-insensitive but must be valid GUID strings.
+
+## Explore the API
+
+<CardGroup cols={2}>
+  <Card title="Reservations" icon="ticket" href="/api/reservations/create">
+    Reserve seats for a showtime and complete the purchase flow.
+  </Card>
+  <Card title="Showtimes" icon="film" href="/api/showtimes/list">
+    List, retrieve, and schedule showtimes across your auditoriums.
+  </Card>
+  <Card title="Auditoriums" icon="building" href="/api/auditoriums/list">
+    Query auditorium layouts and available seating configurations.
+  </Card>
+  <Card title="Authentication" icon="lock" href="/api/authentication">
+    Obtain and manage JWT Bearer tokens to authorize API requests.
+  </Card>
+</CardGroup>
+
+## Endpoint Summary
+
+The table below lists every available V2 endpoint:
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/v2/showtimes/{showtimeId}/reservations` | Reserve seats for a showtime |
+| `PUT` | `/api/v2/reservations/{reservationId}/purchase` | Purchase a pending reservation |
+| `GET` | `/api/v2/reservations/{reservationId}` | Get a reservation by ID |
+| `GET` | `/api/v2/showtimes` | List all showtimes |
+| `GET` | `/api/v2/showtimes/{showtimeId}` | Get a showtime by ID |
+| `POST` | `/api/v2/showtimes` | Schedule a new showtime |
+| `GET` | `/api/v2/auditoriums` | List all auditoriums |
+| `GET` | `/api/v2/auditoriums/{auditoriumId}` | Get an auditorium by ID |
+
+## Error Responses
+
+The API returns errors in **Problem Details** format ([RFC 9110](https://www.rfc-editor.org/rfc/rfc9110)). Every error response includes a machine-readable `type`, a human-readable `title`, the HTTP `status` code, and a `detail` message describing the specific problem.
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Seat 1-1 is already reserved."
+}
+```
+
+Handle errors by reading the `status` field for the HTTP status code and the `detail` field for actionable context. Common status codes you will encounter:
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad Request — invalid or missing request body fields |
+| `401` | Unauthorized — missing, invalid, or expired token |
+| `403` | Forbidden — authenticated but insufficient role |
+| `404` | Not Found — the requested resource does not exist |
+| `409` | Conflict — a business rule was violated (e.g., seat already reserved) |
+| `500` | Internal Server Error — an unexpected server-side failure |
+
+## Rate Limits and Pagination
+
+Rate limiting and pagination behavior are **configurable per deployment**. Check with your system administrator or deployment documentation for the limits applied to your environment. When pagination is enabled, responses include metadata fields such as `page`, `pageSize`, and `totalCount` to help you iterate through result sets.
+
+<Note>
+  If you receive `429 Too Many Requests`, back off and retry after the interval specified in the `Retry-After` response header.
+</Note>

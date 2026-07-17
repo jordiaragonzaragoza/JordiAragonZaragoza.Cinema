@@ -1,0 +1,118 @@
+---
+title: "Get Reservation Details by ID — Cinema Reservation API"
+sidebarTitle: "Get Reservation"
+description: "Retrieve the full details of a reservation, including its current status, seat list, total price, and purchase timestamp if applicable."
+---
+
+Use this endpoint to look up a reservation by its ID. The response includes the current status of the reservation, the seats that were reserved, the total price, and — if the reservation has been purchased — the timestamp of when the purchase was completed. This is useful for building confirmation screens, checking expiry status, or debugging reservation flows.
+
+## HTTP Request
+
+```
+GET https://your-cinema-api.com/api/v2/reservations/{reservationId}
+```
+
+## Path Parameters
+
+<ParamField path="reservationId" type="string" required>
+  The GUID of the reservation you want to retrieve. You receive this value in the `reservationId` field of the [Reserve Seats](/api/reservations/create) response.
+</ParamField>
+
+### Example Request
+
+```bash
+curl --request GET \
+  --url https://your-cinema-api.com/api/v2/reservations/3fa85f64-5717-4562-b3fc-2c963f66afa6 \
+  --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+```
+
+## Response
+
+A successful request returns HTTP **200 OK** with the full reservation record.
+
+<ResponseField name="reservationId" type="string">
+  The GUID that uniquely identifies this reservation.
+</ResponseField>
+
+<ResponseField name="showtimeId" type="string">
+  The GUID of the showtime associated with this reservation.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string">
+  The GUID of the auditorium where the showtime takes place.
+</ResponseField>
+
+<ResponseField name="movieId" type="string">
+  The GUID of the movie being shown.
+</ResponseField>
+
+<ResponseField name="seats" type="array">
+  The list of reserved seats. Each object contains `row` (integer) and `seatNumber` (integer).
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The current state of the reservation. See [Status Values](#status-values) below for the full list.
+</ResponseField>
+
+<ResponseField name="totalPrice" type="number">
+  The total price for all reserved seats, in the cinema's configured currency.
+</ResponseField>
+
+<ResponseField name="expiryTime" type="string">
+  The ISO 8601 UTC timestamp at which the reservation expires. This value is set at creation time and does not change.
+</ResponseField>
+
+<ResponseField name="purchasedAt" type="string | null">
+  The ISO 8601 UTC timestamp recording when the reservation was purchased. Returns `null` if the reservation has not yet been purchased.
+</ResponseField>
+
+### Example Response
+
+```json
+{
+  "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "showtimeId": "7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+  "seats": [
+    { "row": 1, "seatNumber": 1 },
+    { "row": 1, "seatNumber": 2 }
+  ],
+  "status": "Reserved",
+  "totalPrice": 20.00,
+  "expiryTime": "2024-12-25T20:01:00Z",
+  "purchasedAt": null
+}
+```
+
+## Status Values
+
+The `status` field indicates the current lifecycle stage of the reservation:
+
+| Status | Description |
+|--------|-------------|
+| `Reserved` | The seats are held but the purchase has not been completed. The reservation is still within its one-minute expiry window. |
+| `Purchased` | The reservation was successfully purchased before it expired. The `purchasedAt` field contains the completion timestamp. |
+| `Expired` | The one-minute expiry window passed without a completed purchase. The seats have been released and are available for others to reserve. |
+
+<Note>
+  If the status is `Expired`, the seats are no longer held for you. Create a new reservation to re-select those seats, subject to their availability.
+</Note>
+
+## Error Codes
+
+| Status | Meaning |
+|--------|---------|
+| `401 Unauthorized` | The `Authorization` header is missing or the token is invalid. |
+| `404 Not Found` | No reservation exists for the provided `reservationId`. |
+
+Error responses follow the [Problem Details](https://www.rfc-editor.org/rfc/rfc9457) format:
+
+```json
+{
+  "type": "https://your-cinema-api.com/errors/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Reservation 3fa85f64-5717-4562-b3fc-2c963f66afa6 was not found."
+}
+```

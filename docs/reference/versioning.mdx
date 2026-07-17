@@ -1,0 +1,81 @@
+---
+title: "Cinema Reservation API Versioning and Migration Guide"
+sidebarTitle: "API Versioning"
+description: "Learn how the Cinema API uses URL-path versioning, the difference between V1 and V2 contracts, and which version to use for new integrations."
+---
+
+The Cinema Reservation API uses **URL-path versioning** to distinguish between contract generations. Every request explicitly declares the version it targets as part of the URL, making it unambiguous which contract shape the server should honour. All new integrations should target V2 — it is the current, actively developed version of the API.
+
+## Version Identifiers
+
+Include the version segment directly after `/api/` in every request:
+
+| Version | URL Prefix     | Status                        |
+|---------|----------------|-------------------------------|
+| V1      | `/api/v1/...`  | Legacy — frozen, no new features |
+| V2      | `/api/v2/...`  | **Current — recommended for all new integrations** |
+
+```http
+# V1 — legacy
+GET /api/v1/showtimes/{id}
+
+# V2 — current
+GET /api/v2/showtimes/{id}
+```
+
+<Warning>
+Use V2 for all new integrations. V1 is maintained solely for backward compatibility and will not receive new features or improvements. If you are starting a new project or migrating an existing one, target `/api/v2/...` exclusively.
+</Warning>
+
+## V1 vs V2 Contracts
+
+The versioning applies to both command (write) and query (read) contracts:
+
+| Contract layer     | V1 namespace                        | V2 namespace                        |
+|--------------------|-------------------------------------|-------------------------------------|
+| Command contracts  | `Api.Command.Contracts.V1`          | `Api.Command.Contracts.V2`          |
+| Query contracts    | `Api.Query.Contracts.V1`            | `Api.Query.Contracts.V2`            |
+
+V2 contracts may include additional fields, revised validation rules, or restructured response bodies compared to V1. Where the two versions expose the same endpoint, V2 is the authoritative shape — all documentation examples use V2.
+
+### Notable Endpoint Differences
+
+<Accordion title="Authentication">
+  Authentication is only available on V2. Always call `POST /api/v2/auth/login` to obtain your JWT token regardless of which version your other endpoints target.
+
+  ```http
+  POST /api/v2/auth/login
+  Content-Type: application/json
+
+  {
+    "username": "user@example.com",
+    "password": "your-password"
+  }
+  ```
+</Accordion>
+
+<Accordion title="Reservation endpoints">
+  V2 reservation endpoints include extended seat metadata and support multi-tenant context resolution from JWT claims. V1 endpoints return a reduced response shape and do not carry tenant information.
+
+  ```http
+  # V1 — reduced response
+  POST /api/v1/reservations
+
+  # V2 — full response with tenant context and extended seat metadata
+  POST /api/v2/reservations
+  ```
+</Accordion>
+
+## Breaking Changes Policy
+
+V1 is **frozen**. The server continues to serve V1 requests to avoid breaking existing integrations, but no new fields, endpoints, or behaviours will be added to the V1 contract.
+
+All new features — including multi-tenant support, OpenTelemetry tracing headers, and future capabilities — ship exclusively in V2 and beyond. If you rely on a V1 endpoint today, plan a migration to V2 to benefit from current and future improvements.
+
+<Note>
+The Reservation SDK always targets V2. If you configure the SDK with `options.ApiVersion = "v2"`, you automatically get the latest contract shape without manually constructing versioned URLs. See the [Configuration](/reference/configuration) guide for SDK setup instructions.
+</Note>
+
+## All Documentation Examples Use V2
+
+Every code sample and curl command in this documentation targets `/api/v2/...`. If you are maintaining a legacy V1 integration and need to translate an example, substitute `v2` with `v1` in the URL path — but be aware that some V2 fields may not be present in V1 responses.

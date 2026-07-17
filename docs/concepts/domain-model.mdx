@@ -1,0 +1,162 @@
+---
+title: "Domain Model: Aggregates, Entities, and Business Rules"
+sidebarTitle: "Domain Model"
+description: "Explore the core aggregates — Auditorium, Showtime, and Reservation — that power the Cinema System's rich domain model."
+---
+
+The Cinema System is built around three core aggregates: **Auditorium**, **Showtime**, and **Reservation**. Each aggregate encapsulates its own state and business rules, ensuring that all changes happen through well-defined domain operations rather than direct data manipulation. Understanding these entities helps you predict API behavior, interpret responses, and build integrations that align with the system's invariants.
+
+## Aggregates Overview
+
+<CardGroup cols={3}>
+  <Card title="Auditorium" icon="building">
+    Represents a physical screening room. Contains rows and individual seats, each identified by row and seat number.
+  </Card>
+  <Card title="Showtime" icon="film">
+    Links a movie to an auditorium at a specific date and time. Acts as the scheduling unit for reservations.
+  </Card>
+  <Card title="Reservation" icon="ticket">
+    Created when a customer reserves one or more contiguous seats for a showtime. Tracks status from reserved through to purchased or expired.
+  </Card>
+</CardGroup>
+
+---
+
+## Auditorium
+
+An **Auditorium** represents a cinema screening room. It contains a fixed layout of rows, each holding a numbered set of seats. The structure of an auditorium never changes at runtime — rows and seats are set when the auditorium is created.
+
+### Key Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | UUID | Unique identifier for the auditorium |
+| `name` | string | Human-readable name, e.g. `"Screen 1"` |
+| `rows` | array | Ordered list of rows in the auditorium |
+| `rows[].rowNumber` | integer | 1-based row number |
+| `rows[].seats` | array | Seats belonging to this row |
+| `rows[].seats[].seatNumber` | integer | 1-based seat number within the row |
+
+### Example Auditorium Response
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "name": "Screen 1",
+  "rows": [
+    {
+      "rowNumber": 1,
+      "seats": [
+        { "seatNumber": 1 },
+        { "seatNumber": 2 },
+        { "seatNumber": 3 }
+      ]
+    },
+    {
+      "rowNumber": 2,
+      "seats": [
+        { "seatNumber": 1 },
+        { "seatNumber": 2 },
+        { "seatNumber": 3 }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Showtime
+
+A **Showtime** schedules a specific movie to play in a specific auditorium at a given date and time. It is the central scheduling unit — you create reservations against a showtime, not against a movie or auditorium directly.
+
+### Key Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | UUID | Unique identifier for the showtime |
+| `movieId` | UUID | Reference to the movie being screened |
+| `movieTitle` | string | Display title of the movie |
+| `auditoriumId` | UUID | Reference to the auditorium hosting the screening |
+| `sessionDate` | ISO 8601 datetime | Date and time the screening begins |
+
+### Example Showtime Response
+
+```json
+{
+  "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "movieId": "1a2b3c4d-0000-0000-0000-000000000001",
+  "movieTitle": "Interstellar",
+  "auditoriumId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "sessionDate": "2025-08-15T19:30:00Z"
+}
+```
+
+---
+
+## Reservation
+
+A **Reservation** is created when a customer claims one or more seats for a showtime. It captures which seats were chosen, the current status, and when it will expire if not purchased.
+
+### Key Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | UUID | Unique identifier for the reservation |
+| `showtimeId` | UUID | The showtime this reservation belongs to |
+| `seats` | array | List of reserved seats (`rowNumber` + `seatNumber`) |
+| `status` | enum | `Reserved`, `Purchased`, or `Expired` |
+| `expiresAt` | ISO 8601 datetime | When the reservation expires if not purchased |
+
+### Reservation Status Lifecycle
+
+```
+Reserved ──(purchase within 1 min)──► Purchased
+Reserved ──(1 minute elapses)────────► Expired
+```
+
+### Example Reservation Response
+
+```json
+{
+  "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+  "showtimeId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "seats": [
+    { "rowNumber": 1, "seatNumber": 2 },
+    { "rowNumber": 1, "seatNumber": 3 }
+  ],
+  "status": "Reserved",
+  "expiresAt": "2025-08-15T14:01:00Z"
+}
+```
+
+<Note>
+  Reservations expire **1 minute** after creation if not purchased. Once a reservation expires, its seats are released and become available to other customers. Always call `PUT /api/v2/reservations/{reservationId}/purchase` promptly after creating a reservation.
+</Note>
+
+### Business Rules
+
+The system enforces the following constraints at the domain level. Requests that violate these rules return a `422 Unprocessable Entity` response.
+
+<Accordion title="Seats must be contiguous">
+  All seats in a single reservation request must be adjacent within the same row. You cannot reserve seat 1 and seat 3 while leaving seat 2 for someone else.
+</Accordion>
+
+<Accordion title="Seats cannot be double-reserved or sold">
+  The system rejects any attempt to reserve a seat that is already held by an active reservation or has been purchased. Retrieve the current showtime's seat availability via `GET /api/v2/showtimes/{id}` before submitting a reservation.
+</Accordion>
+
+<Accordion title="No reservations after showtime ends">
+  Once the showtime's `sessionDate` has passed, the system rejects new reservation requests for that showtime.
+</Accordion>
+
+---
+
+## Working with IDs
+
+Every resource in the API is identified by a **UUID v4** string. IDs are scoped to their resource type — an auditorium ID cannot be used in place of a showtime ID or reservation ID. When constructing requests, always use the exact ID returned by the API for the resource you intend to reference.
+
+```json
+// Always use the full UUID format returned by the API
+"showtimeId": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+```

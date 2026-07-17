@@ -1,0 +1,101 @@
+---
+title: "Cinema Reservation Integration Events and Webhooks Guide"
+sidebarTitle: "Integration Events"
+description: "Subscribe to Cinema Reservation integration events to build reactive, event-driven workflows triggered by reservations, purchases, and showtime changes."
+---
+
+The Cinema System publishes integration events whenever a key domain action occurs — a seat is reserved, a payment is confirmed, a showtime is scheduled or cancelled. These events are defined in `JordiAragonZaragoza.Cinema.Reservation.Application.Contracts.Integration.V1` and are the primary mechanism for building reactive, event-driven workflows across service boundaries.
+
+<Info>
+  Integration events flow through the internal event bus and are designed for **cross-context communication** within an event-driven architecture. Native HTTP webhook callbacks (outbound POST requests to a registered URL) are on the roadmap but are not yet available. Subscribe to events through your message broker or event bus integration instead.
+</Info>
+
+## Published Events
+
+The system publishes five integration events across the reservation and showtime lifecycles:
+
+<CardGroup cols={2}>
+  <Card title="ReservationCreated" icon="circle-check">
+    Fired when seats are successfully reserved. Includes `reservationId`, `showtimeId`, the list of reserved `seats`, and the `expiryTime` (1 minute after creation).
+  </Card>
+  <Card title="ReservationPurchased" icon="bag-shopping">
+    Fired when a reservation is confirmed and paid. Includes `reservationId` and `purchasedAt` timestamp.
+  </Card>
+  <Card title="ReservationExpired" icon="clock">
+    Fired when the 1-minute reservation window elapses without a purchase. Use this event to release held inventory in downstream systems.
+  </Card>
+  <Card title="ShowtimeCreated" icon="clapperboard">
+    Fired when a new showtime is scheduled. Use this event to sync showtime catalogs or trigger marketing notifications.
+  </Card>
+  <Card title="ShowtimeCancelled" icon="ban">
+    Fired when a showtime is cancelled. Use this event to notify affected ticket holders and initiate refund workflows.
+  </Card>
+</CardGroup>
+
+## Event Payload Structure
+
+Every event includes a `correlationId` field you can use to trace a request across multiple services. Below is a complete example payload for the `ReservationCreated` event:
+
+```json
+{
+  "eventType": "ReservationCreated",
+  "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "showtimeId": "7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d",
+  "seats": [
+    { "row": 1, "seatNumber": 1 },
+    { "row": 1, "seatNumber": 2 }
+  ],
+  "expiryTime": "2024-12-25T20:01:00Z",
+  "correlationId": "abc123"
+}
+```
+
+The fields present in each event type are summarised below:
+
+| Field | `ReservationCreated` | `ReservationPurchased` | `ReservationExpired` | `ShowtimeCreated` | `ShowtimeCancelled` |
+|---|:---:|:---:|:---:|:---:|:---:|
+| `reservationId` | ✓ | ✓ | ✓ | | |
+| `showtimeId` | ✓ | | ✓ | ✓ | ✓ |
+| `seats` | ✓ | | | | |
+| `expiryTime` | ✓ | | | | |
+| `purchasedAt` | | ✓ | | | |
+| `correlationId` | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+## Subscribing to Events
+
+<Note>
+  The subscription mechanism depends on your deployment setup. If you are running the Cinema system with a message broker such as RabbitMQ or Azure Service Bus, subscribe to the relevant exchange or topic from your consumer service. Consult your infrastructure configuration for queue names and connection details.
+</Note>
+
+A typical event-driven workflow follows these steps:
+
+<Steps>
+  <Step title="Configure your message broker">
+    Connect your consumer service to the same broker used by the Cinema application. Ensure your consumer has permission to bind to the relevant topic or exchange.
+  </Step>
+  <Step title="Declare your subscriptions">
+    Subscribe to the specific event types you need. For example, subscribe to `ReservationCreated` to trigger a seat-hold notification, and to `ReservationExpired` to release that hold automatically.
+  </Step>
+  <Step title="Implement your event handler">
+    Deserialise the incoming payload into the matching contract class from `Application.Contracts.Integration.V1` and execute your business logic.
+
+    ```csharp
+    public class ReservationCreatedHandler : IIntegrationEventHandler<ReservationCreatedEvent>
+    {
+        public async Task Handle(ReservationCreatedEvent integrationEvent, CancellationToken cancellationToken)
+        {
+            // Use integrationEvent.CorrelationId for distributed tracing
+            // Use integrationEvent.ExpiryTime to schedule a reminder
+            await NotifyCustomerAsync(integrationEvent.ReservationId, integrationEvent.ExpiryTime);
+        }
+    }
+    ```
+  </Step>
+  <Step title="Use the correlationId for tracing">
+    Propagate `correlationId` through every downstream call and log entry so you can reconstruct the full request trace across services.
+  </Step>
+</Steps>
+
+<Tip>
+  Always handle `ReservationExpired` in any service that reacts to `ReservationCreated`. Failing to account for expiry can leave your downstream state (inventory counts, user notifications, analytics) permanently out of sync with the Cinema system.
+</Tip>

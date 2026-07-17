@@ -1,0 +1,92 @@
+---
+title: "Cinema Reservation MCP Gateway Integration for AI Agents"
+sidebarTitle: "MCP Gateway"
+description: "Connect AI agents like Claude or GPT-4 to the Cinema Reservation API using the Model Context Protocol gateway introduced in v3.1.1."
+---
+
+The MCP Gateway (`JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway`) exposes the Cinema Reservation API as a set of [Model Context Protocol](https://modelcontextprotocol.io) tools, allowing AI agents such as Claude or GPT-4 to discover showtimes, check seat availability, and complete the full reservation and purchase flow — all through natural language. The gateway was introduced in **v3.1.1**.
+
+## Available MCP Tools
+
+The gateway registers the following tools that any MCP-compatible agent can discover and invoke:
+
+<CardGroup cols={2}>
+  <Card title="get-auditoriums" icon="building">
+    List all auditoriums and their complete seat layouts.
+  </Card>
+  <Card title="get-movies" icon="film">
+    List all movies currently available for booking.
+  </Card>
+  <Card title="get-showtimes" icon="clock">
+    List showtimes with optional filtering by movie, date, or auditorium.
+  </Card>
+  <Card title="reserve-seats" icon="ticket">
+    Reserve one or more seats for a specific showtime.
+  </Card>
+  <Card title="purchase-reservation" icon="credit-card">
+    Confirm and purchase an existing reservation before it expires.
+  </Card>
+</CardGroup>
+
+## Configure Your MCP Client
+
+Point your MCP client at the gateway URL to make the Cinema tools available to your agent. The exact configuration file format depends on your MCP client, but a standard HTTP transport entry looks like this:
+
+```json
+{
+  "mcpServers": {
+    "cinema": {
+      "url": "https://your-cinema-api.com/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+Replace `https://your-cinema-api.com/mcp` with the public URL of your deployed MCP Gateway instance.
+
+<Note>
+  The MCP Gateway uses the same **JWT authentication** as the REST API. Include a valid bearer token in your MCP client's authorization headers, or configure token injection at the gateway level. Unauthenticated requests are rejected with `401 Unauthorized`.
+</Note>
+
+## End-to-End Agent Flow
+
+<Steps>
+  <Step title="Agent receives a user request">
+    The user asks the AI agent: *"Book 2 seats for the 8 pm showing of Dune."*
+  </Step>
+  <Step title="Agent calls get-movies">
+    The agent invokes `get-movies` to resolve the movie ID for *Dune*.
+  </Step>
+  <Step title="Agent calls get-showtimes">
+    The agent invokes `get-showtimes` with the movie ID and a date filter to find the 8 pm showtime and confirm seat availability.
+  </Step>
+  <Step title="Agent calls reserve-seats">
+    The agent invokes `reserve-seats` with the showtime ID and the requested seat count. The API returns a `reservationId`.
+  </Step>
+  <Step title="Agent calls purchase-reservation">
+    The agent immediately invokes `purchase-reservation` with the `reservationId` to confirm the booking before the 1-minute expiry window closes.
+  </Step>
+  <Step title="Agent confirms to the user">
+    The agent reports the confirmed booking details back to the user in natural language.
+  </Step>
+</Steps>
+
+<Warning>
+  Reservations expire **1 minute** after creation. Ensure your agent calls `purchase-reservation` in the same turn as `reserve-seats`. If the agent pauses for additional user confirmation, the reservation may lapse and seats will need to be re-reserved.
+</Warning>
+
+## Supported Resources
+
+The MCP Gateway surfaces the following resource contracts from `Application.Contracts.Integration.V1`:
+
+| Resource | Description |
+|---|---|
+| `Auditorium` | Auditorium details including seat row and column layout |
+| `Movie` | Movie metadata (title, duration, rating) |
+| `Showtime` | Showtime schedule linked to a movie and auditorium |
+| `User` | Authenticated user context used for reservation ownership |
+
+<Tip>
+  Use the `get-auditoriums` tool during agent setup or onboarding to cache seat layout data. Auditorium configurations change infrequently, so caching reduces round-trips during a live booking conversation.
+</Tip>

@@ -1,0 +1,88 @@
+---
+title: "Get Showtime Details and Real-Time Seat Availability"
+sidebarTitle: "Get Showtime"
+description: "Fetch full details for a single showtime, including available and sold seat counts, using its unique identifier."
+---
+
+Use this endpoint to retrieve complete information about a specific showtime, including how many seats remain available and how many have already been sold. Call this endpoint after [listing showtimes](/api/showtimes/list) to give customers an accurate picture of seat availability before they proceed to reserve.
+
+## Endpoint
+
+```
+GET https://your-cinema-api.com/api/v2/showtimes/{showtimeId}
+```
+
+## Path Parameters
+
+<ParamField path="showtimeId" type="string (GUID)" required>
+  The unique identifier of the showtime to retrieve. Obtain this value from the [List Showtimes](/api/showtimes/list) response.
+</ParamField>
+
+## Request
+
+```bash
+curl --request GET \
+  --url https://your-cinema-api.com/api/v2/showtimes/7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d \
+  --header "Authorization: Bearer <token>"
+```
+
+## Response
+
+### 200 — Success
+
+Returns a single showtime object with full seat availability data.
+
+<ResponseField name="showtimeId" type="string (GUID)" required>
+  The unique identifier of this showtime.
+</ResponseField>
+
+<ResponseField name="movieId" type="string (GUID)" required>
+  The unique identifier of the movie being screened.
+</ResponseField>
+
+<ResponseField name="auditoriumId" type="string (GUID)" required>
+  The unique identifier of the auditorium assigned to this showtime. Use [Get Auditorium Details](/api/auditoriums/get) to retrieve the full row-by-row seat layout.
+</ResponseField>
+
+<ResponseField name="sessionDate" type="string (ISO 8601)" required>
+  The scheduled date and time of the session in UTC (e.g. `2024-12-25T20:00:00Z`).
+</ResponseField>
+
+<ResponseField name="availableSeats" type="integer" required>
+  The number of seats that have not yet been reserved for this showtime.
+</ResponseField>
+
+<ResponseField name="soldSeats" type="integer" required>
+  The number of seats that have already been sold or reserved for this showtime.
+</ResponseField>
+
+**Example response**
+
+```json
+{
+  "showtimeId": "7c3a8e91-0b2d-4f5e-a6d7-1e9c3b4f2a8d",
+  "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "sessionDate": "2024-12-25T20:00:00Z",
+  "availableSeats": 120,
+  "soldSeats": 5
+}
+```
+
+## Error Codes
+
+| Status | Meaning | Description |
+|--------|---------|-------------|
+| `401`  | Unauthorized | Your Bearer token is missing or invalid. Verify that you are sending a valid `Authorization` header. |
+| `404`  | Not Found | No showtime exists for the provided `showtimeId`. Confirm the ID is correct and retry. |
+
+**Example error response**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Showtime not found."
+}
+```

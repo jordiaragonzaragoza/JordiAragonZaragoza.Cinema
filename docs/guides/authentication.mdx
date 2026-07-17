@@ -1,0 +1,116 @@
+---
+title: "Authenticate with the Cinema System API"
+sidebarTitle: "Authentication"
+description: "Learn how to obtain and use JWT Bearer tokens to authenticate every request to the Cinema System API, and how to handle token expiry."
+---
+
+The Cinema System API uses JWT Bearer token authentication. Every request to a protected endpoint must include a valid token in the `Authorization` header. This page shows you how to obtain a token, attach it to your requests, and handle token expiry.
+
+## Obtain a Token
+
+Send your credentials to the login endpoint to receive a JWT token.
+
+**Endpoint:** `POST /api/v2/auth/login`
+
+### Request Body
+
+<ParamField body="username" type="string" required>
+  Your account email address, e.g. `user@example.com`.
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  Your account password.
+</ParamField>
+
+### Example Request
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://your-api-host/api/v2/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "user@example.com",
+    "password": "your-password"
+  }'
+```
+
+```json Request Body
+{
+  "username": "user@example.com",
+  "password": "your-password"
+}
+```
+</CodeGroup>
+
+### Example Response
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": 3600
+}
+```
+
+<ResponseField name="token" type="string">
+  A signed JWT Bearer token. Include this value in the `Authorization` header of every subsequent API request.
+</ResponseField>
+
+<ResponseField name="expiresIn" type="integer">
+  The number of seconds until the token expires. After this duration, the token is no longer valid and you must re-authenticate to obtain a new one.
+</ResponseField>
+
+<Tip>
+  Use the Swagger UI at `/swagger` to discover the exact login endpoint for your deployment and to explore all available endpoints interactively.
+</Tip>
+
+## Attach the Token to Requests
+
+Include the token in the `Authorization` header using the `Bearer` scheme on every protected request.
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Full cURL Example
+
+```bash
+curl -X GET https://your-api-host/api/v2/showtimes \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+## Authenticate in Swagger UI
+
+The API's built-in Swagger UI supports JWT authentication so you can test endpoints directly in your browser.
+
+<Steps>
+  <Step title="Open Swagger UI">
+    Navigate to `https://your-api-host/swagger` in your browser.
+  </Step>
+  <Step title="Click Authorize">
+    Click the **Authorize** button (🔒) in the top-right corner of the Swagger UI page.
+  </Step>
+  <Step title="Paste your token">
+    In the **Value** field, enter `Bearer ` followed by your token:
+    ```
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    ```
+  </Step>
+  <Step title="Confirm and close">
+    Click **Authorize**, then **Close**. All subsequent requests made from Swagger UI will include your token automatically.
+  </Step>
+</Steps>
+
+## Handle Token Expiry
+
+JWT tokens have a limited lifespan. When your token expires, the API returns a `401 Unauthorized` response. Re-authenticate by calling `POST /api/v2/auth/login` again with your credentials to obtain a fresh token, then retry your original request.
+
+```json
+{
+  "status": 401,
+  "title": "Unauthorized"
+}
+```
+
+<Warning>
+  Keep your JWT token secure. Do not commit tokens to source control, log them, or expose them in client-side code. Treat a token with the same care as a password — anyone who holds it can make API requests on your behalf until it expires.
+</Warning>

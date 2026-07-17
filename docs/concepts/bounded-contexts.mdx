@@ -1,0 +1,119 @@
+---
+title: "Bounded Contexts: API Scope and Future Integrations"
+sidebarTitle: "Bounded Contexts"
+description: "Learn how the Cinema System organizes capabilities into bounded contexts, what the Reservation context owns, and what the roadmap holds."
+---
+
+A **bounded context** is a well-defined boundary within which a particular domain model applies and has a consistent meaning. The Cinema System is structured around discrete bounded contexts, each owning its own data, logic, and API surface. Understanding these boundaries tells you which capabilities are available today, how contexts communicate with each other, and what is planned for future releases.
+
+<Info>
+  The current public API surface belongs entirely to the **Reservation** bounded context. All endpoints under `/api/v2` — showtimes, auditoriums, and reservations — are owned and served by this context. Capabilities such as payments, pricing, and invoicing are planned for future bounded contexts and are not yet available.
+</Info>
+
+---
+
+## The Reservation Bounded Context
+
+The **Reservation** context is the primary and currently the only publicly exposed bounded context. It is responsible for the full lifecycle of a cinema seat reservation — from scheduling a showtime to confirming a purchase.
+
+### What the Reservation Context Owns
+
+<CardGroup cols={2}>
+  <Card title="Auditoriums" icon="building">
+    Physical screening rooms with their fixed row and seat layouts. The Reservation context is the authoritative source for auditorium structure.
+  </Card>
+  <Card title="Showtimes" icon="calendar">
+    The scheduling unit that links a movie reference to an auditorium at a specific date and time.
+  </Card>
+  <Card title="Reservations" icon="ticket">
+    The act of claiming contiguous seats for a showtime. Manages the full `Reserved → Purchased / Expired` lifecycle.
+  </Card>
+  <Card title="Movie References" icon="film">
+    The Reservation context stores a `movieId` and `movieTitle` as a reference. It does not own the full movie catalog — that belongs to a future context.
+  </Card>
+</CardGroup>
+
+### Capabilities Summary
+
+| Capability | Endpoint | Description |
+|---|---|---|
+| Schedule showtime | `POST /api/v2/showtimes` | Schedule a new movie screening |
+| List showtimes | `GET /api/v2/showtimes` | Browse all scheduled screenings |
+| Get showtime | `GET /api/v2/showtimes/{id}` | Retrieve a specific showtime |
+| List auditoriums | `GET /api/v2/auditoriums` | Browse all auditoriums |
+| Get auditorium | `GET /api/v2/auditoriums/{id}` | Retrieve a specific auditorium layout |
+| Create reservation | `POST /api/v2/showtimes/{showtimeId}/reservations` | Reserve contiguous seats |
+| Purchase reservation | `PUT /api/v2/reservations/{reservationId}/purchase` | Confirm and pay for a reservation |
+| Get reservation | `GET /api/v2/reservations/{id}` | Retrieve a reservation and its status |
+
+---
+
+## Cross-Context Integration
+
+When the Reservation context needs to communicate an outcome to another context — for example, notifying a future Payments context that a reservation is ready for payment — it does so through **integration events** rather than direct API calls. This keeps contexts loosely coupled.
+
+Integration events are defined under the **V1 integration contracts** namespace and are versioned independently of the REST API. The following events are currently published by the Reservation context:
+
+| Integration Event | Published When |
+|---|---|
+| `ReservationCreated` | A new reservation is successfully created |
+| `ReservationPurchased` | A reservation is confirmed and paid |
+| `ReservationExpired` | A reservation reaches its 1-minute expiry |
+| `ShowtimeCreated` | A new showtime is scheduled |
+| `ShowtimeCancelled` | An existing showtime is cancelled |
+
+If you are building a service that needs to react to reservation outcomes (for example, triggering an invoice when a purchase is confirmed), subscribe to these integration events rather than polling the API. See the [webhooks guide](/integrations/webhooks) for details on subscribing to integration events.
+
+### MCP Gateway Resources
+
+The system also exposes resources through the **MCP Gateway**, which provides standardized resource representations for auditoriums, movies, showtimes, and users. Use the MCP Gateway when integrating at the gateway level rather than consuming the REST API directly. See the [MCP Gateway integration guide](/integrations/mcp-gateway) for details.
+
+---
+
+## API Versioning
+
+The Reservation context exposes its API under two contract generations:
+
+| Version | Status | When to Use |
+|---|---|---|
+| **V2** | Current | Use for all new integrations. Reflects the latest domain model and response shapes. |
+| **V1** | Legacy | Retained for backward compatibility only. Do not use V1 for new development. |
+
+Always target **V2 endpoints** unless you are maintaining an integration with an older system that has not yet migrated. V1 endpoints are retained for backward compatibility and will not receive new features. See the [versioning reference](/reference/versioning) for the complete compatibility policy.
+
+---
+
+## Roadmap: Planned Bounded Contexts
+
+The following contexts are planned for future releases. They do not yet have public API surfaces, but their boundaries have been defined to guide the evolution of the system.
+
+<CardGroup cols={3}>
+  <Card title="Payments" icon="credit-card">
+    Handles payment processing for purchased reservations. Will integrate with the Reservation context via integration events.
+  </Card>
+  <Card title="Pricing" icon="tag">
+    Manages dynamic seat pricing rules, discounts, and promotional rates per showtime or category.
+  </Card>
+  <Card title="Invoicing" icon="file-invoice">
+    Generates and distributes invoices or receipts after a successful purchase.
+  </Card>
+  <Card title="Movie Catalog" icon="clapperboard">
+    Owns the authoritative movie metadata — titles, descriptions, ratings, and genres. The Reservation context currently stores only a movie reference.
+  </Card>
+  <Card title="Customer Notifications" icon="bell">
+    Sends confirmation emails, booking reminders, and expiry alerts to customers based on reservation events.
+  </Card>
+  <Card title="Marketing" icon="megaphone">
+    Manages promotional campaigns, loyalty programs, and audience segmentation.
+  </Card>
+</CardGroup>
+
+<CardGroup cols={1}>
+  <Card title="Administration" icon="shield">
+    Provides back-office capabilities for managing auditoriums, showtimes, and system configuration.
+  </Card>
+</CardGroup>
+
+<Note>
+  Planned contexts are subject to change. Monitor the changelog for announcements when new bounded contexts reach public availability.
+</Note>

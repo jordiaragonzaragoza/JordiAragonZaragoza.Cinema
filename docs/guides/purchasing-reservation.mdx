@@ -1,0 +1,81 @@
+---
+title: "Purchase and Confirm Your Cinema Seat Reservation"
+sidebarTitle: "Purchase Reservation"
+description: "Complete your cinema booking by purchasing an active reservation within the one-minute expiry window using a single authenticated PUT request."
+---
+
+After you create a reservation, you have a **1-minute window** to purchase it and confirm your seats. Purchasing a reservation converts your temporary hold into a confirmed booking. This guide covers the purchase endpoint, expected responses, and how to handle errors.
+
+<Warning>
+  Reservations expire automatically after **1 minute**. Once a reservation expires, its seats are released and you cannot purchase it. If your reservation expires, create a new one and complete the purchase immediately.
+</Warning>
+
+## Purchase a Reservation
+
+Send a `PUT` request to the purchase endpoint with your `reservationId`. No request body is required.
+
+**Endpoint:** `PUT /api/v2/reservations/{reservationId}/purchase`
+
+### Path Parameter
+
+<ParamField path="reservationId" type="string (GUID)" required>
+  The unique identifier of the reservation you want to purchase. You received this in the response when you created the reservation.
+</ParamField>
+
+### Example Request
+
+```bash
+curl -X PUT https://your-api-host/api/v2/reservations/d290f1ee-6c54-4b01-90e6-d701748f0851/purchase \
+  -H "Authorization: Bearer <your-token>"
+```
+
+### Success Response
+
+A `200 OK` response confirms that your purchase is complete and your seats are secured.
+
+```http
+HTTP/1.1 200 OK
+```
+
+```json
+{
+  "reservationId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+  "status": "Purchased"
+}
+```
+
+<Note>
+  **Do not retry a purchase after receiving a `200 OK` response.** The operation is not idempotent — sending the same request again after a successful purchase returns a `409 Conflict` error. If you are unsure whether a purchase succeeded, call `GET /api/v2/reservations/{reservationId}` to check the reservation status before retrying.
+</Note>
+
+## Error Handling
+
+| Status | Detail | What to do |
+|--------|--------|------------|
+| `404 Not Found` | The `reservationId` does not exist. | Verify the ID matches the one returned when you created the reservation. |
+| `409 Conflict` | The reservation has already been purchased. | No action needed — your seats are already confirmed. Fetch the reservation to review its details. |
+| `409 Conflict` | The reservation has expired. | Create a new reservation and purchase it immediately within the 1-minute window. |
+
+**Example error response:**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Reservation has already expired."
+}
+```
+
+Read the `detail` field to distinguish between an already-purchased reservation and an expired one, then take the appropriate action.
+
+## Check Reservation Status
+
+If you need to verify whether a reservation has been purchased, fetch its current state before attempting a purchase.
+
+```bash
+curl -X GET https://your-api-host/api/v2/reservations/d290f1ee-6c54-4b01-90e6-d701748f0851 \
+  -H "Authorization: Bearer <your-token>"
+```
+
+Use this check to avoid sending a duplicate purchase request and receiving an unnecessary `409` error.

@@ -1,0 +1,130 @@
+---
+title: "Integrate the Cinema Reservation .NET SDK into Your App"
+sidebarTitle: ".NET SDK"
+description: "Use the Reservation SDK to call the Cinema API from any .NET application with typed clients, DI registration, and full CQRS support."
+---
+
+The Reservation SDK (`JordiAragonZaragoza.Cinema.Reservation.Sdk`) is a .NET client library that gives you strongly-typed access to the Cinema API without writing raw HTTP calls. It wraps every API operation — reserving seats, purchasing reservations, and querying showtimes and auditoriums — in an idiomatic .NET interface that plugs directly into your dependency injection container.
+
+## Installation
+
+Add the SDK to your project by referencing the NuGet package:
+
+```bash
+dotnet add package JordiAragonZaragoza.Cinema.Reservation.Sdk
+```
+
+Alternatively, if you are working inside the same solution, add a direct project reference:
+
+```bash
+dotnet add reference ../JordiAragonZaragoza.Cinema.Reservation.Sdk/JordiAragonZaragoza.Cinema.Reservation.Sdk.csproj
+```
+
+## Register the SDK
+
+Call `AddReservationSdk` in your service registration code to wire up the SDK clients. Pass a configuration delegate to set the base URL and API version:
+
+```csharp
+builder.Services.AddReservationSdk(options =>
+{
+    options.BaseUrl = "https://your-cinema-api.com";
+    options.ApiVersion = "v2";
+});
+```
+
+<Note>
+  The SDK follows the **CQRS pattern** and exposes two separate clients: `IReservationCommandClient` for write operations (reserve, purchase) and `IReservationQueryClient` for read operations (showtimes, auditoriums). Inject only the interface your class needs to keep responsibilities clear.
+</Note>
+
+## Usage
+
+Inject `IReservationCommandClient` or `IReservationQueryClient` into your services or controllers via constructor injection.
+
+### Reserve Seats
+
+Use `IReservationCommandClient` to reserve one or more seats for a showtime. The response contains a `ReservationId` you will need for the purchase step.
+
+```csharp
+var result = await reservationClient.ReserveSeatsAsync(showtimeId, new ReserveSeatsRequest
+{
+    Seats = new[]
+    {
+        new SeatRequest { Row = 1, SeatNumber = 1 },
+        new SeatRequest { Row = 1, SeatNumber = 2 }
+    }
+});
+
+var reservationId = result.ReservationId;
+```
+
+<Warning>
+  Reservations expire after **1 minute**. Call `PurchaseReservationAsync` immediately after reserving seats — if the window elapses, the seats are released and you must start over.
+</Warning>
+
+### Purchase a Reservation
+
+Confirm an existing reservation by passing its ID to `PurchaseReservationAsync`:
+
+```csharp
+await reservationClient.PurchaseReservationAsync(reservationId);
+```
+
+### List Showtimes
+
+Use `IReservationQueryClient` to retrieve available showtimes:
+
+```csharp
+var showtimes = await queryClient.GetShowtimesAsync();
+```
+
+## Full Example
+
+The following snippet shows a minimal service that reserves and purchases seats in one flow:
+
+<CodeGroup>
+```csharp ReservationService.cs
+public class ReservationService
+{
+    private readonly IReservationCommandClient _commandClient;
+    private readonly IReservationQueryClient _queryClient;
+
+    public ReservationService(
+        IReservationCommandClient commandClient,
+        IReservationQueryClient queryClient)
+    {
+        _commandClient = commandClient;
+        _queryClient   = queryClient;
+    }
+
+    public async Task BookSeatsAsync(Guid showtimeId)
+    {
+        // 1. Reserve seats
+        var reservation = await _commandClient.ReserveSeatsAsync(showtimeId, new ReserveSeatsRequest
+        {
+            Seats = new[]
+            {
+                new SeatRequest { Row = 1, SeatNumber = 1 },
+                new SeatRequest { Row = 1, SeatNumber = 2 }
+            }
+        });
+
+        // 2. Purchase immediately — reservation expires in 1 minute
+        await _commandClient.PurchaseReservationAsync(reservation.ReservationId);
+    }
+}
+```
+
+```csharp Program.cs
+builder.Services.AddReservationSdk(options =>
+{
+    options.BaseUrl   = "https://your-cinema-api.com";
+    options.ApiVersion = "v2";
+});
+
+builder.Services.AddScoped<ReservationService>();
+```
+</CodeGroup>
+
+<Tip>
+  Call `GetShowtimesAsync()` first to present users with available options, then pass the chosen `showtimeId` into `ReserveSeatsAsync`. This keeps your UI in sync with real-time seat availability.
+</Tip>

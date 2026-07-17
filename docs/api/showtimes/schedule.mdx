@@ -1,0 +1,109 @@
+---
+title: "Schedule a New Showtime for a Movie and Auditorium"
+sidebarTitle: "Schedule Showtime"
+description: "Create a new showtime by pairing a movie with an auditorium and a future session date, returning the new showtime ID."
+---
+
+Use this endpoint to schedule a new showtime by associating a movie with an auditorium at a specific future date and time. The API validates that both the movie and auditorium exist, that the requested session date is in the future, and that the auditorium is not already booked at the same time. On success, the response returns the newly created `showtimeId` and confirmed `sessionDate`.
+
+## Endpoint
+
+```
+POST https://your-cinema-api.com/api/v2/showtimes
+```
+
+## Request Body
+
+Send a JSON object with the following fields:
+
+<ParamField body="movieId" type="string (GUID)" required>
+  The unique identifier of the movie to screen. The movie must already exist in the system; a `404` is returned if it cannot be found.
+</ParamField>
+
+<ParamField body="auditoriumId" type="string (GUID)" required>
+  The unique identifier of the auditorium to assign to this showtime. The auditorium must already exist; a `404` is returned if it cannot be found.
+</ParamField>
+
+<ParamField body="sessionDate" type="string (ISO 8601)" required>
+  The desired date and time for the showtime session in UTC (e.g. `2025-01-10T18:30:00Z`). The value must be a future date and time; past dates return a `400`.
+</ParamField>
+
+```bash
+curl --request POST \
+  --url https://your-cinema-api.com/api/v2/showtimes \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+    "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sessionDate": "2025-01-10T18:30:00Z"
+  }'
+```
+
+**Example request body**
+
+```json
+{
+  "movieId": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+  "auditoriumId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "sessionDate": "2025-01-10T18:30:00Z"
+}
+```
+
+## Response
+
+### 201 — Created
+
+Returns a confirmation object for the newly scheduled showtime.
+
+<ResponseField name="showtimeId" type="string (GUID)" required>
+  The unique identifier assigned to the newly created showtime. Store this value to retrieve details or manage the showtime later.
+</ResponseField>
+
+<ResponseField name="sessionDate" type="string (ISO 8601)" required>
+  The confirmed session date and time in UTC as stored by the system.
+</ResponseField>
+
+**Example response**
+
+```json
+{
+  "showtimeId": "f7a3c901-2b4d-4e6f-a8b9-2c0d3e4f5a6b",
+  "sessionDate": "2025-01-10T18:30:00Z"
+}
+```
+
+<Note>
+  Showtime cancellation is currently in progress. Only basic scheduling functionality is available at this time. Check back for updates on cancellation support.
+</Note>
+
+## Error Codes
+
+| Status | Meaning | Description |
+|--------|---------|-------------|
+| `400`  | Bad Request | The request body is invalid. Common causes: the `sessionDate` is malformed, missing, or refers to a date in the past. |
+| `401`  | Unauthorized | Your Bearer token is missing or invalid. Verify that you are sending a valid `Authorization` header. |
+| `404`  | Not Found | The specified `movieId` or `auditoriumId` does not exist in the system. Confirm both identifiers and retry. |
+| `409`  | Conflict | The auditorium is already booked for another showtime at the requested date and time. Choose a different time slot or auditorium. |
+
+**Example error response — conflict**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "The auditorium is already booked at the requested time."
+}
+```
+
+**Example error response — not found**
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Movie or auditorium not found."
+}
+```

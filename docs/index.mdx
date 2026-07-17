@@ -1,0 +1,38 @@
+---
+title: "Cinema System — Seat Booking REST API"
+sidebarTitle: "Home"
+description: "Reserve contiguous cinema seats, manage showtimes, and purchase tickets through a versioned, JWT-secured REST API built on CQRS and Event Sourcing."
+---
+
+The Cinema System gives you a fully featured seat-booking API built on .NET 10 and .NET Aspire. Use it to reserve contiguous seats for any scheduled showtime, purchase those reservations before they expire, and query auditorium availability — all through versioned, JWT-secured REST endpoints.
+
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Learn what the system does, how it is structured, and which problems it solves before you write a single line of code.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Clone the repo, start the stack with one command, and make your first seat reservation in under five minutes.
+  </Card>
+  <Card title="API Overview" icon="code" href="/api/overview">
+    Explore every endpoint — showtimes, auditoriums, reservations, and purchases — with full request and response schemas.
+  </Card>
+  <Card title="SDK & Integrations" icon="plug" href="/integrations/sdk">
+    Integrate from .NET using the official Reservation SDK, or connect an AI agent through the built-in MCP Gateway.
+  </Card>
+</CardGroup>
+
+## Get up and running in three steps
+
+Follow these steps to go from zero to your first confirmed seat reservation.
+
+<Steps>
+  <Step title="Run the application">
+    Open `JordiAragonZaragoza.Cinema.sln` in Visual Studio 2022 and press **F5**, or run `dotnet run` from the solution root. .NET Aspire orchestrates every service — the Command API, Query API, Kurrent DB event store, and PostgreSQL projection store — with a single launch.
+  </Step>
+  <Step title="Obtain a JWT token">
+    Send a `POST` request to `/api/v2/auth/login` with your credentials. Copy the `accessToken` from the response and include it as a `Bearer` token in the `Authorization` header of every subsequent call.
+  </Step>
+  <Step title="Make your first reservation">
+    Call `POST /api/v2/showtimes/{showtimeId}/reservations` with the seat numbers you want. The API returns a reservation GUID, the confirmed seat numbers, auditorium details, and movie information. You have **one minute** to purchase the reservation before it expires.
+  </Step>
+</Steps>
