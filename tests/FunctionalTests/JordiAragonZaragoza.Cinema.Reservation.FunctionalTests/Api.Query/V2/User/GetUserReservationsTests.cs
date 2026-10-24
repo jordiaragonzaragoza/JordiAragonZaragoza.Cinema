@@ -33,7 +33,7 @@
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
-                (nameof(userId), userId.ToString()!));
+                (nameof(userId), userId.ToString()));
 
             // Act
             var response = await this.Fixture.HttpClient.GetAndDeserializeAsync<PaginatedCollectionResponse<ReservationResponse>>(uri.PathAndQuery, this.OutputHelper);

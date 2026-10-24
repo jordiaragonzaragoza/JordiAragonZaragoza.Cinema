@@ -9,9 +9,9 @@
         {
             ArgumentNullException.ThrowIfNull(result, nameof(result));
 
-            return result.FailingTypeNames != null ?
-                string.Join(", ", result.FailingTypeNames) :
-                string.Empty;
+            return result.FailingTypeNames != null
+                 ? string.Join(", ", result.FailingTypeNames)
+                 : string.Empty;
         }
     }
 }

@@ -30,14 +30,20 @@ namespace JordiAragonZaragoza.Cinema.SharedKernel
 
         public const string KurrentDbImage = "kurrentplatform/kurrentdb";
 
-        public const string KurrentDbArmImageTag = "26.0.0-experimental-arm64-10.0-noble";
+        public const string KurrentDbArmImageTag = "26.2.3-experimental-arm64-10.0-noble";
 
-        public const string KurrentDbImageTag = "26.0.0";
+        public const string KurrentDbImageTag = "26.2.3";
 
         public const string PostgresImage = "postgres";
 
-        public const string PostgresImageTag = "18.1-alpine";
+        public const string PostgresImageTag = "18.6-alpine";
 
-        public const string RedisImageTag = "8.6.2";
+        public const string PgAdminTag = "9.18.0";
+
+        public const string RedisImageTag = "8.10.2-alpine";
+
+        public const string RedisInsightImageTag = "3.4";
+
+        public const string KeycloakImageTag = "26.8";
     }
 }

@@ -10,9 +10,9 @@
     using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.Contracts;
-
     using Microsoft.Extensions.Logging;
     using Quartz;
+    using CancellationToken = System.Threading.CancellationToken;
 
     // TODO: Replace this batch job to a policy-saga with timeout message.
     // Problems: Polling, non-reactive, difficult to scale..
@@ -43,53 +43,41 @@
             this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
         }
 
-        public async Task Execute(IJobExecutionContext context)
+        public async ValueTask Execute(IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
-            try
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
+
+            var dateTimeUtcNow = this.dateTime.UtcNow;
+
+            var expiredReservations = await this.reservationReadModelRepository.ListAsync(new GetExpiredReservationsSpec(dateTimeUtcNow), cancellationToken);
+            foreach (var reservation in expiredReservations)
             {
-                ArgumentNullException.ThrowIfNull(context, nameof(context));
+                // TODO: Complete when using saga-policy.
+                // No need to set the execution context here, since the policy-saga will be infrastructure-based
+                // and will handle the execution context automatically.
+                var executionContext = new ExecutionContext(
+                    actorId: ExecutionContext.CreateJobActorId("expire-reserved-seats"),
+                    actorType: ActorType.System,
+                    executor: this.serviceIdentityProvider.GetName(),
+                    executorType: ExecutorType.Worker,
+                    correlationId: Guid.CreateVersion7(),
+                    causationId: null,
+                    scopeContext: new ScopeContext(SystemConstants.SystemTenantId, null, null));
 
-                var dateTimeUtcNow = this.dateTime.UtcNow;
+                this.executionContextService.SetExecutionContext(executionContext);
 
-                var expiredReservations = await this.reservationReadModelRepository.ListAsync(new GetExpiredReservationsSpec(dateTimeUtcNow), context.CancellationToken);
-                foreach (var reservation in expiredReservations)
+                var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), cancellationToken);
+                if (!result.IsSuccess)
                 {
-                    // TODO: Complete when using saga-policy.
-                    // No need to set the execution context here, since the policy-saga will be infrastructure-based
-                    // and will handle the execution context automatically.
-                    var executionContext = new ExecutionContext(
-                        actorId: ExecutionContext.CreateJobActorId("expire-reserved-seats"),
-                        actorType: ActorType.System,
-                        executor: this.serviceIdentityProvider.GetName(),
-                        executorType: ExecutorType.Worker,
-                        correlationId: Guid.CreateVersion7(),
-                        causationId: null,
-                        scopeContext: new ScopeContext(SystemConstants.SystemTenantId, null, null));
+                    var errorDetails = result.ResultDetails();
 
-                    this.executionContextService.SetExecutionContext(executionContext);
-
-                    var result = await this.commandBus.SendAsync(new ExpireReservedSeatsCommand(reservation.ShowtimeId, reservation.Id), context.CancellationToken);
-                    if (!result.IsSuccess)
-                    {
-                        var errorDetails = result.ResultDetails();
-
-                        this.logger.LogError(
-                            "Error expiring reservation {ReservationId} for showtime {ShowtimeId}. {@Details}",
-                            reservation.Id,
-                            reservation.ShowtimeId,
-                            errorDetails);
-                    }
+                    this.logger.LogError(
+                        "Error expiring reservation {ReservationId} for showtime {ShowtimeId}. {@Details}",
+                        reservation.Id,
+                        reservation.ShowtimeId,
+                        errorDetails);
                 }
             }
-            #pragma warning disable CA1031
-            catch (Exception exception)
-            {
-                this.logger.LogError(
-                   exception,
-                   "Error sending: {@Name} Job Command.",
-                   nameof(ExpireReservedSeatsCommand));
-            }
-            #pragma warning restore CA1031
         }
     }
 }

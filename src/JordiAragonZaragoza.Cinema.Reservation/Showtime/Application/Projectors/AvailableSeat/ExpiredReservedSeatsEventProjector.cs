@@ -49,7 +49,7 @@
             var existingAuditorium = await this.auditoriumReadRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
-                throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString()!);
+                throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString());
             }
 
             var seatIds = @event.SeatIds.ToHashSet();

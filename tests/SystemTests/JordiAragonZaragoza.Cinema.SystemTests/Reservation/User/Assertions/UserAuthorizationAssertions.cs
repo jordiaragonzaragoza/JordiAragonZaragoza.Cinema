@@ -22,7 +22,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.Assertions
             var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
 
             authorization.Should().NotBeNull();
-            authorization!.Roles.Should().Contain(expectedRoles);
+            authorization.Roles.Should().Contain(expectedRoles);
         }
 
         public static async Task ShouldNotContainRoleAsync(
@@ -37,7 +37,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.Assertions
             var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
 
             authorization.Should().NotBeNull();
-            authorization!.Roles.Should().NotContain(role);
+            authorization.Roles.Should().NotContain(role);
         }
 
         public static async Task ShouldNotExistAsync(
@@ -64,7 +64,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.Assertions
             var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
 
             authorization.Should().NotBeNull();
-            authorization!.Permissions.Should().Contain(expectedPermissions);
+            authorization.Permissions.Should().Contain(expectedPermissions);
         }
 
         public static async Task ShouldNotContainPermissionAsync(
@@ -79,7 +79,7 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.Assertions
             var authorization = await queryClient.GetUserAuthorizationAsync(request, output);
 
             authorization.Should().NotBeNull();
-            authorization!.Permissions.Should().NotContain(permission);
+            authorization.Permissions.Should().NotContain(permission);
         }
     }
 }

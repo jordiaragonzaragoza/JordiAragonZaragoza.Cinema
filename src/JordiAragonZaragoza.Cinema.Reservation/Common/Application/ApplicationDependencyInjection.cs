@@ -103,9 +103,9 @@
                     var expireReservedSeatsIntervalInSeconds = expireReservedSeatsJobOptions.ScheduleIntervalInSeconds;
 
                     configure
-                        .AddJob<ExpireReservedSeatsJob>(expireReservedSeatsJobKey, job => { })
+                        .AddJob<ExpireReservedSeatsJob>(job => job.WithIdentity(expireReservedSeatsJobKey))
                         .AddTrigger(trigger => trigger.ForJob(expireReservedSeatsJobKey)
-                                                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(expireReservedSeatsIntervalInSeconds)
+                                                    .WithSimpleSchedule(schedule => schedule.WithInterval(System.TimeSpan.FromSeconds(expireReservedSeatsIntervalInSeconds))
                                                                                             .RepeatForever()));
                 })
                 .AddQuartzHostedService(opt =>

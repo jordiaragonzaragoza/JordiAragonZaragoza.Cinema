@@ -49,13 +49,13 @@
             var existingMovie = await this.movieReadModelRepository.GetByIdAsync(new MovieId(existingShowtime.MovieId), cancellationToken);
             if (existingMovie is null)
             {
-                throw new NotFoundException(nameof(Movie), existingShowtime.MovieId.ToString()!);
+                throw new NotFoundException(nameof(Movie), existingShowtime.MovieId.ToString());
             }
 
             var existingAuditorium = await this.auditoriumReadModelRepository.GetByIdAsync(new AuditoriumId(existingShowtime.AuditoriumId), cancellationToken);
             if (existingAuditorium is null)
             {
-                throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString()!);
+                throw new NotFoundException(nameof(Auditorium), existingShowtime.AuditoriumId.ToString());
             }
 
             var seats = existingAuditorium.Seats.Where(seat => @event.SeatIds.Contains(seat.Id))

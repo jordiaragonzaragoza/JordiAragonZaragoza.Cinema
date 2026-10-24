@@ -34,7 +34,7 @@
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservation}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
                 route,
-                (nameof(userId), userId.ToString()!),
+                (nameof(userId), userId.ToString()),
                 (nameof(showtimeId), showtimeId.ToString()),
                 (nameof(reservationId), reservationId.ToString()));
 

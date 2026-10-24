@@ -27,8 +27,12 @@
                                 [
                                     "DcpPublisher:RandomizePorts=false",
                                     "--environment=Development",
-                                    "IsTesting=true"
-                                ]);
+                                    "IsTesting=true",
+                                ],
+                                configureBuilder: (appOptions, hostSettings) =>
+                                {
+                                    appOptions.DisableDashboard = true;
+                                });
 
             this.app = await appHost.BuildAsync();
             await this.app.StartAsync();

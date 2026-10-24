@@ -14,7 +14,7 @@ namespace JordiAragonZaragoza.Cinema
 
             var kurrentdb = builder.AddKurrentDB(Constants.ReservationBusinessModelStore)
                                    .WithImageRegistry("docker.io")
-                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbImageTag);
+                                   .WithImage(Constants.KurrentDbImage, Constants.KurrentDbArmImageTag);
 
             if (!IsSystemTesting(builder))
             {
@@ -33,7 +33,7 @@ namespace JordiAragonZaragoza.Cinema
 
             var postgresServer = builder.AddPostgres(Constants.PostgresServer)
                                         .WithImageTag(Constants.PostgresImageTag)
-                                        .WithPgAdmin();
+                                        .WithPgAdmin(pgAdmin => pgAdmin.WithImageTag(Constants.PgAdminTag));
 
             if (!IsSystemTesting(builder))
             {
@@ -42,12 +42,13 @@ namespace JordiAragonZaragoza.Cinema
             }
             else
             {
-                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql/data")
+                postgresServer.WithContainerRuntimeArgs("--tmpfs", "/var/lib/postgresql")
                               .WithLifetime(ContainerLifetime.Session);
             }
 
             var cache = builder.AddRedis(Constants.RedisCache)
-                               .WithImageTag(Constants.RedisImageTag);
+                               .WithImageTag(Constants.RedisImageTag)
+                               .WithRedisInsight(redisInsight => redisInsight.WithImageTag(Constants.RedisInsightImageTag));
 
             if (!IsSystemTesting(builder))
             {
@@ -66,7 +67,9 @@ namespace JordiAragonZaragoza.Cinema
                                                           .WithReference(reservationReadModelDb)
                                                           .WaitFor(postgresServer);
 
-            var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080);
+            var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080)
+                                  .WithOtlpExporter()
+                                  .WithImageTag(Constants.KeycloakImageTag);
 
             if (!IsSystemTesting(builder))
             {
