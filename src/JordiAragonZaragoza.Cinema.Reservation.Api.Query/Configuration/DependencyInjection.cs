@@ -14,10 +14,11 @@
             services.AddAuthentication()
                     .AddKeycloakJwtBearer(
                         serviceName: Constants.Keycloak,
-                        realm: "cinema",
+                        realm: Constants.KeycloakRealm,
                         options =>
                         {
-                            options.Audience = "cinema.api";
+                            options.Audience = Constants.KeycloakAudience;
+                            options.MapInboundClaims = false;
 
                             // For development only - disable HTTPS metadata validation
                             // In production, use explicit Authority configuration instead

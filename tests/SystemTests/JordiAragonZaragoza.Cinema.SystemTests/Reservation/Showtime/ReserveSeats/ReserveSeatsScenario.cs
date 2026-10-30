@@ -19,7 +19,7 @@
         public IEnumerable<SeatResponse> AvailableSeatsIds => this.availableSeatsIds.AsReadOnly();
 
         // TODO: Temporal. ExpectedUserId setted as constant till have authentication done.
-        public Guid ExpectedUserId { get; private set; } = new Guid("08ffddf5-3826-483f-a806-b3144477c7e8");
+        public Guid ExpectedUserId { get; private set; } = new Guid("737778f2-a3cd-4a2d-a784-cad6ffefa6ac");
 
         public DateTimeOffset SessionDate { get; private set; }
 

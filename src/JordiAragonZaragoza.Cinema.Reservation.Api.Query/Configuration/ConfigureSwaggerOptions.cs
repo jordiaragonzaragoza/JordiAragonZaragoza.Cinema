@@ -1,8 +1,10 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Asp.Versioning.ApiExplorer;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Microsoft.OpenApi;
@@ -10,46 +12,72 @@
 
     public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
     {
-        private const string SecuritySchemeName = "Bearer";
+        private const string BearerSchemeName = "Bearer";
+        private const string OAuth2SchemeName = "oauth2";
+
         private readonly IApiVersionDescriptionProvider provider;
+        private readonly IConfiguration configuration;
 
         public ConfigureSwaggerOptions(
-            IApiVersionDescriptionProvider provider)
+            IApiVersionDescriptionProvider provider,
+            IConfiguration configuration)
         {
             this.provider = provider;
+            this.configuration = configuration;
         }
 
-        /// <summary>
-        /// Configure each API discovered for Swagger Documentation.
-        /// </summary>
-        /// <param name="options">The options instance to configure.</param>
         public void Configure(SwaggerGenOptions options)
         {
-            // add swagger document for every API version discovered
             foreach (var description in this.provider.ApiVersionDescriptions.Reverse())
             {
-                options.SwaggerDoc(
-                    description.GroupName,
-                    CreateVersionInfo(description));
+                options.SwaggerDoc(description.GroupName, CreateVersionInfo(description));
             }
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            // Alternativa: pegar el token manualmente.
+            options.AddSecurityDefinition(BearerSchemeName, new OpenApiSecurityScheme()
             {
-                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
+                Description = "Pega aquí el JWT (sin el prefijo 'Bearer').",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
                 BearerFormat = "JWT",
             });
 
             options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement()
+            {
+                [new OpenApiSecuritySchemeReference(BearerSchemeName, doc)] = [],
+            });
+
+            // Login contra Keycloak (Authorization Code + PKCE).
+            var authority = this.configuration["Authentication:Schemes:Bearer:Authority"];
+            if (!string.IsNullOrWhiteSpace(authority))
+            {
+                var oidc = $"{authority.TrimEnd('/')}/protocol/openid-connect";
+
+                options.AddSecurityDefinition(OAuth2SchemeName, new OpenApiSecurityScheme()
                 {
-                    [new OpenApiSecuritySchemeReference(SecuritySchemeName, doc)] = [],
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri($"{oidc}/auth"),
+                            TokenUrl = new Uri($"{oidc}/token"),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                ["openid"] = "OpenID",
+                                ["profile"] = "Profile",
+                            },
+                        },
+                    },
                 });
 
-            options.OperationFilter<AddRequiredHeadersOperationFilter>();
+                options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement()
+                {
+                    [new OpenApiSecuritySchemeReference(OAuth2SchemeName, doc)] = ["openid"],
+                });
+            }
 
+            options.OperationFilter<AddRequiredHeadersOperationFilter>();
             options.CustomSchemaIds(type => type.FullName);
         }
 

@@ -48,7 +48,7 @@
                 .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureCommandBus()
-                .AddSharedKernelPresentationHttpRestfulApi();
+                .AddSharedKernelPresentationHttpRestfulApi(configuration);
 
             builder.Host.UseHostBuilderConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();

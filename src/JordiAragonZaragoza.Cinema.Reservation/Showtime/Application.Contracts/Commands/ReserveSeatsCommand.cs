@@ -7,6 +7,6 @@
 
     public sealed record class ReserveSeatsCommand(Guid ReservationId, Guid ShowtimeId, IEnumerable<Guid> SeatsIds) : ICommand<ReservationOutputDto>
     {
-        public Guid UserId { get; init; } = new Guid("08ffddf5-3826-483f-a806-b3144477c7e8"); // TODO: Temporal till have authentication done.
+        public Guid UserId { get; init; } = new Guid("737778f2-a3cd-4a2d-a784-cad6ffefa6ac"); // TODO: Temporal till have authentication done.
     }
 }

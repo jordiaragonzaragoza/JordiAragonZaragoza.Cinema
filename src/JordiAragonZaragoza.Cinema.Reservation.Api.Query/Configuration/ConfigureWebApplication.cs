@@ -48,6 +48,10 @@
                     {
                         options.SwaggerEndpoint($"/swagger/{version}/swagger.json", version.ToUpperInvariant());
                     }
+
+                    options.OAuthClientId("swagger-ui");
+                    options.OAuthUsePkce();
+                    options.OAuthScopes("openid", "profile");
                 });
             }
 

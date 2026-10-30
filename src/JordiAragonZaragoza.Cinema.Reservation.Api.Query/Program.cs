@@ -36,7 +36,7 @@
                 .AddSharedKernelApplicationQueryBus()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureQueryBus()
-                .AddSharedKernelPresentationHttpRestfulApi();
+                .AddSharedKernelPresentationHttpRestfulApi(configuration);
 
             builder.AddInfrastructureEntityFrameworkProjections();
 
