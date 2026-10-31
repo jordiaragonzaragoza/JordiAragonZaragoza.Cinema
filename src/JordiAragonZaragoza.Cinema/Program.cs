@@ -69,7 +69,8 @@ namespace JordiAragonZaragoza.Cinema
 
             var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080)
                                   .WithOtlpExporter()
-                                  .WithImageTag(Constants.KeycloakImageTag);
+                                  .WithImageTag(Constants.KeycloakImageTag)
+                                  .WithRealmImport("../../containers/keycloak");
 
             if (!IsSystemTesting(builder))
             {

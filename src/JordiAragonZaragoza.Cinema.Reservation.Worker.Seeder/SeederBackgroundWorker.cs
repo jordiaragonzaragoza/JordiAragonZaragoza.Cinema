@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
     using Microsoft.Extensions.DependencyInjection;
@@ -75,9 +74,9 @@
                 correlationId: Guid.CreateVersion7(),
                 causationId: null,
                 scopeContext: new ScopeContext(
-                    tenantId: SystemConstants.SystemTenantId,
-                    partitionId: null,
-                    domainId: null));
+                    tenantId: SeedData.ExampleTenant.Id,
+                    partitionId: SeedData.ExamplePartition.Id,
+                    domainId: SeedData.ExampleCinema.Id));
 
             return testContext;
         }

@@ -1,10 +1,10 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query
 {
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
+    using JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
@@ -29,7 +29,10 @@
                 .AddApplicationQueryHandlers()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
                 .AddInfrastructureProjectionsRepositories()
-                .AddPresentationHttpRestfulApi(configuration, builder.Environment.EnvironmentName == "Development");
+                .AddPresentationHttpRestfulApi(
+                    configuration,
+                    builder.Environment,
+                    new ApiOptions { Title = typeof(ApiQueryAssemblyReference).Namespace! });
 
             // Then configure SharedKernel Services (DI)
             builder.Services
@@ -48,8 +51,8 @@
             app.Logger.LogDebug("Reservation Api Query Host created...");
 
             // Configure Request Pipeline
-            ConfigureWebApplication.UseWebApplicationConfigurations(app)
-                                   .MapDefaultEndpoints();
+            app.UseWebApplicationConfigurations()
+               .MapDefaultEndpoints();
 
             app.Run();
         }

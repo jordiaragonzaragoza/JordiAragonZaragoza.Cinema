@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Api.Query.Configuration
+namespace JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi
 {
     using Microsoft.Extensions.Hosting;
     using Serilog;

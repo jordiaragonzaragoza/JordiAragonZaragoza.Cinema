@@ -76,7 +76,7 @@
 
         public static readonly User ExampleUser =
             User.Create(
-                id: new UserId(new Guid("737778f2-a3cd-4a2d-a784-cad6ffefa6ac")));
+                id: new UserId(new Guid("6bb46b99-e3d1-459b-9e1e-f8d8d7619864")));
 
         public static readonly UserReadModel ExampleUserReadModel =
             new(ExampleUser.Id);

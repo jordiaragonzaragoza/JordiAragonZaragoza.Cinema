@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi</name>
+    </assembly>
+    <members>
+        <member name="T:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.AddRequiredHeadersOperationFilter">
+            <summary>
+            Swagger operation filter to add required custom headers to all API operations.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.AddRequiredHeadersOperationFilter.Apply(Microsoft.OpenApi.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Apply the operation filter to add custom headers.
+            </summary>
+            <param name="operation">The operation to modify.</param>
+            <param name="context">The operation filter context.</param>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ApiOptions">
+            <summary>
+            Settings that vary from one API host to another. Everything else is shared.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ApiOptions.Title">
+            <summary>
+            Gets the title shown in the Swagger documents.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ApiOptions.SwaggerClientId">
+            <summary>
+            Gets the Keycloak client used by Swagger UI.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ApiOptions.SwaggerScopes">
+            <summary>
+            Gets the OAuth2 scopes requested by Swagger UI. Add the API specific
+            scope here (for example "reservation-api") when audiences are split.
+            </summary>
+        </member>
+        <member name="P:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ApiOptions.DefaultApiVersion">
+            <summary>
+            Gets the API version assumed when the request does not specify one.
+            </summary>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure each API discovered for Swagger Documentation.
+            </summary>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.Configure(System.String,Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <summary>
+            Configure Swagger Options. Inherited from the Interface.
+            </summary>
+            <param name="name">The name of the options instance being configured.</param>
+            <param name="options">The options instance to configure.</param>
+        </member>
+        <member name="M:JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.ConfigureSwaggerOptions.CreateVersionInfo(Asp.Versioning.ApiExplorer.ApiVersionDescription)">
+            <summary>
+            Create information about the version of the API.
+            </summary>
+            <param name="description">The description of the API version.</param>
+            <returns>Information about the API.</returns>
+        </member>
+    </members>
+</doc>

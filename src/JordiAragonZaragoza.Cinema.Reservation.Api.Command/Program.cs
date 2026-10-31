@@ -1,6 +1,5 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command
 {
-    using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
@@ -14,6 +13,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
+    using JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -39,7 +39,10 @@
                 .AddInfrastructureEventStoreRepositories()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
                 .AddInfrastructureProjectionsRepositories()
-                .AddPresentationHttpRestfulApi(configuration, builder.Environment.EnvironmentName == "Development");
+                .AddPresentationHttpRestfulApi(
+                    configuration,
+                    builder.Environment,
+                    new ApiOptions { Title = typeof(ApiCommandAssemblyReference).Namespace! });
 
             // Then configure SharedKernel Services (DI)
             builder.Services
@@ -58,8 +61,8 @@
             app.Logger.LogDebug("Reservation Api Command Host created...");
 
             // Configure Request Pipeline
-            ConfigureWebApplication.UseWebApplicationConfigurations(app)
-                                   .MapDefaultEndpoints();
+            app.UseWebApplicationConfigurations()
+               .MapDefaultEndpoints();
 
             app.Run();
         }

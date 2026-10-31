@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+   <ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi\JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.csproj" />
+  </ItemGroup>	
+  <ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+   <PackageReference Include="JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Keycloak.Authentication" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
+    <PackageReference Include="Serilog.Enrichers.Thread" />
+    <PackageReference Include="Serilog.Sinks.Async" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../JordiAragonZaragoza.Cinema.SharedKernel/JordiAragonZaragoza.Cinema.SharedKernel.csproj" />
+  </ItemGroup>
+</Project>

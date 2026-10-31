@@ -1,4 +1,4 @@
-namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Configuration
+namespace JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi
 {
     using System;
     using System.Collections.Generic;
