@@ -79,8 +79,7 @@ namespace JordiAragonZaragoza.Cinema
             }
             else
             {
-                keycloak.WithContainerRuntimeArgs("--tmpfs", "/opt/keycloak/data")
-                        .WithLifetime(ContainerLifetime.Session);
+                keycloak.WithLifetime(ContainerLifetime.Session);
             }
 
             var keycloakAuthority = ReferenceExpression.Create($"{keycloak.GetEndpoint("http").Property(EndpointProperty.Url)}/realms/{Constants.KeycloakRealm}");

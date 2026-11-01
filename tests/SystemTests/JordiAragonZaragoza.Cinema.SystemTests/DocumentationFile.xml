@@ -4,5 +4,18 @@
         <name>JordiAragonZaragoza.Cinema.SystemTests</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.SystemTests.Common.KeycloakTokenClient">
+            <summary>
+            Gets access tokens from the Keycloak container started by the AppHost.
+            Uses the password grant of a development-only client, which is the
+            non-interactive equivalent of a user logging in: the API validates a real JWT.
+            </summary>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.SystemTests.Common.SystemTestUser">
+            <summary>
+            Development user defined in the Keycloak realm import (users section).
+            Development-only credentials: never reuse real ones here.
+            </summary>
+        </member>
     </members>
 </doc>
