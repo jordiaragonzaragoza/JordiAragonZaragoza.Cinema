@@ -8,11 +8,9 @@
     using JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1.Auditorium.Responses;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
 
-    [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("1.0", Deprecated = false)]
     [Route("api/v{version:apiVersion}/")]
     public sealed class GetAvailableSeatsController : BaseApiQueryController

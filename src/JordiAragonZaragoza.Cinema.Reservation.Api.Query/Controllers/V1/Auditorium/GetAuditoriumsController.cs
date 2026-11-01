@@ -8,12 +8,10 @@
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Controllers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Helpers;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
 
     // TODO: Will be removed. It belongs to the cinema manager bounded context.
-    [AllowAnonymous] // TODO: Temporal. Remove when authentication is implemented.
     [Asp.Versioning.ApiVersion("1.0", Deprecated = false)]
     [Route("api/v{version:apiVersion}/")]
     public sealed class GetAuditoriumsController : BaseApiQueryController
