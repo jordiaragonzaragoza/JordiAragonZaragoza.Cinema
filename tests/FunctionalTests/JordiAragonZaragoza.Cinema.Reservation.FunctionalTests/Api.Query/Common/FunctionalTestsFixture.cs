@@ -2,12 +2,11 @@
 {
     using System;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using JordiAragonZaragoza.Cinema.SharedKernel;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -39,14 +38,7 @@
 
             this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.readModelStoreConnection);
 
-            this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false,
-            });
-
-            /*this.HttpClient.DefaultRequestHeaders.Add(
-                "x-tenant-id",
-                SystemConstants.SystemTenantId.ToString());*/
+            this.HttpClient = this.CreateClient(authenticated: true);
 
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
@@ -106,9 +98,7 @@
             {
                 await readContext.Database.MigrateAsync();
 
-                SeedData.PopulateReadModelTestData(
-                    readContext,
-                    new ScopeInfo(SystemConstants.SystemTenantId));
+                SeedData.PopulateReadModelTestData(readContext);
 
                 this.readModelStoreRespawner = await Respawner.CreateAsync(
                     this.readModelStoreConnection,
@@ -126,6 +116,26 @@
                     exception.Message);
                 throw;
             }
+        }
+
+        private HttpClient CreateClient(bool authenticated = true)
+        {
+            var client = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+            client.DefaultRequestHeaders.Add("x-tenant-id", SeedData.ExampleTenant.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-partition-id", SeedData.ExamplePartition.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-domain-id", SeedData.ExampleCinema.Id.ToString());
+
+            if (authenticated)
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue(AuthHandler.SchemeName, SeedData.ExampleUserWithAdminRole.Id.ToString());
+            }
+
+            return client;
         }
     }
 }

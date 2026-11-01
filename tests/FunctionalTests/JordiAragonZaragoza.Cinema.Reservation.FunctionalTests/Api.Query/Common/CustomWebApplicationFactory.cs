@@ -3,6 +3,7 @@
     using System;
     using System.Data.Common;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
@@ -43,6 +44,9 @@
                 {
                     options.UseNpgsql(this.readModelStoreConnection);
                 });
+
+                services.AddAuthentication(AuthHandler.SchemeName)
+                        .AddScheme<AuthenticationSchemeOptions, AuthHandler>(AuthHandler.SchemeName, _ => { });
             });
         }
     }

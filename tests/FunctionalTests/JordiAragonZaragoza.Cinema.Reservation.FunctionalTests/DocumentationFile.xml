@@ -4,5 +4,11 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.FunctionalTests</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.AuthHandler">
+            <summary>
+            Replaces JWT validation in functional tests. Authenticates only requests that carry
+            "Authorization: Test {userId}"; any other request is left unauthenticated (so 401 can be tested).
+            </summary>
+        </member>
     </members>
 </doc>

@@ -223,13 +223,13 @@
             return userAuthorization;
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context, ScopeInfo? scopeInfo = null)
+        public static void PopulateReadModelTestData(ReservationReadModelContext context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
-            var tenantId = scopeInfo?.TenantId ?? SystemConstants.SystemTenantId;
-            var partitionId = scopeInfo?.PartitionId;
-            var domainId = scopeInfo?.DomainId;
+            var tenantId = ExampleTenant.Id;
+            var partitionId = ExamplePartition.Id;
+            var domainId = ExampleCinema.Id;
 
             // Local factory: each entity needs its own instance of ScopeInfo.
             // EF Core cannot resolve the same owned type reference

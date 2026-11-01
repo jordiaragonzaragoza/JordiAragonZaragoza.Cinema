@@ -2,18 +2,26 @@
 {
     using System;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
-    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
     using JordiAragonZaragoza.Cinema.SharedKernel;
+    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
+    using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.EntityFrameworkCore;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Npgsql;
+    using Respawn;
+
     using Testcontainers.KurrentDb;
+    using Testcontainers.PostgreSql;
     using Xunit;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
-    using JordiAragonZaragoza.SharedKernel.Application.Contracts;
 
     using ExecutionContext = JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ExecutionContext;
 
@@ -25,9 +33,16 @@
             .WithName($"kurrentdb.cinema.reservation.eventstore.functionaltests.api.command-{Guid.CreateVersion7():N}")
             .WithAutoRemove(true).Build();
 
+        private readonly PostgreSqlContainer readModelStoreContainer =
+            new PostgreSqlBuilder($"{Constants.PostgresImage}:{Constants.PostgresImageTag}")
+            .WithName($"postgres.cinema.reservation.readmodelstore.functionaltests.api.command-{Guid.CreateVersion7():N}")
+            .WithAutoRemove(true).Build();
+
         private string eventStoreConnection = default!;
+        private NpgsqlConnection readModelStoreConnection = default!;
         private CustomWebApplicationFactory<TProgram> customApplicationFactory = default!;
         private IServiceScopeFactory scopeFactory = default!;
+        private Respawner readModelStoreRespawner = default!;
         private bool disposedValue;
 
         public HttpClient HttpClient { get; private set; } = default!;
@@ -36,32 +51,31 @@
         {
             await this.StartDbsConnectionAsync();
 
-            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(this.eventStoreConnection);
+            this.customApplicationFactory = new CustomWebApplicationFactory<TProgram>(
+                this.eventStoreConnection,
+                this.readModelStoreConnection);
 
-            this.HttpClient = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false,
-            });
+            this.HttpClient = this.CreateClient(authenticated: true);
 
             this.scopeFactory = this.customApplicationFactory.Services.GetRequiredService<IServiceScopeFactory>();
         }
 
         public async Task InitDatabaseAsync(CancellationToken cancellationToken = default)
         {
+            await this.InitReadModelStoreDatabaseAsync();
             await this.InitEventStoreDatabaseAsync(cancellationToken);
         }
 
         public async Task ResetDatabaseAsync()
         {
-            // TODO: Implement reset logic
-            ////await this.readModelStoreRespawner.ResetAsync(this.eventStoreConnection);
-
-            await Task.CompletedTask;
+            // TODO: Implement reset logic for event store if needed. Currently, only the read model store is reset.
+            await this.readModelStoreRespawner.ResetAsync(this.readModelStoreConnection);
         }
 
         public async Task DisposeAsync()
         {
-            ////await this.eventStoreConnection.DisposeAsync();
+            await this.readModelStoreConnection.DisposeAsync();
+            await this.readModelStoreContainer.DisposeAsync();
             await this.eventStoreContainer.DisposeAsync();
         }
 
@@ -96,19 +110,23 @@
                 correlationId: Guid.CreateVersion7(),
                 causationId: null,
                 scopeContext: new ScopeContext(
-                    tenantId: SystemConstants.SystemTenantId,
-                    partitionId: null,
-                    domainId: null));
+                    tenantId: SeedData.ExampleTenant.Id,
+                    partitionId: SeedData.ExamplePartition.Id,
+                    domainId: SeedData.ExampleCinema.Id));
 
             return testContext;
         }
 
         private async Task StartDbsConnectionAsync()
         {
-            await this.eventStoreContainer.StartAsync();
+            await Task.WhenAll(
+                this.eventStoreContainer.StartAsync(),
+                this.readModelStoreContainer.StartAsync());
+
             this.eventStoreConnection = this.eventStoreContainer.GetConnectionString();
-            ////this.eventStoreConnection = new NpgsqlConnection(this.eventStoreContainer.GetConnectionString());
-            ////await this.eventStoreConnection.OpenAsync();
+
+            this.readModelStoreConnection = new NpgsqlConnection(this.readModelStoreContainer.GetConnectionString());
+            await this.readModelStoreConnection.OpenAsync();
         }
 
         private async Task InitEventStoreDatabaseAsync(CancellationToken stoppingToken = default)
@@ -136,6 +154,56 @@
             {
                 executionContextService.ClearExecutionContext();
             }
+        }
+
+        private async Task InitReadModelStoreDatabaseAsync()
+        {
+            using var readModelScope = this.scopeFactory.CreateScope();
+            var readContext = readModelScope.ServiceProvider.GetRequiredService<ReservationReadModelContext>();
+            var logger = readModelScope.ServiceProvider.GetRequiredService<ILogger<CustomWebApplicationFactory<TProgram>>>();
+
+            try
+            {
+                await readContext.Database.MigrateAsync();
+
+                SeedData.PopulateReadModelTestData(readContext);
+
+                this.readModelStoreRespawner = await Respawner.CreateAsync(
+                    this.readModelStoreConnection,
+                    new RespawnerOptions
+                    {
+                        DbAdapter = DbAdapter.Postgres,
+                        TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+                    });
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(
+                    exception,
+                    "An error occurred seeding the read model database with test data. Error: {ExceptionMessage}",
+                    exception.Message);
+                throw;
+            }
+        }
+
+        private HttpClient CreateClient(bool authenticated = true)
+        {
+            var client = this.customApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+            client.DefaultRequestHeaders.Add("x-tenant-id", SeedData.ExampleTenant.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-partition-id", SeedData.ExamplePartition.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-domain-id", SeedData.ExampleCinema.Id.ToString());
+
+            if (authenticated)
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue(AuthHandler.SchemeName, SeedData.ExampleUserWithAdminRole.Id.ToString());
+            }
+
+            return client;
         }
     }
 }
