@@ -13,7 +13,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
-    using JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -38,11 +38,7 @@
                 .AddApplicationCommandHandlers()
                 .AddInfrastructureEventStoreRepositories()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
-                .AddInfrastructureProjectionsRepositories()
-                .AddPresentationHttpRestfulApi(
-                    configuration,
-                    builder.Environment,
-                    new ApiOptions { Title = typeof(ApiCommandAssemblyReference).Namespace! });
+                .AddInfrastructureProjectionsRepositories();
 
             // Then configure SharedKernel Services (DI)
             builder.Services
@@ -51,7 +47,10 @@
                 .AddSharedKernelInfrastructureKurrentDbBusiness()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureCommandBus()
-                .AddSharedKernelPresentationHttpRestfulApi(configuration);
+                .AddSharedKernelPresentationHttpRestfulApi(
+                    configuration,
+                    builder.Environment,
+                    new ApiOptions { Title = typeof(ApiCommandAssemblyReference).Namespace! });
 
             builder.Host.UseHostBuilderConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();

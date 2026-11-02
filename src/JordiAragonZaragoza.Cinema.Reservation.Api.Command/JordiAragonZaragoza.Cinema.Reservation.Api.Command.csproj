@@ -5,7 +5,6 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi\JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V2.csproj" />

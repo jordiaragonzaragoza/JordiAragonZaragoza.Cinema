@@ -82,27 +82,19 @@ namespace JordiAragonZaragoza.Cinema
                 keycloak.WithLifetime(ContainerLifetime.Session);
             }
 
-            var keycloakAuthority = ReferenceExpression.Create($"{keycloak.GetEndpoint("http").Property(EndpointProperty.Url)}/realms/{Constants.KeycloakRealm}");
-
             var reservationApiCommand = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command>(Constants.ReservationApiCommand)
                      .WithReference(kurrentdb)
                      .WaitForCompletion(kurrentdbSeeder)
                      .WithReference(reservationReadModelDb)
                      .WaitForCompletion(reservationWorkerReadModelMigrator)
                      .WithReference(cache)
-                     .WithReference(keycloak)
-                     .WaitFor(keycloak)
-                     .WithEnvironment("Authentication__Schemes__Bearer__Authority", keycloakAuthority)
-                     .WithEnvironment("Authentication__Claims__UserIdClaimType", "sub");
+                     .WithKeycloakAuthentication(keycloak);
 
             var reservationApiQuery = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Query>(Constants.ReservationApiQuery)
                      .WithReference(reservationReadModelDb)
                      .WaitForCompletion(reservationWorkerReadModelMigrator)
                      .WithReference(cache)
-                     .WithReference(keycloak)
-                     .WaitFor(keycloak)
-                     .WithEnvironment("Authentication__Schemes__Bearer__Authority", keycloakAuthority)
-                     .WithEnvironment("Authentication__Claims__UserIdClaimType", "sub");
+                     .WithKeycloakAuthentication(keycloak);
 
             builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_Projector>(Constants.ReservationWorkerProjector)
                                           .WithReference(kurrentdb)

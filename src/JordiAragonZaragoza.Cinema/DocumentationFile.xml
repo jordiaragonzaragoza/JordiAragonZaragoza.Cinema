@@ -4,6 +4,12 @@
         <name>JordiAragonZaragoza.Cinema</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.KeycloakAuthenticationExtensions">
+            <summary>
+            Describes the local Keycloak to the APIs. In cloud environments the same keys come from
+            appsettings / environment variables pointing to Entra ID; the API code does not change.
+            </summary>
+        </member>
         <member name="T:Projects.JordiAragonZaragoza_Cinema_Reservation_Api_Command">
             <summary>
             Metadata for the JordiAragonZaragoza_Cinema_Reservation_Api_Command project.

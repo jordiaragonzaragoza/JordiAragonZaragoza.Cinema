@@ -4,10 +4,10 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
-    using JordiAragonZaragoza.Cinema.SharedKernel.Presentation.HttpRestfulApi;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
 
@@ -28,18 +28,17 @@
                 .AddApplicationValidators()
                 .AddApplicationQueryHandlers()
                 .AddInfrastructureEntityFrameworkProjections(configuration, builder.Environment.EnvironmentName == "Development")
-                .AddInfrastructureProjectionsRepositories()
-                .AddPresentationHttpRestfulApi(
-                    configuration,
-                    builder.Environment,
-                    new ApiOptions { Title = typeof(ApiQueryAssemblyReference).Namespace! });
+                .AddInfrastructureProjectionsRepositories();
 
             // Then configure SharedKernel Services (DI)
             builder.Services
                 .AddSharedKernelApplicationQueryBus()
                 .AddSharedKernelInfrastructure()
                 .AddSharedKernelInfrastructureQueryBus()
-                .AddSharedKernelPresentationHttpRestfulApi(configuration);
+                .AddSharedKernelPresentationHttpRestfulApi(
+                    configuration,
+                    builder.Environment,
+                    new ApiOptions { Title = typeof(ApiQueryAssemblyReference).Namespace! });
 
             builder.AddInfrastructureEntityFrameworkProjections();
 
