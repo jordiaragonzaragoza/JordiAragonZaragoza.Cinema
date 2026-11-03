@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
@@ -17,13 +17,20 @@
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            ////var configuration = builder.Configuration;
+            var configuration = builder.Configuration;
 
             builder.AddServiceDefaults();
 
+            // Authentication: validates the user's JWT and publishes the protected resource metadata
+            // (RFC 9728) so MCP clients can discover the authorization server.
+            builder.Services.AddMcpGatewayAuthentication(configuration, builder.Environment);
+
             // Configure specific Host Services (DI)
             builder.Services.AddMcpServer()
-                    .WithHttpTransport()
+
+                    // Stateless: every request carries its own bearer token and no in-memory session is kept,
+                    // so the gateway can run with several replicas without session affinity.
+                    .WithHttpTransport(options => options.Stateless = true)
                     .WithToolsFromAssembly(McpGatewayAssemblyReference.Assembly)
                     .WithResourcesFromAssembly(McpGatewayAssemblyReference.Assembly)
                     .WithPromptsFromAssembly(McpGatewayAssemblyReference.Assembly)

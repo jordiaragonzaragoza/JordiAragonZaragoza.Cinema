@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration
+namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration
 {
     using System;
     using Microsoft.AspNetCore.Builder;
@@ -29,11 +29,14 @@
 
             ////app.UseCors(ConfigureCors.CorsPolicy);
 
-            ////app.UseAuthentication();
+            // Must run before MapMcp: besides validating tokens, the MCP scheme answers
+            // /.well-known/oauth-protected-resource and adds resource_metadata to the 401 challenge.
+            app.UseAuthentication();
 
-            ////app.UseAuthorization();
+            app.UseAuthorization();
 
-            app.MapMcp();
+            app.MapMcp()
+               .RequireAuthorization();
 
             return app;
         }

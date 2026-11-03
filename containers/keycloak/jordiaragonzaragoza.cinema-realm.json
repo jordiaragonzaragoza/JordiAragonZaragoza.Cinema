@@ -1303,6 +1303,23 @@
           }
         }
       ]
+    },
+    {
+      "name": "cinema-api-audience",
+      "protocol": "openid-connect",
+      "attributes": { "include.in.token.scope": "false", "display.on.consent.screen": "false" },
+      "protocolMappers": [
+        {
+          "name": "cinema-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "jordiaragonzaragoza.cinema.api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
     }
   ],
   "defaultDefaultClientScopes": [
@@ -1314,7 +1331,8 @@
     "roles",
     "web-origins",
     "acr",
-    "basic"
+    "basic",
+    "cinema-api-audience"
   ],
   "defaultOptionalClientScopes": [
     "offline_access",

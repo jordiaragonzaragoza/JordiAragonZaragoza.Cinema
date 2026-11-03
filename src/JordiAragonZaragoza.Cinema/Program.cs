@@ -116,7 +116,8 @@ namespace JordiAragonZaragoza.Cinema
                      .WithReference(reservationApiQuery)
                      .WaitFor(reservationApiQuery)
                      .WithReference(reservationApiCommand)
-                     .WaitFor(reservationApiCommand);
+                     .WaitFor(reservationApiCommand)
+                     .WithKeycloakAuthentication(keycloak);
 
             /*var seq = builder.AddSeq(Constants.SeqServer, port: 5341)
                         .WithDataBindMount("../../containers/seq/data")

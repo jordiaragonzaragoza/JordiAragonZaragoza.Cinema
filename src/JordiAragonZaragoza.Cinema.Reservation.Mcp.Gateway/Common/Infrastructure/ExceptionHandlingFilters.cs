@@ -1,6 +1,7 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructure
 {
     using System;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using ModelContextProtocol;
@@ -16,6 +17,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructu
                 try
                 {
                     return await next(request, cancellationToken);
+                }
+                catch (HttpRequestException exception)
+                    when (exception.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+                {
+                    throw new McpException(
+                        $"The Reservation API denied the request ({(int)exception.StatusCode}). " +
+                        "The user may lack permissions for the tenant, partition or domain sent in the headers.",
+                        exception);
                 }
                 catch (HttpRequestException exception)
                 {

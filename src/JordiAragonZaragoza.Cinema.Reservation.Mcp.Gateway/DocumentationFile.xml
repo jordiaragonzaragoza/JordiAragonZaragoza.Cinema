@@ -4,5 +4,12 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructure.AuthorizationDelegatingHandler">
+            <summary>
+            Forwards the caller's identity and execution context to the Reservation APIs.
+            Single place to replace the token pass-through by a token exchange (Keycloak token exchange,
+            Entra On-Behalf-Of) if the MCP gateway ever needs its own audience.
+            </summary>
+        </member>
     </members>
 </doc>
