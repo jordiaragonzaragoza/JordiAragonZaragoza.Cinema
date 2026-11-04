@@ -1,6 +1,7 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration
 {
     using System;
+    using JordiAragonZaragoza.SharedKernel.Helpers;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.Extensions.Configuration;
@@ -26,7 +27,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuratio
             var authority = configuration[AuthorityKey];
             var resourceUrl = configuration[ResourceUrlKey];
 
-            if (string.IsNullOrWhiteSpace(authority) || string.IsNullOrWhiteSpace(resourceUrl))
+            if (!OptionsHelper.IsConfigured(authority) || !OptionsHelper.IsConfigured(resourceUrl))
             {
                 throw new InvalidOperationException(
                     $"'{AuthorityKey}' and '{ResourceUrlKey}' must be configured for the MCP gateway.");
