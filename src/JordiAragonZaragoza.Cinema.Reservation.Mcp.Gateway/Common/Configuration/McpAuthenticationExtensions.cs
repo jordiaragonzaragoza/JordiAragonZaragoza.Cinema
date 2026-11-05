@@ -2,7 +2,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuratio
 {
     using System;
     using JordiAragonZaragoza.SharedKernel.Helpers;
-    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Identity;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
