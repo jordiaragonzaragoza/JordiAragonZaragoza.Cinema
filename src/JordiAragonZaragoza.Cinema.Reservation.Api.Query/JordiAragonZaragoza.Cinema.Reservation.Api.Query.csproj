@@ -10,6 +10,9 @@
 		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Hosting" />
 	</ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V2.csproj" />

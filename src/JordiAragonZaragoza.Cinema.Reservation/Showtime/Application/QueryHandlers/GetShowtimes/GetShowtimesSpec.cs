@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimes
 {
-    using Ardalis.GuardClauses;
+    using System;
     using Ardalis.Specification;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -13,7 +13,7 @@
 
         public GetShowtimesSpec(GetShowtimesQuery request)
         {
-            this.request = Guard.Against.Null(request);
+            this.request = request ?? throw new ArgumentNullException(nameof(request));
 
             this.Query
                 .Where(s => s.AuditoriumId == request.AuditoriumId, request.AuditoriumId is not null)

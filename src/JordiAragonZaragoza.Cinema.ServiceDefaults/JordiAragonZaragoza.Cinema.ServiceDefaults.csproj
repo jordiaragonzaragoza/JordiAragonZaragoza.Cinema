@@ -15,8 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    
-    <PackageReference Include="Ardalis.GuardClauses" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />

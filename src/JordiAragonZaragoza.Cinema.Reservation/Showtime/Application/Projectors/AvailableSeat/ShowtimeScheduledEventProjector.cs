@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -27,9 +26,9 @@
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository,
             IIdGenerator guidGenerator)
         {
-            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
-            this.availableReadModelRepository = Guard.Against.Null(availableReadModelRepository, nameof(availableReadModelRepository));
-            this.guidGenerator = Guard.Against.Null(guidGenerator, nameof(guidGenerator));
+            this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));
+            this.availableReadModelRepository = availableReadModelRepository ?? throw new ArgumentNullException(nameof(availableReadModelRepository));
+            this.guidGenerator = guidGenerator ?? throw new ArgumentNullException(nameof(guidGenerator));
         }
 
         public override async Task HandleAsync(ShowtimeScheduledEvent @event, CancellationToken cancellationToken)

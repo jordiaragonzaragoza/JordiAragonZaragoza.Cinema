@@ -12,7 +12,6 @@
     using JordiAragonZaragoza.Cinema.Reservation.User.Domain;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
     using JordiAragonZaragoza.SharedKernel.Domain.Services;
-
     using NotFoundException = JordiAragonZaragoza.SharedKernel.Domain.Exceptions.NotFoundException;
 
     public sealed class ReservationManager : BaseDomainService, IReservationManager
@@ -26,8 +25,8 @@
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
+            this.auditoriumRepository = auditoriumRepository ?? throw new ArgumentNullException(nameof(auditoriumRepository));
         }
 
         public static IEnumerable<Seat> AvailableSeats(Auditorium auditorium, Showtime showtime)

@@ -1,9 +1,9 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.QueryHandlers.GetShowtimes
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -16,7 +16,7 @@
 
         public GetShowtimesQueryHandler(IPaginatedSpecificationReadRepository<ShowtimeReadModel> showtimeReadModelRepository)
         {
-            this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
+            this.showtimeReadModelRepository = showtimeReadModelRepository ?? throw new ArgumentNullException(nameof(showtimeReadModelRepository));
         }
 
         public async Task<Result<PaginatedCollectionOutputDto<ShowtimeReadModel>>> Handle(GetShowtimesQuery request, CancellationToken cancellationToken)

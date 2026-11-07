@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Domain;
@@ -23,9 +22,9 @@
             IReadRepository<Movie, MovieId> movieRepository,
             IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.auditoriumRepository = auditoriumRepository ?? throw new ArgumentNullException(nameof(auditoriumRepository));
+            this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
+            this.showtimeRepository = showtimeRepository ?? throw new ArgumentNullException(nameof(showtimeRepository));
         }
 
         public async Task<Result> Handle(ScheduleShowtimeCommand request, CancellationToken cancellationToken)

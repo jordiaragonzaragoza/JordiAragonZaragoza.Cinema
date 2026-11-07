@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain;
@@ -17,7 +16,7 @@
         public EndShowtimeCommandHandler(
             IRepository<Showtime, ShowtimeId> showtimeRepository)
         {
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
+            this.showtimeRepository = showtimeRepository ?? throw new ArgumentNullException(nameof(showtimeRepository));
         }
 
         public async Task<Result> Handle(EndShowtimeCommand request, CancellationToken cancellationToken)

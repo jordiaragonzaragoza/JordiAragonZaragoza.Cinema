@@ -27,8 +27,8 @@
 		<InternalsVisibleTo Include="JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Ardalis.GuardClauses" />
 		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-		<PackageReference Include="Aspire.Seq" />
 		<PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" />
     	<PackageReference Include="CommunityToolkit.Aspire.KurrentDB" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" />

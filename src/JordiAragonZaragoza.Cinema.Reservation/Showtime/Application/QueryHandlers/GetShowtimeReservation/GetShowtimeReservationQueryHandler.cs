@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
@@ -16,7 +15,7 @@
 
         public GetShowtimeReservationQueryHandler(IReadRepository<ReservationReadModel, Guid> repository)
         {
-            this.repository = Guard.Against.Null(repository, nameof(repository));
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public async Task<Result<ReservationReadModel>> Handle(GetShowtimeReservationQuery request, CancellationToken cancellationToken)

@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Api.Command.Controllers.V1.Auditorium
 {
     using System;
-
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Api.Command.Contracts.V1.Auditorium;

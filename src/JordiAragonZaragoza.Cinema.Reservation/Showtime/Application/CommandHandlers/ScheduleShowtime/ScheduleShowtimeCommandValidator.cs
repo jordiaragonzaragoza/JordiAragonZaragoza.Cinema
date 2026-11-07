@@ -1,7 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.CommandHandlers.ScheduleShowtime
 {
     using System;
-    using Ardalis.GuardClauses;
     using FluentValidation;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.Commands;
     using JordiAragonZaragoza.SharedKernel.Contracts;
@@ -12,7 +11,7 @@
 
         public ScheduleShowtimeCommandValidator(IDateTime dateTime)
         {
-            this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
+            this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
 
             this.RuleFor(x => x.ShowtimeId)
               .NotEmpty().WithMessage("ShowtimeId is required.");

@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
@@ -18,7 +17,7 @@
         public ReservationCanceledEventProjector(
             IRepository<ReservationReadModel, Guid> reservationReadModelRepository)
         {
-            this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
+            this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
         }
 
         public override async Task HandleAsync(ReservationCanceledEvent @event, CancellationToken cancellationToken)

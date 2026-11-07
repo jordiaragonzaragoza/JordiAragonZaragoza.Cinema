@@ -1,7 +1,6 @@
 namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 {
     using System;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
     public sealed class MinimumRuntimeRule : IBusinessRule

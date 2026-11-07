@@ -55,9 +55,9 @@ Loving it? Please show your support by giving this project a star!
 - Ardalis.GuardClauses
 - FluentValidator
 - Serilog
-- Seq
 - Quartz
 - Swagger UI with JWT support
+- Keycloak / Entra ID AuthN
 - StyleCop & SonarAnalyzer
 - xUnit & NetArchTest & Testcontainers & Ardalis.HttpClientTestExtensions
 

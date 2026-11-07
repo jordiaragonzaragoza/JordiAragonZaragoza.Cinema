@@ -1,6 +1,6 @@
 ﻿namespace JordiAragonZaragoza.Cinema.Reservation.Movie.Domain.Rules
 {
-    using Ardalis.GuardClauses;
+    using System;
     using JordiAragonZaragoza.SharedKernel.Domain.Contracts.Interfaces;
 
     public sealed class ExhibitionPeriodMustExceedOrEqualRuntimeRule : IBusinessRule
@@ -11,9 +11,9 @@
 
         public ExhibitionPeriodMustExceedOrEqualRuntimeRule(StartingPeriod startingPeriod, EndOfPeriod endOfPeriod, Runtime runtime)
         {
-            this.startingPeriod = Guard.Against.Null(startingPeriod, nameof(startingPeriod));
-            this.endOfPeriod = Guard.Against.Null(endOfPeriod, nameof(endOfPeriod));
-            this.runtime = Guard.Against.Null(runtime, nameof(runtime));
+            this.startingPeriod = startingPeriod ?? throw new ArgumentNullException(nameof(startingPeriod));
+            this.endOfPeriod = endOfPeriod ?? throw new ArgumentNullException(nameof(endOfPeriod));
+            this.runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         }
 
         public string Message => "The exhibition period must exceed or equal the runtime to be valid.";

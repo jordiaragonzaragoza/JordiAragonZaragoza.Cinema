@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Domain.Events;
     using JordiAragonZaragoza.SharedKernel.Application.Handlers;
@@ -18,8 +17,8 @@
             ISpecificationReadRepository<AvailableSeatReadModel, Guid> availableReadModelSpecificationRepository,
             IRangeableRepository<AvailableSeatReadModel, Guid> availableReadModelRepository)
         {
-            this.availableReadModelRepository = Guard.Against.Null(availableReadModelRepository, nameof(availableReadModelRepository));
-            this.availableReadModelSpecificationRepository = Guard.Against.Null(availableReadModelSpecificationRepository, nameof(availableReadModelSpecificationRepository));
+            this.availableReadModelRepository = availableReadModelRepository ?? throw new ArgumentNullException(nameof(availableReadModelRepository));
+            this.availableReadModelSpecificationRepository = availableReadModelSpecificationRepository ?? throw new ArgumentNullException(nameof(availableReadModelSpecificationRepository));
         }
 
         public override async Task HandleAsync(ReservedSeatsEvent @event, CancellationToken cancellationToken)

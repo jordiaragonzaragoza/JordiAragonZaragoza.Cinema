@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using Ardalis.Result;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.Queries;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
@@ -17,6 +16,7 @@
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using JordiAragonZaragoza.SharedKernel.Domain.Exceptions;
 
     public sealed class ReserveSeatsCommandHandler : ICommandHandler<ReserveSeatsCommand, ReservationOutputDto>
     {
@@ -35,12 +35,12 @@
             IReadRepository<Movie, MovieId> movieRepository,
             IReadRepository<Auditorium, AuditoriumId> auditoriumRepository)
         {
-            this.showtimeRepository = Guard.Against.Null(showtimeRepository, nameof(showtimeRepository));
-            this.userRepository = Guard.Against.Null(userRepository, nameof(userRepository));
-            this.showtimeManager = Guard.Against.Null(showtimeManager, nameof(showtimeManager));
-            this.dateTime = Guard.Against.Null(dateTime, nameof(dateTime));
-            this.movieRepository = Guard.Against.Null(movieRepository, nameof(movieRepository));
-            this.auditoriumRepository = Guard.Against.Null(auditoriumRepository, nameof(auditoriumRepository));
+            this.showtimeRepository = showtimeRepository ?? throw new ArgumentNullException(nameof(showtimeRepository));
+            this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            this.showtimeManager = showtimeManager ?? throw new ArgumentNullException(nameof(showtimeManager));
+            this.dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
+            this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
+            this.auditoriumRepository = auditoriumRepository ?? throw new ArgumentNullException(nameof(auditoriumRepository));
         }
 
         public async Task<Result<ReservationOutputDto>> Handle(ReserveSeatsCommand request, CancellationToken cancellationToken)

@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Ardalis.GuardClauses;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.Cinema.Reservation.Auditorium.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Movie.Application.Contracts.ReadModels;
@@ -30,10 +29,10 @@
             IReadRepository<MovieReadModel, Guid> movieReadModelRepository,
             IRepository<ReservationReadModel, Guid> reservationReadModelRepository)
         {
-            this.showtimeReadModelRepository = Guard.Against.Null(showtimeReadModelRepository, nameof(showtimeReadModelRepository));
-            this.auditoriumReadModelRepository = Guard.Against.Null(auditoriumReadModelRepository, nameof(auditoriumReadModelRepository));
-            this.movieReadModelRepository = Guard.Against.Null(movieReadModelRepository, nameof(movieReadModelRepository));
-            this.reservationReadModelRepository = Guard.Against.Null(reservationReadModelRepository, nameof(reservationReadModelRepository));
+            this.showtimeReadModelRepository = showtimeReadModelRepository ?? throw new ArgumentNullException(nameof(showtimeReadModelRepository));
+            this.auditoriumReadModelRepository = auditoriumReadModelRepository ?? throw new ArgumentNullException(nameof(auditoriumReadModelRepository));
+            this.movieReadModelRepository = movieReadModelRepository ?? throw new ArgumentNullException(nameof(movieReadModelRepository));
+            this.reservationReadModelRepository = reservationReadModelRepository ?? throw new ArgumentNullException(nameof(reservationReadModelRepository));
         }
 
         public override async Task HandleAsync(ReservedSeatsEvent @event, CancellationToken cancellationToken)

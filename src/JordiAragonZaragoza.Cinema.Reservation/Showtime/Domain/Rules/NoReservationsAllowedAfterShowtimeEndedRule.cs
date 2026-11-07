@@ -17,8 +17,8 @@
             Movie movie,
             DateTimeOffset currentDateTimeOnUtc)
         {
-            this.showtime = Guard.Against.Null(showtime, nameof(showtime));
-            this.movie = Guard.Against.Null(movie, nameof(movie));
+            this.showtime = showtime ?? throw new ArgumentNullException(nameof(showtime));
+            this.movie = movie ?? throw new ArgumentNullException(nameof(movie));
             this.currentDateTimeOnUtc = Guard.Against.Default(currentDateTimeOnUtc, nameof(currentDateTimeOnUtc));
         }
 
