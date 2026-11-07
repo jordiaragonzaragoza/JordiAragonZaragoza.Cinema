@@ -3,6 +3,12 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
+  <ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Hosting\JordiAragonZaragoza.SharedKernel.Hosting.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Hosting" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Api.Query.Contracts.V1.csproj" />

@@ -9,8 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 		GlobalSuppressions.cs = GlobalSuppressions.cs
 		README.md = README.md
-		.vscode\mcp.json = mcp.json
-		containers\keycloak\jordiaragonzaragoza.cinema-realm.json = jordiaragonzaragoza.cinema-realm.json
+		.mcp.json = .mcp.json
+		containers\keycloak\jordiaragonzaragoza.cinema-realm.json = containers\keycloak\jordiaragonzaragoza.cinema-realm.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CD4071-F9FA-4575-A746-BC5F572AA12F}"
@@ -127,6 +127,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Sdk", "src\JordiAragonZaragoza.Cinema.Reservation.Sdk\JordiAragonZaragoza.Cinema.Reservation.Sdk.csproj", "{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1", "src\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1\JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Contracts.V1.csproj", "{154CF749-BC58-4FCF-A27D-DE5146C54689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordiAragonZaragoza.SharedKernel.Hosting", "..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Hosting\JordiAragonZaragoza.SharedKernel.Hosting.csproj", "{E670611A-60FD-4EAE-9A2A-2BE0878D1380}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -594,6 +596,18 @@ Global
 		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x64.Build.0 = Release|Any CPU
 		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x86.ActiveCfg = Release|Any CPU
 		{154CF749-BC58-4FCF-A27D-DE5146C54689}.Release|x86.Build.0 = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|x64.Build.0 = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Debug|x86.Build.0 = Debug|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|x64.ActiveCfg = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|x64.Build.0 = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|x86.ActiveCfg = Release|Any CPU
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -647,6 +661,7 @@ Global
 		{BFC1A212-DCF5-4B24-8F0A-57C00624CF96} = {22B8ACC4-81B2-6EA0-7CB9-07D8FDE56D7C}
 		{59DAE3D4-7C59-41E4-A251-03CD0EEED9CD} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
 		{154CF749-BC58-4FCF-A27D-DE5146C54689} = {B5E03E3A-C954-815C-BF43-C654F2D55F08}
+		{E670611A-60FD-4EAE-9A2A-2BE0878D1380} = {CFFE2114-8356-49BA-B755-3427D19DB42A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82D7CB3-8FCC-470B-8AB9-2932F59BF4D9}

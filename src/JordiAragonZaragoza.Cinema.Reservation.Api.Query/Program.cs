@@ -5,6 +5,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using JordiAragonZaragoza.SharedKernel.Application;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
@@ -16,7 +17,7 @@
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             var configuration = builder.Configuration;
 
@@ -42,7 +43,7 @@
 
             builder.AddInfrastructureEntityFrameworkProjections();
 
-            builder.Host.UseHostBuilderConfigurations();
+            builder.AddHostConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();
 
             var app = builder.Build();

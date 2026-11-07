@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.Configuration;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -22,8 +23,9 @@
             // Configure specific Host Services (DI)
             builder.Services
                 .AddHostedService<MigratorBackgroundWorker>()
-                .AddInfrastructureEntityFrameworkMigrations(configuration)
-                .AddHostConfigurations(configuration);
+                .AddInfrastructureEntityFrameworkMigrations(configuration);
+
+            builder.AddHostConfigurations();
 
             builder.AddInfrastructureEntityFrameworkMigrations();
 

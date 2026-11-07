@@ -4,6 +4,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway
     using Microsoft.Extensions.Logging;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using Microsoft.Extensions.DependencyInjection;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Configuration;
     using JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway.Common.Infrastructure;
 
@@ -42,7 +43,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Mcp.Gateway
             builder.Services
                 .AddInfrastructure();
 
-            builder.Host.UseHostBuilderConfigurations();
+            builder.AddHostConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();
 
             var app = builder.Build();

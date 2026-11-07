@@ -3,17 +3,18 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Application;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Domain;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
+    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.ServiceDefaults;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Domain;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi;
-    using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Logging;
-    using JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi.Configuration;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -52,7 +53,7 @@
                     builder.Environment,
                     new ApiOptions { Title = typeof(ApiCommandAssemblyReference).Namespace! });
 
-            builder.Host.UseHostBuilderConfigurations();
+            builder.AddHostConfigurations();
             builder.WebHost.UseWebHostBuilderConfigurations();
 
             var app = builder.Build();

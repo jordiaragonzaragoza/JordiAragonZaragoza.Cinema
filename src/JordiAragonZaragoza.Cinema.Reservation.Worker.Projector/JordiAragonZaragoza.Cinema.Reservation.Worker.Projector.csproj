@@ -4,16 +4,14 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\..\JordiAragonZaragoza.SharedKernel\src\JordiAragonZaragoza.SharedKernel.Hosting\JordiAragonZaragoza.SharedKernel.Hosting.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(UseProjectReference)' == 'false'">
+		<PackageReference Include="JordiAragonZaragoza.SharedKernel.Hosting" />
+	</ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="Serilog.Extensions.Hosting" />
-    <PackageReference Include="Serilog.Enrichers.Environment" />
-    <PackageReference Include="Serilog.Enrichers.Thread" />
-    <PackageReference Include="Serilog.Settings.Configuration" />
-    <PackageReference Include="Serilog.Sinks.Async" />
-    <PackageReference Include="Serilog.Sinks.Console" />
-    <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />

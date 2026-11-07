@@ -4,6 +4,7 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
     using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.Configuration;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -15,16 +16,15 @@
         {
             HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-            var configuration = builder.Configuration;
-
             builder.AddInfrastructure();
             builder.AddInfrastructureKurrentDbClient();
 
             // Configure specific Host Services (DI)
             builder.Services
                 .AddHostedService<SeederBackgroundWorker>()
-                .AddInfrastructureEventStoreSeeder()
-                .AddHostConfigurations(configuration);
+                .AddInfrastructureEventStoreSeeder();
+
+            builder.AddHostConfigurations();
 
             IHost app = builder.Build();
 

@@ -6,9 +6,9 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
-    using JordiAragonZaragoza.Cinema.Reservation.Worker.Reactor.Configuration;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Domain;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
     using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +55,7 @@
             // TODO: Temporal coupling: Projections required to execute for some batch-job policies.
             builder.AddInfrastructureEntityFrameworkProjections();
 
-            builder.Services.AddHostConfigurations(configuration);
+            builder.AddHostConfigurations();
 
             IHost app = builder.Build();
 

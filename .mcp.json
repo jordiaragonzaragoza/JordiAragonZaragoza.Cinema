@@ -1,0 +1,16 @@
+{
+	"mcpServers": {
+		"cinema-reservation": {
+			"type": "http",
+			"url": "http://localhost:5003/",
+			"tools": [
+				"*"
+			],
+			"headers": {
+				"x-tenant-id": "667196fc-0e17-43f9-990d-7dc2175e6162",
+				"x-partition-id": "05cbd871-da4e-447b-9d62-89438df8c4a8",
+				"x-domain-id": "497cd8f1-620c-426f-992d-7012147f6e7c"
+			}
+		}
+	}
+}

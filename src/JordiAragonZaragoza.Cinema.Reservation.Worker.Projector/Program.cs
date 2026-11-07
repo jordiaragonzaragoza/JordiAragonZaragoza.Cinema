@@ -5,10 +5,10 @@
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EventStore.Business;
-    using JordiAragonZaragoza.Cinema.Reservation.Worker.Projector.Configuration;
     using JordiAragonZaragoza.SharedKernel.Application;
     using JordiAragonZaragoza.SharedKernel.Infrastructure;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore.AssemblyConfiguration;
+    using JordiAragonZaragoza.SharedKernel.Hosting.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
@@ -40,7 +40,7 @@
 
             builder.AddInfrastructureEntityFrameworkProjections();
 
-            builder.Services.AddHostConfigurations(configuration);
+            builder.AddHostConfigurations();
 
             IHost app = builder.Build();
 
