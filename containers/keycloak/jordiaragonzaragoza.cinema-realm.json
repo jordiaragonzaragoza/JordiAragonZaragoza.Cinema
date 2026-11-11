@@ -580,6 +580,38 @@
           }
         }
       ]
+    },
+    {
+      "clientId": "vscode-mcp",
+      "name": "VS Code MCP (development only)",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:33418",
+        "http://127.0.0.1:33418/",
+        "https://vscode.dev/redirect"
+      ],
+      "webOrigins": [
+        "https://vscode.dev"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "protocolMappers": [
+        {
+          "name": "cinema-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "jordiaragonzaragoza.cinema.api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
     }
   ],
   "clientScopes": [
@@ -1307,7 +1339,10 @@
     {
       "name": "cinema-api-audience",
       "protocol": "openid-connect",
-      "attributes": { "include.in.token.scope": "false", "display.on.consent.screen": "false" },
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
       "protocolMappers": [
         {
           "name": "cinema-api-audience",
@@ -1351,11 +1386,18 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {},
-  "eventsEnabled": false,
+  "eventsEnabled": true,
   "eventsListeners": [
     "jboss-logging"
   ],
-  "enabledEventTypes": [],
+  "enabledEventTypes": [
+    "CLIENT_REGISTER",
+    "CLIENT_REGISTER_ERROR",
+    "CODE_TO_TOKEN",
+    "CODE_TO_TOKEN_ERROR",
+    "LOGIN",
+    "LOGIN_ERROR"
+  ],
   "adminEventsEnabled": false,
   "adminEventsDetailsEnabled": false,
   "identityProviders": [],
@@ -1388,8 +1430,15 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
+          "trusted-hosts": [
+            "localhost",
+            "127.0.0.1",
+            "*.vscode.dev",
+            "code.visualstudio.com",
+            "github.com"
+          ],
           "host-sending-registration-request-must-match": [
-            "true"
+            "false"
           ],
           "client-uris-must-match": [
             "true"
@@ -1421,6 +1470,9 @@
         "config": {
           "allow-default-scopes": [
             "true"
+          ],
+          "allowed-client-scopes": [
+            "offline_access"
           ]
         }
       },
@@ -2404,6 +2456,9 @@
           "value": "jordiaragonzaragoza",
           "temporary": false
         }
+      ],
+      "realmRoles": [
+        "offline_access"
       ]
     }
   ]

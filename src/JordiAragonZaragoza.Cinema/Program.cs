@@ -66,11 +66,13 @@ namespace JordiAragonZaragoza.Cinema
             var reservationWorkerReadModelMigrator = builder.AddProject<Projects.JordiAragonZaragoza_Cinema_Reservation_Worker_ReadModelMigrator>(Constants.ReservationWorkerReadModelMigrator)
                                                           .WithReference(reservationReadModelDb)
                                                           .WaitFor(postgresServer);
-
+#pragma warning disable ASPIRECERTIFICATES001
             var keycloak = builder.AddKeycloak(Constants.Keycloak, 8080)
+                                  .WithoutHttpsCertificate()
                                   .WithOtlpExporter()
                                   .WithImageTag(Constants.KeycloakImageTag)
                                   .WithRealmImport("../../containers/keycloak");
+#pragma warning restore ASPIRECERTIFICATES001
 
             if (!IsSystemTesting(builder))
             {

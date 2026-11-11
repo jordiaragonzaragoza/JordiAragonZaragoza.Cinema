@@ -2,7 +2,7 @@
 	"mcpServers": {
 		"cinema-reservation": {
 			"type": "http",
-			"url": "http://localhost:5003/",
+			"url": "http://localhost:5003",
 			"tools": [
 				"*"
 			],
