@@ -311,63 +311,6 @@
       ]
     },
     {
-      "id": "264177ef-56d3-415c-b454-36edaa223462",
-      "clientId": "jordiaragonzaragoza.cinema.api",
-      "name": "",
-      "description": "",
-      "rootUrl": "",
-      "adminUrl": "",
-      "baseUrl": "",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "alwaysDisplayInConsole": false,
-      "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "/*"
-      ],
-      "webOrigins": [
-        "/*"
-      ],
-      "notBefore": 0,
-      "bearerOnly": false,
-      "consentRequired": false,
-      "standardFlowEnabled": false,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
-      "serviceAccountsEnabled": false,
-      "publicClient": true,
-      "frontchannelLogout": true,
-      "protocol": "openid-connect",
-      "attributes": {
-        "realm_client": "false",
-        "oidc.ciba.grant.enabled": "false",
-        "backchannel.logout.session.required": "true",
-        "standard.token.exchange.enabled": "false",
-        "oauth2.jwt.authorization.grant.enabled": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
-        "backchannel.logout.revoke.offline.tokens": "false",
-        "dpop.bound.access.tokens": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "web-origins",
-        "acr",
-        "profile",
-        "roles",
-        "basic",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "organization",
-        "offline_access",
-        "microprofile-jwt"
-      ]
-    },
-    {
       "id": "b7085df6-1a7f-4334-918d-0bbeebc35d74",
       "clientId": "realm-management",
       "name": "${client_realm-management}",
@@ -491,7 +434,7 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://localhost:5001/swagger/oauth2-redirect.html",
+        "http://localhost:5001/swagger/oauth2-redirect.html",
         "http://localhost:5002/swagger/oauth2-redirect.html",
         "https://localhost:7001/swagger/oauth2-redirect.html",
         "https://localhost:7002/swagger/oauth2-redirect.html"
@@ -529,29 +472,14 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "protocolMappers": [
-        {
-          "id": "b017814f-b578-4d13-9ead-a679b2896e79",
-          "name": "jordiaragonzaragoza.cinema.api as audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.client.audience": "jordiaragonzaragoza.cinema.api",
-            "id.token.claim": "false",
-            "lightweight.claim": "false",
-            "access.token.claim": "true",
-            "introspection.token.claim": "true"
-          }
-        }
-      ],
       "defaultClientScopes": [
         "web-origins",
         "acr",
         "profile",
         "roles",
         "basic",
-        "email"
+        "email",
+        "cinema-api-audience"
       ],
       "optionalClientScopes": [
         "address",
@@ -567,18 +495,21 @@
       "publicClient": true,
       "standardFlowEnabled": false,
       "directAccessGrantsEnabled": true,
-      "protocolMappers": [
-        {
-          "name": "cinema-api-audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.custom.audience": "jordiaragonzaragoza.cinema.api",
-            "access.token.claim": "true",
-            "id.token.claim": "false"
-          }
-        }
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "cinema-api-audience"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
       ]
     },
     {
@@ -599,18 +530,21 @@
       "attributes": {
         "pkce.code.challenge.method": "S256"
       },
-      "protocolMappers": [
-        {
-          "name": "cinema-api-audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.custom.audience": "jordiaragonzaragoza.cinema.api",
-            "access.token.claim": "true",
-            "id.token.claim": "false"
-          }
-        }
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email",
+        "cinema-api-audience"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
       ]
     }
   ],
@@ -679,33 +613,6 @@
           "config": {
             "introspection.token.claim": "true",
             "access.token.claim": "true"
-          }
-        }
-      ]
-    },
-    {
-      "id": "2be185a3-9369-4b17-814e-70b9c62570fc",
-      "name": "jordiaragonzaragoza.cinema.api.all",
-      "description": "Grants full access to the jordiaragonzaragoza.cinema.api",
-      "protocol": "openid-connect",
-      "attributes": {
-        "include.in.token.scope": "false",
-        "include.in.openid.provider.metadata": "true",
-        "display.on.consent.screen": "true"
-      },
-      "protocolMappers": [
-        {
-          "id": "a9756105-d044-4ce3-9e54-149331be2a4f",
-          "name": "jordiaragonzaragoza.cinema.api as audience",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.client.audience": "jordiaragonzaragoza.cinema.api",
-            "id.token.claim": "false",
-            "lightweight.claim": "false",
-            "access.token.claim": "true",
-            "introspection.token.claim": "true"
           }
         }
       ]
@@ -1430,15 +1337,8 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "trusted-hosts": [
-            "localhost",
-            "127.0.0.1",
-            "*.vscode.dev",
-            "code.visualstudio.com",
-            "github.com"
-          ],
           "host-sending-registration-request-must-match": [
-            "false"
+            "true"
           ],
           "client-uris-must-match": [
             "true"
@@ -1470,9 +1370,6 @@
         "config": {
           "allow-default-scopes": [
             "true"
-          ],
-          "allowed-client-scopes": [
-            "offline_access"
           ]
         }
       },
