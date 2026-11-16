@@ -1,0 +1,160 @@
+###############################################################################
+# Reservation Query API V2
+# This file contains the HTTP requests for the Reservation Query API V2.
+###############################################################################
+
+# Configuration
+@keycloak_username = jordiaragonzaragoza
+@keycloak_password = jordiaragonzaragoza
+@baseUrl = https://localhost:7002
+@keycloakBaseUrl = http://localhost:8080
+@realm = jordiaragonzaragoza.cinema
+@tenantId = 667196fc-0e17-43f9-990d-7dc2175e6162
+@partitionId = 05cbd871-da4e-447b-9d62-89438df8c4a8
+@domainId = 497cd8f1-620c-426f-992d-7012147f6e7c
+@userId = 6bb46b99-e3d1-459b-9e1e-f8d8d7619864
+@showtimeId = 89b073a7-cfcf-4f2a-b01b-4c7f71a0563b
+@reservationId = d290f1ee-6c54-4b01-90e6-d701748f0851
+@auditoriumId = c91aa0e0-9bc0-4db3-805c-23e3d8eabf53
+@movieId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+@pageNumber = 1
+@pageSize = 10
+
+# httpyac - OpenID Connect Password grant contra Keycloak
+@keycloak_clientId = cinema-system-tests
+@keycloak_tokenEndpoint = {{keycloakBaseUrl}}/realms/{{realm}}/protocol/openid-connect/token
+@keycloak_scope = openid profile
+# Client publico: client_id en el body, sin cabecera Basic.
+@keycloak_useAuthorizationHeader = false
+# Renueva el token en segundo plano con el refresh_token.
+@keycloak_keepAlive = true
+
+###############################################################################
+# AUDITORIUM
+# Legacy endpoint: the OpenAPI summary says it will be removed.
+###############################################################################
+
+### Get auditoriums
+# @name getAuditoriums
+GET {{baseUrl}}/api/v2/auditoriums?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+###############################################################################
+# MOVIE
+# Legacy endpoint: the OpenAPI summary says it will be removed.
+###############################################################################
+
+### Get movies
+# @name getMovies
+GET {{baseUrl}}/api/v2/movies?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+###############################################################################
+# SHOWTIME
+###############################################################################
+
+### Get showtimes
+# @name getShowtimes
+GET {{baseUrl}}/api/v2/showtimes?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+# Optional filters:
+# GET {{baseUrl}}/api/v2/showtimes?AuditoriumId={{auditoriumId}}&MovieId={{movieId}}&StartTimeOnUtc=2026-11-13T00:00:00Z&EndTimeOnUtc=2026-11-20T23:59:59Z&MovieTitle=Example&AuditoriumName=Sala%201&PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get showtime by ID
+# @name getShowtime
+GET {{baseUrl}}/api/v2/showtimes/{{showtimeId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get available seats for a showtime
+# @name getAvailableSeats
+GET {{baseUrl}}/api/v2/showtimes/{{showtimeId}}/seats/available
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get reservations for a showtime
+# @name getShowtimeReservations
+GET {{baseUrl}}/api/v2/showtimes/{{showtimeId}}/reservations?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get a showtime reservation by ID
+# @name getShowtimeReservation
+GET {{baseUrl}}/api/v2/showtimes/reservations/{{reservationId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+###############################################################################
+# USER
+###############################################################################
+
+### Get users
+# @name getUsers
+GET {{baseUrl}}/api/v2/users?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get user reservations
+# @name getUserReservations
+GET {{baseUrl}}/api/v2/users/{{userId}}/reservations?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get a user reservation
+# @name getUserReservation
+GET {{baseUrl}}/api/v2/users/{{userId}}/showtimes/{{showtimeId}}/reservations/{{reservationId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Get user authorizations for a scope
+# @name getUserAuthorizations
+GET {{baseUrl}}/api/v2/users/{{userId}}/authorizations/{{tenantId}}/{{partitionId}}/{{domainId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}

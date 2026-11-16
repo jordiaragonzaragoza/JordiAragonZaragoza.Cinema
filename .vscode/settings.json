@@ -3,5 +3,8 @@
         "dotnet build": true,
         "dotnet test": true,
         "dotnet list": true
+    },
+    "httpyac.requestGotOptions": {
+        "https": { "rejectUnauthorized": false }
     }
 }
