@@ -1,0 +1,213 @@
+###############################################################################
+# Reservation Command API V2
+# This file contains the HTTP requests for the Reservation Command API V2.
+###############################################################################
+
+# Configuration
+@keycloak_username = jordiaragonzaragoza
+@keycloak_password = jordiaragonzaragoza
+@baseUrl = https://localhost:7001
+@keycloakBaseUrl = http://localhost:8080
+@realm = jordiaragonzaragoza.cinema
+@tenantId = 667196fc-0e17-43f9-990d-7dc2175e6162
+@partitionId = 05cbd871-da4e-447b-9d62-89438df8c4a8
+@domainId = 497cd8f1-620c-426f-992d-7012147f6e7c
+@userId = 6bb46b99-e3d1-459b-9e1e-f8d8d7619864
+@showtimeId = 89b073a7-cfcf-4f2a-b01b-4c7f71a0563b
+@reservationId = d290f1ee-6c54-4b01-90e6-d701748f0851
+@auditoriumId = c91aa0e0-9bc0-4db3-805c-23e3d8eabf53
+@movieId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+@sessionDateOnUtc = 2030-12-01T20:00:00Z
+
+# Rellenar con ids de asientos reales (ver "Get available seats for a showtime" en ReservationApiQuery.http).
+@seatId1 = 00000000-0000-0000-0000-000000000001
+@seatId2 = 00000000-0000-0000-0000-000000000002
+
+# Rellenar con nombres validos de rol y permiso del dominio.
+@role = REPLACE_WITH_ROLE
+@permission = REPLACE_WITH_PERMISSION
+
+# httpyac - OpenID Connect Password grant contra Keycloak (SOLO desarrollo)
+@keycloak_clientId = cinema-system-tests
+@keycloak_tokenEndpoint = {{keycloakBaseUrl}}/realms/{{realm}}/protocol/openid-connect/token
+@keycloak_scope = openid profile
+# Client publico: client_id en el body, sin cabecera Basic.
+@keycloak_useAuthorizationHeader = false
+# Renueva el token en segundo plano con el refresh_token.
+@keycloak_keepAlive = true
+
+###############################################################################
+# SHOWTIME
+###############################################################################
+
+### Schedule a showtime
+# @name scheduleShowtime
+@newShowtimeId = {{$guid}}
+PUT {{baseUrl}}/api/v2/showtimes/{{newShowtimeId}}
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+{
+  "auditoriumId": "{{auditoriumId}}",
+  "movieId": "{{movieId}}",
+  "sessionDateOnUtc": "{{sessionDateOnUtc}}"
+}
+
+### Cancel a showtime
+# @name cancelShowtime
+DELETE {{baseUrl}}/api/v2/showtimes/{{showtimeId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+### Reserve seats for a showtime
+# @name reserveSeats
+@newReservationId = {{$guid}}
+PUT {{baseUrl}}/api/v2/showtimes/{{showtimeId}}/reservations/{{newReservationId}}
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+{
+  "seatsIds": [
+    "{{seatId1}}",
+    "{{seatId2}}"
+  ]
+}
+
+### Cancel a reservation
+# @name cancelReservation
+DELETE {{baseUrl}}/api/v2/showtimes/{{showtimeId}}/reservations/{{reservationId}}
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+x-correlation-id: {{$guid}}
+
+### Purchase a reservation
+# Temporal: this endpoint will not be exposed on payment integration.
+# @name purchaseReservation
+PATCH {{baseUrl}}/api/v2/showtimes/{{showtimeId}}/reservations/{{reservationId}}/purchase
+Accept: application/json
+Authorization: openid password keycloak
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+###############################################################################
+# USER
+###############################################################################
+
+### Assign a role to a user
+# @name assignRole
+POST {{baseUrl}}/api/v2/users/{{userId}}/roles/assign
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}",
+  "role": "{{role}}"
+}
+
+### Remove a role from a user
+# @name removeRole
+DELETE {{baseUrl}}/api/v2/users/{{userId}}/roles/remove
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}",
+  "role": "{{role}}"
+}
+
+### Assign a permission to a user
+# @name assignPermission
+POST {{baseUrl}}/api/v2/users/{{userId}}/permissions/assign
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}",
+  "permission": "{{permission}}"
+}
+
+### Remove a permission from a user
+# @name removePermission
+DELETE {{baseUrl}}/api/v2/users/{{userId}}/permissions/remove
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}",
+  "permission": "{{permission}}"
+}
+
+### Grant roles and permissions to a user
+# @name grantUser
+POST {{baseUrl}}/api/v2/users/{{userId}}/grant
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}",
+  "roles": [
+    "{{role}}"
+  ],
+  "permissions": [
+    "{{permission}}"
+  ]
+}
+
+### Revoke all roles from a user
+# @name revokeUser
+DELETE {{baseUrl}}/api/v2/users/{{userId}}/revoke
+Accept: application/json
+Authorization: openid password keycloak
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+x-partition-id: {{partitionId}}
+x-domain-id: {{domainId}}
+
+{
+  "tenantId": "{{tenantId}}",
+  "partitionId": "{{partitionId}}",
+  "cinemaId": "{{domainId}}"
+}

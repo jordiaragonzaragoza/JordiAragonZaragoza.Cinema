@@ -13,6 +13,7 @@
 @partitionId = 05cbd871-da4e-447b-9d62-89438df8c4a8
 @domainId = 497cd8f1-620c-426f-992d-7012147f6e7c
 @userId = 6bb46b99-e3d1-459b-9e1e-f8d8d7619864
+@userIdWithReservation = a9c483ba-4f95-400b-835d-1a9c6c39e17b
 @showtimeId = 89b073a7-cfcf-4f2a-b01b-4c7f71a0563b
 @reservationId = d290f1ee-6c54-4b01-90e6-d701748f0851
 @auditoriumId = c91aa0e0-9bc0-4db3-805c-23e3d8eabf53
@@ -131,7 +132,7 @@ x-correlation-id: {{$guid}}
 
 ### Get user reservations
 # @name getUserReservations
-GET {{baseUrl}}/api/v2/users/{{userId}}/reservations?PageNumber={{pageNumber}}&PageSize={{pageSize}}
+GET {{baseUrl}}/api/v2/users/{{userIdWithReservation}}/reservations?PageNumber={{pageNumber}}&PageSize={{pageSize}}
 Accept: application/json
 Authorization: openid password keycloak
 x-tenant-id: {{tenantId}}
@@ -141,7 +142,7 @@ x-correlation-id: {{$guid}}
 
 ### Get a user reservation
 # @name getUserReservation
-GET {{baseUrl}}/api/v2/users/{{userId}}/showtimes/{{showtimeId}}/reservations/{{reservationId}}
+GET {{baseUrl}}/api/v2/users/{{userIdWithReservation}}/showtimes/{{showtimeId}}/reservations/{{reservationId}}
 Accept: application/json
 Authorization: openid password keycloak
 x-tenant-id: {{tenantId}}
