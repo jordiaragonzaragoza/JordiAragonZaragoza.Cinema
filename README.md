@@ -153,7 +153,7 @@ The code never knows which provider is behind the token: switching is a configur
 
 </details>
 
-📖 Full design: [Authentication](./docs/Authentication.md)
+📖 Full design: [Authentication](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.SharedKernel/blob/main/src/JordiAragonZaragoza.SharedKernel.Presentation.HttpRestfulApi/Identity/Authentication.md)
 
 ## 🛡️ Authorization at a glance
 
@@ -185,13 +185,13 @@ What makes it interesting:
 - **Reads from a projection:** permissions come from a read model (PostgreSQL + Redis) built from the `User` aggregate's events, not from the aggregate itself.
 - **Trusted internals:** system workers are trusted and fully audited, while anonymous external actors can never pass an `[Authorize]` command.
 
-📖 Full design: [Authorization](./docs/AuthorizationService_es.md)
+📖 Full design: [Authorization](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.Cinema/blob/main/src/JordiAragonZaragoza.Cinema.Reservation/User/Application/Services/AuthorizationService.md)
 
 ## 🧭 ExecutionContext
 
 Every request and every message carries an `ExecutionContext`: the **actor** (who wanted it), the **executor** (which service ran it), the correlation and causation ids, and the tenant, partition and domain scope. It travels in HTTP headers, MassTransit messages and KurrentDB event metadata, so a worker reacting to an event still knows which user started the flow.
 
-📖 Full design: [ExecutionContext](./docs/ExecutionContext_es.md)
+📖 Full design: [ExecutionContext](https://github.com/jordiaragonzaragoza/JordiAragonZaragoza.SharedKernel/blob/main/src/JordiAragonZaragoza.SharedKernel.Application.Contracts/Interfaces/ExecutionContext.md)
 
 ## 🧪 Testing
 
