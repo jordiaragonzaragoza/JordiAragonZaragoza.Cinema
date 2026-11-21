@@ -14,7 +14,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class CancelReservationTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -31,7 +31,7 @@
             // Arrange
             var showtimeId = await this.ScheduleNewShowtimeAsync();
 
-            var seatsIds = SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
+            var seatsIds = this.Fixture.SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.SeatId).ToList();
 
             var reservationId = Guid.CreateVersion7();
@@ -69,8 +69,8 @@
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                SeedValues.ExampleAuditoriumId,
+                SeedValues.ExampleMovieId,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);

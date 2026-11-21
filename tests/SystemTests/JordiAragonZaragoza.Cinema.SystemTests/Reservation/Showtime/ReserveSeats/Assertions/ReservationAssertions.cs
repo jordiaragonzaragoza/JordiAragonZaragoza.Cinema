@@ -28,8 +28,8 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ReserveSea
             reservation.UserId.Should().Be(expectedUserId, "UserId should match the expected user");
             reservation.ShowtimeId.Should().Be(expectedShowtimeId, "ShowtimeId should match the expected showtime");
             reservation.SessionDateOnUtc.Should().BeCloseTo(expectedSessionDate, TimeSpan.FromMilliseconds(1), "SessionDate should match the expected date");
-            reservation.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
-            reservation.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
+            reservation.AuditoriumName.Should().Be(SeedValues.ExampleAuditoriumName);
+            reservation.MovieTitle.Should().Be(SeedValues.ExampleMovieTitle);
             reservation.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(expectedSeatsIds, "Reserved seats should be in the reservation");
             reservation.IsPurchased.Should().BeFalse("New reservation should not be purchased");

@@ -32,6 +32,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation\JordiAragonZaragoza.Cinema.Reservation.csproj" />
 	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator\JordiAragonZaragoza.Cinema.Reservation.Worker.ReadModelMigrator.csproj" />
+	  <ProjectReference Include="..\..\..\src\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder\JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.csproj" />
 	  <ProjectReference Include="..\..\TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities\JordiAragonZaragoza.Cinema.Reservation.TestUtilities.csproj" />
 	</ItemGroup>
 </Project>

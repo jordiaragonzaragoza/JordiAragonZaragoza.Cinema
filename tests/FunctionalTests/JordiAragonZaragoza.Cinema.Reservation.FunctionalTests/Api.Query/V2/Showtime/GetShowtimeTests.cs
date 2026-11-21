@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class GetShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -27,7 +27,7 @@
         public async Task GetShowtime_WhenHavingValidArguments_ShouldReturnOneShowtime()
         {
             // Arrange
-            Guid showtimeId = SeedData.ExampleShowtime.Id;
+            Guid showtimeId = SeedValues.ExampleShowtimeId;
 
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.GetShowtime}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(
@@ -39,10 +39,10 @@
 
             // Assert
             response.Should().NotBeNull();
-            response.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
-            response.SessionDateOnUtc.Should().BeCloseTo(SeedData.ExampleShowtime.SessionDateOnUtc, TimeSpan.FromMilliseconds(1));
-            response.AuditoriumId.Should().Be(SeedData.ExampleAuditorium.Id);
-            response.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
+            response.MovieTitle.Should().Be(this.Fixture.SeedData.ExampleMovie.Title);
+            response.SessionDateOnUtc.Should().BeCloseTo(this.Fixture.SeedData.ExampleShowtime.SessionDateOnUtc, TimeSpan.FromMilliseconds(1));
+            response.AuditoriumId.Should().Be(SeedValues.ExampleAuditoriumId);
+            response.AuditoriumName.Should().Be(this.Fixture.SeedData.ExampleAuditorium.Name);
         }
     }
 }

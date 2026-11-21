@@ -16,7 +16,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class GetUserAuthorizationsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -31,10 +31,10 @@
         public async Task GetUserAuthorizations_WhenHavingValidArguments_ShouldReturnUserAuthorizations()
         {
             // Arrange
-            Guid userId = SeedData.ExampleUserWithAdminRole.Id;
-            Guid tenantId = SeedData.ExampleTenant.Id;
-            Guid partitionId = SeedData.ExamplePartition.Id;
-            Guid cinemaId = SeedData.ExampleCinema.Id;
+            Guid userId = SeedValues.ExampleUserWithAdminRoleId;
+            Guid tenantId = SeedValues.ExampleTenantId;
+            Guid partitionId = SeedValues.ExamplePartitionId;
+            Guid cinemaId = SeedValues.ExampleCinemaId;
 
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserAuthorizations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(

@@ -13,13 +13,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RemoveRole
 
     public sealed class RemoveRoleScenario
     {
-        public Guid TenantId { get; } = SeedData.ExampleTenant.Id;
+        public Guid TenantId { get; } = SeedValues.ExampleTenantId;
 
-        public Guid? PartitionId { get; } = SeedData.ExamplePartition.Id;
+        public Guid? PartitionId { get; } = SeedValues.ExamplePartitionId;
 
-        public Guid? CinemaId { get; } = SeedData.ExampleCinema.Id;
+        public Guid? CinemaId { get; } = SeedValues.ExampleCinemaId;
 
-        public Guid UserId { get; } = SeedData.ExampleUserToBeRemovedAsViewerRole.Id;
+        public Guid UserId { get; } = SeedValues.ExampleUserToBeRemovedAsViewerRoleId;
 
         public IReadOnlyList<string> BaseRoles { get; } = new[] { Roles.Admin, Roles.Viewer };
 

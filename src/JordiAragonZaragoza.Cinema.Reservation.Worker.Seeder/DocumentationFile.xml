@@ -4,5 +4,21 @@
         <name>JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder</name>
     </assembly>
     <members>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData">
+            <summary>
+            Deterministic seed data for the system and functional tests.
+            Every instance builds its own aggregates and read models, so no mutable state is shared
+            between populations. Identifiers are stable and exposed through <see cref="T:JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues"/>.
+            Use ONE instance per population: the read models receive their Scope when populated
+            and EF Core tracks them.
+            </summary>
+        </member>
+        <member name="T:JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues">
+            <summary>
+            Deterministic values of the seed data.
+            They are immutable, so they can be safely shared between processes, tests and HTTP files.
+            Tests and requests should reference these ids instead of reading them from <see cref="T:JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData"/>.
+            </summary>
+        </member>
     </members>
 </doc>

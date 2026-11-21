@@ -11,7 +11,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class PurchaseReservationTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -26,9 +26,9 @@
         public async Task PurchaseExistingReservation_WhenHavingValidArguments_ShouldMarkReservationAsPaid()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = SeedValues.ExampleShowtimeId;
 
-            var reservationId = SeedData.ExampleReservation.Id;
+            var reservationId = SeedValues.ExampleReservationId;
 
             var routePurchaseReservation = $"{Routes.ApiBase}{ShowtimeRoutes.PurchaseReservation}";
             routePurchaseReservation = routePurchaseReservation.Replace("{showtimeId}", showtimeId.ToString(), StringComparison.Ordinal);

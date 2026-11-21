@@ -4,6 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using JordiAragonZaragoza.Cinema.Reservation.Common.Infrastructure.EntityFramework.Projections;
+    using JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using NSubstitute;
@@ -70,7 +71,8 @@
         /// <returns>A task that represents the asynchronous operation.</returns>
         protected virtual Task SeedAsync()
         {
-            SeedData.PopulateReadModelTestData(this.ReadModelContext);
+            var seed = new SeedData();
+            seed.PopulateReadModelTestData(this.ReadModelContext);
 
             return Task.CompletedTask;
         }

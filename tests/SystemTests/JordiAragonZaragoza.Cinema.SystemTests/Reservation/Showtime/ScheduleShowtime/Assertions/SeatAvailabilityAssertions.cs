@@ -20,8 +20,8 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
 
             seats.Should().NotBeNullOrEmpty();
             seats.Count().Should().Be(
-                SeedData.ExampleAuditorium.Rows *
-                SeedData.ExampleAuditorium.SeatsPerRow);
+                SeedValues.ExampleAuditoriumRows *
+                SeedValues.ExampleAuditoriumSeatsPerRow);
         }
     }
 }

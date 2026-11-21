@@ -12,7 +12,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class ScheduleShowtimeTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -35,8 +35,8 @@
             var sessionDateOnUtc = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                SeedValues.ExampleAuditoriumId,
+                SeedValues.ExampleMovieId,
                 sessionDateOnUtc);
 
             var content = StringContentHelpers.FromModelAsJson(request);

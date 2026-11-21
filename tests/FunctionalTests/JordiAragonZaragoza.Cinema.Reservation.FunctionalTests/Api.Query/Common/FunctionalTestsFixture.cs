@@ -31,6 +31,7 @@
         private bool disposedValue;
 
         public HttpClient HttpClient { get; private set; } = default!;
+        public SeedData SeedData { get; } = new();
 
         public async Task InitializeAsync()
         {
@@ -98,7 +99,7 @@
             {
                 await readContext.Database.MigrateAsync();
 
-                SeedData.PopulateReadModelTestData(readContext);
+                this.SeedData.PopulateReadModelTestData(readContext);
 
                 this.readModelStoreRespawner = await Respawner.CreateAsync(
                     this.readModelStoreConnection,
@@ -125,14 +126,14 @@
                 AllowAutoRedirect = false,
             });
 
-            client.DefaultRequestHeaders.Add("x-tenant-id", SeedData.ExampleTenant.Id.ToString());
-            client.DefaultRequestHeaders.Add("x-partition-id", SeedData.ExamplePartition.Id.ToString());
-            client.DefaultRequestHeaders.Add("x-domain-id", SeedData.ExampleCinema.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-tenant-id", SeedValues.ExampleTenantId.ToString());
+            client.DefaultRequestHeaders.Add("x-partition-id", SeedValues.ExamplePartitionId.ToString());
+            client.DefaultRequestHeaders.Add("x-domain-id", SeedValues.ExampleCinemaId.ToString());
 
             if (authenticated)
             {
                 client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue(AuthHandler.SchemeName, SeedData.ExampleUserWithAdminRole.Id.ToString());
+                    new AuthenticationHeaderValue(AuthHandler.SchemeName, SeedValues.ExampleUserWithAdminRoleId.ToString());
             }
 
             return client;

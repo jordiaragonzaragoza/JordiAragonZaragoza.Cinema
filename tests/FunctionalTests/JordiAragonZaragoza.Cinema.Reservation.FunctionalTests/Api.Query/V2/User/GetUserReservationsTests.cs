@@ -13,7 +13,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class GetUserReservationsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -28,7 +28,7 @@
         public async Task GetAllUserReservations_WhenHavingValidArguments_ShouldReturnOneReservation()
         {
             // Arrange
-            Guid userId = SeedData.ExampleUserWithReservation.Id;
+            Guid userId = SeedValues.ExampleUserWithReservationId;
 
             var route = $"{Routes.ApiBase}{UserRoutes.GetUserReservations}";
             var uri = EndpointRouteHelpers.BuildUriWithQueryParameters(

@@ -51,7 +51,9 @@
             {
                 this.logger.LogInformation("Starting seeding data on business model");
 
-                await SeedData.PopulateBusinessModelTestDataAsync(eventStore, stoppingToken);
+                var seed = new SeedData();
+
+                await seed.PopulateBusinessModelTestDataAsync(eventStore, stoppingToken);
 
                 this.logger.LogInformation("Data seeding completed successfully");
             }
@@ -67,16 +69,16 @@
         private static ExecutionContext CreateSeederExecutionContext()
         {
             var testContext = new ExecutionContext(
-                actorId: ExecutionContext.CreateServiceActorId("reservation-worker-seeder"), // TODO: Review.
+                actorId: ExecutionContext.CreateServiceActorId("reservation-worker-seeder"),
                 actorType: ActorType.System,
                 executor: nameof(SeederBackgroundWorker),
                 executorType: ExecutorType.Worker,
                 correlationId: Guid.CreateVersion7(),
                 causationId: null,
                 scopeContext: new ScopeContext(
-                    tenantId: SeedData.ExampleTenant.Id,
-                    partitionId: SeedData.ExamplePartition.Id,
-                    domainId: SeedData.ExampleCinema.Id));
+                    tenantId: SeedValues.ExampleTenantId,
+                    partitionId: SeedValues.ExamplePartitionId,
+                    domainId: SeedValues.ExampleCinemaId));
 
             return testContext;
         }

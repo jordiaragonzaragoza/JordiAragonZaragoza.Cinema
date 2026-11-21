@@ -14,7 +14,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class ReserveSeatsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -29,11 +29,11 @@
         public async Task CreateReservationOnExistingShowtime_WhenHavingValidArguments_ShouldCreateRequiredReservation()
         {
             // Arrange
-            var sessionDateOnUtc = SeedData.ExampleShowtime.SessionDateOnUtc;
+            var sessionDateOnUtc = this.Fixture.SeedData.ExampleShowtime.SessionDateOnUtc;
 
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = SeedValues.ExampleShowtimeId;
 
-            var seatsIds = SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
+            var seatsIds = this.Fixture.SeedData.ExampleAvailableSeatsReadModel.OrderBy(s => s.Row).ThenBy(s => s.SeatNumber)
                                                  .Take(3).Select(seat => seat.SeatId).ToList();
 
             var reservationId = Guid.CreateVersion7();
@@ -52,10 +52,10 @@
                 .BeCloseTo(sessionDateOnUtc, TimeSpan.FromMilliseconds(1));
 
             reservationResponse.AuditoriumName.Should()
-                .Be(SeedData.ExampleAuditorium.Name);
+                .Be(this.Fixture.SeedData.ExampleAuditorium.Name);
 
             reservationResponse.MovieTitle.Should()
-                .Be(SeedData.ExampleMovie.Title);
+                .Be(this.Fixture.SeedData.ExampleMovie.Title);
 
             reservationResponse.Seats.Select(seatResponse => seatResponse.Id).Should()
                 .Contain(seatsIds);

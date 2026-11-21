@@ -1,4 +1,4 @@
-﻿namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder
+namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder
 {
     using System;
     using System.Collections.Generic;
@@ -26,194 +26,247 @@
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Infrastructure.EventStore;
 
-    public static class SeedData
+    /// <summary>
+    /// Deterministic seed data for the system and functional tests.
+    /// Every instance builds its own aggregates and read models, so no mutable state is shared
+    /// between populations. Identifiers are stable and exposed through <see cref="SeedValues"/>.
+    /// Use ONE instance per population: the read models receive their Scope when populated
+    /// and EF Core tracks them.
+    /// </summary>
+    public sealed class SeedData
     {
-        public static readonly Tenant SystemTenant =
-            Tenant.Create(
+        private readonly DateTimeOffset now;
+
+        public SeedData()
+            : this(TimeProvider.System)
+        {
+        }
+
+        public SeedData(TimeProvider timeProvider)
+        {
+            ArgumentNullException.ThrowIfNull(timeProvider, nameof(timeProvider));
+
+            this.now = timeProvider.GetUtcNow();
+
+            var runtime = Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28));
+
+            this.SystemTenant = Tenant.Create(
                 id: new TenantId(SystemConstants.SystemTenantId));
+            this.SystemTenantReadModel = new(this.SystemTenant.Id);
 
-        public static readonly TenantReadModel SystemTenantReadModel =
-            new(SystemTenant.Id);
+            this.ExampleTenant = Tenant.Create(
+                id: new TenantId(SeedValues.ExampleTenantId));
+            this.ExampleTenantReadModel = new(this.ExampleTenant.Id);
 
-        public static readonly Tenant ExampleTenant =
-            Tenant.Create(
-                id: new TenantId(new Guid("667196fc-0e17-43f9-990d-7dc2175e6162")));
+            this.ExamplePartition = Partition.Create(
+                id: new PartitionId(SeedValues.ExamplePartitionId));
+            this.ExamplePartitionReadModel = new(this.ExamplePartition.Id);
 
-        public static readonly TenantReadModel ExampleTenantReadModel =
-            new(ExampleTenant.Id);
+            this.ExampleCinema = Cinema.Create(
+                id: new CinemaId(SeedValues.ExampleCinemaId));
+            this.ExampleCinemaReadModel = new(this.ExampleCinema.Id);
 
-        public static readonly Partition ExamplePartition =
-            Partition.Create(
-                id: new PartitionId(new Guid("05cbd871-da4e-447b-9d62-89438df8c4a8")));
-
-        public static readonly PartitionReadModel ExamplePartitionReadModel =
-            new(ExamplePartition.Id);
-
-        public static readonly Cinema ExampleCinema =
-            Cinema.Create(
-                id: new CinemaId(new Guid("497cd8f1-620c-426f-992d-7012147f6e7c")));
-
-        public static readonly CinemaReadModel ExampleCinemaReadModel =
-            new(ExampleCinema.Id);
-
-        public static readonly Movie ExampleMovie =
-            Movie.Add(
-                id: new MovieId(new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")),
-                title: Title.Create("Inception"),
-                runtime: Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28)),
+            this.ExampleMovie = Movie.Add(
+                id: new MovieId(SeedValues.ExampleMovieId),
+                title: Title.Create(SeedValues.ExampleMovieTitle),
+                runtime: runtime,
                 exhibitionPeriod: ExhibitionPeriod.Create(
-                    StartingPeriod.Create(new DateTimeOffset(DateTimeOffset.UtcNow.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
-                    EndOfPeriod.Create(DateTimeOffset.UtcNow.AddYears(2)),
-                    Runtime.Create(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(28))));
+                    StartingPeriod.Create(new DateTimeOffset(this.now.AddYears(1).Year, 1, 1, 1, 1, 1, TimeSpan.Zero)),
+                    EndOfPeriod.Create(this.now.AddYears(2)),
+                    runtime));
+            this.ExampleMovieReadModel = new(
+                this.ExampleMovie.Id,
+                this.ExampleMovie.Title,
+                this.ExampleMovie.Runtime);
 
-        public static readonly MovieReadModel ExampleMovieReadModel =
-           new(
-            ExampleMovie.Id,
-            ExampleMovie.Title,
-            ExampleMovie.Runtime);
-
-        public static readonly Auditorium ExampleAuditorium =
-            Auditorium.Create(
-                id: new AuditoriumId(new Guid("c91aa0e0-9bc0-4db3-805c-23e3d8eabf53")),
-                cinemaId: ExampleCinema.Id,
-                name: Name.Create("Auditorium One"),
-                rows: Rows.Create(10),
-                seatsPerRow: SeatsPerRow.Create(10));
-
-        public static readonly AuditoriumReadModel ExampleAuditoriumReadModel =
-            new(
-                ExampleAuditorium.Id,
-                ExampleAuditorium.Name,
-                ExampleAuditorium.CinemaId,
-                ExampleAuditorium.Seats.Select(seat => new SeatReadModel(
+            this.ExampleAuditorium = Auditorium.Create(
+                id: new AuditoriumId(SeedValues.ExampleAuditoriumId),
+                cinemaId: this.ExampleCinema.Id,
+                name: Name.Create(SeedValues.ExampleAuditoriumName),
+                rows: Rows.Create(SeedValues.ExampleAuditoriumRows),
+                seatsPerRow: SeatsPerRow.Create(SeedValues.ExampleAuditoriumSeatsPerRow));
+            this.ExampleAuditoriumReadModel = new(
+                this.ExampleAuditorium.Id,
+                this.ExampleAuditorium.Name,
+                this.ExampleAuditorium.CinemaId,
+                this.ExampleAuditorium.Seats.Select(seat => new SeatReadModel(
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList());
 
-        public static readonly User ExampleUserWithReservation =
-            User.Create(
-                id: new UserId(new Guid("a9c483ba-4f95-400b-835d-1a9c6c39e17b")));
+            this.ExampleUserWithReservation = User.Create(
+                id: new UserId(SeedValues.ExampleUserWithReservationId));
+            this.ExampleUserReadModelWithReservation = new(this.ExampleUserWithReservation.Id);
 
-        public static readonly UserReadModel ExampleUserReadModelWithReservation =
-            new(ExampleUserWithReservation.Id);
+            this.ExampleUserWithAdminRole = User.Create(
+                id: new UserId(SeedValues.ExampleUserWithAdminRoleId));
+            this.ExampleUserReadModelWithAdminRole = new(this.ExampleUserWithAdminRole.Id);
 
-        public static readonly User ExampleUserWithAdminRole =
-            User.Create(
-                id: new UserId(new Guid("6bb46b99-e3d1-459b-9e1e-f8d8d7619864")));
+            this.ExampleUserToBeGranted = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeGrantedId));
+            this.ExampleUserReadModelToBeGranted = new(this.ExampleUserToBeGranted.Id);
 
-        public static readonly UserReadModel ExampleUserReadModelWithAdminRole =
-            new(ExampleUserWithAdminRole.Id);
+            this.ExampleUserToBeAssignedAsViewerRole = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeAssignedAsViewerRoleId));
+            this.ExampleUserReadModelToBeAssignedAsViewerRole = new(this.ExampleUserToBeAssignedAsViewerRole.Id);
 
-        public static readonly User UserExampleToBeGranted =
-            User.Create(
-                id: new UserId(new Guid("7acabd24-d196-4599-b053-083b4fb8ba50")));
+            this.ExampleUserToBeRevoked = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeRevokedId));
+            this.ExampleUserReadModelToBeRevoked = new(this.ExampleUserToBeRevoked.Id);
 
-        public static readonly UserReadModel ExampleUserReadModelToBeGranted =
-            new(UserExampleToBeGranted.Id);
+            this.ExampleUserToBeRemovedAsViewerRole = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeRemovedAsViewerRoleId));
+            this.ExampleUserReadModelToBeRemovedAsViewerRole = new(this.ExampleUserToBeRemovedAsViewerRole.Id);
 
-        public static readonly User ExampleUserToBeAssignedAsViewerRole =
-            User.Create(
-                id: new UserId(new Guid("d6551436-94f4-4275-9660-efacec34e90a")));
+            this.ExampleUserToBeAssignedScheduleShowtimePermission = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeAssignedScheduleShowtimePermissionId));
+            this.ExampleUserReadModelToBeAssignedScheduleShowtimePermission = new(this.ExampleUserToBeAssignedScheduleShowtimePermission.Id);
 
-        public static readonly UserReadModel ExampleUserReadModelToBeAssignedAsViewerRole =
-            new(ExampleUserToBeAssignedAsViewerRole.Id);
+            this.ExampleUserToBeRemovedScheduleShowtimePermission = User.Create(
+                id: new UserId(SeedValues.ExampleUserToBeRemovedScheduleShowtimePermissionId));
+            this.ExampleUserReadModelToBeRemovedScheduleShowtimePermission = new(this.ExampleUserToBeRemovedScheduleShowtimePermission.Id);
 
-        public static readonly User ExampleUserToBeRevoked =
-            User.Create(
-                id: new UserId(new Guid("82e78b83-24b0-4036-b3c0-b44f830c9442")));
+            this.ExampleUser = User.Create(
+                id: new UserId(SeedValues.ExampleUserId));
+            this.ExampleUserReadModel = new(this.ExampleUser.Id);
 
-        public static readonly UserReadModel ExampleUserReadModelToBeRevoked =
-            new(ExampleUserToBeRevoked.Id);
+            this.ExampleShowtime = Showtime.Schedule(
+                id: new ShowtimeId(SeedValues.ExampleShowtimeId),
+                movieId: this.ExampleMovie.Id,
+                sessionDateOnUtc: SessionDate.Create(this.now.AddYears(1)),
+                auditoriumId: this.ExampleAuditorium.Id);
+            this.ExampleShowtimeReadModel = new(
+                this.ExampleShowtime.Id,
+                this.ExampleShowtime.SessionDateOnUtc,
+                this.ExampleMovie.Id,
+                this.ExampleMovie.Title,
+                this.ExampleMovie.Runtime,
+                this.ExampleAuditorium.Id,
+                this.ExampleAuditorium.Name);
 
-        public static readonly User ExampleUserToBeRemovedAsViewerRole =
-            User.Create(
-                id: new UserId(new Guid("cd782d72-90c2-4373-b6c4-be9857c80bba")));
+            this.ExampleReservation = new(
+                id: new ReservationId(SeedValues.ExampleReservationId),
+                userId: this.ExampleUserWithReservation.Id,
+                seatIds: this.ExampleAuditorium.Seats.Take(3).Select(seat => seat.Id),
+                reservationDateOnUtc: ReservationDate.Create(this.now.AddDays(1))); // Added 1 day to avoid conflicts with the seat reservation time in the showtime.
 
-        public static readonly UserReadModel ExampleUserReadModelToBeRemovedAsViewerRole =
-            new(ExampleUserToBeRemovedAsViewerRole.Id);
+            // Aggregate state changes happen here, once per instance,
+            // so the population methods only register what is already built.
+            this.ExampleUserWithAdminRole.GrantUser(
+                Scope.Create(this.ExampleTenant.Id, this.ExamplePartition.Id, this.ExampleCinema.Id),
+                new[] { Role.Create(Roles.Admin) },
+                []);
 
-        public static readonly User ExampleUserToBeAssignedScheduleShowtimePermission =
-            User.Create(
-                id: new UserId(new Guid("e7662547-a5d7-4386-a7d5-cf0a8dc91ccb")));
+            this.ExampleShowtime.ReserveSeats(
+                this.ExampleReservation.Id,
+                this.ExampleReservation.UserId,
+                this.ExampleReservation.Seats,
+                this.ExampleReservation.ReservationDateOnUtc);
+        }
 
-        public static readonly UserReadModel ExampleUserReadModelToBeAssignedScheduleShowtimePermission =
-            new(ExampleUserToBeAssignedScheduleShowtimePermission.Id);
+        public Tenant SystemTenant { get; }
 
-        public static readonly User ExampleUserToBeRemovedScheduleShowtimePermission =
-            User.Create(
-                id: new UserId(new Guid("f8773658-b6e8-4497-b8e6-db1b9ed02ddc")));
+        public TenantReadModel SystemTenantReadModel { get; }
 
-        public static readonly UserReadModel ExampleUserReadModelToBeRemovedScheduleShowtimePermission =
-            new(ExampleUserToBeRemovedScheduleShowtimePermission.Id);
+        public Tenant ExampleTenant { get; }
 
-        public static readonly User ExampleUser =
-            User.Create(
-                id: new UserId(new Guid("b7dedad7-4c6b-498e-8808-bd88468ca97f")));
+        public TenantReadModel ExampleTenantReadModel { get; }
 
-        public static readonly UserReadModel ExampleUserReadModel =
-            new(ExampleUser.Id);
+        public Partition ExamplePartition { get; }
 
-        public static readonly Showtime ExampleShowtime =
-            Showtime.Schedule(
-                id: new ShowtimeId(new Guid("89b073a7-cfcf-4f2a-b01b-4c7f71a0563b")),
-                movieId: ExampleMovie.Id,
-                sessionDateOnUtc: SessionDate.Create(DateTimeOffset.UtcNow.AddYears(1)),
-                auditoriumId: ExampleAuditorium.Id);
+        public PartitionReadModel ExamplePartitionReadModel { get; }
 
-        public static readonly ShowtimeReadModel ExampleShowtimeReadModel =
-            new(
-                ExampleShowtime.Id,
-                ExampleShowtime.SessionDateOnUtc,
-                ExampleMovie.Id,
-                ExampleMovie.Title,
-                ExampleMovie.Runtime,
-                ExampleAuditorium.Id,
-                ExampleAuditorium.Name);
+        public Cinema ExampleCinema { get; }
 
-        public static readonly Reservation ExampleReservation =
-            new(
-                id: new ReservationId(new Guid("d290f1ee-6c54-4b01-90e6-d701748f0851")),
-                userId: ExampleUserWithReservation.Id,
-                seatIds: ExampleAuditorium.Seats.Take(3).Select(seat => seat.Id),
-                reservationDateOnUtc: ReservationDate.Create(DateTimeOffset.UtcNow.AddDays(1))); // Added 1 day to avoid conflicts with the seat reservation time in the showtime.
+        public CinemaReadModel ExampleCinemaReadModel { get; }
 
-        public static ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel =>
-            ExampleAuditorium.Seats
-                .Where(seat => !ExampleReservation.Seats.Contains(seat.Id))
+        public Movie ExampleMovie { get; }
+
+        public MovieReadModel ExampleMovieReadModel { get; }
+
+        public Auditorium ExampleAuditorium { get; }
+
+        public AuditoriumReadModel ExampleAuditoriumReadModel { get; }
+
+        public User ExampleUserWithReservation { get; }
+
+        public UserReadModel ExampleUserReadModelWithReservation { get; }
+
+        public User ExampleUserWithAdminRole { get; }
+
+        public UserReadModel ExampleUserReadModelWithAdminRole { get; }
+
+        public User ExampleUserToBeGranted { get; }
+
+        public UserReadModel ExampleUserReadModelToBeGranted { get; }
+
+        public User ExampleUserToBeAssignedAsViewerRole { get; }
+
+        public UserReadModel ExampleUserReadModelToBeAssignedAsViewerRole { get; }
+
+        public User ExampleUserToBeRevoked { get; }
+
+        public UserReadModel ExampleUserReadModelToBeRevoked { get; }
+
+        public User ExampleUserToBeRemovedAsViewerRole { get; }
+
+        public UserReadModel ExampleUserReadModelToBeRemovedAsViewerRole { get; }
+
+        public User ExampleUserToBeAssignedScheduleShowtimePermission { get; }
+
+        public UserReadModel ExampleUserReadModelToBeAssignedScheduleShowtimePermission { get; }
+
+        public User ExampleUserToBeRemovedScheduleShowtimePermission { get; }
+
+        public UserReadModel ExampleUserReadModelToBeRemovedScheduleShowtimePermission { get; }
+
+        public User ExampleUser { get; }
+
+        public UserReadModel ExampleUserReadModel { get; }
+
+        public Showtime ExampleShowtime { get; }
+
+        public ShowtimeReadModel ExampleShowtimeReadModel { get; }
+
+        public Reservation ExampleReservation { get; }
+
+        public ReadOnlyCollection<AvailableSeatReadModel> ExampleAvailableSeatsReadModel =>
+            this.ExampleAuditorium.Seats
+                .Where(seat => !this.ExampleReservation.Seats.Contains(seat.Id))
                 .Select(seat => new AvailableSeatReadModel(
                     id: Guid.CreateVersion7(),
                     seatId: seat.Id,
                     row: seat.Row,
                     seatNumber: seat.SeatNumber,
-                    showtimeId: ExampleShowtime.Id,
-                    auditoriumId: ExampleAuditorium.Id,
-                    auditoriumName: ExampleAuditorium.Name))
+                    showtimeId: this.ExampleShowtime.Id,
+                    auditoriumId: this.ExampleAuditorium.Id,
+                    auditoriumName: this.ExampleAuditorium.Name))
                 .ToList()
                 .AsReadOnly();
 
-        public static ReservationReadModel ExampleReservationReadModel() =>
+        public ReservationReadModel ExampleReservationReadModel() =>
             new(
-                id: ExampleReservation.Id,
-                userId: ExampleUserWithReservation.Id,
-                showtimeId: ExampleShowtime.Id,
-                sessionDateOnUtc: ExampleShowtime.SessionDateOnUtc,
-                auditoriumName: ExampleAuditorium.Name,
-                movieTitle: ExampleMovie.Title,
-                seats: ExampleAuditorium.Seats.Take(3).Select(seat => new SeatReadModel(
+                id: this.ExampleReservation.Id,
+                userId: this.ExampleUserWithReservation.Id,
+                showtimeId: this.ExampleShowtime.Id,
+                sessionDateOnUtc: this.ExampleShowtime.SessionDateOnUtc,
+                auditoriumName: this.ExampleAuditorium.Name,
+                movieTitle: this.ExampleMovie.Title,
+                seats: this.ExampleAuditorium.Seats.Take(3).Select(seat => new SeatReadModel(
                     seat.Id,
                     seat.Row,
                     seat.SeatNumber)).ToList(),
                 isPurchased: false,
-                createdTimeOnUtc: DateTimeOffset.UtcNow);
+                createdTimeOnUtc: this.now);
 
-        public static UserAuthorizationReadModel ExampleUserAuthorizationReadModelWithAdminRole()
+        public UserAuthorizationReadModel ExampleUserAuthorizationReadModelWithAdminRole()
         {
-            var userAuthorization = new UserAuthorizationReadModel(ExampleUserWithAdminRole.Id)
+            var userAuthorization = new UserAuthorizationReadModel(this.ExampleUserWithAdminRole.Id)
             {
-                UserId = ExampleUserWithAdminRole.Id,
-                TenantId = ExampleTenant.Id,
-                PartitionId = ExamplePartition.Id,
-                DomainId = ExampleCinema.Id,
+                UserId = this.ExampleUserWithAdminRole.Id,
+                TenantId = this.ExampleTenant.Id,
+                PartitionId = this.ExamplePartition.Id,
+                DomainId = this.ExampleCinema.Id,
                 Roles = new List<RoleReadModel>
                 {
                     new RoleReadModel(Guid.CreateVersion7(), Roles.Admin),
@@ -223,58 +276,58 @@
             return userAuthorization;
         }
 
-        public static void PopulateReadModelTestData(ReservationReadModelContext context)
+        public void PopulateReadModelTestData(ReservationReadModelContext context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
-            var tenantId = ExampleTenant.Id;
-            var partitionId = ExamplePartition.Id;
-            var domainId = ExampleCinema.Id;
+            var tenantId = this.ExampleTenant.Id;
+            var partitionId = this.ExamplePartition.Id;
+            var domainId = this.ExampleCinema.Id;
 
             // Local factory: each entity needs its own instance of ScopeInfo.
             // EF Core cannot resolve the same owned type reference
             // for multiple owner entities within the same SaveChanges.
             ScopeInfo NewScope() => new(tenantId, partitionId, domainId);
 
-            ExampleMovieReadModel.Scope = NewScope();
-            context.Movies.Add(ExampleMovieReadModel);
+            this.ExampleMovieReadModel.Scope = NewScope();
+            context.Movies.Add(this.ExampleMovieReadModel);
 
-            ExampleAuditoriumReadModel.Scope = NewScope();
-            context.Auditoriums.Add(ExampleAuditoriumReadModel);
+            this.ExampleAuditoriumReadModel.Scope = NewScope();
+            context.Auditoriums.Add(this.ExampleAuditoriumReadModel);
 
-            ExampleUserReadModelWithAdminRole.Scope = NewScope();
-            context.Users.Add(ExampleUserReadModelWithAdminRole);
+            this.ExampleUserReadModelWithAdminRole.Scope = NewScope();
+            context.Users.Add(this.ExampleUserReadModelWithAdminRole);
 
-            ExampleUserReadModelWithReservation.Scope = NewScope();
-            context.Users.Add(ExampleUserReadModelWithReservation);
+            this.ExampleUserReadModelWithReservation.Scope = NewScope();
+            context.Users.Add(this.ExampleUserReadModelWithReservation);
 
-            ExampleUserReadModel.Scope = NewScope();
-            context.Users.Add(ExampleUserReadModel);
+            this.ExampleUserReadModel.Scope = NewScope();
+            context.Users.Add(this.ExampleUserReadModel);
 
-            var exampleUserAuthorizationReadModelWithAdminRole = ExampleUserAuthorizationReadModelWithAdminRole();
+            var exampleUserAuthorizationReadModelWithAdminRole = this.ExampleUserAuthorizationReadModelWithAdminRole();
             exampleUserAuthorizationReadModelWithAdminRole.Scope = NewScope();
             context.UsersAuthorizations.Add(exampleUserAuthorizationReadModelWithAdminRole);
 
-            SystemTenantReadModel.Scope = NewScope();
-            context.Tenants.Add(SystemTenantReadModel);
+            this.SystemTenantReadModel.Scope = NewScope();
+            context.Tenants.Add(this.SystemTenantReadModel);
 
-            ExampleTenantReadModel.Scope = NewScope();
-            context.Tenants.Add(ExampleTenantReadModel);
+            this.ExampleTenantReadModel.Scope = NewScope();
+            context.Tenants.Add(this.ExampleTenantReadModel);
 
-            ExamplePartitionReadModel.Scope = NewScope();
-            context.Partitions.Add(ExamplePartitionReadModel);
+            this.ExamplePartitionReadModel.Scope = NewScope();
+            context.Partitions.Add(this.ExamplePartitionReadModel);
 
-            ExampleCinemaReadModel.Scope = NewScope();
-            context.Cinemas.Add(ExampleCinemaReadModel);
+            this.ExampleCinemaReadModel.Scope = NewScope();
+            context.Cinemas.Add(this.ExampleCinemaReadModel);
 
-            ExampleShowtimeReadModel.Scope = NewScope();
-            context.Showtimes.Add(ExampleShowtimeReadModel);
+            this.ExampleShowtimeReadModel.Scope = NewScope();
+            context.Showtimes.Add(this.ExampleShowtimeReadModel);
 
-            var exampleReservationReadModel = ExampleReservationReadModel();
+            var exampleReservationReadModel = this.ExampleReservationReadModel();
             exampleReservationReadModel.Scope = NewScope();
             context.Reservations.Add(exampleReservationReadModel);
 
-            var availableSeats = ExampleAvailableSeatsReadModel;
+            var availableSeats = this.ExampleAvailableSeatsReadModel;
             foreach (var seat in availableSeats)
             {
                 seat.Scope = NewScope();
@@ -285,98 +338,82 @@
             context.SaveChanges();
         }
 
-        public static async Task PopulateBusinessModelTestDataAsync(
+        public async Task PopulateBusinessModelTestDataAsync(
             IEventStore eventStore,
             CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(eventStore, nameof(eventStore));
 
-            var hasExistingData = await HasExistingDataAsync(eventStore, cancellationToken);
+            var hasExistingData = await this.HasExistingDataAsync(eventStore, cancellationToken);
             if (hasExistingData)
             {
                 return;
             }
 
-            eventStore.AppendChanges<Movie, MovieId>(ExampleMovie);
-            eventStore.AppendChanges<Auditorium, AuditoriumId>(ExampleAuditorium);
-            eventStore.AppendChanges<Partition, PartitionId>(ExamplePartition);
-            eventStore.AppendChanges<Tenant, TenantId>(SystemTenant);
-            eventStore.AppendChanges<Tenant, TenantId>(ExampleTenant);
-            eventStore.AppendChanges<Cinema, CinemaId>(ExampleCinema);
+            eventStore.AppendChanges<Movie, MovieId>(this.ExampleMovie);
+            eventStore.AppendChanges<Auditorium, AuditoriumId>(this.ExampleAuditorium);
+            eventStore.AppendChanges<Partition, PartitionId>(this.ExamplePartition);
+            eventStore.AppendChanges<Tenant, TenantId>(this.SystemTenant);
+            eventStore.AppendChanges<Tenant, TenantId>(this.ExampleTenant);
+            eventStore.AppendChanges<Cinema, CinemaId>(this.ExampleCinema);
 
-            ExampleUserWithAdminRole.GrantUser(
-                new Scope(ExampleTenant.Id, ExamplePartition.Id, ExampleCinema.Id),
-                new[] { Role.Create(Roles.Admin) },
-                []);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeAssignedAsViewerRole);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeRevoked);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeRemovedAsViewerRole);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeAssignedScheduleShowtimePermission);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeRemovedScheduleShowtimePermission);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserToBeGranted);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserWithAdminRole);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUserWithReservation);
+            eventStore.AppendChanges<User, UserId>(this.ExampleUser);
 
-            eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedAsViewerRole);
-            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRevoked);
-            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRemovedAsViewerRole);
-            eventStore.AppendChanges<User, UserId>(ExampleUserToBeAssignedScheduleShowtimePermission);
-            eventStore.AppendChanges<User, UserId>(ExampleUserToBeRemovedScheduleShowtimePermission);
-            eventStore.AppendChanges<User, UserId>(UserExampleToBeGranted);
-            eventStore.AppendChanges<User, UserId>(ExampleUserWithAdminRole);
-            eventStore.AppendChanges<User, UserId>(ExampleUserWithReservation);
-            eventStore.AppendChanges<User, UserId>(ExampleUser);
-
-            ExampleShowtime.ReserveSeats(
-                ExampleReservation.Id,
-                ExampleReservation.UserId,
-                ExampleReservation.Seats,
-                ExampleReservation.ReservationDateOnUtc);
-
-            eventStore.AppendChanges<Showtime, ShowtimeId>(ExampleShowtime);
+            eventStore.AppendChanges<Showtime, ShowtimeId>(this.ExampleShowtime);
 
             await eventStore.SaveChangesAsync(cancellationToken);
         }
 
-        private static async Task<bool> HasExistingDataAsync(IEventStore eventStore, CancellationToken cancellationToken)
+        private async Task<bool> HasExistingDataAsync(IEventStore eventStore, CancellationToken cancellationToken)
         {
             var existingMovie = await eventStore.LoadAggregateAsync<Movie, MovieId>(
-                                ExampleMovie.Id,
-                                cancellationToken);
+                this.ExampleMovie.Id,
+                cancellationToken);
 
             var existingAuditorium = await eventStore.LoadAggregateAsync<Auditorium, AuditoriumId>(
-                ExampleAuditorium.Id,
+                this.ExampleAuditorium.Id,
                 cancellationToken);
 
             var existingUserWithAdminRole = await eventStore.LoadAggregateAsync<User, UserId>(
-                ExampleUserWithAdminRole.Id,
+                this.ExampleUserWithAdminRole.Id,
                 cancellationToken);
 
             var existingUser = await eventStore.LoadAggregateAsync<User, UserId>(
-                ExampleUser.Id,
+                this.ExampleUser.Id,
                 cancellationToken);
 
             var existingPartition = await eventStore.LoadAggregateAsync<Partition, PartitionId>(
-                ExamplePartition.Id,
+                this.ExamplePartition.Id,
                 cancellationToken);
 
             var existingTenant = await eventStore.LoadAggregateAsync<Tenant, TenantId>(
-                ExampleTenant.Id,
+                this.ExampleTenant.Id,
                 cancellationToken);
 
             var existingCinema = await eventStore.LoadAggregateAsync<Cinema, CinemaId>(
-                ExampleCinema.Id,
+                this.ExampleCinema.Id,
                 cancellationToken);
 
             var existingShowtime = await eventStore.LoadAggregateAsync<Showtime, ShowtimeId>(
-                ExampleShowtime.Id,
+                this.ExampleShowtime.Id,
                 cancellationToken);
 
-            if (existingMovie != null ||
-                existingAuditorium != null ||
-                existingUserWithAdminRole != null ||
-                existingUser != null ||
-                existingPartition != null ||
-                existingTenant != null ||
-                existingCinema != null ||
-                existingShowtime != null)
-            {
-                return true;
-            }
-
-            return false;
+            return existingMovie != null
+                || existingAuditorium != null
+                || existingUserWithAdminRole != null
+                || existingUser != null
+                || existingPartition != null
+                || existingTenant != null
+                || existingCinema != null
+                || existingShowtime != null;
         }
     }
 }

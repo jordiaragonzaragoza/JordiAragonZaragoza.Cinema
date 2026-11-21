@@ -16,7 +16,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class AssignPermissionTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -31,10 +31,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests.Api.Command.V2.
         public async Task AssignPermission_WhenHavingValidArguments_ShouldAssignPermissionToUser()
         {
             // Arrange
-            var userId = SeedData.ExampleUserToBeAssignedScheduleShowtimePermission.Id;
-            var tenantId = SeedData.ExampleTenant.Id;
-            var partitionId = SeedData.ExamplePartition.Id;
-            var cinemaId = SeedData.ExampleCinema.Id;
+            var userId = SeedValues.ExampleUserToBeAssignedScheduleShowtimePermissionId;
+            var tenantId = SeedValues.ExampleTenantId;
+            var partitionId = SeedValues.ExamplePartitionId;
+            var cinemaId = SeedValues.ExampleCinemaId;
             var permission = ShowtimePermisions.ScheduleShowtime;
             string[] initialRoles = { Constants.Role.Admin };
             string[] initialPermissions = [];

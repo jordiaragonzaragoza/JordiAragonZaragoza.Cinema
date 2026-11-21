@@ -26,8 +26,8 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
             var sessionDate = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                SeedValues.ExampleAuditoriumId,
+                SeedValues.ExampleMovieId,
                 sessionDate);
 
             // Act

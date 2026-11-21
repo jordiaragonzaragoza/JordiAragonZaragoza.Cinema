@@ -14,13 +14,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignPermissi
 
     public sealed class AssignPermissionScenario
     {
-        public Guid TenantId { get; } = SeedData.ExampleTenant.Id;
+        public Guid TenantId { get; } = SeedValues.ExampleTenantId;
 
-        public Guid? PartitionId { get; } = SeedData.ExamplePartition.Id;
+        public Guid? PartitionId { get; } = SeedValues.ExamplePartitionId;
 
-        public Guid? CinemaId { get; } = SeedData.ExampleCinema.Id;
+        public Guid? CinemaId { get; } = SeedValues.ExampleCinemaId;
 
-        public Guid UserId { get; } = SeedData.ExampleUserToBeAssignedScheduleShowtimePermission.Id;
+        public Guid UserId { get; } = SeedValues.ExampleUserToBeAssignedScheduleShowtimePermissionId;
 
         public IReadOnlyList<string> ExpectedPermissions { get; } = new[] { ShowtimePermisions.ScheduleShowtime };
 

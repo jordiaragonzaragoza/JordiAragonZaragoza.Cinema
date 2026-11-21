@@ -74,9 +74,9 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Common
 
             // The user is now a real actor: the middleware requires the scope headers and
             // validates that the user has access to them (these ones are seeded for the admin user).
-            client.DefaultRequestHeaders.Add("x-tenant-id", SeedData.ExampleTenant.Id.ToString());
-            client.DefaultRequestHeaders.Add("x-partition-id", SeedData.ExamplePartition.Id.ToString());
-            client.DefaultRequestHeaders.Add("x-domain-id", SeedData.ExampleCinema.Id.ToString());
+            client.DefaultRequestHeaders.Add("x-tenant-id", SeedValues.ExampleTenantId.ToString());
+            client.DefaultRequestHeaders.Add("x-partition-id", SeedValues.ExamplePartitionId.ToString());
+            client.DefaultRequestHeaders.Add("x-domain-id", SeedValues.ExampleCinemaId.ToString());
         }
 
         private async Task<string> GetAccessTokenAsync()

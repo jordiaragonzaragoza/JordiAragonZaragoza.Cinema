@@ -13,7 +13,7 @@
     using Xunit;
     using Xunit.Abstractions;
 
-    using SeedData = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedData;
+    using SeedValues = JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder.SeedValues;
 
     public sealed class GetAvailableSeatsTests : BaseHttpRestfulApiFunctionalTests
     {
@@ -28,7 +28,7 @@
         public async Task GetAvailableSeats_WhenHavingValidArguments_ShouldReturnAvailableSeats()
         {
             // Arrange
-            var showtimeId = SeedData.ExampleShowtime.Id;
+            var showtimeId = SeedValues.ExampleShowtimeId;
 
             var route = $"{Routes.ApiBase}{ShowtimeRoutes.GetAvailableSeats}";
             route = route.Replace("{ShowtimeId}", showtimeId.ToString(), StringComparison.Ordinal);

@@ -12,13 +12,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.RevokeUser
 
     public sealed class RevokeUserScenario
     {
-        public Guid TenantId { get; } = SeedData.ExampleTenant.Id;
+        public Guid TenantId { get; } = SeedValues.ExampleTenantId;
 
-        public Guid? PartitionId { get; } = SeedData.ExamplePartition.Id;
+        public Guid? PartitionId { get; } = SeedValues.ExamplePartitionId;
 
-        public Guid? CinemaId { get; } = SeedData.ExampleCinema.Id;
+        public Guid? CinemaId { get; } = SeedValues.ExampleCinemaId;
 
-        public Guid UserId { get; } = SeedData.ExampleUserToBeRevoked.Id;
+        public Guid UserId { get; } = SeedValues.ExampleUserToBeRevokedId;
 
         public IReadOnlyList<string> Roles { get; } = new[] { JordiAragonZaragoza.Cinema.Reservation.Common.Application.Roles.Admin };
 

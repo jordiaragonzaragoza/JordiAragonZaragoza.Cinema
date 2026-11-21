@@ -34,8 +34,8 @@
             this.SessionDate = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                SeedValues.ExampleAuditoriumId,
+                SeedValues.ExampleMovieId,
                 this.SessionDate);
 
             output?.WriteLine($"Scheduling showtime {this.ShowtimeId} for {this.SessionDate:O}");

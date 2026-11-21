@@ -22,8 +22,8 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.CancelShow
             var sessionDate = DateTimeOffset.UtcNow.AddDays(1);
 
             var request = new ScheduleShowtimeBodyRequest(
-                SeedData.ExampleAuditorium.Id,
-                SeedData.ExampleMovie.Id,
+                SeedValues.ExampleAuditoriumId,
+                SeedValues.ExampleMovieId,
                 sessionDate);
 
             await commandClient.ScheduleShowtimeAsync(this.ShowtimeId, request, output);

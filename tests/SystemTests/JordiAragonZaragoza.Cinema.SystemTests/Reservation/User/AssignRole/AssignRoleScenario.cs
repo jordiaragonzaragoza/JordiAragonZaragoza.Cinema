@@ -13,13 +13,13 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.User.AssignRole
 
     public sealed class AssignRoleScenario
     {
-        public Guid TenantId { get; } = SeedData.ExampleTenant.Id;
+        public Guid TenantId { get; } = SeedValues.ExampleTenantId;
 
-        public Guid? PartitionId { get; } = SeedData.ExamplePartition.Id;
+        public Guid? PartitionId { get; } = SeedValues.ExamplePartitionId;
 
-        public Guid? CinemaId { get; } = SeedData.ExampleCinema.Id;
+        public Guid? CinemaId { get; } = SeedValues.ExampleCinemaId;
 
-        public Guid UserId { get; } = SeedData.ExampleUserToBeAssignedAsViewerRole.Id;
+        public Guid UserId { get; } = SeedValues.ExampleUserToBeAssignedAsViewerRoleId;
 
         public IReadOnlyList<string> ExpectedRoles { get; } = new[] { Roles.Admin, Roles.Viewer };
 

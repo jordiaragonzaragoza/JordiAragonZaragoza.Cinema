@@ -42,7 +42,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.FunctionalTests
                 return Task.FromResult(AuthenticateResult.NoResult());
             }
 
-            var userId = Guid.TryParse(value.Parameter, out var parsed) ? parsed : SeedData.ExampleUserWithAdminRole.Id;
+            var userId = Guid.TryParse(value.Parameter, out var parsed) ? parsed : SeedValues.ExampleUserWithAdminRoleId;
 
             // Claim names must match what the API reads (MapInboundClaims = false => raw JWT names).
             var identity = new ClaimsIdentity(

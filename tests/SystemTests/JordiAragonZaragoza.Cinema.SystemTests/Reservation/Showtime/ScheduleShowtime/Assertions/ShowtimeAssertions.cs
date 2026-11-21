@@ -20,9 +20,9 @@ namespace JordiAragonZaragoza.Cinema.SystemTests.Reservation.Showtime.ScheduleSh
 
             showtime.Should().NotBeNull();
             showtime.SessionDateOnUtc.Should().BeCloseTo(expectedSessionDate, TimeSpan.FromMilliseconds(1));
-            showtime.MovieTitle.Should().Be(SeedData.ExampleMovie.Title);
-            showtime.AuditoriumId.Should().Be(SeedData.ExampleAuditorium.Id);
-            showtime.AuditoriumName.Should().Be(SeedData.ExampleAuditorium.Name);
+            showtime.MovieTitle.Should().Be(SeedValues.ExampleMovieTitle);
+            showtime.AuditoriumId.Should().Be(SeedValues.ExampleAuditoriumId);
+            showtime.AuditoriumName.Should().Be(SeedValues.ExampleAuditoriumName);
         }
     }
 }
