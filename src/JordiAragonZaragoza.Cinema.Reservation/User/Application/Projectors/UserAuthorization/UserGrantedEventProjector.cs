@@ -30,13 +30,19 @@
                 TenantId = @event.TenantId,
                 PartitionId = @event.PartitionId,
                 DomainId = @event.CinemaId,
-                Roles = @event.Roles
-                    .Select(r => new RoleReadModel(Guid.CreateVersion7(), r))
-                    .ToList(),
-                Permissions = @event.Permissions
-                    .Select(p => new PermissionReadModel(Guid.CreateVersion7(), p))
-                    .ToList(),
             };
+
+            foreach (var role in @event.Roles)
+            {
+                userAuthorizationReadModel.Roles.Add(
+                    new RoleReadModel(Guid.CreateVersion7(), role));
+            }
+
+            foreach (var permission in @event.Permissions)
+            {
+                userAuthorizationReadModel.Permissions.Add(
+                    new PermissionReadModel(Guid.CreateVersion7(), permission));
+            }
 
             await this.repository.AddAsync(userAuthorizationReadModel, cancellationToken);
         }

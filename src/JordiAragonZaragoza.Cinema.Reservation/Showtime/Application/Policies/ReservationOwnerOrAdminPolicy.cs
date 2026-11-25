@@ -10,6 +10,7 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies
     using JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Contracts.ReadModels;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
     using JordiAragonZaragoza.SharedKernel.Contracts.Repositories;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Passes when the current user owns the reservation identified by
@@ -21,15 +22,18 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies
     public sealed class ReservationOwnerOrAdminPolicy : IAuthorizationPolicy
     {
         private readonly IReadRepository<ReservationReadModel, Guid> reservationRepository;
+        private readonly ILogger<ReservationOwnerOrAdminPolicy> logger;
 
         public ReservationOwnerOrAdminPolicy(
-            IReadRepository<ReservationReadModel, Guid> reservationRepository)
+            IReadRepository<ReservationReadModel, Guid> reservationRepository,
+            ILogger<ReservationOwnerOrAdminPolicy> logger)
         {
             this.reservationRepository = reservationRepository
                 ?? throw new ArgumentNullException(nameof(reservationRepository));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public string Name => Policies.SelfOrAdmin;
+        public string Name => Policies.ReservationOwnerOrAdmin;
 
         public async Task<Result> EvaluateAsync(
             Guid currentUserId,
@@ -46,20 +50,34 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Showtime.Application.Policies
             if (resourceId is null)
             {
                 // Fail-closed: without resourceId and without Admin, there is no basis for authorization.
-                return Result.Forbidden(
-                    $"Policy '{Policies.SelfOrAdmin}' requires a resourceId " +
-                    $"when the user is not an Admin.");
+                this.logger.LogWarning(
+                    "Authorization failed for user {UserId} because ReservationOwnerOrAdminPolicy requires a resourceId and user is not an Admin.",
+                    currentUserId);
+
+                return Result.Forbidden("Access denied.");
             }
 
             var reservation = await this.reservationRepository.GetByIdAsync(resourceId.Value, cancellationToken);
             if (reservation is null)
             {
-                return Result.NotFound($"Reservation {resourceId} not found.");
+                this.logger.LogWarning(
+                    "Authorization failed for user {UserId} because ReservationOwnerOrAdminPolicy requires a Reservation {ResourceId} and it was not found.",
+                    currentUserId,
+                    resourceId);
+
+                return Result.Forbidden("Access denied.");
             }
 
-            return reservation.UserId == currentUserId
-                ? Result.Success()
-                : Result.Forbidden("User is neither the reservation owner nor an Admin.");
+            if (reservation.UserId != currentUserId)
+            {
+                this.logger.LogWarning(
+                    "Authorization failed for user {UserId} on ReservationOwnerOrAdminPolicy because User is neither the reservation owner nor an Admin.",
+                    currentUserId);
+
+                return Result.Forbidden("Access denied.");
+            }
+
+            return Result.Success();
         }
     }
 }

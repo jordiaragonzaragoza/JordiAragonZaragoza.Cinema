@@ -102,7 +102,7 @@ The seeder loads a small, fixed data set (it skips this step if data already exi
 | Reservation | `d290f1ee-6c54-4b01-90e6-d701748f0851` | First 3 seats of the showtime, not purchased |
 | Reservation owner | `a9c483ba-4f95-400b-835d-1a9c6c39e17b` | The user the seeded reservation belongs to |
 
-💡 **Try this:** with the seeded ids, send `DELETE /api/v2/showtimes/{showtimeId}/reservations/{reservationId}` to the Command API. The reservation belongs to another user, yet it goes through: the `SelfOrAdmin` policy passes because you hold the `Admin` role.
+💡 **Try this:** with the seeded ids, send `DELETE /api/v2/showtimes/{showtimeId}/reservations/{reservationId}` to the Command API. The reservation belongs to another user, yet it goes through: the `ReservationOwnerOrAdmin` policy passes because you hold the `Admin` role.
 
 <details>
 <summary>Troubleshooting</summary>
@@ -169,7 +169,7 @@ Domain rules         Is the operation itself valid?                          (ag
 Requirements are declared right on the command:
 
 ```csharp
-[Authorize(Permissions = "cancel:showtime", Policies = Policies.SelfOrAdmin)]
+[Authorize(Permissions = "cancel:showtime", Policies = Policies.ReservationOwnerOrAdmin)]
 public sealed record CancelReservationCommand(
     Guid ShowtimeId,
     Guid ReservationId) : ICommand, IPolicyResourceRequest

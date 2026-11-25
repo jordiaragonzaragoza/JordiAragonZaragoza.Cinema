@@ -144,22 +144,22 @@ Available policies:
 
 | Constant | Meaning |
 | --- | --- |
-| `Policies.SelfOrAdmin` | Passes if the user is the owner of the resource (`resourceId`) OR has the `Admin` role in the active scope |
+| `Policies.ReservationOwnerOrAdmin` | Passes if the user is the owner of the resource (`resourceId`) OR has the `Admin` role in the active scope |
 
-#### How `SelfOrAdmin` Works
+#### How `ReservationOwnerOrAdmin` Works
 
 1. If the user has the `Admin` role → **passes** immediately (without querying the resource).
 2. If not an Admin and no `resourceId` is provided → **Forbidden** (fail-closed, never fail-open).
 3. If not an Admin and there is a `resourceId` → loads the `ReservationReadModel` and compares `reservation.UserId == currentUserId`.
 
-> ⚠️ **Guaranteed Fail-closed**: A policy that cannot be evaluated due to missing data always returns `Forbidden`, never `Success`. A policy declared in `[Authorize]` but without a registered implementation throws an `InvalidOperationException` at startup, preventing the risk of a silent no-op.
+> ⚠️ **Guaranteed Fail-closed**: A policy that cannot be evaluated due to missing data always returns `Forbidden`, never `Success`. A policy declared in `[Authorize]` but without a registered implementation throws an `InvalidOperationException`, preventing the risk of a silent no-op.
 
 #### How to Declare a Policy in a Command
 
 The command implements `IPolicyResourceRequest` to expose the `resourceId` that the policy needs to resolve ownership — without exposing the full shape of the command to the authorization system:
 
 ```csharp
-[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+[Authorize(Policies = Policies.ReservationOwnerOrAdmin)]
 public sealed record CancelReservationCommand(
     Guid ShowtimeId,
     Guid ReservationId) : ICommand, IPolicyResourceRequest
@@ -202,7 +202,7 @@ public sealed record ...
 public sealed record ...
 
 // With ownership policy
-[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+[Authorize(Permissions = ShowtimePermisions.CancelReservation, Policies = Policies.ReservationOwnerOrAdmin)]
 public sealed record CancelReservationCommand(...) : ICommand, IPolicyResourceRequest { ... }
 
 // Without attribute = accessible to any authorized actor within the scope
@@ -270,7 +270,7 @@ CommandHandler / QueryHandler
 
 > **`ActorType.External` in `AuthorizeAsync**`: If an `External` actor reaches a command decorated with `[Authorize]`, the system returns `Forbidden` instead of `Success` — this indicates an endpoint configuration error (it should either be behind authentication or not have `[Authorize]`). This is a deliberate fail-closed behavior: `External` must never silently inherit permissions.
 
-> **`ActorType.System` and Ownership Policies**: `System` actors bypass policy evaluation (including `SelfOrAdmin`). If a worker/consumer invokes a command with an ownership policy, that policy is not evaluated — `System` is trusted by design. If the integration flow needs to respect ownership, propagate the original user's `ActorId` in the integration event so the consumer can reconstruct the context as `ActorType.User`.
+> **`ActorType.System` and Ownership Policies**: `System` actors bypass policy evaluation (including `ReservationOwnerOrAdmin`). If a worker/consumer invokes a command with an ownership policy, that policy is not evaluated — `System` is trusted by design. If the integration flow needs to respect ownership, propagate the original user's `ActorId` in the integration event so the consumer can reconstruct the context as `ActorType.User`.
 
 ---
 
@@ -482,7 +482,7 @@ AuthorizationService for Tenant=T1, Cinema=C1:
 
 ### 3. `ActorType.System` Bypasses Ownership Policies
 
-If a worker invokes a command decorated with `[Authorize(Policies = "SelfOrAdmin")]`, the policy is not evaluated — `System` passes directly. To preserve ownership in integration flows, propagate the original user's `ActorId` in the integration event metadata.
+If a worker invokes a command decorated with `[Authorize(Policies = "ReservationOwnerOrAdmin")]`, the policy is not evaluated — `System` passes directly. To preserve ownership in integration flows, propagate the original user's `ActorId` in the integration event metadata.
 
 ### 4. `ActorType.External` and `[AllowAnonymous]`
 
@@ -519,20 +519,20 @@ AuthorizeAsync:
 
 ```
 
-### Example 2 — User Cancels Their Reservation (SelfOrAdmin Policy)
+### Example 2 — User Cancels Their Reservation (ReservationOwnerOrAdmin Policy)
 
 ```
 User U1: Assignment Tenant=T1 → [Viewer] + [cancel:reservation]
 Reservation R1: UserId = U1
 
 POST /api/v2/reservations/{R1}/cancel
-  [Authorize(Permissions = "cancel:reservation", Policies = "SelfOrAdmin")]
+  [Authorize(Permissions = "cancel:reservation", Policies = "ReservationOwnerOrAdmin")]
 
 ValidateScopeAsync → Assignment(T1).Matches(T1) ✅
 AuthorizeAsync:
   requiredPermissions: ["cancel:reservation"] ⊆ ["cancel:reservation"] ✅
   requiredRoles: [] → ok
-  policy "SelfOrAdmin":
+  policy "ReservationOwnerOrAdmin":
     currentUserRoles does not contain "Admin"
     resourceId = R1
     ReservationReadModel(R1).UserId == U1 ✅
@@ -546,7 +546,7 @@ AuthorizeAsync:
 User U2: Assignment Tenant=T1 → [Viewer]
 Reservation R1: UserId = U1 (not U2)
 
-policy "SelfOrAdmin":
+policy "ReservationOwnerOrAdmin":
   currentUserRoles does not contain "Admin"
   ReservationReadModel(R1).UserId (U1) != currentUserId (U2)
   → Result.Forbidden ❌
@@ -559,7 +559,7 @@ policy "SelfOrAdmin":
 User U3: Assignment Tenant=T1 → [Admin]
 Reservation R1: UserId = U1
 
-policy "SelfOrAdmin":
+policy "ReservationOwnerOrAdmin":
   currentUserRoles.Contains("Admin") → Result.Success() ✅
   (ReservationReadModel is not queried)
 
@@ -587,7 +587,7 @@ ValidateScopeAsync:
 // Declare authorization on a command/query
 [Authorize(Permissions = "cancel:showtime")]
 [Authorize(Roles = "Admin")]
-[Authorize(Policies = Policies.SelfOrAdmin)]
+[Authorize(Policies = Policies.ReservationOwnerOrAdmin)]
 
 // Expose resourceId for ownership policies
 public sealed record MyCommand(...) : ICommand, IPolicyResourceRequest

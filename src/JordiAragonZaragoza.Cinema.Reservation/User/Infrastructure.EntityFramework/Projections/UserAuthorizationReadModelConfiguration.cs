@@ -43,6 +43,7 @@
             builder.HasIndex(x => new { x.UserId, x.TenantId, x.PartitionId, x.DomainId })
                 .HasDatabaseName("IX_UsersAuthorizations_UserIdScope")
                 .IsUnique();
+                ////.AreNullsDistinct(false);
 
             // Configure owned roles collection using owned entities pattern
             // This approach is database-agnostic and provides flexibility for future migrations

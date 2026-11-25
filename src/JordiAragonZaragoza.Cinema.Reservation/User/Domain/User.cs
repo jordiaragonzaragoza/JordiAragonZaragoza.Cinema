@@ -64,7 +64,7 @@
             ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
 
             return this.assignments
-                .Where(a => a.Scope.Matches(cinemaId, partitionId, tenantId))
+                .Where(a => a.Scope.Matches(tenantId, partitionId, cinemaId))
                 .SelectMany(a => a.Roles)
                 .Distinct();
         }
@@ -93,7 +93,7 @@
             ArgumentNullException.ThrowIfNull(tenantId, nameof(tenantId));
 
             return this.assignments
-                .Where(a => a.Scope.Matches(cinemaId, partitionId, tenantId))
+                .Where(a => a.Scope.Matches(tenantId, partitionId, cinemaId))
                 .SelectMany(a => a.Permissions)
                 .Distinct();
         }

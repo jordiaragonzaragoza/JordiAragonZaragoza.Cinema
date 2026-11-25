@@ -7,23 +7,27 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
     using System.Threading.Tasks;
     using Ardalis.Result;
     using JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces;
-
+    using Microsoft.Extensions.Logging;
     using ExecutionContext = JordiAragonZaragoza.SharedKernel.Application.Contracts.Interfaces.ExecutionContext;
 
     public class AuthorizationService : IAuthorizationService
     {
         private readonly UserAuthorizationResolver userAuthorizationResolver;
         private readonly IPolicyEnforcer policyEnforcer;
+        private readonly ILogger<AuthorizationService> logger;
+
         private readonly IExecutionContextService executionContextService;
 
         public AuthorizationService(
             IExecutionContextService executionContextService,
             UserAuthorizationResolver userAuthorizationResolver,
-            IPolicyEnforcer policyEnforcer)
+            IPolicyEnforcer policyEnforcer,
+            ILogger<AuthorizationService> logger)
         {
             this.executionContextService = executionContextService ?? throw new ArgumentNullException(nameof(executionContextService));
             this.userAuthorizationResolver = userAuthorizationResolver ?? throw new ArgumentNullException(nameof(userAuthorizationResolver));
             this.policyEnforcer = policyEnforcer ?? throw new ArgumentNullException(nameof(policyEnforcer));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Result> ValidateScopeAsync(Guid userId, ScopeContext scope, CancellationToken cancellationToken = default)
@@ -33,7 +37,14 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
             var userAuthorization = await this.userAuthorizationResolver.ResolveAsync(userId, scope, cancellationToken);
             if (userAuthorization is null)
             {
-                return Result.NotFound($"User with ID {userId} not found for tenant {scope.TenantId}, partition {scope.PartitionId}, and cinema {scope.DomainId}.");
+                this.logger.LogWarning(
+                    "User with ID {UserId} not found for tenant {TenantId}, partition {PartitionId}, and cinema {DomainId}.",
+                    userId,
+                    scope.TenantId,
+                    scope.PartitionId,
+                    scope.DomainId);
+
+                return Result.Forbidden("Access denied.");
             }
 
             return Result.Success();
@@ -104,19 +115,40 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Application.Services
 
             if (userAuthorization is null)
             {
-                return Result.NotFound(
-                    $"User with ID {userId} not found for tenant {scopeContext.TenantId}, " +
-                    $"partition {scopeContext.PartitionId}, and cinema {scopeContext.DomainId}.");
+                this.logger.LogWarning(
+                    "User with ID {UserId} not found for tenant {TenantId}, partition {PartitionId}, and cinema {DomainId}.",
+                    userId,
+                    scopeContext.TenantId,
+                    scopeContext.PartitionId,
+                    scopeContext.DomainId);
+
+                return Result.Forbidden("Access denied.");
             }
 
             if (requiredPermissions.Except(userAuthorization.Permissions.Select(p => p.Value)).Any())
             {
-                return Result.Forbidden("User is missing required permissions for taking this action");
+                this.logger.LogWarning(
+                    "User with ID {UserId} tenant {TenantId}, partition {PartitionId}, and cinema {DomainId} is missing required permissions {RequiredPermissions} for taking this action.",
+                    userId,
+                    scopeContext.TenantId,
+                    scopeContext.PartitionId,
+                    scopeContext.DomainId,
+                    string.Join(", ", requiredPermissions));
+
+                return Result.Forbidden("Access denied.");
             }
 
             if (requiredRoles.Except(userAuthorization.Roles.Select(r => r.Value)).Any())
             {
-                return Result.Forbidden("User is missing required roles for taking this action");
+                this.logger.LogWarning(
+                    "User with ID {UserId} tenant {TenantId}, partition {PartitionId}, and cinema {DomainId} is missing required roles {RequiredRoles} for taking this action.",
+                    userId,
+                    scopeContext.TenantId,
+                    scopeContext.PartitionId,
+                    scopeContext.DomainId,
+                    string.Join(", ", requiredRoles));
+
+                return Result.Forbidden("Access denied.");
             }
 
             var currentUserRoles = userAuthorization.Roles.Select(r => r.Value).ToList();

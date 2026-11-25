@@ -27,15 +27,15 @@
         public Guid? DomainId { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of roles assigned at this scope level.
+        /// Gets the collection of roles assigned at this scope level.
         /// Uses owned entities pattern for flexibility and database portability.
         /// </summary>
-        public IEnumerable<RoleReadModel> Roles { get; set; } = new List<RoleReadModel>();
+        public ICollection<RoleReadModel> Roles { get; private set; } = new List<RoleReadModel>();
 
-        /// <summary> Gets or sets the collection of permissions assigned at this scope level.
+        /// <summary> Gets the collection of permissions assigned at this scope level.
         /// Uses owned entities pattern for flexibility and database portability.
         /// </summary>
-        public IEnumerable<PermissionReadModel> Permissions { get; set; } = new List<PermissionReadModel>();
+        public ICollection<PermissionReadModel> Permissions { get; private set; } = new List<PermissionReadModel>();
 
         /// <summary>
         /// Checks if this authorization matches the given scope hierarchy.
@@ -47,17 +47,9 @@
         /// <returns>True if this authorization matches the given scope, false otherwise.</returns>
         public bool Matches(Guid tenantId, Guid? partitionId, Guid? domainId)
         {
-            if (this.DomainId is not null)
-            {
-                return this.DomainId == domainId;
-            }
-
-            if (this.PartitionId is not null)
-            {
-                return this.PartitionId == partitionId;
-            }
-
-            return this.TenantId == tenantId;
+            return this.TenantId == tenantId
+                && (this.PartitionId is null || this.PartitionId == partitionId)
+                && (this.DomainId is null || this.DomainId == domainId);
         }
     }
 }

@@ -267,11 +267,10 @@ namespace JordiAragonZaragoza.Cinema.Reservation.Worker.Seeder
                 TenantId = this.ExampleTenant.Id,
                 PartitionId = this.ExamplePartition.Id,
                 DomainId = this.ExampleCinema.Id,
-                Roles = new List<RoleReadModel>
-                {
-                    new RoleReadModel(Guid.CreateVersion7(), Roles.Admin),
-                },
             };
+
+            userAuthorization.Roles.Add(
+                    new RoleReadModel(Guid.CreateVersion7(), Roles.Admin));
 
             return userAuthorization;
         }

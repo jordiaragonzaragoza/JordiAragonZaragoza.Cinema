@@ -173,9 +173,9 @@ Políticas disponibles:
 
 | Constante | Significado |
 |---|---|
-| `Policies.SelfOrAdmin` | Pasa si el usuario es el propietario del recurso (`resourceId`) O tiene el rol `Admin` en el alcance activo |
+| `Policies.ReservationOwnerOrAdmin` | Pasa si el usuario es el propietario del recurso (`resourceId`) O tiene el rol `Admin` en el alcance activo |
 
-#### Cómo funciona `SelfOrAdmin`
+#### Cómo funciona `ReservationOwnerOrAdmin`
 
 1. Si el usuario tiene el rol `Admin` → **pasa** inmediatamente (sin consultar el recurso).
 2. Si no es Admin y no se proporcionó `resourceId` → **Forbidden** (fail-closed, nunca
@@ -185,7 +185,7 @@ Políticas disponibles:
 
 > ⚠️ **Fail-closed garantizado**: una policy que no puede evaluarse por falta de datos
 > devuelve siempre `Forbidden`, nunca `Success`. Una policy declarada en `[Authorize]`
-> pero sin implementación registrada lanza `InvalidOperationException` al arranque,
+> pero sin implementación registrada lanza `InvalidOperationException`,
 > evitando el riesgo de no-op silencioso.
 
 #### Cómo declarar una policy en un command
@@ -195,7 +195,7 @@ la policy necesita para resolver el ownership — sin exponer el shape completo 
 command al sistema de autorización:
 
 ```csharp
-[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+[Authorize(Policies = Policies.ReservationOwnerOrAdmin)]
 public sealed record CancelReservationCommand(
     Guid ShowtimeId,
     Guid ReservationId) : ICommand, IPolicyResourceRequest
@@ -238,7 +238,7 @@ public sealed record ...
 public sealed record ...
 
 // Con policy de ownership
-[Authorize(Permissions = ShowtimePermisions.Cancel, Policies = Policies.SelfOrAdmin)]
+[Authorize(Permissions = ShowtimePermisions.CancelReservation, Policies = Policies.ReservationOwnerOrAdmin)]
 public sealed record CancelReservationCommand(...) : ICommand, IPolicyResourceRequest { ... }
 
 // Sin atributo = accesible para cualquier actor autorizado dentro del alcance
@@ -310,7 +310,7 @@ MediatR Pipeline
 > deliberado: External nunca debe heredar permisos de forma silenciosa.
 
 > **`ActorType.System` y políticas de ownership**: los actores System omiten la
-> evaluación de políticas (incluyendo `SelfOrAdmin`). Si un worker/consumer invoca
+> evaluación de políticas (incluyendo `ReservationOwnerOrAdmin`). Si un worker/consumer invoca
 > un command con una policy de ownership, esa policy no se evalúa — System es
 > trusted por diseño. Si el command proviene de un flujo de integración que debe
 > respetar el ownership, propaga el `ActorId` original del usuario en el evento
@@ -559,7 +559,7 @@ repositorio base automáticamente.
 
 ### 3. `ActorType.System` omite políticas de ownership
 
-Si un worker invoca un command con `[Authorize(Policies = "SelfOrAdmin")]`,
+Si un worker invoca un command con `[Authorize(Policies = "ReservationOwnerOrAdmin")]`,
 la policy no se evalúa — System pasa directamente. Para preservar el ownership
 en flujos de integración, propaga el `ActorId` del usuario original en los
 metadatos del evento de integración.
@@ -609,20 +609,20 @@ AuthorizeAsync:
   → CancelShowtimeCommandHandler ejecuta
 ```
 
-### Ejemplo 2 — Usuario cancela su reserva (policy SelfOrAdmin)
+### Ejemplo 2 — Usuario cancela su reserva (policy ReservationOwnerOrAdmin)
 
 ```
 Usuario U1: Assignment Tenant=T1 → [Viewer] + [cancel:reservation]
 Reserva R1: UserId = U1
 
 POST /api/v2/reservations/{R1}/cancel
-  [Authorize(Permissions = "cancel:reservation", Policies = "SelfOrAdmin")]
+  [Authorize(Permissions = "cancel:reservation", Policies = "ReservationOwnerOrAdmin")]
 
 ValidateScopeAsync → Assignment(T1).Matches(T1) ✅
 AuthorizeAsync:
   requiredPermissions: ["cancel:reservation"] ⊆ ["cancel:reservation"] ✅
   requiredRoles: [] → ok
-  policy "SelfOrAdmin":
+  policy "ReservationOwnerOrAdmin":
     currentUserRoles no contiene "Admin"
     resourceId = R1
     ReservationReadModel(R1).UserId == U1 ✅
@@ -635,7 +635,7 @@ AuthorizeAsync:
 Usuario U2: Assignment Tenant=T1 → [Viewer]
 Reserva R1: UserId = U1 (no es U2)
 
-policy "SelfOrAdmin":
+policy "ReservationOwnerOrAdmin":
   currentUserRoles no contiene "Admin"
   ReservationReadModel(R1).UserId (U1) != currentUserId (U2)
   → Result.Forbidden ❌
@@ -647,7 +647,7 @@ policy "SelfOrAdmin":
 Usuario U3: Assignment Tenant=T1 → [Admin]
 Reserva R1: UserId = U1
 
-policy "SelfOrAdmin":
+policy "ReservationOwnerOrAdmin":
   currentUserRoles.Contains("Admin") → Result.Success() ✅
   (no se consulta ReservationReadModel)
 ```
@@ -673,7 +673,7 @@ ValidateScopeAsync:
 // Declarar autorización en un command/query
 [Authorize(Permissions = "cancel:showtime")]
 [Authorize(Roles = "Admin")]
-[Authorize(Policies = Policies.SelfOrAdmin)]
+[Authorize(Policies = Policies.ReservationOwnerOrAdmin)]
 
 // Exponer resourceId para policies de ownership
 public sealed record MiCommand(...) : ICommand, IPolicyResourceRequest

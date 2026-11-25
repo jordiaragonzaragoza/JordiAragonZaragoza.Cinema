@@ -42,19 +42,11 @@ namespace JordiAragonZaragoza.Cinema.Reservation.User.Domain
             return Create(new TenantId(tenantId), partitionIdValueObject, cinemaIdValueObject);
         }
 
-        public bool Matches(CinemaId? cinemaId, PartitionId? partitionId, TenantId tenantId)
+        public bool Matches(TenantId tenantId, PartitionId? partitionId, CinemaId? cinemaId)
         {
-            if (this.CinemaId is not null)
-            {
-                return this.CinemaId == cinemaId!;
-            }
-
-            if (this.PartitionId is not null)
-            {
-                return this.PartitionId == partitionId!;
-            }
-
-            return this.TenantId == tenantId;
+            return this.TenantId == tenantId
+                && (this.PartitionId is null || this.PartitionId == partitionId!)
+                && (this.CinemaId is null || this.CinemaId == cinemaId!);
         }
 
         public override string ToString()
